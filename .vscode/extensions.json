@@ -1,7 +1,12 @@
 {
     "recommendations": [
-        "github.copilot",
         "tyriar.luna-paint",
-        "vscode-icons-team.vscode-icons"
+        "vscode-icons-team.vscode-icons",
+        "ms-vscode.cpptools",
+        "ms-vscode.cpptools-extension-pack",
+        "aaron-bond.better-comments",
+        "ms-vscode.makefile-tools",
+        "ms-vscode.powershell",
+        "tomoki1207.pdf"
     ]
 }
