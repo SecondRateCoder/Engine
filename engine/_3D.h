@@ -1,6 +1,7 @@
 #define vec3_t vec3d
 #define pvec3_t vec_pure
 #define poly3_t polygon
+#define matrix_t matrix
 #define mesh_t mesh;
 
 typedef struct vec_pure{
