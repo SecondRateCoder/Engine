@@ -169,7 +169,19 @@ vec3_t *vec3_largesub(vec3_t *vptr, vec3_t *vptr2, const size_t size){
 }
 
 vec3_t vec3_rot(vec3_t vec, vec3_t apex, vec3_t rot){
-	
+	float *matr_temp = alloca(sizeof(float)* 9);
+	matrix_t *xrot = matrix_init(
+		matr_temp,
+		9,
+		3, 3);
+	matrix_t *yrot_ = matrix_init(
+		matr_temp,
+		9,
+		3, 3);
+	matrix_t *zrot = matrix_init(
+		matr_temp,
+		9,
+		3, 3);
 }
 	
 	
