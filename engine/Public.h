@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 
 #define IS_NUM(X) ((int)X < (int)'9') && ((int)X > (int)'0')
