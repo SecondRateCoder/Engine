@@ -168,20 +168,20 @@ vec3_t *vec3_largesub(vec3_t *vptr, vec3_t *vptr2, const size_t size){
 	return out;
 }
 
-vec3_t vec3_rot(vec3_t vec, vec3_t apex, vec3_t rot){
-	float *matr_temp = alloca(sizeof(float)* 9);
-	matrix_t *xrot = matrix_init(
-		matr_temp,
-		9,
-		3, 3);
-	matrix_t *yrot_ = matrix_init(
-		matr_temp,
-		9,
-		3, 3);
-	matrix_t *zrot = matrix_init(
-		matr_temp,
-		9,
-		3, 3);
+vec3_t *vec3_rot(vec3_t *vec, vec3_t *apex, const size_t len, const vec3_t rot){
+	const float xsin= sinf(rot.x), ysin= sinf(rot.y), zsin= sinf(rot.z);
+	const float xcos= cosf(rot.x), ycos= cosf(rot.y), zcos= cosf(rot.z);
+	const matrix_t *rotm = matrix_init(
+		//Define a stack array, and just pass it's stack address.
+		&(float[9]){
+			(ycos* xcos), (zsin* ysin* xcos)-(zcos* xsin), (zcos* ysin* xcos)+(zsin* xsin),
+			(ycos* xcos), (zsin* ysin* xcos)+(zcos* xsin), (zcos* ysin* xcos)-(zsin* xsin),
+			-ysin, (zsin* ycos), (zcos* ycos)},
+		9, 3, 3);
+	vec3_t *out= vec3_largesub(vec, apex, len);
+	matrix_vec3mul(rotm, 1, out, len);
+	vec3_largeadd(out, apex, len);
+	return out;
 }
 	
 	
@@ -330,18 +330,44 @@ void free_matrix(matrix_t *mat) {
 #pragma endregion
 
 #pragma region Polygon
-
+/// @brief Calculate the centre vec3_t.
+/// @param p The polygon whose origin should be calculated.
+/// @remark It's essentially just a wrapper for the vec3_avg function.
+/// @return The centre vec3_t of a Polygon.
 vec3_t polygon_origin(const poly3_t p){return vec3_avg(&(vec3_t[3]){p.a, p.b, p.c}, 3);}
 
+/// @brief Initialise a Polygon.
+/// @param a The a vec3_t, not rotated.
+/// @param b The b vec3_t, not rotated.
+/// @param c The c vec3_t, not rotated.
+/// @param rotation The rotation that should be applied to the vec3_ts a, b, c; around rotation.
+/// @return A fully initialised polygon.
 poly3_t polygon_init(vec3_t a, vec3_t b, vec3_t c, vec3_t rotation){
-	return (poly3_t){
+	vec3_t origin= vec3_avg(&(vec3_t[3]){a, b, c}, 3);
+	vec3_t *rot= vec3_rot(&(vec3_t[3]){a, b, c}, &(vec3_t[3]){origin, origin, origin}, 3, rotation);
+	poly3_t out= (poly3_t){
 		.a= a,
 		.b= b,
 		.c= c,
 		.origin= polygon_origin,
-		.rotation= 
+		.rotation= rotation,
+	};
+	free(rot);
+	return out;
+}
+
+/// @brief Rotate Polygons around thier Origins.
+/// @param p An array of Polygons.
+/// @param len The length of the array.
+/// @param rot The roation to be applied.
+void poly3_rot(poly3_t *p, size_t len, const vec3_t rot){
+	for(size_t cc= 0; cc< len; ++cc){
+		vec3_t *_rot= vec3_rot(&(vec3_t[3]){p[cc].a, p[cc].b, p[cc].c}, &(vec3_t[3]){p[cc].origin(p[cc]), p[cc].origin(p[cc]), p[cc].origin(p[cc])}, 3, rot);
+		p->a= _rot[0]; p->b= _rot[1]; p->c= _rot[2];
+		free(_rot);
 	}
 }
+
 
 
 #pragma endregion

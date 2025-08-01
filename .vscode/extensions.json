@@ -7,6 +7,7 @@
         "aaron-bond.better-comments",
         "ms-vscode.makefile-tools",
         "ms-vscode.powershell",
-        "tomoki1207.pdf"
+        "tomoki1207.pdf",
+        "idma88.omp-pragma"
     ]
 }

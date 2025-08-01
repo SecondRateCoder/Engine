@@ -6,6 +6,10 @@
 #define matrix_t matrix
 #define mesh_t mesh;
 
+const pvec3_t pvec3_zero= {0, 0, 0};
+const vec3_t vec3_zero= {0, 0, 0, {0, 0, 0}};
+
+
 typedef struct vec_pure{
     float x, y, z;
 }vec_pure;
@@ -18,8 +22,8 @@ typedef struct vec3d{
 }vec3d;
 
 
-typedef vec3_t (*origin_f)(const poly3_t);
-typedef pointf_t (*porigin_f)(const ppoly3_t);
+typedef vec3_t (*origin_f)(const polygon);
+typedef pointf_t (*porigin_f)(const ppolygon);
 
 typedef struct polygon{
     vec3_t a, b, c, rotation;
