@@ -1,9 +1,27 @@
-#ifdef _WIN32 // note the underscore: without it, it's not msdn official!
-    // Windows (x64 and x86)
-#elif __unix__ // all unices, not all compilers
-    // Unix
-#elif __linux__
-    // linux
-#elif __APPLE__
-    // Mac OS, not sure if this is covered by __posix__ and/or __unix__ though...
-#endif
+#include <engine/Graphics/Window/Window.h>
+
+
+win_t *win_init(char *name, uint32_t w, uint32_t h){
+    glfwInit();
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+
+    win_t *win = alloca(sizeof(win_t));
+    win->name = name;
+    win->window =glfwCreateWindow(w, h, name, NULL, NULL);
+    return win;
+}
+
+bool win_poll(win_t *win){
+    while(!win_shouldclose(win)){
+        glfwPollEvents();
+    }
+    win_kill(win);
+}
+
+bool win_shouldclose(win_t *win){return glfwWindowShouldClose(win->window);}
+
+void win_kill(win_t *win){
+    glfwDestroyWindow(win->window);
+    glfwTerminate();
+}
