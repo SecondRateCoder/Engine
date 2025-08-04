@@ -148,12 +148,12 @@ shaderblock_t *shader_compile(){
         glCompileShader(shaderblock->geometryshader);
     }else{shaderblock->geometryshader = NULL;}
 	if(tessellation_controlshader != NULL){
-        shaderblock->tessellation_controlshader = glCreateShader(GL_TESSELLATION_CONTROL_SHADER);
+        shaderblock->tessellation_controlshader = glCreateShader(GL_TESS_CONTROL_SHADER);
         glShaderSource(shaderblock->tessellation_controlshader, 1, (const char * const *)&tessellation_controlshader, NULL);
         glCompileShader(shaderblock->tessellation_controlshader);
     }else{shaderblock->tessellation_controlshader = NULL;}
 	if(tessellation_evaluationshader != NULL){
-        shaderblock->tessellation_evaluationshader = glCreateShader(GL_TESSELLATION_EVALUATION_SHADER);
+        shaderblock->tessellation_evaluationshader = glCreateShader(GL_TESS_EVALUATION_SHADER);
         glShaderSource(shaderblock->tessellation_evaluationshader, 1, (const char * const *)&tessellation_evaluationshader, NULL);
         glCompileShader(shaderblock->tessellation_evaluationshader);
     }else{shaderblock->tessellation_evaluationshader = NULL;}

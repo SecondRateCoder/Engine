@@ -1,7 +1,8 @@
 {
     "files.associations": {
         "*.h": "c",
-        "stdexcept": "c"
+        "stdexcept": "c",
+        "*.gitattributes": "c"
     },
     "makefile.makefilePath": "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\Makefile",
     "C_Cpp.errorSquiggles": "enabled"
