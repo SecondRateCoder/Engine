@@ -2,7 +2,7 @@
 
 #include <GLFW/glfw3.h>
 #include <GLFW/glfw3native.h>
-#include <gl/GL.h>
+#include <glad.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>

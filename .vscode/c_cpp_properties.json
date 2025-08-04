@@ -4,6 +4,8 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
+                "${workspaceFolder}/engine/Libraries/include",
+                "${workspaceFolder}/engine/Libraries/lib"
             ],
             "defines": [
                 "_DEBUG",
