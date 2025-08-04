@@ -4,8 +4,6 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "c:/Users/olusa/glfw-3.4.bin.WIN64/include/",
-                "c:/Users/olusa/glfw-3.4.bin.WIN64/lib-mingw-w64"
             ],
             "defines": [
                 "_DEBUG",

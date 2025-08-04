@@ -1,4 +1,5 @@
-#define pointf_t point_f
+#include <Window.h>
+
 #define vec3_t vec3d
 #define pvec3_t vec_pure
 #define poly3_t polygon
@@ -13,8 +14,6 @@ const vec3_t vec3_zero= {0, 0, 0, {0, 0, 0}};
 typedef struct vec_pure{
     float x, y, z;
 }vec_pure;
-
-typedef struct point_f{float x, y;}point_f;
 
 typedef struct vec3d{
     float x, y, z;
