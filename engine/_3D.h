@@ -43,3 +43,4 @@ typedef struct mesh{
     vec3_t position, rotation;
     poly3_t *_mesh;
 }mesh;
+

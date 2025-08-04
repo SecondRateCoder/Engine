@@ -3,13 +3,8 @@
 #include <GLFW/glfw3.h>
 #include <GLFW/glfw3native.h>
 #include <glad.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <io.h>
+#include <Public.h>
 // #include <excpt.h>
-#include <stdint.h>
 
 // #ifndef GLFW_INCLUDE_VULKAN
 //     #define GLFW_INCLUDE_VULKAN
@@ -31,3 +26,10 @@ typedef struct Color4{
     /// @brief a: 1:= Solid, 0:= Transparent.
     float a, r, g, b;
 }Color4;
+
+win_t *win_init(char *name, uint32_t w, uint32_t h);
+void win_poll(win_t *win);
+bool win_shouldclose(win_t *win);
+void win_kill(win_t *win);
+void win_flood(win_t *win, const argb_t c);
+void win_draw(win_t *win, pointf_t *points, size_t len);
