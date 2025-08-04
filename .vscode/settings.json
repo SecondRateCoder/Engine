@@ -3,5 +3,6 @@
         "*.h": "c",
         "stdexcept": "c"
     },
-    "makefile.makefilePath": "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\Makefile"
+    "makefile.makefilePath": "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\Makefile",
+    "C_Cpp.errorSquiggles": "enabled"
 }
