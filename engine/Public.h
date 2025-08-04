@@ -1,3 +1,9 @@
+#include <engine/Libraries/include/KHR/khrplatform.h>
+#include <engine/Libraries/include/GLFW/glfw3.h>
+#include <engine/Libraries/include/GLFW/glfw3native.h>
+#include <engine/Graphics/DrawingProtocol.h>
+#include <engine/Graphics/Window/Window.h>
+#include <engine/Libraries/include/glad/glad.h>
 #include "./engine/_3D.h"
 #include <immintrin.h>
 #include <xmmintrin.h>
