@@ -25,21 +25,24 @@ const char vs_start[10]= "#define vs", fs_start[10]= "#define fs", shader_end[10
 char *vertexshader;
 char *fragmentshader;
 
-/*
-Shader format:
-    Written in conventional SAhadr script language.
-    At the top of File are some settings:
-    - Version: The version of the shader language used.
-    - Vertex Shader Index (0 - 99): The index of the vertex shader in the file that should be used.
-    - Fragment Shader Index (0 - 99): The index of the fragment shader in the file that should be used.
 
-    Shader Conventions:
-    - Vertex shaders are defined with the keyword "#define vs" on a line followed by the shader code.
-    - Fragment shaders are defined with the keyword "#define fs" on a line followed by the shader code.
-    - The end of a Shader Block must b marked with a line containing only the keyword "#shaderend".
-    These allow the Shader puller to identify the type shader in the file.
-*/
-
+/// @brief Initialise a Vertex and Fragment Shader from a File.
+/// @param filepath The path to the file containing the shaders.
+/// @note The file should be in the current working directory.
+/// @remarks The file can be in any Text format, The File Extension doesn't matter as long as it contains the relevant Conventions.
+///     !For all the setting Values, All specified chars must be Used.
+///		!Does not support Comments, Accepts everything with no Validation or Sanitation
+///  Shader Format:
+///     Written in conventional OpenGL 3.3 script language.
+///     At the top of File are some settings:
+///     - Version, INDEX_INCLUSIVE[0 - 5]: The version of the shader language used.
+///     - Vertex Shader Index, INDEX_INCLUSIVE[6 - 7] RANGE(0 - 99): The index of the vertex shader in the file that should be used.
+///     - Fragment Shader Index, INDEX_INCLUSIVE[8 - 9] RANGE(0 - 99): The index of the fragment shader in the file that should be used.
+///     Shader Conventions:
+///     - Vertex shaders are defined with the keyword "#define vs" on a line followed by the shader code.
+///     - Fragment shaders are defined with the keyword "#define fs" on a line followed by the shader code.
+///     - The end of a Shader Block must b marked with a line containing only the keyword "#shaderend".
+///     These allow the Shader puller to identify the type shader in the file.
 void shader_pull(char *filepath){
     FILE *shaders = fopen(filepath, "r");
     if(shaders != NULL){
@@ -75,7 +78,8 @@ void shader_pull(char *filepath){
 						}
 						//#define end found.
 						size_t curr_new = ftell(shaders);
-						vertexshader = (char *)malloc(sizeof(char)* (curr_new-curr));
+						vertexshader = (char *)malloc(sizeof(char)* (curr_new-curr)+1);
+						vertexshader[sizeof(char)* (curr_new-curr)]= NULL;
 						fread(vertexshader, sizeof(char), curr_new-curr, shaders);
                     }
                 //Is fragment shader block.
@@ -96,6 +100,7 @@ void shader_pull(char *filepath){
 						//#define end found.
 						size_t curr_new = ftell(shaders);
 						fragmentshader = (char *)malloc(sizeof(char)* (curr_new-curr));
+						fragmentshader[sizeof(char)* (curr_new-curr)]= NULL;
 						fread(fragmentshader, sizeof(char), curr_new-curr, shaders);
                     }
                 }
