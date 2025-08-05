@@ -8,17 +8,22 @@
 win_t *win_init(char *name, uint32_t w, uint32_t h){
 	glfwInit();
 	// glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+
+	//Not Resizable.
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+
 	//Using Legacy, OpenGL 3.3 for my 9800 GT GPU.
 	glfwWindowHint(GLFW_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+	//Allocate on heap.
 	win_t *win = alloca(sizeof(win_t));
 	win->name = name;
 	win->w =w;
 	win->h =h;
 	win->window = glfwCreateWindow(w, h, name, NULL, NULL);
+	//Handle errors.
 	if(win->window == NULL){
 		printf("Window failed to Initialise\nError!");
 		glfwTerminate();
@@ -35,10 +40,19 @@ win_t *win_init(char *name, uint32_t w, uint32_t h){
 /// @remark If the Window is set to close, It will Kill it.
 void win_poll(win_t *win){
 	while(!win_shouldclose(win)){
-		win_flood(win, (argb_t){1, 1, 1, 1});
+		//Flood color with Orange.
+		win_flood(win, (argb_t){0.5f, 0.5f, 0, 1});
+		//Ensure that win's Shader's are Handled.
 		SHADERBLOCK_HANDLE(win->shaders, true);
+		//Explicitly define the Shader to be Used.
 		glUseProgram(win->shaders->shaderProgram);
+		
+		//Bind win's VAO for Drawing.
 		glBindVertexArray(win->VAO);
+		//Draw Triangles with GL_TRIANGLE Primitive.
+		glDrawElements(GL_TRIANGLES, win->vert_count, GL_UNSIGNED_INT, 0);
+		// glDrawElements(GL);
+		glfwSwapBuffers(win->window);
 		glfwPollEvents();
 	}
 	win_kill(win);
@@ -65,5 +79,16 @@ void win_kill(win_t *win){
 	free(win);
 }
 
-
+/// @brief Link the win's VAO with the VBO.
+/// @param win The Window containing the VAO and VBO.
+/// @param layout ...
+/// @param component_num ...
+/// @param type ...
+/// @param stride ...
+/// @param offset ...
+void win_attrblink(win_t *win, GLuint layout, GLuint component_num, GLenum type, GLsizeiptr stride, void *offset){
+	glBindBuffer(GL_ARRAY_BUFFER, win->VBO[win->VBO_curr]);
+	glVertexAttribPointer(layout, component_num, type, GL_FALSE, stride, offset);
+	glEnableVertexAttribArray(layout);
+}
 

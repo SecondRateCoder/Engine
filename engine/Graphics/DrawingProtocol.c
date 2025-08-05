@@ -1,9 +1,4 @@
-#include <DrawingProtocol.h>
-#include <stdio.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdint.h>
+#include <Public.h>
 
 
 bool cwd_init(){
@@ -17,7 +12,7 @@ bool cwd_init(){
 
 
 
-/// @brief Initialise the supported Shader from a File, using Defaults for necessary Shaders that are not found.
+/// @brief Initialise supported Shaders from a File, using Defaults for Required Shaders that are not found.
 /// @param filepath The path to the file containing the shaders.
 /// @note The file should be in the current working directory.
 /// @remarks The file can be in any Text format, The File Extension doesn't matter as long as it contains the relevant Conventions.
@@ -172,7 +167,7 @@ shaderblock_t *shader_compile(bool delete_shaders_on_link){
 	glLinkProgram(shaderblock->shaderProgram);
 	shaderblock->compiled_[0]= true;
 
-	//Delete if want.
+	//Delete if needed.
 	if(delete_shaders_on_link){
 		shaderblock->compiled_[1]= false;
 		shaderblock->compiled_[2]= false;
@@ -199,29 +194,37 @@ void win_draw(win_t *win, GLfloat *points, size_t len, GLuint *indexes, size_t i
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		return;
 	}
+
 	//Set-up VAO, if not already set-up.
 	if(!win->buffer_[0]){
 		glGenVertexArrays(win->VAO_len, win->VAO);
 		glBindVertexArray(win->VAO[win->VAO_curr]);
 	}
+
 	//Set-up VBO, if not set-up already.
 	if(!win->buffer_[1]){
 		glGenBuffers(win->VBO_len, win->VBO);
-		glBindBuffer(GL_ARRAY_BUFFER, win->VBO[win->VBO_curr]);
 	}
+
 	//Handle EBO.
 	if(indexes == NULL || ilen == 0){
-		for(int cc =0; cc < (len%2))
+		ilen = (len%2 == 0? len/2: (len%3 == 0? len/3: (ilen == len? len: 0)));
+		indexes= malloc(ilen);
+		for(int cc =0; cc < ilen; ++cc){indexes[cc] = cc;}
 	}
 	glGenBuffers(1, &win->EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, win->EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, len, points, GL_STATIC_DRAW);
-	win->buffer_[1]= true;
-	win->buffer_[0]= true;
 
+	//Set them as Implemented.
+	win->buffer_[0]= true;
+	win->buffer_[1]= true;
+	win->buffer_[2]= true;
+	win->vert_count = len;
 	glEnableVertexAttribArray(0);
 	glBufferData(GL_ARRAY_BUFFER, len, points, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_TRUE, 3* sizeof(float), NULL);
+	win_attrblink(win, 0, 3, GL_FLOAT, 6* sizeof(float), (void *)0);
+	win_attrblink(win, 0, 3, GL_FLOAT, 6* sizeof(float), (void *)(3* sizeof(float)));
 }
 
 /// @brief Fill the Window's front and back buffer with a specified Color constant.

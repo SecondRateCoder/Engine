@@ -1,9 +1,5 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
-#include <GLFW/glfw3native.h>
-#include <DrawingProtocol.h>
-#include <glad.h>
 #include <Public.h>
 // #include <excpt.h>
 
@@ -24,13 +20,14 @@ typedef struct win{
 	GLFWwindow *window;
 	char *name;
 	shaderblock_t *shaders;
-	size_t VAO_len, VAO_curr, VBO_len, VBO_curr;
-	GLuint *VAO, *VBO, EBO;
+	size_t VAO_len, VAO_curr, VBO_len, VBO_curr, vert_count;
 	/*
 	[0]: Is VAO set-up?
 	[1]: Is VBO set-up?
+	[2]: Is EBO set-up?
 	*/
-	bool buffer_[2];
+	bool buffer_[3];
+	GLuint *VAO, *VBO, EBO;
 	uint32_t x, y, w, h;
 }win;
 
@@ -47,6 +44,7 @@ bool win_shouldclose(win_t *win);
 void win_kill(win_t *win);
 void win_flood(win_t *win, const argb_t c);
 
-void win_draw(win_t *win, pointf_t *points, size_t len);
+void win_draw(win_t *win, GLfloat *points, size_t len, GLuint *indexes, size_t ilen);
+void win_attrblink(win_t *win, GLuint layout, GLuint component_num, GLenum type, GLsizeiptr stride, void *offset);
 
 #endif

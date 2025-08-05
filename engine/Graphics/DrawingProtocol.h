@@ -1,5 +1,6 @@
-#include "glad.h"
-#include <Window/Window.h>
+#include <Public.h>
+#include <stdbool.h>
+
 
 //Header Guard.
 #ifndef _DP_H
@@ -8,14 +9,20 @@
 
 
 #define shaderblock_t ComputeShaderBlock
+#define arrk_t arrkey
+
+/// @brief Handle a shaderblock_t *pointer, Handling errors and compiling it with available Shaders,
+/// As well as printing the necessary error Messages with printf.
 #define SHADERBLOCK_HANDLE(SB, CLEAN) if(!SB->compiled_[7]){   \
     if(vertexshader == NULL || fragmentshader == NULL){ \
-			printf("Vertex or Fragment Shader not set, resolving.\n");  \
-			char *default_dir = cwd;    \
-			strncat(default_dir, "engine/Graphics/Shaders.txt", 30);    \
-			shaders_pull(default_dir);  \
-		}   \
-		SB =shader_compile(CLEAN); \
+        printf("Vertex or Fragment Shader not set, resolving.\n");  \
+        char *default_dir = cwd;    \
+        strncat(default_dir, "engine/Graphics/Shaders.txt", 30);    \
+        shaders_pull(default_dir);  \
+    }   \
+    if(SB->compiled_[7] == false){  \
+        SB =shader_compile(CLEAN); \
+    }    \
 }
 
 typedef struct ComputeShaderBlock{
@@ -31,14 +38,25 @@ typedef struct ComputeShaderBlock{
     [7]: Is ShaderBlock usable?
     */
     bool *compiled_;
+    /// @brief A List of (size_t, char *) to support uniform access in @ref uniforms.
+    arrk_t *uniformkey;
     GLuint shaderProgram, 
         vertexshader, 
         fragmentshader, 
-        geometryshader, 
+        geometryshader,
+        /// @brief Contains all the Uniforms in the Shader OVERALL.
+        *uniforms
         // *tessellation_controlshader, 
         // *tessellation_evaluationshader, 
-        // *computeShader;
+        // *computeShader
+        ;
 }ComputeShaderBlock;
+
+typedef struct arrkey{
+    size_t index;
+    char *name;
+}arrkey;
+
 
 char *cwd;
 #define MAX_PATHLENGTH 1024* 1024

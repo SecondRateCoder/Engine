@@ -1,3 +1,7 @@
+#ifndef _PUBLIC_H
+
+#define _PUBLIC_H
+
 #include <engine/Libraries/include/KHR/khrplatform.h>
 #include <engine/Libraries/include/GLFW/glfw3.h>
 #include <engine/Libraries/include/GLFW/glfw3native.h>
@@ -16,3 +20,5 @@
 #define IS_NUM(X) ((int)X < (int)'9') && ((int)X > (int)'0')
 #define IS_EVEN(X) (X%2 != 0)
 #define INT_SIMP(X) (X< 0? -1: 1)
+
+#endif
