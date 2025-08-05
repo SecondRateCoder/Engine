@@ -1,5 +1,6 @@
 #include <Public.h>
 #include <stdbool.h>
+#include <Window.h>
 
 
 //Header Guard.
@@ -105,4 +106,11 @@ char *vertexshader,
 	;
 
 
+
+
+bool cwd_init();
+void shaders_pull(char *filepath);
+shaderblock_t *shader_compile(bool delete_shaders_on_link);
+void win_draw(win_t *win, GLfloat *points, size_t len, GLuint *indexes, size_t ilen);
+void win_flood(win_t *win, const argb_t c);
 #endif

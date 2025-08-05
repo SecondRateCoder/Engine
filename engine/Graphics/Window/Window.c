@@ -17,8 +17,8 @@ win_t *win_init(char *name, uint32_t w, uint32_t h){
 	glfwWindowHint(GLFW_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	//Allocate on heap.
-	win_t *win = alloca(sizeof(win_t));
+	//malloc on heap.
+	win_t *win = malloc(sizeof(win_t));
 	win->name = name;
 	win->w =w;
 	win->h =h;
@@ -48,7 +48,7 @@ void win_poll(win_t *win){
 		glUseProgram(win->shaders->shaderProgram);
 		
 		//Bind win's VAO for Drawing.
-		glBindVertexArray(win->VAO);
+		glBindVertexArray(win->VAO[win->VAO_curr]);
 		//Draw Triangles with GL_TRIANGLE Primitive.
 		glDrawElements(GL_TRIANGLES, win->vert_count, GL_UNSIGNED_INT, 0);
 		// glDrawElements(GL);
@@ -75,7 +75,6 @@ void win_kill(win_t *win){
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glfwDestroyWindow(win->window);
 	glfwTerminate();
-	free(win->name);
 	free(win);
 }
 

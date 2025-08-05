@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Public.h>
+#include <DrawingProtocol.h>
 // #include <excpt.h>
 
 // #ifndef GLFW_INCLUDE_VULKAN
@@ -42,9 +43,7 @@ win_t *win_init(char *name, uint32_t w, uint32_t h);
 void win_poll(win_t *win);
 bool win_shouldclose(win_t *win);
 void win_kill(win_t *win);
-void win_flood(win_t *win, const argb_t c);
 
-void win_draw(win_t *win, GLfloat *points, size_t len, GLuint *indexes, size_t ilen);
 void win_attrblink(win_t *win, GLuint layout, GLuint component_num, GLenum type, GLsizeiptr stride, void *offset);
 
 #endif

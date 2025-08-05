@@ -44,14 +44,14 @@ void shaders_pull(char *filepath){
 		fseek(shaders, 0, SEEK_SET);
 		char settings[10];
 		fread(settings, sizeof(char), 10, shaders);
-		const uint8_t vsindex =atof((char[3]){settings[6], settings[7], NULL}) < 0? 0: atof((char[3]){settings[6], settings[7], NULL}),
-		fsindex =atof((char[3]){settings[8], settings[9], NULL})< 0? 0: atof((char[3]){settings[8], settings[9], NULL});
+		const uint8_t vsindex =atoi((char[3]){settings[6], settings[7], NULL}) < 0? 0: atoi((char[3]){settings[6], settings[7], NULL}),
+		fsindex =atoi((char[3]){settings[8], settings[9], NULL})< 0? 0: atoi((char[3]){settings[8], settings[9], NULL});
 		long vs_cc =-1, fs_cc =-1;
 		bool vs_handled =false, fs_handled =false;
 		//Enumerate through the file for either fs_start or vs_start.
 		for(size_t cc =0; cc < len; ++cc){
 			//Temporary string for looking for #define fs, or #define vs.
-			char *temp_10 = malloc(sizeof(char)* 10);
+			char *temp_10 = malloc((sizeof(char)* 10));
 			//If not null, means there is something there.
 			if(fgets(temp_10, sizeof(char)* 10, shaders)!=NULL){
 				//Is vertex shader block.
@@ -67,11 +67,23 @@ void shaders_pull(char *filepath){
 						char temp[10];
 						while(strncmp(temp, shader_end, 10) != 0){
 							//Fail on Error.
-							if(fgets(temp, 10, shaders) == NULL){return NULL;}
+							if(fgets(temp, 10, shaders) == NULL){
+								free(vertexshader);
+								free(fragmentshader);
+								free(geometryshader);
+								// free(tessellation_controlshader);
+								// free(tessellation_evaluationshader);
+								// free(computeshader);
+								free(temp_10);
+								printf("ERROR! #define vs not found in Shader File, Shaders not pulled.");
+								fclose(shaders);
+								//Return NULL to indicate failure.
+								return NULL;
+							}
 						}
 						//#define end found.
 						size_t curr_new = ftell(shaders);
-						vertexshader = (char *)malloc(sizeof(char)* (curr_new-curr)+1);
+						vertexshader = (char *)malloc(sizeof(char)* (curr_new-curr));
 						vertexshader[sizeof(char)* (curr_new-curr)]= NULL;
 						fread(vertexshader, sizeof(char), curr_new-curr, shaders);
 					}
@@ -108,10 +120,10 @@ void shaders_pull(char *filepath){
 /// @param delete_shaders_on_link Should the Compiled Shaders be deleted after use?
 shaderblock_t *shader_compile(bool delete_shaders_on_link){
 	shaderblock_t *shaderblock = (shaderblock_t *)malloc(sizeof(shaderblock_t));
-	shaderblock->compiled_ = mallocc(sizeof(bool)* 8);
+	shaderblock->compiled_ = malloc(sizeof(bool)* 8);
 	//Compile Vertex Shader.
 	shaderblock->vertexshader = glCreateShader(GL_VERTEX_SHADER);
-	if(vertexshader != NULL){
+	if(vertexshader != 0){
 		//Use vertexshader.
 		glShaderSource(shaderblock->vertexshader, 1, (const char * const *)&vertexshader, NULL);
 		//Use vertexshader_default otherwise
@@ -121,7 +133,7 @@ shaderblock_t *shader_compile(bool delete_shaders_on_link){
 
 	//Compile Fragment Shader.
 	shaderblock->fragmentshader = glCreateShader(GL_FRAGMENT_SHADER);
-	if(fragmentshader != NULL){
+	if(fragmentshader != 0){
 		//Use fragmentshader.
 		glShaderSource(shaderblock->fragmentshader, 1, (const char * const *)&fragmentshader, NULL);
 		//Use fragmentshader_default otherwise.
@@ -131,13 +143,13 @@ shaderblock_t *shader_compile(bool delete_shaders_on_link){
 
 	//Compile Geometry Shader.
 	shaderblock->geometryshader = glCreateShader(GL_GEOMETRY_SHADER);
-	if(geometryshader != NULL){
+	if(geometryshader != 0){
 		//Compile with geometryshader.
 		glShaderSource(shaderblock->geometryshader, 1, (const char * const *)&geometryshader, NULL);
 		shaderblock->compiled_[3]= true;
 		//Use None otherwise.
 	}else{
-		shaderblock->geometryshader = NULL;
+		shaderblock->geometryshader = 0;
 		shaderblock->compiled_[3]= false;
 	}
 	glCompileShader(shaderblock->geometryshader);
@@ -146,24 +158,24 @@ shaderblock_t *shader_compile(bool delete_shaders_on_link){
 
 
 
-	// if(tessellation_controlshader != NULL){
+	// if(tessellation_controlshader != 0){
 	// 	shaderblock->tessellation_controlshader = glCreateShader(GL_TESS_CONTROL_SHADER);
 	// 	glShaderSource(shaderblock->tessellation_controlshader, 1, (const char * const *)&tessellation_controlshader, NULL);
 	// 	glCompileShader(shaderblock->tessellation_controlshader);
-	// }else{shaderblock->tessellation_controlshader = NULL;}
-	// if(tessellation_evaluationshader != NULL){
+	// }else{shaderblock->tessellation_controlshader = 0;}
+	// if(tessellation_evaluationshader != 0){
 	// 	shaderblock->tessellation_evaluationshader = glCreateShader(GL_);
 	// 	glShaderSource(shaderblock->tessellation_evaluationshader, 1, (const char * const *)&tessellation_evaluationshader, NULL);
 	// 	glCompileShader(shaderblock->tessellation_evaluationshader);
-	// }else{shaderblock->tessellation_evaluationshader = NULL;}
+	// }else{shaderblock->tessellation_evaluationshader = 0;}
 
 	//Link Program.
-	shaderblock->shaderProgram = glCreateProgam();
+	shaderblock->shaderProgram = glCreateProgram();
 	glAttachShader(shaderblock->shaderProgram, shaderblock->vertexshader);
 	glAttachShader(shaderblock->shaderProgram, shaderblock->fragmentshader);
-	if(shaderblock->geometryshader != NULL){glAttachShader(shaderblock->shaderProgram, shaderblock->geometryshader);}
-	// if(shaderblock->tessellation_controlshader != NULL){glAttachShader(shaderblock->shaderProgram, shaderblock->tessellation_controlshader);}
-	// if(shaderblock->tessellation_evaluationshader != NULL){glAttachShader(shaderblock->shaderProgram, shaderblock->tessellation_evaluationshader);}
+	if(shaderblock->geometryshader != 0){glAttachShader(shaderblock->shaderProgram, shaderblock->geometryshader);}
+	// if(shaderblock->tessellation_controlshader != 0){glAttachShader(shaderblock->shaderProgram, shaderblock->tessellation_controlshader);}
+	// if(shaderblock->tessellation_evaluationshader != 0){glAttachShader(shaderblock->shaderProgram, shaderblock->tessellation_evaluationshader);}
 	glLinkProgram(shaderblock->shaderProgram);
 	shaderblock->compiled_[0]= true;
 
@@ -175,6 +187,13 @@ shaderblock_t *shader_compile(bool delete_shaders_on_link){
 		glDeleteShader(shaderblock->vertexshader);
 		glDeleteShader(shaderblock->fragmentshader);
 		glDeleteShader(shaderblock->geometryshader);
+		shaderblock->vertexshader = 0;
+		shaderblock->fragmentshader = 0;
+		shaderblock->geometryshader = 0;
+		// glDeleteShader(shaderblock->tessellation_controlshader);
+		// glDeleteShader(shaderblock->tessellation_evaluationshader);
+		// shaderblock->tessellation_controlshader = 0;
+		// shaderblock->tessellation_evaluationshader = 0;
 	}
 	shaderblock->compiled_[7]= true;
 	return shaderblock;
@@ -204,27 +223,36 @@ void win_draw(win_t *win, GLfloat *points, size_t len, GLuint *indexes, size_t i
 	//Set-up VBO, if not set-up already.
 	if(!win->buffer_[1]){
 		glGenBuffers(win->VBO_len, win->VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, win->VBO[win->VBO_curr]);
 	}
+	glBufferData(GL_ARRAY_BUFFER, len * sizeof(GLfloat), points, GL_STATIC_DRAW);
 
 	//Handle EBO.
+	bool indexesnull =false;
 	if(indexes == NULL || ilen == 0){
+		indexesnull = true;
 		ilen = (len%2 == 0? len/2: (len%3 == 0? len/3: (ilen == len? len: 0)));
-		indexes= malloc(ilen);
+		indexes= malloc(ilen* sizeof(GLuint));
 		for(int cc =0; cc < ilen; ++cc){indexes[cc] = cc;}
 	}
 	glGenBuffers(1, &win->EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, win->EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, len, points, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, ilen* sizeof(GLuint), indexes, GL_STATIC_DRAW);
 
+	glEnableVertexAttribArray(0);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, ilen* sizeof(GLuint), points, GL_STATIC_DRAW);
+	win_attrblink(win, 0, 3, GL_FLOAT, 6* sizeof(float), (void *)0);
+	win_attrblink(win, 0, 3, GL_FLOAT, 6* sizeof(float), (void *)(3* sizeof(float)));
+	
 	//Set them as Implemented.
 	win->buffer_[0]= true;
 	win->buffer_[1]= true;
 	win->buffer_[2]= true;
-	win->vert_count = len;
-	glEnableVertexAttribArray(0);
-	glBufferData(GL_ARRAY_BUFFER, len, points, GL_STATIC_DRAW);
-	win_attrblink(win, 0, 3, GL_FLOAT, 6* sizeof(float), (void *)0);
-	win_attrblink(win, 0, 3, GL_FLOAT, 6* sizeof(float), (void *)(3* sizeof(float)));
+	win->vert_count = ilen;
+	if(indexesnull){
+		free(indexes);
+		indexes = NULL;
+	}
 }
 
 /// @brief Fill the Window's front and back buffer with a specified Color constant.

@@ -1,9 +1,16 @@
 #include <Public.h>
+#include <string.h>
 
 int main(){
+    cwd_init();
     win_t *mainw = win_init("MainWindow", 800, 200);
     win_flood(mainw, (argb_t){.9, .7, .03, 1});
     const float sqrt3 = sqrtf(3);
+    char *dest = malloc(sizeof(char) * strlen(cwd) + 1);
+    strncat(dest, "engine/Graphics/Shaders/Shaders.txt", 36);
+    shaders_pull(dest);
+    free(dest);
+    mainw->shaders =shader_compile(true);
     win_draw(mainw, 
     (GLfloat[]){
         -0.5f, (-0.5f* sqrt3)/3, 0, 08.f, 0.3f, 0.2f,
