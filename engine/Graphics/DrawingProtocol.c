@@ -21,11 +21,28 @@ bool cwd_init(){
 }
 
 //Length: 53
-const char *vertexshader_default = "void main(){gl_Position = vec4(0.0, 0.0, 0.0, 1.0);}";
+const char *vertexshader_default = 
+"#version 330 core\n"
+"#define vs\n"
+"layout(location = 0) in vec3 position;\n"
+"void main(){\n"
+"    gl_Position = vec4(position, 1.0);\n"
+"}\n"
+"#shaderend\n\0";
 //Length: 54
-const char *fragmentshader_default = "void main(){gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);}";
+const char *fragmentshader_default = 
+"#version 330 core\n"
+"#define fs\n"
+"out vec4 color;\n"
+"void main(){\n"
+"    color = vec4(1.0, 0.0, 0.0, 1.0);\n"
+"}\n\0"
+"#shaderend\n";
 const char vs_start[10]= "#define vs", fs_start[10]= "#define fs", shader_end[10]= "#shaderend";
 
+
+shaderblock_t *shaders;
+/// @brief Shader RAWs in case any part of the Program needs them.
 char *vertexshader, *fragmentshader, *geometryshader, *tessellation_controlshader, *tessellation_evaluationshader, *computeshader;
 
 
@@ -47,42 +64,42 @@ char *vertexshader, *fragmentshader, *geometryshader, *tessellation_controlshade
 ///     - The end of a Shader Block must b marked with a line containing only the keyword "#shaderend".
 ///     These allow the Shader puller to identify the type shader in the file.
 void shaders_pull(char *filepath){
-    vertexshader = NULL;
-    fragmentshader = NULL;
-    geometryshader = NULL;
-    tessellation_controlshader = NULL;
-    tessellation_evaluationshader = NULL;
-    computeshader = NULL;
-    //Open the file.
-    FILE *shaders = fopen(filepath, "r");
-    if(shaders != NULL){
-        fseek(shaders, 0, SEEK_END);
-        const size_t len =ftell(shaders);
-        fseek(shaders, 0, SEEK_SET);
-        char settings[10];
-        fread(settings, sizeof(char), 10, shaders);
-        const uint8_t vsindex =atof((char[3]){settings[6], settings[7], NULL}) < 0? 0: atof((char[3]){settings[6], settings[7], NULL}),
-        fsindex =atof((char[3]){settings[8], settings[9], NULL})< 0? 0: atof((char[3]){settings[8], settings[9], NULL});
-        long vs_cc =-1, fs_cc =-1;
-        bool vs_handled =false, fs_handled =false;
-        //Enumerate through the file for either fs_start or vs_start.
-        for(size_t cc =0; cc < len; ++cc){
-            //Temporary string for looking for #define fs, or #define vs.
-            char *temp_10 = malloc(sizeof(char)* 10);
-            //If not null, means there is something there.
-            if(fgets(temp_10, sizeof(char)* 10, shaders)!=NULL){
-                //Is vertex shader block.
-                if(strncmp(temp_10, vs_start, 10) == 0){
-                    vs_cc++;
-                    // handle vertex shader block
-                    if(vs_cc == vsindex){
-                        //Take a snapshot of indexers.
-                        const size_t curr= ftell(shaders);
-                        //Set Pointer in case it's not accurately set.
-                        fseek(shaders, cc* sizeof(char), SEEK_SET);
-                        //Check for #define end
-                        char temp[10];
-                        while(strncmp(temp, shader_end, 10) != 0){
+	vertexshader = NULL;
+	fragmentshader = NULL;
+	geometryshader = NULL;
+	tessellation_controlshader = NULL;
+	tessellation_evaluationshader = NULL;
+	computeshader = NULL;
+	//Open the file.
+	FILE *shaders = fopen(filepath, "r");
+	if(shaders != NULL){
+		fseek(shaders, 0, SEEK_END);
+		const size_t len =ftell(shaders);
+		fseek(shaders, 0, SEEK_SET);
+		char settings[10];
+		fread(settings, sizeof(char), 10, shaders);
+		const uint8_t vsindex =atof((char[3]){settings[6], settings[7], NULL}) < 0? 0: atof((char[3]){settings[6], settings[7], NULL}),
+		fsindex =atof((char[3]){settings[8], settings[9], NULL})< 0? 0: atof((char[3]){settings[8], settings[9], NULL});
+		long vs_cc =-1, fs_cc =-1;
+		bool vs_handled =false, fs_handled =false;
+		//Enumerate through the file for either fs_start or vs_start.
+		for(size_t cc =0; cc < len; ++cc){
+			//Temporary string for looking for #define fs, or #define vs.
+			char *temp_10 = malloc(sizeof(char)* 10);
+			//If not null, means there is something there.
+			if(fgets(temp_10, sizeof(char)* 10, shaders)!=NULL){
+				//Is vertex shader block.
+				if(strncmp(temp_10, vs_start, 10) == 0){
+					vs_cc++;
+					// handle vertex shader block
+					if(vs_cc == vsindex){
+						//Take a snapshot of indexers.
+						const size_t curr= ftell(shaders);
+						//Set Pointer in case it's not accurately set.
+						fseek(shaders, cc* sizeof(char), SEEK_SET);
+						//Check for #define end
+						char temp[10];
+						while(strncmp(temp, shader_end, 10) != 0){
 							//Fail on Error.
 							if(fgets(temp, 10, shaders) == NULL){return NULL;}
 						}
@@ -91,19 +108,19 @@ void shaders_pull(char *filepath){
 						vertexshader = (char *)malloc(sizeof(char)* (curr_new-curr)+1);
 						vertexshader[sizeof(char)* (curr_new-curr)]= NULL;
 						fread(vertexshader, sizeof(char), curr_new-curr, shaders);
-                    }
-                //Is fragment shader block.
-                }else if(strncmp(temp_10, fs_start, 10) == 0){
-                    fs_cc++;
-                    // handle fragment shader block
-                    if(fs_cc == fsindex){
-                        //Take a snapshot of indexers.
-                        const size_t curr= ftell(shaders);
-                        //Set Pointer in case it's not accurately set.
-                        fseek(shaders, cc* sizeof(char), SEEK_SET);
-                        //Check for #define end
-                        char temp[10];
-                        while(strncmp(temp, shader_end, 10) != 0){
+					}
+				//Is fragment shader block.
+				}else if(strncmp(temp_10, fs_start, 10) == 0){
+					fs_cc++;
+					// handle fragment shader block
+					if(fs_cc == fsindex){
+						//Take a snapshot of indexers.
+						const size_t curr= ftell(shaders);
+						//Set Pointer in case it's not accurately set.
+						fseek(shaders, cc* sizeof(char), SEEK_SET);
+						//Check for #define end
+						char temp[10];
+						while(strncmp(temp, shader_end, 10) != 0){
 							//Fail on Error.
 							if(fgets(temp, 10, shaders) == NULL){return NULL;}
 						}
@@ -112,50 +129,65 @@ void shaders_pull(char *filepath){
 						fragmentshader = (char *)malloc(sizeof(char)* (curr_new-curr));
 						fragmentshader[sizeof(char)* (curr_new-curr)]= NULL;
 						fread(fragmentshader, sizeof(char), curr_new-curr, shaders);
-                    }
-                }
-            }
-            free(temp_10);
-        }
-    }
-	if(vertexshader == NULL){
-		vertexshader = (char *)malloc(sizeof(char)* (strlen(vertexshader_default)+1));
-		strcpy(vertexshader, vertexshader_default);
+					}
+				}
+			}
+			free(temp_10);
+		}
 	}
-	if(fragmentshader == NULL){
-		fragmentshader = (char *)malloc(sizeof(char)* (strlen(fragmentshader_default)+1));
-		strcpy(fragmentshader, fragmentshader_default);
-	}
-    fclose(shaders);
+	fclose(shaders);
 }
 
 /// @brief Compile all intialised shaders into a singular ComputeShaderBlock struct pointer.
 shaderblock_t *shader_compile(){
-    shaderblock_t *shaderblock = (shaderblock_t *)malloc(sizeof(shaderblock_t));
-    if(vertexshader != NULL){
-        shaderblock->vertexshader = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(shaderblock->vertexshader, 1, (const char * const *)&vertexshader, NULL);
-        glCompileShader(shaderblock->vertexshader);
-    }else{shaderblock->vertexshader = NULL;}
-    if(fragmentshader != NULL){
-        shaderblock->fragmentshader = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(shaderblock->fragmentshader, 1, (const char * const *)&fragmentshader, NULL);
-        glCompileShader(shaderblock->fragmentshader);
-    }else{shaderblock->vertexshader = NULL;}
-    if(geometryshader != NULL){
-        shaderblock->geometryshader = glCreateShader(GL_GEOMETRY_SHADER);
-        glShaderSource(shaderblock->geometryshader, 1, (const char * const *)&geometryshader, NULL);
-        glCompileShader(shaderblock->geometryshader);
-    }else{shaderblock->geometryshader = NULL;}
+	shaderblock_t *shaderblock = (shaderblock_t *)malloc(sizeof(shaderblock_t));
+	shaderblock->vertexshader = glCreateShader(GL_VERTEX_SHADER);
+	if(vertexshader != NULL){
+		glShaderSource(shaderblock->vertexshader, 1, (const char * const *)&vertexshader, NULL);
+	}else{glShaderSource(shaderblock->vertexshader, 1, (const char * const *)&vertexshader_default, NULL);}
+	glCompileShader(shaderblock->vertexshader);
+	shaderblock->fragmentshader = glCreateShader(GL_FRAGMENT_SHADER);
+	if(fragmentshader != NULL){
+		glShaderSource(shaderblock->fragmentshader, 1, (const char * const *)&fragmentshader, NULL);
+	}else{glShaderSource(shaderblock->fragmentshader, 1, (const char * const *)&fragmentshader_default, NULL);}
+	glCompileShader(shaderblock->fragmentshader);
+	if(geometryshader != NULL){
+		shaderblock->geometryshader = glCreateShader(GL_GEOMETRY_SHADER);
+		glShaderSource(shaderblock->geometryshader, 1, (const char * const *)&geometryshader, NULL);
+		glCompileShader(shaderblock->geometryshader);
+	}else{shaderblock->geometryshader = NULL;}
 	if(tessellation_controlshader != NULL){
-        shaderblock->tessellation_controlshader = glCreateShader(GL_TESS_CONTROL_SHADER);
-        glShaderSource(shaderblock->tessellation_controlshader, 1, (const char * const *)&tessellation_controlshader, NULL);
-        glCompileShader(shaderblock->tessellation_controlshader);
-    }else{shaderblock->tessellation_controlshader = NULL;}
+		shaderblock->tessellation_controlshader = glCreateShader(GL_TESS_CONTROL_SHADER);
+		glShaderSource(shaderblock->tessellation_controlshader, 1, (const char * const *)&tessellation_controlshader, NULL);
+		glCompileShader(shaderblock->tessellation_controlshader);
+	}else{shaderblock->tessellation_controlshader = NULL;}
 	if(tessellation_evaluationshader != NULL){
-        shaderblock->tessellation_evaluationshader = glCreateShader(GL_TESS_EVALUATION_SHADER);
-        glShaderSource(shaderblock->tessellation_evaluationshader, 1, (const char * const *)&tessellation_evaluationshader, NULL);
-        glCompileShader(shaderblock->tessellation_evaluationshader);
-    }else{shaderblock->tessellation_evaluationshader = NULL;}
-    return shaderblock;
+		shaderblock->tessellation_evaluationshader = glCreateShader(GL_TESS_EVALUATION_SHADER);
+		glShaderSource(shaderblock->tessellation_evaluationshader, 1, (const char * const *)&tessellation_evaluationshader, NULL);
+		glCompileShader(shaderblock->tessellation_evaluationshader);
+	}else{shaderblock->tessellation_evaluationshader = NULL;}
+
+	
+	return shaderblock;
+}
+
+/// @brief Draw a collection of Points on the specified Window, then Push.
+/// @param win The Window to be drawn to.
+/// @param points The Points to be Interpolated between.
+/// @param len The length of the Point buffer.
+void win_draw(win_t *win, pointf_t *points, size_t len){
+	shaders =shader_compile();
+	if(vertexshader == NULL || fragmentshader == NULL){
+		printf("Vertex or Fragment Shader not set, resolving.\n");
+		char *default_dir = cwd;
+		strncat(default_dir, "engine/Graphics/Shaders.txt", 30);
+		shaders_pull(default_dir);
+	}
+	shaders->shaderProgram = glCreateProgam();
+	glAttachShader(shaders->shaderProgram, shaders->vertexshader);
+	glAttachShader(shaders->shaderProgram, shaders->fragmentshader);
+	if(shaders->geometryshader != NULL){glAttachShader(shaders->shaderProgram, shaders->geometryshader);}
+	if(shaders->tessellation_controlshader != NULL){glAttachShader(shaders->shaderProgram, shaders->tessellation_controlshader);}
+	if(shaders->tessellation_evaluationshader != NULL){glAttachShader(shaders->shaderProgram, shaders->tessellation_evaluationshader);}
+	glLinkProgram(shaders->shaderProgram);
 }

@@ -62,10 +62,3 @@ void win_flood(win_t *win, const argb_t c){
     glfwSwapBuffers(win->window);
 }
 
-/// @brief Draw a collection of Points on the specified Window, then Push.
-/// @param win The Window to be drawn to.
-/// @param points The Points to be Interpolated between.
-/// @param len The length of the Point buffer.
-void win_draw(win_t *win, pointf_t *points, size_t len){
-
-}
