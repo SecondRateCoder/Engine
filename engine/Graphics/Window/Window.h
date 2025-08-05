@@ -2,6 +2,7 @@
 
 #include <GLFW/glfw3.h>
 #include <GLFW/glfw3native.h>
+#include <DrawingProtocol.h>
 #include <glad.h>
 #include <Public.h>
 // #include <excpt.h>
@@ -10,13 +11,26 @@
 //     #define GLFW_INCLUDE_VULKAN
 // #endif
 
+//Header Guard
+#ifndef _WIN_H
+#define _WIN_H
+
+
+
 #define win_t win
 #define argb_t Color4
 
 typedef struct win{
 	GLFWwindow *window;
 	char *name;
-	
+	shaderblock_t *shaders;
+	size_t VAO_len, VAO_curr, VBO_len, VBO_curr;
+	GLuint *VAO, *VBO, EBO;
+	/*
+	[0]: Is VAO set-up?
+	[1]: Is VBO set-up?
+	*/
+	bool buffer_[2];
 	uint32_t x, y, w, h;
 }win;
 
@@ -34,3 +48,5 @@ void win_kill(win_t *win);
 void win_flood(win_t *win, const argb_t c);
 
 void win_draw(win_t *win, pointf_t *points, size_t len);
+
+#endif

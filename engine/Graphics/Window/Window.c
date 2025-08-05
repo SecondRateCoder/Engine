@@ -34,7 +34,13 @@ win_t *win_init(char *name, uint32_t w, uint32_t h){
 /// @param win The Window to be Polled.
 /// @remark If the Window is set to close, It will Kill it.
 void win_poll(win_t *win){
-	while(!win_shouldclose(win)){glfwPollEvents();}
+	while(!win_shouldclose(win)){
+		win_flood(win, (argb_t){1, 1, 1, 1});
+		SHADERBLOCK_HANDLE(win->shaders, true);
+		glUseProgram(win->shaders->shaderProgram);
+		glBindVertexArray(win->VAO);
+		glfwPollEvents();
+	}
 	win_kill(win);
 }
 
@@ -46,19 +52,18 @@ bool win_shouldclose(win_t *win){return glfwWindowShouldClose(win->window);}
 /// @brief Terminate and free the specified Windw Pointer.
 /// @param win The Window to be terminated.
 void win_kill(win_t *win){
+	glDeleteVertexArrays(win->VAO_len, win->VAO);
+	glDeleteBuffers(win->VBO_len, win->VBO);
+	glDeleteBuffers(1, win->EBO);
+	glDeleteProgram(win->shaders->shaderProgram);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glfwDestroyWindow(win->window);
 	glfwTerminate();
 	free(win->name);
 	free(win);
 }
 
-/// @brief Fill the Window's front and back buffer with a specified Color constant.
-/// @param win The Window.
-/// @param c The Color to be applied.
-void win_flood(win_t *win, const argb_t c){
-	glViewport(0, 0, win->w, win->h);
-	glClearColor(c.r, c.g, c.b, c.a);
-	glClear(GL_COLOR_BUFFER_BIT);
-	glfwSwapBuffers(win->window);
-}
+
 

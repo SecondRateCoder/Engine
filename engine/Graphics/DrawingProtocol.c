@@ -5,13 +5,7 @@
 #include <string.h>
 #include <stdint.h>
 
-char *cwd;
-#define MAX_PATHLENGTH 1024* 1024
-#ifdef _WIN32
-#include <direct.h>
-#else
-#include <unistd.h>
-#endif
+
 bool cwd_init(){
 	if(getcwd(cwd, sizeof(char)* MAX_PATHLENGTH) == NULL){
 		printf("getcwd() Error, cwd not Initialised.");
@@ -20,33 +14,10 @@ bool cwd_init(){
 	return true;
 }
 
-//Length: 53
-const char *vertexshader_default = 
-"#version 330 core\n"
-"#define vs\n"
-"layout(location = 0) in vec3 position;\n"
-"void main(){\n"
-"    gl_Position = vec4(position, 1.0);\n"
-"}\n"
-"#shaderend\n\0";
-//Length: 54
-const char *fragmentshader_default = 
-"#version 330 core\n"
-"#define fs\n"
-"out vec4 color;\n"
-"void main(){\n"
-"    color = vec4(1.0, 0.0, 0.0, 1.0);\n"
-"}\n\0"
-"#shaderend\n";
-const char vs_start[10]= "#define vs", fs_start[10]= "#define fs", shader_end[10]= "#shaderend";
 
 
-shaderblock_t *shaders;
-/// @brief Shader RAWs in case any part of the Program needs them.
-char *vertexshader, *fragmentshader, *geometryshader, *tessellation_controlshader, *tessellation_evaluationshader, *computeshader;
 
-
-/// @brief Initialise a Vertex and Fragment Shader from a File.
+/// @brief Initialise the supported Shader from a File, using Defaults for necessary Shaders that are not found.
 /// @param filepath The path to the file containing the shaders.
 /// @note The file should be in the current working directory.
 /// @remarks The file can be in any Text format, The File Extension doesn't matter as long as it contains the relevant Conventions.
@@ -67,9 +38,9 @@ void shaders_pull(char *filepath){
 	vertexshader = NULL;
 	fragmentshader = NULL;
 	geometryshader = NULL;
-	tessellation_controlshader = NULL;
-	tessellation_evaluationshader = NULL;
-	computeshader = NULL;
+	// tessellation_controlshader = NULL;
+	// tessellation_evaluationshader = NULL;
+	// computeshader = NULL;
 	//Open the file.
 	FILE *shaders = fopen(filepath, "r");
 	if(shaders != NULL){
@@ -139,35 +110,78 @@ void shaders_pull(char *filepath){
 }
 
 /// @brief Compile all intialised shaders into a singular ComputeShaderBlock struct pointer.
-shaderblock_t *shader_compile(){
+/// @param delete_shaders_on_link Should the Compiled Shaders be deleted after use?
+shaderblock_t *shader_compile(bool delete_shaders_on_link){
 	shaderblock_t *shaderblock = (shaderblock_t *)malloc(sizeof(shaderblock_t));
+	shaderblock->compiled_ = mallocc(sizeof(bool)* 8);
+	//Compile Vertex Shader.
 	shaderblock->vertexshader = glCreateShader(GL_VERTEX_SHADER);
 	if(vertexshader != NULL){
+		//Use vertexshader.
 		glShaderSource(shaderblock->vertexshader, 1, (const char * const *)&vertexshader, NULL);
+		//Use vertexshader_default otherwise
 	}else{glShaderSource(shaderblock->vertexshader, 1, (const char * const *)&vertexshader_default, NULL);}
 	glCompileShader(shaderblock->vertexshader);
+	shaderblock->compiled_[1]= true;
+
+	//Compile Fragment Shader.
 	shaderblock->fragmentshader = glCreateShader(GL_FRAGMENT_SHADER);
 	if(fragmentshader != NULL){
+		//Use fragmentshader.
 		glShaderSource(shaderblock->fragmentshader, 1, (const char * const *)&fragmentshader, NULL);
+		//Use fragmentshader_default otherwise.
 	}else{glShaderSource(shaderblock->fragmentshader, 1, (const char * const *)&fragmentshader_default, NULL);}
 	glCompileShader(shaderblock->fragmentshader);
-	if(geometryshader != NULL){
-		shaderblock->geometryshader = glCreateShader(GL_GEOMETRY_SHADER);
-		glShaderSource(shaderblock->geometryshader, 1, (const char * const *)&geometryshader, NULL);
-		glCompileShader(shaderblock->geometryshader);
-	}else{shaderblock->geometryshader = NULL;}
-	if(tessellation_controlshader != NULL){
-		shaderblock->tessellation_controlshader = glCreateShader(GL_TESS_CONTROL_SHADER);
-		glShaderSource(shaderblock->tessellation_controlshader, 1, (const char * const *)&tessellation_controlshader, NULL);
-		glCompileShader(shaderblock->tessellation_controlshader);
-	}else{shaderblock->tessellation_controlshader = NULL;}
-	if(tessellation_evaluationshader != NULL){
-		shaderblock->tessellation_evaluationshader = glCreateShader(GL_TESS_EVALUATION_SHADER);
-		glShaderSource(shaderblock->tessellation_evaluationshader, 1, (const char * const *)&tessellation_evaluationshader, NULL);
-		glCompileShader(shaderblock->tessellation_evaluationshader);
-	}else{shaderblock->tessellation_evaluationshader = NULL;}
+	shaderblock->compiled_[2]= true;
 
-	
+	//Compile Geometry Shader.
+	shaderblock->geometryshader = glCreateShader(GL_GEOMETRY_SHADER);
+	if(geometryshader != NULL){
+		//Compile with geometryshader.
+		glShaderSource(shaderblock->geometryshader, 1, (const char * const *)&geometryshader, NULL);
+		shaderblock->compiled_[3]= true;
+		//Use None otherwise.
+	}else{
+		shaderblock->geometryshader = NULL;
+		shaderblock->compiled_[3]= false;
+	}
+	glCompileShader(shaderblock->geometryshader);
+
+
+
+
+
+	// if(tessellation_controlshader != NULL){
+	// 	shaderblock->tessellation_controlshader = glCreateShader(GL_TESS_CONTROL_SHADER);
+	// 	glShaderSource(shaderblock->tessellation_controlshader, 1, (const char * const *)&tessellation_controlshader, NULL);
+	// 	glCompileShader(shaderblock->tessellation_controlshader);
+	// }else{shaderblock->tessellation_controlshader = NULL;}
+	// if(tessellation_evaluationshader != NULL){
+	// 	shaderblock->tessellation_evaluationshader = glCreateShader(GL_);
+	// 	glShaderSource(shaderblock->tessellation_evaluationshader, 1, (const char * const *)&tessellation_evaluationshader, NULL);
+	// 	glCompileShader(shaderblock->tessellation_evaluationshader);
+	// }else{shaderblock->tessellation_evaluationshader = NULL;}
+
+	//Link Program.
+	shaderblock->shaderProgram = glCreateProgam();
+	glAttachShader(shaderblock->shaderProgram, shaderblock->vertexshader);
+	glAttachShader(shaderblock->shaderProgram, shaderblock->fragmentshader);
+	if(shaderblock->geometryshader != NULL){glAttachShader(shaderblock->shaderProgram, shaderblock->geometryshader);}
+	// if(shaderblock->tessellation_controlshader != NULL){glAttachShader(shaderblock->shaderProgram, shaderblock->tessellation_controlshader);}
+	// if(shaderblock->tessellation_evaluationshader != NULL){glAttachShader(shaderblock->shaderProgram, shaderblock->tessellation_evaluationshader);}
+	glLinkProgram(shaderblock->shaderProgram);
+	shaderblock->compiled_[0]= true;
+
+	//Delete if want.
+	if(delete_shaders_on_link){
+		shaderblock->compiled_[1]= false;
+		shaderblock->compiled_[2]= false;
+		shaderblock->compiled_[3]= false;
+		glDeleteShader(shaderblock->vertexshader);
+		glDeleteShader(shaderblock->fragmentshader);
+		glDeleteShader(shaderblock->geometryshader);
+	}
+	shaderblock->compiled_[7]= true;
 	return shaderblock;
 }
 
@@ -175,19 +189,47 @@ shaderblock_t *shader_compile(){
 /// @param win The Window to be drawn to.
 /// @param points The Points to be Interpolated between.
 /// @param len The length of the Point buffer.
-void win_draw(win_t *win, pointf_t *points, size_t len){
-	shaders =shader_compile();
-	if(vertexshader == NULL || fragmentshader == NULL){
-		printf("Vertex or Fragment Shader not set, resolving.\n");
-		char *default_dir = cwd;
-		strncat(default_dir, "engine/Graphics/Shaders.txt", 30);
-		shaders_pull(default_dir);
+void win_draw(win_t *win, GLfloat *points, size_t len, GLuint *indexes, size_t ilen){
+	//Compile if not usable
+	SHADERBLOCK_HANDLE(win->shaders, true);
+	if(!win->buffer_[0] && win->buffer_[1]){
+		printf("ERROR! VAO set-up before VBO!, Resolving.");
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		return;
 	}
-	shaders->shaderProgram = glCreateProgam();
-	glAttachShader(shaders->shaderProgram, shaders->vertexshader);
-	glAttachShader(shaders->shaderProgram, shaders->fragmentshader);
-	if(shaders->geometryshader != NULL){glAttachShader(shaders->shaderProgram, shaders->geometryshader);}
-	if(shaders->tessellation_controlshader != NULL){glAttachShader(shaders->shaderProgram, shaders->tessellation_controlshader);}
-	if(shaders->tessellation_evaluationshader != NULL){glAttachShader(shaders->shaderProgram, shaders->tessellation_evaluationshader);}
-	glLinkProgram(shaders->shaderProgram);
+	//Set-up VAO, if not already set-up.
+	if(!win->buffer_[0]){
+		glGenVertexArrays(win->VAO_len, win->VAO);
+		glBindVertexArray(win->VAO[win->VAO_curr]);
+	}
+	//Set-up VBO, if not set-up already.
+	if(!win->buffer_[1]){
+		glGenBuffers(win->VBO_len, win->VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, win->VBO[win->VBO_curr]);
+	}
+	//Handle EBO.
+	if(indexes == NULL || ilen == 0){
+		for(int cc =0; cc < (len%2))
+	}
+	glGenBuffers(1, &win->EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, win->EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, len, points, GL_STATIC_DRAW);
+	win->buffer_[1]= true;
+	win->buffer_[0]= true;
+
+	glEnableVertexAttribArray(0);
+	glBufferData(GL_ARRAY_BUFFER, len, points, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_TRUE, 3* sizeof(float), NULL);
+}
+
+/// @brief Fill the Window's front and back buffer with a specified Color constant.
+/// @param win The Window.
+/// @param c The Color to be applied.
+void win_flood(win_t *win, const argb_t c){
+	glViewport(0, 0, win->w, win->h);
+	glClearColor(c.r, c.g, c.b, c.a);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glfwSwapBuffers(win->window);
 }
