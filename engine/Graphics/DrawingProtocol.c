@@ -1,4 +1,5 @@
 #include <Public.h>
+#include <string.h>
 
 
 bool cwd_init(){
@@ -9,7 +10,24 @@ bool cwd_init(){
 	return true;
 }
 
-
+/// @brief Read or Write to a Shader's settings.
+/// @param filepath The path to the Shader's file.
+/// @param write A 10 char array to write to the Settings.
+/// @note this Function has no validation.
+/// @return The Setting read from the file.
+char *shadersettings_rw(char *filepath, char *write){
+	FILE *shaders = fopen(filepath, "r");
+	char settings[10];
+	if(shaders != NULL){
+		fread(settings, sizeof(char), 10, shaders);
+		if(write != NULL && strlen(write) == 10){
+			fseek(shaders, 0, SEEK_SET);
+			fwrite(write, sizeof(char), 10, shaders);
+		}
+		fclose(shaders);
+	}
+	return settings;
+}
 
 
 /// @brief Initialise supported Shaders from a File, using Defaults for Required Shaders that are not found.
@@ -17,7 +35,7 @@ bool cwd_init(){
 /// @note The file should be in the current working directory.
 /// @remarks The file can be in any Text format, The File Extension doesn't matter as long as it contains the relevant Conventions.
 ///     !For all the setting Values, All specified chars must be Used.
-///		!Does not support Comments, Accepts everything with no Validation or Sanitation
+///		!Supports having multiple Shaders in different Files, only requirement is that Conventions are met.
 ///  Shader Format:
 ///     Written in conventional OpenGL 3.3 script language.
 ///     At the top of File are some settings:
@@ -30,9 +48,9 @@ bool cwd_init(){
 ///     - The end of a Shader Block must b marked with a line containing only the keyword "#shaderend".
 ///     These allow the Shader puller to identify the type shader in the file.
 void shaders_pull(char *filepath){
-	vertexshader = NULL;
-	fragmentshader = NULL;
-	geometryshader = NULL;
+	// vertexshader = NULL;
+	// fragmentshader = NULL;
+	// geometryshader = NULL;
 	// tessellation_controlshader = NULL;
 	// tessellation_evaluationshader = NULL;
 	// computeshader = NULL;
@@ -114,6 +132,135 @@ void shaders_pull(char *filepath){
 		}
 	}
 	fclose(shaders);
+}
+
+/// @brief Parse and initialise a shaderblock's uniform variable list.
+/// @param shader 
+void uniform_init(shaderblock_t *shader){
+	size_t *indexes_inshader, num_uniforms, len, len_oftypenames;
+	unsigned int *size_inshader;
+	char *shader_txt;
+	if(shader_typenames == NULL){
+		shader_typenames = (char *[36]){
+			[0] = "bool",[1] = "int",[2] = "float",
+			[3] = "vec2",[4] = "vec3",[5] = "vec4",
+			[6] = "ivec2",[7] = "ivec3",[8] = "ivec4",
+			[9] = "uvec2",[10] = "uvec3",[11] = "uvec4",
+			[12] = "bvec2",[13] = "bvec3",[14] = "bvec4",
+			[15] = "mat2",[16] = "mat3",[17] = "mat4",
+			[18] = "mat2x3",[19] = "mat3x2",[20] = "mat2x4",
+			[21] = "mat4x2",[22] = "mat3x4",[23] = "mat4x3",
+			[24] = "sampler1D",[25] = "sampler2D",[26] = "sampler3D",
+			[27] = "samplerCube",[28] = "sampler1DShadow",[29] = "sampler2DShadow",
+			[30] = "sampler2DArray",[31] = "sampler2DArrayShadow",
+			[32] = "isampler1D",[33] = "isampler2D",[34] = "usampler1D",[35] = "usampler2D",
+		};
+	}
+	const char _uniform[7]= "uniform\0", _struct[8] = "struct\0";
+	uint8_t _3 =0;
+	/*
+		PARSE SHADERS, REPEAT TWICE TO FULLY HANDLE AND TYPES.
+	*/
+	while(_3 < 6){
+		switch(_3){
+			case 0| 1:
+				shader_txt =vertexshader == NULL? vertexshader_default: vertexshader;
+				len =strlen(shader_txt);
+				break;
+			case 2| 3:
+				shader_txt =fragmentshader == NULL? fragmentshader_default: fragmentshader;
+				len =strlen(shader_txt);
+				break;
+			case 4| 5:
+				if(geometryshader == NULL){return;}
+				shader_txt = geometryshader;
+				len =strlen(shader_txt);
+				break;
+			default: return;
+		}
+		#pragma region Parsing.
+		for(size_t cc =0; cc < len; ++cc){
+			//If the next 6 values make "uniform", cache index and length of decleration.
+			char _temp[6]= (char[6]){shader_txt[cc],  (cc < len-1? shader_txt[cc+1]: '\0'), 
+				(cc < len-2? shader_txt[cc+2]: '\0'), (cc < len-3? shader_txt[cc+3]: '\0'), 
+				(cc < len-4? shader_txt[cc+4]: '\0'), (cc < len-5? shader_txt[cc+5]: '\0')};
+			if(strncmp(_temp, _uniform, 6) == 0){
+				//Is a uniform definition
+				if(num_uniforms == 0){
+					indexes_inshader = malloc(sizeof(size_t));
+					size_inshader = malloc(sizeof(size_t));
+				}else{
+					indexes_inshader = realloc(indexes_inshader, ((num_uniforms+1)* sizeof(size_t)));
+					size_inshader = realloc(indexes_inshader, ((num_uniforms+1)* sizeof(size_t)));
+				}
+				indexes_inshader[num_uniforms]= cc+6;
+				//Get Length of uniform variable declaration.
+				unsigned int len =6;
+				while(shader_txt[cc+len] != ';' || shader_txt[cc+len] != '\0'){++len;}
+				if(shader_txt[cc+len] != '\0'){
+					break;
+					indexes_inshader = realloc(indexes_inshader, ((num_uniforms-1)* sizeof(size_t)));
+					size_inshader = realloc(indexes_inshader, ((num_uniforms-1)* sizeof(size_t)));
+				}
+				size_inshader[num_uniforms]= len;
+				++num_uniforms;
+			}else if(strncmp(_temp, _struct, 6) == 0){
+				//The declaration is a struct type, store name in typename array.
+
+				//The Index in the vertex_thingie that the thingie lies.
+				const size_t index= cc+ 6;
+				//Get Length of uniform variable.
+				unsigned int len =0;
+				while(shader_txt[index+len] != ';' || shader_txt[index+len] != '\0'){++len;}
+				//Handle Invalids.
+				if(shader_txt[index+len] != '\0'){break;}
+				//Add new typename.
+				shader_typenames = realloc(shader_typenames, sizeof(char*)* (len_oftypenames+1));
+				memcpy(&shader_typenames[len_oftypenames-1], shader_txt[len], len);
+				len_oftypenames++;
+			}
+		}
+
+		/*
+			HANDLE UNIFORMS.
+			UNIFORM keyword is clipped out, the rest of the string is the type then the name of the uniform.
+		*/
+		for(size_t cc =0; cc < num_uniforms; ++cc){
+			char *uniform_text = malloc(sizeof(char)* (size_inshader[cc]+ 1)), *name_pure = '\0';
+			uniform_text[size_inshader[cc]]= '\0';
+			memcpy(uniform_text, &shader_txt[indexes_inshader[cc]], size_inshader[cc]);
+			//Get the type of the uniform.
+			unsigned int type = 0, start =0;
+			bool type_handled = false;
+			for(unsigned int i =0; i < size_inshader; ++i){
+				if(uniform_text[i] == ' '/* || uniform_text[i] == '\0'*/ && type_handled == false){
+					//End of type found.
+					char *type_pure = '\0';
+					type_pure = malloc(sizeof(char)* (i+1));
+					memcpy(type_pure, uniform_text, i);
+					type_pure[i]= '\0';
+					start = i;
+					type_handled = true;
+					continue;
+				}
+				if(type_handled){
+					//Handle name.
+					name_pure = malloc(sizeof(char)* (i+1));
+					while(uniform_text[i] != ';' || uniform_text[i] != '\0'){i++;}
+					memcpy(name_pure, &uniform_text[start], i);
+					name_pure[i]= '\0';
+					break;
+				}
+				/*
+					TODO:
+						Store all the Uniform IDs in the shaderrblock_t
+				*/
+			}
+		}
+
+		_3++;
+	}
+	return;
 }
 
 /// @brief Compile all intialised shaders into a singular ComputeShaderBlock struct pointer.

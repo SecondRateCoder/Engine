@@ -39,6 +39,7 @@ typedef struct ComputeShaderBlock{
     [7]: Is ShaderBlock usable?
     */
     bool *compiled_;
+    size_t uniform_len;
     /// @brief A List of (size_t, char *) to support uniform access in @ref uniforms.
     arrk_t *uniformkey;
     GLuint shaderProgram, 
@@ -96,14 +97,13 @@ const char vs_start[10]= "#define vs",
 	// cs_start[10]= "#define cs", 
 	shader_end[10]= "#shaderend";
 
+size_t len_typenames =36;
 /// @brief Shader RAWs in case any part of the Program needs them.
-char *vertexshader, 
-	*fragmentshader, 
-	*geometryshader
-	// *tessellation_controlshader, 
-	// *tessellation_evaluationshader, 
-	// *computeshader
-	;
+char *vertexshader = NULL, 
+	*fragmentshader = NULL, 
+	*geometryshader = NULL,
+    **shader_typenames = NULL
+	/* *tessellation_controlshader, *tessellation_evaluationshader, *computeshader*/;
 
 
 
