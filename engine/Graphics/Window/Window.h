@@ -14,17 +14,17 @@
 #define argb_t Color4
 
 typedef struct win{
-    GLFWwindow *window;
-    char *name;
-    
-    uint32_t x, y, w, h;
+	GLFWwindow *window;
+	char *name;
+	
+	uint32_t x, y, w, h;
 }win;
 
 
 
 typedef struct Color4{
-    /// @brief a: 1:= Solid, 0:= Transparent.
-    float a, r, g, b;
+	/// @brief a: 1:= Solid, 0:= Transparent.
+	float a, r, g, b;
 }Color4;
 
 win_t *win_init(char *name, uint32_t w, uint32_t h);
