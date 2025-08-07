@@ -601,3 +601,20 @@ char *str_normalise(char *str, bool handle_spaces, bool handle_upper){
     }
     str[j] = '\0'; // Null-terminate the modified string
 }
+
+const size_t str_hash(char *str){
+	// A large, odd prime number is a good choice for the initial hash value.
+    // 5381 is a common value used in the DJB2 algorithm.
+    size_t hash = 5381;
+    int c;
+
+    // A simple loop to iterate through the string until the null terminator is found.
+    while ((c = *str++)) {
+        // This is the core of the DJB2 algorithm:
+        // hash = hash * 33 + c;
+        // The bitwise left shift `(hash << 5)` is an efficient way to do `hash * 32`.
+        // Then we add the original hash to get `hash * 33`.
+        hash = ((hash << 5) + hash) + c;
+    }
+    return hash;
+}

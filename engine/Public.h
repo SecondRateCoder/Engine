@@ -22,5 +22,6 @@
 #define INT_SIMP(X) (X< 0? -1: 1)
 
 
-char *str_normalise(char *str);
+char *str_normalise(char *str, bool handle_spaces, bool handle_upper);
+const size_t str_hash(char *str);
 #endif

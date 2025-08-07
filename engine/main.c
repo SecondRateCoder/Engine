@@ -1,5 +1,5 @@
 #include <Public.h>
-#include <./engine/Graphics/DrawinProtocol.h>
+#include <.\engine\Graphics\DrawingProtocol.h>
 #include <string.h>
 
 int main(){
@@ -24,14 +24,13 @@ int main(){
         -0.5f, (-0.5f* sqrt3* 2)/3, 0, 08.f, 0.3f, 0.2f,
         -0.5f/2, (0.5f* sqrt3)/6, 0, 08.f, 0.3f, 0.2f,
         0.5f/2, (0.5f* sqrt3)/6, 0, 08.f, 0.3f, 0.2f,
-        0/2, (0.5f* sqrt3)/3, 0, 08.f, 0.3f, 0.2f,},
-    36, 
+        0/2, (0.5f* sqrt3)/3, 0, 08.f, 0.3f, 0.2f,}, 36, 
     (GLuint[9]){
         0, 3, 5,
         3, 2, 4,
-        5, 4, 1
-    }, 9);
-    glBindTextureEXT(GL_TEXTURE_2D, mainw->textures[mainw->texture_curr].img);
+        5, 4, 1}, 9);
+    glBindTextureEXT(GL_TEXTURE_2D, mainw->textures[mainw->textures_curr].img);
     win_poll(mainw);
     win_kill(mainw);
+    return 1;
 }

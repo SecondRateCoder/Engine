@@ -31,7 +31,7 @@ typedef struct win{
 	[2]: Is EBO set-up?
 	*/
 	bool buffer_[3];
-	GLuint *VAO, *VBO, *enum STBVorbisError error;
+	GLuint *VAO, *VBO, *EBO;
 	image_t *textures;
 	uint32_t x, y, w, h;
 }win;
