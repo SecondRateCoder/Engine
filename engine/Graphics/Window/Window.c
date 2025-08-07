@@ -5,8 +5,9 @@
 /// @param w The Width of the Window.
 /// @param h The Height of the Window.
 /// @return An initialised Pointer to the Window.
-win_t *win_init(char *name, uint32_t w, uint32_t h){
+win_t *win_init(char *name, poll_do *poll, uint32_t w, uint32_t h){
 	glfwInit();
+	glEnable(GL_DEPTH_TEST);
 	// glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 
 	//Not Resizable.
@@ -19,6 +20,7 @@ win_t *win_init(char *name, uint32_t w, uint32_t h){
 
 	//malloc on heap.
 	win_t *win = malloc(sizeof(win_t));
+	win->poll = poll;
 	win->name = name;
 	win->w =w;
 	win->h =h;
@@ -39,6 +41,7 @@ win_t *win_init(char *name, uint32_t w, uint32_t h){
 /// @param win The Window to be Polled.
 /// @remark If the Window is set to close, It will Kill it.
 void win_poll(win_t *win){
+	size_t cc =0;
 	while(!win_shouldclose(win)){
 		//Flood color with Orange.
 		win_flood(win, (argb_t){0.5f, 0.5f, 0, 1});
@@ -46,7 +49,7 @@ void win_poll(win_t *win){
 		SHADERBLOCK_HANDLE(win->shaders, true);
 		//Explicitly define the Shader to be Used.
 		glUseProgram(win->shaders->shaderProgram);
-		
+		win->poll(win, cc);
 		//Bind win's VAO for Drawing.
 		glBindVertexArray(win->VAO[win->VAO_curr]);
 		//Draw Triangles with GL_TRIANGLE Primitive.
@@ -54,6 +57,7 @@ void win_poll(win_t *win){
 		// glDrawElements(GL);
 		glfwSwapBuffers(win->window);
 		glfwPollEvents();
+		++cc;
 	}
 	win_kill(win);
 }
@@ -86,7 +90,7 @@ void win_kill(win_t *win){
 /// @param type ...
 /// @param stride ...
 /// @param offset ...
-void win_attrblink(win_t *win, GLuint layout, GLuint component_num, GLenum type, GLsizeiptr stride, void *offset){
+void win_attrblink(window *win, GLuint layout, GLuint component_num, GLenum type, GLsizeiptr stride, const void *offset){
 	glBindBuffer(GL_ARRAY_BUFFER, win->VBO[win->VBO_curr]);
 	glVertexAttribPointer(layout, component_num, type, GL_FALSE, stride, offset);
 	glEnableVertexAttribArray(layout);

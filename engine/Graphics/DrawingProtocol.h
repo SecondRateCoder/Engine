@@ -1,17 +1,15 @@
 #include <Public.h>
 #include <stdbool.h>
-#include <Window.h>
+#include <./engine/Graphics/Window/Window.h>
 
 
 //Header Guard.
 #ifndef _DP_H
 #define _DP_H
 
-
-
-#define shaderblock_t ComputeShaderBlock
 #define arrk_t arrkey
 #define image_t texture_image
+#define shaderblock_t ComputeShaderBlock
 
 /// @brief Handle a shaderblock_t *pointer, Handling errors and compiling it with available Shaders,
 /// As well as printing the necessary error Messages with printf.
@@ -60,7 +58,7 @@ typedef struct arrkey{
 }arrkey;
 
 typedef struct texture_image{
-    int width, height;
+    int width, height, color_channels;
     GLuint ID;
     unsigned char *img;
 }texture_image;
@@ -131,8 +129,7 @@ static const size_t builtin_shader_typehash[] = {
     str_hash("mat2x4"), str_hash("mat4x2"), str_hash("mat3x4"), str_hash("mat4x3"), str_hash("sampler1D"), 
     str_hash("sampler2D"), str_hash("sampler3D"), str_hash("samplerCube"), str_hash("sampler1DShadow"), str_hash("sampler2DShadow"), 
     str_hash("sampler2DArray"), str_hash("sampler2DArrayShadow"), str_hash("isampler1D"), str_hash("isampler2D"), str_hash("usampler1D"), 
-    str_hash("usampler2D")
-};
+    str_hash("usampler2D")};
 
 const size_t NUM_BUILTIN_TYPES = sizeof(builtin_shader_typenames) / sizeof(builtin_shader_typenames[0]);
 
@@ -148,4 +145,5 @@ void winimage_append(win_t *win, int image_width, int image_height, int colorch_
 arrk_t create_arrkey(GLuint id, const char* name, const char* type);
 void destroy_arrkey(arrk_t key);
 void uniform_init(shaderblock_t *sb_t);
+void uniform_write(shaderblock_t *shader, char *type, char *name, char *property, bool *transpose, void *value, size_t num_elements)
 #endif
