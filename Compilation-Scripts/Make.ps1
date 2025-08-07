@@ -7,7 +7,7 @@
 #!Compile Source with Additional Source Directory and Libraries.
 # ./Compilation-Scripts/Make.ps1 -SourceDirectory "./engine" -OutputExecutableName "app.exe" -IncludePaths "./Libraries/include" -LibraryPaths "./Libraries/lib" -Libraries "glfw3", "glfw3dll"
 #! Optional GCC Flags
-# -GccFlags "-O1", "-Wextra", "-std=c99"
+# -GccFlags "-O1", "-Wextra", "-std=c99", "-Wall", "-pedantic", "-Wl,--verbose"
 #! My Compilation command.
 # ./Compilation-Scripts/Make.ps1 -SourceDirectory "./engine" -OutputExecutableName "app.exe" -IncludePaths "./Libraries/include" -LibraryPaths "./Libraries/lib" -Libraries "glfw3", "glfw3dll" -GccFlags "-O1", "-Wextra", "-std=c99", "-Wall", "-pedantic", "-Wl,--verbose"
 

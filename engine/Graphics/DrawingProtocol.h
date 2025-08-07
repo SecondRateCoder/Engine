@@ -123,6 +123,17 @@ static const char* builtin_shader_typenames[] = {
     "sampler2DArrayShadow", "isampler1D", "isampler2D",
     "usampler1D", "usampler2D"
 };
+static const size_t builtin_shader_typehash[] = {
+    str_hash("bool"), str_hash("int"), str_hash("unsignedint"), str_hash("float"), str_hash("vec2"), str_hash("vec3"), 
+    str_hash("vec4"), str_hash("ivec2"), str_hash("ivec3"), str_hash("ivec4"), str_hash("uvec2"), 
+    str_hash("uvec3"), str_hash("uvec4"), str_hash("bvec2"), str_hash("bvec3"), str_hash("bvec4"), 
+    str_hash("mat2"), str_hash("mat3"), str_hash("mat4"), str_hash("mat2x3"), str_hash("mat3x2"), 
+    str_hash("mat2x4"), str_hash("mat4x2"), str_hash("mat3x4"), str_hash("mat4x3"), str_hash("sampler1D"), 
+    str_hash("sampler2D"), str_hash("sampler3D"), str_hash("samplerCube"), str_hash("sampler1DShadow"), str_hash("sampler2DShadow"), 
+    str_hash("sampler2DArray"), str_hash("sampler2DArrayShadow"), str_hash("isampler1D"), str_hash("isampler2D"), str_hash("usampler1D"), 
+    str_hash("usampler2D")
+};
+
 const size_t NUM_BUILTIN_TYPES = sizeof(builtin_shader_typenames) / sizeof(builtin_shader_typenames[0]);
 
 

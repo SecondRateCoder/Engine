@@ -138,6 +138,159 @@ void shaders_pull(char *filepath){
 arrk_t create_arrkey(GLint id, char *name, char *type){return (arrk_t){id,str_normalise(name, true, false),str_normalise(type, true, true)};}
 void destroy_arrkey(arrk_t *ak){free(ak->type);free(ak->name);}
 
+void uniform_init(shaderblock_t *sb_t) {
+    char *temp_txt = NULL;
+    char **temp_typenames = NULL; // This will hold dynamically found struct names
+    const char _struct[] = "struct";
+    const char _uniform[] = "uniform";
+    size_t temptxt_len = 0;
+    size_t typenames_len = 0;
+
+    // Use a static array for built-in types, no need to check against NULL
+    
+    // A list of shader sources to iterate through
+    const char* shader_sources[] = {
+        sb_t->vertexshader,
+        sb_t->fragmentshader,
+        sb_t->geometryshader
+    };
+    const size_t num_shaders = sizeof(shader_sources) / sizeof(shader_sources[0]);
+
+    for (size_t i = 0; i < num_shaders; ++i) {
+        temp_txt = (char*)shader_sources[i];
+        if (temp_txt == NULL) continue;
+        temptxt_len = strlen(temp_txt);
+
+        // This loop parses the shader source code
+        for (size_t cc = 0; cc < temptxt_len; ) {
+            // Find the start of a potential declaration
+            while (cc < temptxt_len && isspace(temp_txt[cc])) {
+                cc++;
+            }
+            if (cc >= temptxt_len) break;
+
+            // Check for 'uniform' or 'struct' keywords
+            if (cc + 6 < temptxt_len && strncmp(&temp_txt[cc], _struct, 6) == 0) {
+                // A 'struct' declaration is found
+                cc += 6;
+                while (cc < temptxt_len && isspace(temp_txt[cc])) {
+                    cc++;
+                }
+
+                size_t typename_start = cc;
+                while (cc < temptxt_len && !isspace(temp_txt[cc]) && temp_txt[cc] != '{') {
+                    cc++;
+                }
+                size_t typename_len = cc - typename_start;
+                char* typename = strndup(&temp_txt[typename_start], typename_len);
+
+                if (typename) {
+                    bool is_duplicate = false;
+                    for (size_t _dupecc = 0; _dupecc < typenames_len; ++_dupecc) {
+                        if (strcmp(typename, temp_typenames[_dupecc]) == 0) {
+                            is_duplicate = true;
+                            break;
+                        }
+                    }
+                    
+                    if (!is_duplicate) {
+                        // Dynamically grow the list of custom typenames
+                        char** temp_arr = realloc(temp_typenames, sizeof(char*) * (typenames_len + 1));
+                        if (temp_arr) {
+                            temp_typenames = temp_arr;
+                            temp_typenames[typenames_len] = typename;
+                            typenames_len++;
+                        } else {
+                            free(typename);
+                        }
+                    } else {
+                        free(typename);
+                    }
+                }
+                
+                // Skip the rest of the struct definition
+                int brace_count = 1;
+                while (cc < temptxt_len) {
+                    if (temp_txt[cc] == '{') brace_count++;
+                    else if (temp_txt[cc] == '}') brace_count--;
+                    if (brace_count == 0) break;
+                    cc++;
+                }
+                if (cc < temptxt_len) cc++;
+            } else if (cc + 7 < temptxt_len && strncmp(&temp_txt[cc], _uniform, 7) == 0) {
+                // A 'uniform' declaration is found
+                cc += 7;
+                while (cc < temptxt_len && isspace(temp_txt[cc])) {
+                    cc++;
+                }
+
+                // Extract type name
+                size_t type_start = cc;
+                while (cc < temptxt_len && !isspace(temp_txt[cc]) && temp_txt[cc] != ';') {
+                    cc++;
+                }
+                size_t type_len = cc - type_start;
+                char* type_pure = strndup(&temp_txt[type_start], type_len);
+                
+                while (cc < temptxt_len && isspace(temp_txt[cc])) {
+                    cc++;
+                }
+                
+                // Extract variable name
+                size_t name_start = cc;
+                while (cc < temptxt_len && !isspace(temp_txt[cc]) && temp_txt[cc] != ';' && temp_txt[cc] != '=') {
+                    cc++;
+                }
+                size_t name_len = cc - name_start;
+                char* name_pure = strndup(&temp_txt[name_start], name_len);
+
+                if (type_pure && name_pure) {
+                    bool is_duplicate = false;
+                    for (size_t u_cc = 0; u_cc < sb_t->uniform_len; ++u_cc) {
+                        if (strcmp(sb_t->uniforms[u_cc]->name, name_pure) == 0) {
+                            is_duplicate = true;
+                            break;
+                        }
+                    }
+
+                    if (!is_duplicate) {
+                        GLint _ID = glGetUniformLocation(sb_t->shaderProgram, name_pure);
+                        
+                        if (_ID != -1) { // glGetUniformLocation returns -1 on failure
+                            arrk_t new_uniform = create_arrkey(_ID, name_pure, type_pure);
+							arrk_t* temp_arr = realloc(sb_t->uniforms, sizeof(arrk_t) * (sb_t->uniform_len + 1));
+							if (temp_arr) {
+								sb_t->uniforms = temp_arr;
+								sb_t->uniforms[sb_t->uniform_len++] = new_uniform;
+							} else {
+								destroy_arrkey(new_uniform);
+								fprintf(stderr, "Error: Failed to reallocate memory for uniforms.\n");
+							}
+                        } else {
+                            fprintf(stderr, "Error: Failed to get uniform location for '%s'.\n", name_pure);
+                        }
+                    }
+                }
+                
+                free(type_pure);
+                free(name_pure);
+            } else {
+                // If no keyword is found, skip to the end of the line
+                while (cc < temptxt_len && temp_txt[cc] != '\n' && temp_txt[cc] != ';') {
+                    cc++;
+                }
+                if (cc < temptxt_len) cc++;
+            }
+        }
+    }
+
+    // Clean up the temporary list of struct names
+    for (size_t i = 0; i < typenames_len; ++i) {
+        free(temp_typenames[i]);
+    }
+    free(temp_typenames);
+}
+
 void uniform_clean(shaderblock_t *shader){
 	for(size_t cc =0; cc < shader->uniform_len; ++cc){
 		free(shader->uniforms[cc].type);
@@ -154,78 +307,78 @@ void uniform_write(shaderblock_t *shader, char *type, char *name, char *property
 			if(strncmp(name, shader->uniforms[cc]->name, strlen(name)) == 0){
 				//The Item found.
 				switch(str_hash(str_normalise(type, true, true))){
-					case "bool":
+					case builtin_shader_typehash[0]:
 						if(num_elements > 1){
 							glUniform1i(shader->uniforms[cc]->ID, ((GLint*)value)[0]);
 						}else{glUniform1i(shader->uniforms[cc]->ID, (GLint*)value);}
 						return;
-					case "int":
+					case builtin_shader_typehash[1]:
 						if(num_elements > 1){
 							glUniform1i(shader->uniforms[cc]->ID, ((GLint*)value)[0]);
 						}else{glUniform1i(shader->uniforms[cc]->ID, (GLint*)value);}
 						return;
-					case "unsignedint":
+					case builtin_shader_typehash[2]:
 						if(num_elements > 1){
 							glUniform1ui(shader->uniforms[cc]->ID, ((GLuint*)value)[0]);
 						}else{glUniform1ui(shader->uniforms[cc]->ID, (GLuint*)value);}
 						return;
-					case "float":
+					case builtin_shader_typehash[3]:
 						if(num_elements > 1){
 							glUniform1f(shader->uniforms[cc]->ID, ((GLfloat*)value)[0]);
 						}else{glUniform1f(shader->uniforms[cc]->ID, (GLfloat*)value);}
 						return;
-					case "vec2":
+					case builtin_shader_typehash[4]:
 						glUniform2fv(shader->uniforms[cc]->ID, num_elements, (GLfloat *)value);
 						return;
-					case "vec3":
+					case builtin_shader_typehash[5]:
 						glUniform3fv(shader->uniforms[cc]->ID, num_elements, (GLfloat *)value);
 						return;
-					case "vec4":
+					case builtin_shader_typehash[6]:
 						glUniform4fv(shader->uniforms[cc]->ID, num_elements, (GLfloat *)value);
 						return;
-					case "ivec2":
+					case builtin_shader_typehash[7]:
 						glUniform2iv(shader->uniforms[cc]->ID, num_elements, (GLint *)value);
 						return;
-					case "ivec3":
+					case builtin_shader_typehash[8]:
 						glUniform3iv(shader->uniforms[cc]->ID, num_elements, (GLint *)value);
 						return;
-					case "ivec4":
+					case builtin_shader_typehash[9]:
 						glUniform4iv(shader->uniforms[cc]->ID, num_elements, (GLint *)value);
 						return;
-					case "uivec2":
+					case builtin_shader_typehash[10]:
 						glUniform2uiv(shader->uniforms[cc]->ID, num_elements, (GLuint *)value);
 						return;
-					case "uivec3":
+					case builtin_shader_typehash[11]:
 						glUniform3uiv(shader->uniforms[cc]->ID, num_elements, (GLuint *)value);
 						return;
-					case "uivec4":
+					case builtin_shader_typehash[12]:
 						glUniform4uiv(shader->uniforms[cc]->ID, num_elements, (GLuint *)value);
 						return;
-					case "mat2":
+					case builtin_shader_typehash[13]:
 						glUniformMatrix2fv(shader->uniforms[cc]->ID, 1, *transpose, (GLfloat *)value);;
 						return;
-					case "mat3":
+					case builtin_shader_typehash[14]:
 						glUniformMatrix3fv(shader->uniforms[cc]->ID, 1, *transpose, (GLfloat *)value);
 						return;
-					case "mat4":
+					case builtin_shader_typehash[15]:
 						glUniformMatrix4fv(shader->uniforms[cc]->ID, 1, *transpose, (GLfloat *)value);
 						return;
-					case "mat2x3":
+					case builtin_shader_typehash[16]:
 						glUniformMatrix2x3fv(shader->uniforms[cc]->ID, 1, *transpose, (GLfloat *)value);
 						return;
-					case "mat3x2":
+					case builtin_shader_typehash[17]:
 						glUniformMatrix3x2fv(shader->uniforms[cc]->ID, 1, *transpose, (GLfloat *)value);
 						return;
-					case "mat2x4":
+					case builtin_shader_typehash[18]:
 						glUniformMatrix2x4fv(shader->uniforms[cc]->ID, 1, *transpose, (GLfloat *)value);
 						return;
-					case "mat4x2":
+					case builtin_shader_typehash[19]:
 						glUniformMatrix4x2fv(shader->uniforms[cc]->ID, 1, *transpose, (GLfloat *)value);
 						return;
-					case "mat3x4":
+					case builtin_shader_typehash[20]:
 						glUniformMatrix3x4fv(shader->uniforms[cc]->ID, 1, *transpose, (GLfloat *)value);
 						return;
-					case "mat4x3":
+					case builtin_shader_typehash[21]:
 						glUniformMatrix4x3fv(shader->uniforms[cc]->ID, 1, *transpose, (GLfloat *)value);
 						return;
 					default:	return;
@@ -239,8 +392,8 @@ void uniform_write(shaderblock_t *shader, char *type, char *name, char *property
 /// @brief Compile all intialised shaders into a singular ComputeShaderBlock struct pointer.
 /// @param delete_shaders_on_link Should the Compiled Shaders be deleted after use?
 shaderblock_t *shader_compile(bool delete_shaders_on_link){
-	shaderblock_t *shaderblock = (shaderblock_t *)malloc(sizeof(shaderblock_t));
-	shaderblock->compiled_ = malloc(sizeof(bool)* 8);
+	shaderblock_t *shaderblock = malloc(sizeof(shaderblock_t));
+	// shaderblock->compiled_ = malloc(sizeof(bool)* 8);
 	//Compile Vertex Shader.
 	shaderblock->vertexshader = glCreateShader(GL_VERTEX_SHADER);
 	if(vertexshader != 0){
@@ -327,36 +480,28 @@ void shader_error(shaderblock_t *sb_t, const char *type){
 	const GLuint shader = (strncmp(type, _vertex, strlen(_vertex)) == 0? sb_t->vertexshader:
 		strncmp(type, _fragment, strlen(_fragment)) == 0? sb_t->fragmentshader:
 			strncmp(type, _geometry, strlen(_geometry)) == 0? sb_t->geometryshader:
-				strncmp(type, _program, strlen(_program)) == 0? sb_t->shaderProgram:);
+				strncmp(type, _program, strlen(_program)) == 0? sb_t->shaderProgram: (int *)NULL);
 	char infoLog[1024];
 	if(shader != sb_t->shaderProgram){
 		glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
 		if(compiled == GL_FALSE){
 			glGetShaderInfo(shader, 1024, NULL, infoLog);
 			infoLog[1023] = '\0';
-			fprintf("Shader Compilation error: /s", infoLog);
-			switch(shader){
-				case sb_t->vertexshader:
-					sb_t->_compiled[1] = false;
-					return;
-				case sb_t->vertexshader:
-					sb_t->_compiled[2] = false;
-					return;
-				case sb_t->vertexshader:
-					sb_t->_compiled[3] = false;
-					return;
+			printf("Shader Compilation error: /s", infoLog);
+			if(shader == sb_t->vertexshader){
+				sb_t->_compiled[1] = false;
+			}else if(shader == sb_t->fragmentshader){
+				sb_t->_compiled[2] = false;
+			}else if(shader == sb_t->geometryshader){
+				sb_t->_compiled[3] = false;
 			}
 		}else{
-			switch(shader){
-				case sb_t->vertexshader:
-					sb_t->_compiled[1] = true;
-					return;
-				case sb_t->vertexshader:
-					sb_t->_compiled[2] = true;
-					return;
-				case sb_t->vertexshader:
-					sb_t->_compiled[3] = true;
-					return;
+			if(shader == sb_t->vertexshader){
+				sb_t->_compiled[1] = true;
+			}else if(shader == sb_t->fragmentshader){
+				sb_t->_compiled[2] = true;
+			}else if(shader == sb_t->geometryshader){
+				sb_t->_compiled[3] = true;
 			}
 		}
 	}else{
@@ -364,7 +509,7 @@ void shader_error(shaderblock_t *sb_t, const char *type){
 		if(compiled == GL_FALSE){
 			glGetProgramInfo(shader, 1024, NULL, infoLog);
 			infoLog[1023] = '\0';
-			fprintf("Shader Compilation error: /s", infoLog);
+			printf("Shader Compilation error: /s", infoLog);
 			sb_t->_compiled[7] = false;
 			sb_t->_compiled[0] = false;
 		}else{
@@ -452,7 +597,7 @@ void winimage_append(win_t *win, int image_width, int image_height, int colorch_
 		case 2:
 			glActiveTexture(GL_TEXTURE2);
 			break;
-		case 3:
+			case 3:
 			glActiveTexture(GL_TEXTURE3);
 			break;
 		case 4:
@@ -466,7 +611,7 @@ void winimage_append(win_t *win, int image_width, int image_height, int colorch_
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, (float[4]){border_color->a, border_color->r, border_color->g, border_color->b});
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, (float[4]){border_color->r, border_color->g, border_color->b, border_color->a});
 	// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
 }
 

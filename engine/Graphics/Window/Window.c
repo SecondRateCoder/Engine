@@ -91,4 +91,3 @@ void win_attrblink(win_t *win, GLuint layout, GLuint component_num, GLenum type,
 	glVertexAttribPointer(layout, component_num, type, GL_FALSE, stride, offset);
 	glEnableVertexAttribArray(layout);
 }
-
