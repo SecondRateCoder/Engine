@@ -22,19 +22,12 @@ typedef struct vec3d{
 }vec3d;
 
 
-typedef vec3_t (*origin_f)(const polygon);
-typedef pointf_t (*porigin_f)(const ppolygon);
-
-
-
 typedef struct polygon{
     vec3_t a, b, c, rotation;
-    origin_f origin;
 }polygon;
 
 typedef struct ppolygon{
 	pointf_t a, b, c;
-	porigin_f origin;
 }ppolygon;
 
 typedef struct matrix{

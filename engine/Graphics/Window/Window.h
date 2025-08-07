@@ -21,14 +21,18 @@ typedef struct win{
 	GLFWwindow *window;
 	char *name;
 	shaderblock_t *shaders;
-	size_t VAO_len, VAO_curr, VBO_len, VBO_curr, vert_count;
+	size_t VAO_len, VAO_curr, 
+	VBO_len, VBO_curr, 
+	vert_count, 
+	textures_len, textures_curr;
 	/*
 	[0]: Is VAO set-up?
 	[1]: Is VBO set-up?
 	[2]: Is EBO set-up?
 	*/
 	bool buffer_[3];
-	GLuint *VAO, *VBO, EBO;
+	GLuint *VAO, *VBO, *enum STBVorbisError error;
+	image_t *textures;
 	uint32_t x, y, w, h;
 }win;
 

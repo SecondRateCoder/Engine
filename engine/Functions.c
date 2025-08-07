@@ -487,7 +487,6 @@ poly3_t polygon_init(vec3_t a, vec3_t b, vec3_t c, vec3_t rotation){
 		.a= a,
 		.b= b,
 		.c= c,
-		.origin= polygon_origin,
 		.rotation= rotation,
 	};
 	free(rot);
@@ -500,7 +499,7 @@ poly3_t polygon_init(vec3_t a, vec3_t b, vec3_t c, vec3_t rotation){
 /// @param rot The rotation to be applied.
 void poly3_rot(poly3_t *p, size_t len, const vec3_t rot){
 	for(size_t cc= 0; cc< len; ++cc){
-		vec3_t *_rot= vec3_rot(&(vec3_t[3]){p[cc].a, p[cc].b, p[cc].c}, &(vec3_t[3]){p[cc].origin(p[cc]), p[cc].origin(p[cc]), p[cc].origin(p[cc])}, 3, rot);
+		vec3_t *_rot= vec3_rot(&(vec3_t[3]){p[cc].a, p[cc].b, p[cc].c}, &(vec3_t[3]){polygon_origin(p[cc]), polygon_origin(p[cc]), polygon_origin(p[cc])}, 3, rot);
 		p->a= _rot[0]; p->b= _rot[1]; p->c= _rot[2];
 		free(_rot);
 	}
@@ -539,7 +538,6 @@ poly3_t poly3_add(poly3_t p, vec3_t transform){
 		.a =vec3_add(p.a, transform),
 		.b =vec3_add(p.b, transform),
 		.c =vec3_add(p.c, transform),
-		.origin =polygon_origin,
 		.rotation =p.rotation,
 	};
 }
@@ -553,7 +551,6 @@ poly3_t poly3_sub(poly3_t p, vec3_t transform){
 		.a =vec3_sub(p.a, transform),
 		.b =vec3_sub(p.b, transform),
 		.c =vec3_sub(p.c, transform),
-		.origin =polygon_origin,
 		.rotation =p.rotation,
 	};
 }
@@ -562,3 +559,45 @@ poly3_t poly3_sub(poly3_t p, vec3_t transform){
 
 
 #pragma endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+char *str_normalise(char *str, bool handle_spaces, bool handle_upper){
+    if (str == NULL){return;}
+	size_t str_len= strlen(str);
+    int i = 0, j = 0;
+	char *out = malloc(sizeof(char)* strlen(str));
+    // Iterate through the string until the null terminator is reached.
+    while (str[i] != '\0') { 
+        // Check if the current character is NOT a space
+        if (isspace((unsigned char)str[i]) && handle_spaces){
+			//If space write the next value.
+			if(i < str_len-1){
+				++i;
+				out[j] = str[i];
+			}
+        }else if(handle_upper){
+            // Convert to lowercase and copy to the new position
+            out[j] = tolower((unsigned char)str[i]);
+			i++;
+		}
+		j++;
+    }
+    str[j] = '\0'; // Null-terminate the modified string
+}

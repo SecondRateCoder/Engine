@@ -1,4 +1,5 @@
 #include <Public.h>
+#include <./engine/Graphics/DrawinProtocol.h>
 #include <string.h>
 
 int main(){
@@ -7,10 +8,15 @@ int main(){
     win_flood(mainw, (argb_t){.9, .7, .03, 1});
     const float sqrt3 = sqrtf(3);
     char *dest = malloc(sizeof(char) * strlen(cwd) + 1);
-    strncat(dest, "engine/Graphics/Shaders/Shaders.txt", 36);
+    strncat(dest, "Resources/Shaders/Shaders.txt", 36);
     shaders_pull(dest);
     free(dest);
-    mainw->shaders =shader_compile(true);
+    SHADERBLOCK_HANDLE(mainw->shaders, true);
+    dest = malloc(sizeof(char)* (strlen(cwd)+1));
+    strcat(dest, "Resources/Textures/AnotherBar.jpeg");
+    winimage_append(mainw, 800, 800, 4, dest, (argb_t){0, 0, 0, 1});
+    GLuint tex0_uni = glGetUniformLocation(mainw->shaders->shaderProgram, "tex0");
+    glUniform1i(tex0_uni, 0);
     win_draw(mainw, 
     (GLfloat[]){
         -0.5f, (-0.5f* sqrt3)/3, 0, 08.f, 0.3f, 0.2f,
@@ -25,6 +31,7 @@ int main(){
         3, 2, 4,
         5, 4, 1
     }, 9);
+    glBindTextureEXT(GL_TEXTURE_2D, mainw->textures[mainw->texture_curr].img);
     win_poll(mainw);
     win_kill(mainw);
 }

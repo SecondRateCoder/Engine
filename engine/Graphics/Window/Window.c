@@ -74,6 +74,7 @@ void win_kill(win_t *win){
 	glBindVertexArray(0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glfwDestroyWindow(win->window);
+	glDeleteTexturesEXT(win->textures_len, win->textures;);
 	glfwTerminate();
 	free(win);
 }

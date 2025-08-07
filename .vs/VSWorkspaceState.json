@@ -1,10 +1,14 @@
 {
   "ExpandedNodes": [
     "",
+    "\\Compilation-Scripts",
     "\\engine",
     "\\engine\\Graphics",
-    "\\engine\\Graphics\\Window"
+    "\\engine\\Graphics\\Window",
+    "\\Libraries",
+    "\\Libraries\\include",
+    "\\Libraries\\include\\stb"
   ],
-  "SelectedNode": "\\engine\\Graphics\\Window\\Window.h",
+  "SelectedNode": "\\CppProperties.json",
   "PreviewInSolutionExplorer": false
 }
