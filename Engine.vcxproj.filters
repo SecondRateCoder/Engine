@@ -13,5 +13,67 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Graphics">
+      <UniqueIdentifier>{3f8bb177-5143-416e-b657-f5aac9cde52e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\Window">
+      <UniqueIdentifier>{6891733d-779b-4f13-8253-d60110d5dd87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics">
+      <UniqueIdentifier>{c1a5d51f-741a-4e6d-a281-f67d8a509add}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics\Window">
+      <UniqueIdentifier>{5e803847-a822-4bb9-9472-d3566ff2c025}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Make">
+      <UniqueIdentifier>{4a8d1c47-3c30-4513-a97c-ce7a18dc5e59}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="engine\main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\_3D.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Graphics\DrawingProtocol.c">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Graphics\Window\Window.c">
+      <Filter>Source Files\Graphics\Window</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="engine\_3D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Public.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Graphics\DrawingProtocol.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Graphics\Window\Window.h">
+      <Filter>Header Files\Graphics\Window</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Compilation-Scripts\Make.ps1">
+      <Filter>Resource Files\Make</Filter>
+    </None>
+    <None Include="Compilation-Scripts\Make.sh">
+      <Filter>Resource Files\Make</Filter>
+    </None>
+    <None Include="Compilation-Scripts\Makefile">
+      <Filter>Resource Files\Make</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\Functions_Legacy.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
