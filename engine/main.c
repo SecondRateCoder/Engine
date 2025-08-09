@@ -16,7 +16,7 @@ void poll_draw(win_t *win, size_t pollcycles);
 int main() {
     cwd_init();
     const float sqrt3 = sqrtf(3);
-    win_t *mainw = win_init("MainWindow", poll_draw, 800, 200);
+    win_t *mainw = win_init("MainWindow", poll_draw, NULL, 800, 200);
     SHADERBLOCK_HANDLE(mainw->shaders, true);
     win_flood(mainw, (argb_t){.9, .7, .03, 1});
 
@@ -33,7 +33,7 @@ int main() {
 
     // Safely build the texture path and append the image
     snprintf(path_buffer, MAX_PATH_LEN, "%s/Resources/Textures/AnotherBar.jpeg", cwd ? cwd : "");
-    winimage_append(mainw, 800, 800, 4, path_buffer, (argb_t){0, 0, 0, 1});
+    winimage_append(mainw, path_buffer, &(argb_t){0, 0, 0, 1});
     // No 'free' is needed because we used a stack-allocated array (path_buffer)
 
     win_draw(mainw,

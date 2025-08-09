@@ -3,6 +3,7 @@
         "public.h": "c",
         "drawingprotocol.h": "c",
         "typeinfo": "c",
-        "random": "c"
+        "random": "c",
+        "window.h": "c"
     }
 }

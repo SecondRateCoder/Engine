@@ -1,6 +1,7 @@
 #pragma once
 #include <Public.h>
 #include <./engine/graphics/drawingprotocol.h>
+#include <drawingprotocol.h>
 
 // Header Guard
 #ifndef _WIN_H
@@ -30,7 +31,7 @@ typedef struct window{
     GLFWwindow *window;
     char *name;
     poll_do polld;
-    poll_kill kill;
+    poll_kill pollk;
     shaderblock_t *shaders;
     size_t textures_len, textures_curr, vert_count;
     
@@ -49,7 +50,7 @@ typedef struct Color4 {
 
 // The function pointer parameter should be a pointer to the `poll_do` type, not a pointer to a pointer.
 // Also, the return type should be `window *`
-win_t *win_init(char *name, poll_do *poll, uint32_t w, uint32_t h);
+win_t *win_init(char *name, poll_do *polld, poll_kill *poolk, uint32_t w, uint32_t h);
 void win_poll(win_t *win);
 bool win_shouldclose(win_t *win);
 void win_kill(win_t *win);

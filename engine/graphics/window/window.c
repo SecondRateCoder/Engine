@@ -5,7 +5,7 @@
 /// @param w The Width of the Window.
 /// @param h The Height of the Window.
 /// @return An initialised Pointer to the Window.
-win_t *win_init(char *name, poll_do *polld, poll_kill *poolk, uint32_t w, uint32_t h){
+win_t *win_init(char *name, poll_do *polld, poll_kill *pollk, uint32_t w, uint32_t h){
 	//Initialise GLFW.
 	glfwInit();
 	//Enable Depth testing, So Triangles behind other Triangles are not drawn.
@@ -22,8 +22,8 @@ win_t *win_init(char *name, poll_do *polld, poll_kill *poolk, uint32_t w, uint32
 
 	//malloc on heap.
 	win_t *win = malloc(sizeof(win_t));
-	win->polld = polld;
-	win->kill = poolk;
+	if(polld != NULL){win->polld = polld;}else{win->polld = polld_default;}
+	if(pollk != NULL){win->pollk = pollk;}else{win->pollk = pollk_default;}
 	win->name = name;
 	win->w =w;
 	win->h =h;
@@ -66,7 +66,7 @@ void win_poll(win_t *win){
 		glfwPollEvents();
 		++cc;
 	}
-	win->kill(win);
+	win->pollk(win);
 	win_kill(win);
 }
 
@@ -103,7 +103,7 @@ void win_kill(win_t *win){
 	glfwTerminate();
 	free(win->name);
 	free(win->polld);
-	free(win->kill);
+	free(win->pollk);
 	free(win->textures);
 	free(win->shaders);
 	free(win);
@@ -118,7 +118,10 @@ void win_kill(win_t *win){
 /// @param stride ...
 /// @param offset ...
 void win_attrblink(window *win, GLuint layout, GLuint component_num, GLenum type, GLsizeiptr stride, const void *offset){
-	glBindBuffers(GL_ARRAY_BUFFER, win->buffers[win->buffer_curr].VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, win->buffers[win->buffer_curr].VBO);
 	glVertexAttribPointer(layout, component_num, type, GL_FALSE, stride, offset);
 	glEnableVertexAttribArray(layout);
 }
+
+void polld_default(win_t *win, size_t cycles){return;}
+void pollk_default(win_t *win){return;}
