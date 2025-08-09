@@ -1,8 +1,7 @@
+#include "Public.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-
-
 
 char *str_normalise(char *str, bool handle_spaces, bool handle_upper){
     if (str == NULL){return  NULL;}
@@ -12,7 +11,7 @@ char *str_normalise(char *str, bool handle_spaces, bool handle_upper){
     // Iterate through the string until the null terminator is reached.
     while (str[i] != '\0') { 
         // Check if the current character is NOT a space
-        if (isspace((unsigned char)str[i]) && handle_spaces){
+        if (IS_SPACE((unsigned char)str[i]) && handle_spaces){
 			//If space write the next value.
 			if(i < str_len-1){
 				++i;
@@ -43,4 +42,28 @@ const size_t str_hash_(const char *str){
         hash = ((hash << 5) + hash) + c;
     }
     return hash;
+}
+
+char tolower(char c) {
+    // Check if the character is an uppercase letter (A-Z)
+    if (c >= 'A' && c <= 'Z') {
+        // If it is, convert it to lowercase by adding the difference in ASCII values
+        // For example, 'a' - 'A' = 32. So 'B' + 32 = 'b'.
+        return c + ('a' - 'A');
+    }
+    // If the character is not an uppercase letter, return it unchanged.
+    return c;
+}
+
+/**
+ * @brief Converts an entire string to lowercase.
+ *
+ * @param str A pointer to the null-terminated string to be converted.
+ */
+void str_tolower(char *str) {
+    // Iterate through the string until the null terminator is reached.
+    for (int i = 0; str[i] != '\0'; i++) {
+        // Use the my_tolower function to convert each character.
+        str[i] = tolower(str[i]);
+    }
 }

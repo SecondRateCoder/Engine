@@ -1,10 +1,11 @@
-#include <stdlib.h>
-#include <math.h>
-#include <stdio.h>
+#include "Public.h"
 
-#include <./engine/Public.h>
-#include <drawingprotocol.h>
+#include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
+#include <math.h>
+
+#include "drawingprotocol.h"
 
 // Assuming 'cwd' is a global variable populated by cwd_init() from your Public.h
 // If it's not global, you would need to adjust how it's accessed.

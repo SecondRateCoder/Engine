@@ -1,9 +1,8 @@
 #pragma once
 
-#include <Public.h>
+#include "Public.h"
+#include "window.h"
 #include <stdbool.h>
-#include <window.h>
-#include <./engine/graphics/window/window.h>
 
 
 //Header Guard.

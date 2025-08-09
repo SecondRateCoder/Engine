@@ -3,13 +3,13 @@
 #ifndef _PUBLIC_H
 #define _PUBLIC_H
 
-#include <Libraries/include/KHR/khrplatform.h>
-#include <Libraries/include/GLFW/glfw3.h>
-#include <Libraries/include/GLFW/glfw3native.h>
-#include <Libraries/include/glad/glad.h>
-#include <engine/graphics/drawingprotocol.h>
-#include <engine/graphics/window/window.h>
-#include <cglm/cglm.h>
+#include "glad/glad.h"
+#include "KHR/khrplatform.h"
+#include "GLFW/glfw3.h"
+#include "GLFW/glfw3native.h"
+#include "drawingprotocol.h"
+#include "window.h"
+#include "cglm/cglm.h"
 #include <immintrin.h>
 #include <xmmintrin.h>
 #include <stdbool.h>
@@ -22,6 +22,7 @@
 #define IS_EVEN(X) (X%2 != 0)
 #define INT_SIMP(X) (X< 0? -1: 1)
 #define str_hash(str) _str_hash_(str)
+#define IS_SPACE(chr) (int)chr == (int)' '
 
 
 #if defined(__APPLE__)
@@ -42,5 +43,5 @@
 
 
 char *str_normalise(char *str, bool handle_spaces, bool handle_upper);
-const size_t str_hash_(char *str);
+const size_t str_hash_(const char *str);
 #endif

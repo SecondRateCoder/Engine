@@ -4,6 +4,9 @@
         "drawingprotocol.h": "c",
         "typeinfo": "c",
         "random": "c",
-        "window.h": "c"
+        "window.h": "c",
+        "string.h": "c",
+        "glad.h": "c",
+        "stdlib.h": "c"
     }
 }

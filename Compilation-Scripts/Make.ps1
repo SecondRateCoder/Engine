@@ -1,10 +1,21 @@
 #! For Linux Systems:
-    #! Install Dependencies:
-        # sudo apt-get update && sudo apt-get install -y wget apt-transport-https
-    #!Install Power-Shell:
-        # sudo apt-get install -y powershell
-    #!Run it:
-        # pwsh
+    #!Packages:
+        # sudo apt-get update && sudo apt-get install libglfw3 libglfw3-dev
+    #! or
+        # git clone https://github.com/glfw/glfw.git
+        # cd glfw
+        # mkdir build && cd build
+        # cmake ..
+        # make
+        # sudo make install
+
+    #! Power-shell Installation:
+        #! Install Dependencies:
+            # sudo apt-get update && sudo apt-get install -y wget apt-transport-https
+        #!Install Power-Shell:
+            # sudo apt-get install -y powershell
+        #!Run it:
+            # pwsh
 
 
 #! Move to current Directory.
@@ -15,10 +26,17 @@
 # ./Compilation-Scripts/Make.ps1 -SourceDirectory "./engine" -AdditionalSourceDirectory "./EXTRA_DIR" -OutputExecutableName "engine.exe"
 #!Compile Source with Additional Source Directory and Libraries.
 # ./Compilation-Scripts/Make.ps1 -SourceDirectory "./engine" -OutputExecutableName "app.exe" -IncludePaths "./Libraries/include" -LibraryPaths "./Libraries/lib" -Libraries "glfw3", "glfw3dll"
-#! Optional GCC Flags
-# -GccFlags "-O1", "-Wextra", "-std=c99", "-Wall", "-pedantic", "-Wl,--verbose"
+
+
 #! My Compilation command.
-# ./Compilation-Scripts/Make.ps1 -SourceDirectory "./engine" -OutputExecutableName "app.exe" -IncludePaths "./Libraries/include" -LibraryPaths "./Libraries/lib" -Libraries "glfw3", "glfw3dll" -GccFlags "-O1", "-Wextra", "-std=c99", "-Wall", "-pedantic", "-Wl,--verbose"
+# ./Compilation-Scripts/Make.ps1 -SourceDirectory "./engine" -OutputExecutableName "engine.exe" -GccFlags "-O1", "-Wextra", "-std=c99", "-Wall", "-pedantic", "-Wl,--verbose" -LibraryPaths "./Libraries/lib" -Libraries "glfw3", "glfw3dll" -IncludePaths "./Libraries/include", "./engine", "./engine/graphics", "./engine/graphics/window"
+
+#! Optional GCC Flags:
+# -GccFlags "-O1", "-Wextra", "-std=c99", "-Wall", "-pedantic", "-Wl,--verbose"
+#! Additional Libraries:
+# -LibraryPaths "./Libraries/lib" -Libraries "glfw3", "glfw3dll"
+#! Additional Includes:
+# -IncludePaths "./Libraries/include", "./engine", "./engine/graphics", "./engine/graphics/window"
 
 param(
     [Parameter(Mandatory=$true)]
@@ -45,7 +63,8 @@ param(
 
 # --- Configuration ---
 # $gccPath = "C:\msys64\mingw64\bin\gcc.exe"
-$gccPath = "gcc"
+# $gccPath = "gcc"
+$gccPath = "x86_64-w64-mingw32-gcc"
 $buildDir = Join-Path (Get-Location) "Build"
 $logDir = Join-Path (Get-Location) "Resources\Logs"
 $logFile = Join-Path $logDir ("log_" + (Get-Date -Format "yyyy-MM-dd_HH-mm-ss") + ".txt")
@@ -267,7 +286,7 @@ if ($AdditionalSourceDirectory) {
 
 # 6. Link all .o files in the Build directory
 Write-Log "Starting linking phase..."
-if (-not (Obj_Link -BuildDirectory $buildDir -OutputName $OutputExecutableName -GccExecutable $gccPath -LibraryDirectories $LibraryPaths -LibraryNames $Libraries -CustomGccFlags $GccFlags)) {
+if (-not (Obj_Link -BuildDirectory $buildDir -OutputName $OutputExecutableName -GccExecutable $gccPath -LibraryDirectories $LibraryPaths -LibraryNames $Libraries -CustomGccFlags $GccFlags) -eq 0) {
     Write-Log "Linking failed. See previous errors."
     exit 1
 }
