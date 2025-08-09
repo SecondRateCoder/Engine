@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "public.h": "c",
+        "drawingprotocol.h": "c",
+        "typeinfo": "c",
+        "random": "c"
+    }
+}

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define str_hash(str) str_hash_(str)
+
 
 char *str_normalise(char *str, bool handle_spaces, bool handle_upper){
     if (str == NULL){return;}

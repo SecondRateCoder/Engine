@@ -1,14 +1,15 @@
 #pragma once
+#include <Public.h>
+#include <./engine/graphics/drawingprotocol.h>
 
 // Header Guard
 #ifndef _WIN_H
 #define _WIN_H
 
-#include <Public.h>
-#include <DrawingProtocol.h>
 
 #define win_t window
 #define argb_t Color4
+
 // #include <excpt.h> // This is a Windows-specific header and may not be portable.
 
 // Using a macro to define a type alias is generally discouraged in C++
@@ -22,26 +23,19 @@
 // It's also better to use `const size_t` for the size parameter if it's not modified.
 typedef void (*poll_do)(win_t *, const size_t);
 
+/// @brief A function called when the Window should be killed.
+typedef void (*poll_kill)(win_t *);
+
 typedef struct window{
     GLFWwindow *window;
     char *name;
-    poll_do poll;
+    poll_do polld;
+    poll_kill kill;
     shaderblock_t *shaders;
-    size_t VAO_len, VAO_curr;
-    size_t VBO_len, VBO_curr;
-    size_t vert_count;
-    size_t textures_len, textures_curr;
-    /*
-    [0]: Is VAO set-up?
-    [1]: Is VBO set-up?
-    [2]: Is EBO set-up?
-    */
-    bool buffer_[3];
-    // The EBO member should be a single GLuint, as there is usually only one per VAO.
-    // Making it a pointer is fine, but it needs to be allocated. A single variable is simpler.
-    GLuint *VAO;
-    GLuint *VBO;
-    GLuint EBO;
+    size_t textures_len, textures_curr, vert_count;
+    
+    size_t buffer_len, buffer_curr;
+    bufferobj_t *buffers;
     image_t *textures;
     uint32_t x, y, w, h;
 } window;

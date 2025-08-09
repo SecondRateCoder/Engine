@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 #include <./engine/Public.h>
-#include <DrawingProtocol.h>
+#include <drawingprotocol.h>
 #include <string.h>
 
 // Assuming 'cwd' is a global variable populated by cwd_init() from your Public.h
