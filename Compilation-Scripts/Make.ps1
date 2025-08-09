@@ -1,3 +1,12 @@
+#! For Linux Systems:
+    #! Install Dependencies:
+        # sudo apt-get update && sudo apt-get install -y wget apt-transport-https
+    #!Install Power-Shell:
+        # sudo apt-get install -y powershell
+    #!Run it:
+        # pwsh
+
+
 #! Move to current Directory.
 # cd C:/Users/olusa/OneDrive/Documents/GitHub/Engine/
 #!Compile Source Directory.
@@ -35,7 +44,8 @@ param(
 )
 
 # --- Configuration ---
-$gccPath = "C:\msys64\mingw64\bin\gcc.exe"
+# $gccPath = "C:\msys64\mingw64\bin\gcc.exe"
+$gccPath = "gcc"
 $buildDir = Join-Path (Get-Location) "Build"
 $logDir = Join-Path (Get-Location) "Resources\Logs"
 $logFile = Join-Path $logDir ("log_" + (Get-Date -Format "yyyy-MM-dd_HH-mm-ss") + ".txt")

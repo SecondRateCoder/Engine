@@ -5,7 +5,7 @@
 
 
 char *str_normalise(char *str, bool handle_spaces, bool handle_upper){
-    if (str == NULL){return;}
+    if (str == NULL){return  NULL;}
 	size_t str_len= strlen(str);
     int i = 0, j = 0;
 	char *out = malloc(sizeof(char)* strlen(str));

@@ -1,0 +1,63 @@
+Checking for GCC availability...
+GCC found: gcc
+Setting up Build directory: /workspaces/Engine/Build
+Clearing existing Build directory contents...
+Searching for .c files in './engine'...
+Compiling /workspaces/Engine/engine/Functions.c to /workspaces/Engine/Build/Functions.o...
+Command: gcc -c /workspaces/Engine/engine/Functions.c -o /workspaces/Engine/Build/Functions.o
+/workspaces/Engine/engine/Functions.c: In function ‘str_normalise’:
+/workspaces/Engine/engine/Functions.c:8:22: warning: ‘return’ with no value, in function returning non-void
+    8 |     if (str == NULL){return;}
+      |                      ^~~~~~
+/workspaces/Engine/engine/Functions.c:7:7: note: declared here
+    7 | char *str_normalise(char *str, bool handle_spaces, bool handle_upper){
+      |       ^~~~~~~~~~~~~
+/workspaces/Engine/engine/Functions.c:15:13: warning: implicit declaration of function ‘isspace’ [-Wimplicit-function-declaration]
+   15 |         if (isspace((unsigned char)str[i]) && handle_spaces){
+      |             ^~~~~~~
+/workspaces/Engine/engine/Functions.c:4:1: note: include ‘<ctype.h>’ or provide a declaration of ‘isspace’
+    3 | #include <string.h>
+  +++ |+#include <ctype.h>
+    4 | 
+/workspaces/Engine/engine/Functions.c:23:22: warning: implicit declaration of function ‘tolower’ [-Wimplicit-function-declaration]
+   23 |             out[j] = tolower((unsigned char)str[i]);
+      |                      ^~~~~~~
+/workspaces/Engine/engine/Functions.c:23:22: note: include ‘<ctype.h>’ or provide a declaration of ‘tolower’
+Successfully compiled /workspaces/Engine/engine/Functions.c
+Compiling /workspaces/Engine/engine/glad.c to /workspaces/Engine/Build/glad.o...
+Command: gcc -c /workspaces/Engine/engine/glad.c -o /workspaces/Engine/Build/glad.o
+/workspaces/Engine/engine/glad.c:25:10: fatal error: ./Libraries/include/glad/glad.h: No such file or directory
+   25 | #include <./Libraries/include/glad/glad.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+FAILED: Failed to compile /workspaces/Engine/engine/glad.c. GCC Exit Code: 1
+Compiling /workspaces/Engine/engine/main.c to /workspaces/Engine/Build/main.o...
+Command: gcc -c /workspaces/Engine/engine/main.c -o /workspaces/Engine/Build/main.o
+/workspaces/Engine/engine/main.c:5:10: fatal error: ./engine/Public.h: No such file or directory
+    5 | #include <./engine/Public.h>
+      |          ^~~~~~~~~~~~~~~~~~~
+compilation terminated.
+FAILED: Failed to compile /workspaces/Engine/engine/main.c. GCC Exit Code: 1
+Compiling /workspaces/Engine/engine/graphics/drawingprotocol.c to /workspaces/Engine/Build/drawingprotocol.o...
+Command: gcc -c /workspaces/Engine/engine/graphics/drawingprotocol.c -o /workspaces/Engine/Build/drawingprotocol.o
+/workspaces/Engine/engine/graphics/drawingprotocol.c:1:10: fatal error: engine/Public.h: No such file or directory
+    1 | #include <engine/Public.h>
+      |          ^~~~~~~~~~~~~~~~~
+compilation terminated.
+FAILED: Failed to compile /workspaces/Engine/engine/graphics/drawingprotocol.c. GCC Exit Code: 1
+Compiling /workspaces/Engine/engine/graphics/window/window.c to /workspaces/Engine/Build/window.o...
+Command: gcc -c /workspaces/Engine/engine/graphics/window/window.c -o /workspaces/Engine/Build/window.o
+/workspaces/Engine/engine/graphics/window/window.c:1:10: fatal error: engine/graphics/window/window.h: No such file or directory
+    1 | #include <engine/graphics/window/window.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+FAILED: Failed to compile /workspaces/Engine/engine/graphics/window/window.c. GCC Exit Code: 1
+Starting linking phase...
+Linking object files into /workspaces/Engine/Build/engine.exe...
+Command: gcc /workspaces/Engine/Build/drawingprotocol.o /workspaces/Engine/Build/Functions.o /workspaces/Engine/Build/glad.o /workspaces/Engine/Build/main.o /workspaces/Engine/Build/window.o -o /workspaces/Engine/Build/engine.exe
+/usr/bin/ld: /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o: in function `_start':
+(.text+0x1b): undefined reference to `main'
+collect2: error: ld returned 1 exit status
+FAILED: Failed to link object files. GCC Exit Code: 1
+
+Compilation and Linking process completed successfully!
