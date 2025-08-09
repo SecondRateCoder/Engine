@@ -123,6 +123,10 @@ do { \
 //         glBufferData(GL_ELEMENT_ARRAY_BUFFER, (*ilen) * sizeof(GLuint), actual_indexes, DRAW_FORMAT);   \
 //     }   \
 
+typedef struct arrkey{
+    GLint Location;
+    char *name, *type;
+}arrkey;
 
 typedef struct ComputeShaderBlock{
     //Length 8.
@@ -139,7 +143,7 @@ typedef struct ComputeShaderBlock{
     bool compiled_[7];
     size_t uniform_len;
     /// @brief A List of (size_t, char *) to support uniform access in @ref uniforms.
-    arrk_t *uniforms;
+    struct arrk_t *uniforms;
     GLuint shaderProgram, 
         vertexshader, 
         fragmentshader, 
@@ -150,10 +154,6 @@ typedef struct ComputeShaderBlock{
         ;
 }ComputeShaderBlock;
 
-typedef struct arrkey{
-    GLint Location;
-    char *name, *type;
-}arrkey;
 
 typedef struct buffer_object{
     /*

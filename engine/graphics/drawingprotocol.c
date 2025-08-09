@@ -341,7 +341,7 @@ void uniform_free(shaderblock_t* shader){
 
 // Corrected uniform_write function.
 // The original had a `return NULL` in a `void` function and incorrect pointer dereferencing.
-void uniform_write(shaderblock_t* shader, const char* type, const char* name, const char* property, bool* transpose, const void* value, size_t num_elements){
+void uniform_write(shaderblock_t* shader, const char* type, const char* name, const char* property, bool transpose, const void* value, size_t num_elements){
 	if (shader == NULL || name == NULL) return;
 
 	size_t hash = str_hash(str_normalise(type, true, true));

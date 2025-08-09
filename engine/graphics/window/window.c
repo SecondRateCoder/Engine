@@ -5,7 +5,7 @@
 /// @param w The Width of the Window.
 /// @param h The Height of the Window.
 /// @return An initialised Pointer to the Window.
-win_t *win_init(char *name, poll_do *polld, poll_kill *pollk, uint32_t w, uint32_t h){
+win_t *win_init(char *name, poll_do polld, poll_kill pollk, uint32_t w, uint32_t h){
 	//Initialise GLFW.
 	glfwInit();
 	//Enable Depth testing, So Triangles behind other Triangles are not drawn.

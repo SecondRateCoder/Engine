@@ -25,6 +25,7 @@ char *str_normalise(char *str, bool handle_spaces, bool handle_upper){
 		j++;
     }
     str[j] = '\0'; // Null-terminate the modified string
+    return str;
 }
 
 const size_t str_hash_(const char *str){

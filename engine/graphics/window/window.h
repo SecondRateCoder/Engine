@@ -1,10 +1,11 @@
 #pragma once
 #include "Public.h"
-#include "drawingprotocol.h"
+#include <stdbool.h>
 
 // Header Guard
 #ifndef _WIN_H
 #define _WIN_H
+#include "drawingprotocol.h"
 
 
 #define win_t window
@@ -12,10 +13,14 @@
 
 // #include <excpt.h> // This is a Windows-specific header and may not be portable.
 
-// Using a macro to define a type alias is generally discouraged in C++
-// It's better to use a `typedef`.
-// typedef struct window win_t;
-// typedef struct Color4 argb_t;
+// A Function Pointer for doing custom functions with the Polling of the Window.
+// The `poll_do` function signature should be `void (*poll_do)(struct window *, size_t);`
+// to ensure the `window` struct is a known type within the typedef.
+// It's also better to use `const size_t` for the size parameter if it's not modified.
+typedef void (*poll_do)(struct win_t *, const size_t);
+
+/// @brief A function called when the Window should be killed.
+typedef void (*poll_kill)(struct win_t *);
 
 
 typedef struct window{
@@ -32,14 +37,6 @@ typedef struct window{
     uint32_t x, y, w, h;
 }window;
 
-// A Function Pointer for doing custom functions with the Polling of the Window.
-// The `poll_do` function signature should be `void (*poll_do)(struct window *, size_t);`
-// to ensure the `window` struct is a known type within the typedef.
-// It's also better to use `const size_t` for the size parameter if it's not modified.
-typedef void (*poll_do)(win_t *, const size_t);
-
-/// @brief A function called when the Window should be killed.
-typedef void (*poll_kill)(win_t *);
 
 // It is common practice to define the structs before their aliases.
 typedef struct Color4 {
@@ -50,7 +47,7 @@ typedef struct Color4 {
 
 // The function pointer parameter should be a pointer to the `poll_do` type, not a pointer to a pointer.
 // Also, the return type should be `window *`
-win_t *win_init(char *name, poll_do *polld, poll_kill *poolk, uint32_t w, uint32_t h);
+win_t *win_init(char *name, poll_do polld, poll_kill pollk, uint32_t w, uint32_t h);
 void win_poll(win_t *win);
 bool win_shouldclose(win_t *win);
 void win_kill(win_t *win);
