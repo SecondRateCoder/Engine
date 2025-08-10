@@ -21,6 +21,12 @@ extern char* geometryshader;
 // char* fragmentshader_code;
 // char* geometryshader_code;
 
+#ifdef _WIN32
+#include <direct.h>
+#else
+#include <unistd.h>
+#endif
+
 bool cwd_init(){
 	if (getcwd(cwd, MAX_PATHLENGTH) == NULL) {
 		printf("getcwd() Error, cwd not Initialised.\n");

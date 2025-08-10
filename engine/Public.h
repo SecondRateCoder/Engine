@@ -24,6 +24,8 @@
 #define str_hash(str) _str_hash_(str)
 #define IS_SPACE(chr) (int)chr == (int)' '
 
+/// @brief A type with a size_t lower and size_t upper, using these to describe 16 byte values.
+typedef size_t uint128_t[2];
 
 #if defined(__APPLE__)
 #include <stdlib.h>
@@ -43,5 +45,5 @@
 
 
 char *str_normalise(char *str, bool handle_spaces, bool handle_upper);
-const size_t str_hash_(const char *str);
+size_t *str_hash_(const char *str);
 #endif

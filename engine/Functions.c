@@ -28,10 +28,16 @@ char *str_normalise(char *str, bool handle_spaces, bool handle_upper){
     return str;
 }
 
-const size_t str_hash_(const char *str){
+#define HASH_64BIT_LIMIT 12
+
+/// @brief Return a __uint128_t variable.
+/// @param str The string to be hashed.
+/// @return A __uint128_t value.
+size_t *str_hash_(const char *str){
 	// A large, odd prime number is a good choice for the initial hash value.
     // 5381 is a common value used in the DJB2 algorithm.
-    size_t hash = 5381;
+    uint128_t hash = 5381;
+	size_t cc =0;
     int c;
 
     // A simple loop to iterate through the string until the null terminator is found.
@@ -40,7 +46,10 @@ const size_t str_hash_(const char *str){
         // hash = hash * 33 + c;
         // The bitwise left shift `(hash << 5)` is an efficient way to do `hash * 32`.
         // Then we add the original hash to get `hash * 33`.
-        hash = ((hash << 5) + hash) + c;
+		++cc;
+		if(cc > HASH_64BIT_LIMIT){
+			hash[1] = ((hash[1] << 5) + hash[1]) + c;
+		}else{hash[0] = ((hash[0] << 5) + hash[0]) + c;}
     }
     return hash;
 }
@@ -68,3 +77,6 @@ void str_tolower(char *str) {
         str[i] = tolower(str[i]);
     }
 }
+
+bool uint128_t_comps(__uint128_t a, size_t b){return a[1] == b;}
+bool uint128_t_comp(__uint128_t a, __uint128_t b){return a[0] == b[0] && a[1] == b[1];}

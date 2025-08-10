@@ -62,9 +62,9 @@ param(
 )
 
 # --- Configuration ---
-# $gccPath = "C:\msys64\mingw64\bin\gcc.exe"
+$gccPath = "C:\msys64\mingw64\bin\gcc.exe"
 # $gccPath = "gcc"
-$gccPath = "x86_64-w64-mingw32-gcc"
+# $gccPath = "x86_64-w64-mingw32-gcc"
 $buildDir = Join-Path (Get-Location) "Build"
 $logDir = Join-Path (Get-Location) "Resources\Logs"
 $logFile = Join-Path $logDir ("log_" + (Get-Date -Format "yyyy-MM-dd_HH-mm-ss") + ".txt")

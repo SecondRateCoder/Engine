@@ -2,6 +2,7 @@
 
 #include "Public.h"
 #include "window.h"
+#include <stdint.h>
 #include <stdbool.h>
 
 
@@ -9,10 +10,6 @@
 #ifndef _DP_H
 #define _DP_H
 
-#define arrk_t arrkey
-#define bufferobj_t buffer_object
-#define shaderblock_t ComputeShaderBlock
-#define image_t texture_image
 
 /// @brief Handle a shaderblock_t *pointer, Handling errors and compiling it with available Shaders,
 /// As well as printing the necessary error Messages with printf.
@@ -79,54 +76,11 @@ do { \
     } \
 } while(counter < MAX_ || success == false)
 
-// #define BUFFEROBJECT_HANDLE(BO, VERTICES, len, INDEX_ORDER, ilen, DRAW_FORMAT)   \
-//     /*Ensure BO is not NULL*/    \
-//     if(BO == NULL){ \
-//         BO = (bufferobj_t*)malloc(sizeof(bufferobj_t));   \
-// 		BO->VBO = malloc(sizeof(GLuint));  \
-// 		BO->EBO = malloc(sizeof(GLuint));  \
-//     }   \
-//     /*VAO not set-up*/    \
-//     if(BO->buffer_[0] == false){    \
-//         if(BO->VAO == 0){glGenVertexArrays(1, &BO->VAO);}    \
-//         glBindVertexArray(BO->VAO);    \
-//     }   \
-//     /*VBO not set-up*/    \
-//     if(BO->buffer_[1] == false && VERTICES != NULL){    \
-//         if(BO->VBO_len == 0){ \
-//             glGenBuffers(1, BO->VBO);  \
-//             BO->VBO_len = 1;   \
-//         }   \
-//         glBindBuffer(GL_ARRAY_BUFFER, BO->VBO); \
-//         glBufferData(GL_ARRAY_BUFFER, len * sizeof(GLfloat), VERTICES, DRAW_FORMAT);   \
-//         }   \
-//     /*EBO not set-up*/    \
-//     if(BO->buffer_[2] == false && INDEX_ORDER != NULL){    \
-//         GLuint* actual_indexes = NULL;  \
-//         if((*ilen) < len/3){*ilen = 0;}else{    \
-//             /*ilen is greater than or equal to len/3.*/\
-//             *ilen = len/3;	\
-//         }   \
-//         bool free_indexes = false;  \
-//         /*Handle when INDEX_ORDER is NULL, using an array of {1, 2, 3, 4... (len-1)}*/\
-//         if(INDEX_ORDER == NULL || (*ilen) == 0){ \
-//             *ilen = len/3;   \
-//             actual_indexes = (GLuint*)malloc((*ilen)* sizeof(GLuint)); \
-//             if(actual_indexes){   \
-//                 for(size_t cc = 0; cc < len; ++cc){actual_indexes[cc] = cc;}   \
-//                 free_indexes = true;    \
-//             }   \
-//         }else{actual_indexes = (GLuint*)indexes;}   \
-//         /*Finish handling EBO*/\
-//         if(BO->EBO == 0){glGenBuffers(1, BO->EBO);}   \
-//         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, BO->EBO);    \
-//         glBufferData(GL_ELEMENT_ARRAY_BUFFER, (*ilen) * sizeof(GLuint), actual_indexes, DRAW_FORMAT);   \
-//     }   \
-
 typedef struct arrkey{
     GLint Location;
     char *name, *type;
 }arrkey;
+#define arrk_t arrkey
 
 typedef struct ComputeShaderBlock{
     //Length 8.
@@ -153,7 +107,7 @@ typedef struct ComputeShaderBlock{
         // *computeShader
         ;
 }ComputeShaderBlock;
-
+#define shaderblock_t ComputeShaderBlock
 
 typedef struct buffer_object{
     /*
@@ -185,12 +139,14 @@ typedef struct buffer_object{
     /// If there are no EBOs then a default will be attributed.
     GLuint *EBO;
 }buffer_object;
+#define bufferobj_t buffer_object
 
 typedef struct texture_image{
     int width, height, color_channels;
     GLuint ID;
     unsigned char *img;
 }texture_image;
+#define image_t texture_image
 
 typedef enum BUFFER_OPTIONS{
 	//For single buffer objects.
@@ -216,11 +172,6 @@ typedef enum BUFFER_OPTIONS{
 
 char *cwd;
 #define MAX_PATHLENGTH 1024* 1024
-#ifdef _WIN32
-#include <direct.h>
-#else
-#include <unistd.h>
-#endif
 
 //Length: 53
 const char *vertexshader_default = 
@@ -272,20 +223,20 @@ static const char* builtin_shader_typenames[] = {
     "usampler1D", "usampler2D"
 };
 
-static const __uint128_t builtin_shader_typehash[] = {
-    0x17a615d41U, 0xba24308U, 0x3c498b715c77a344dU, 0x3105a2e583U,
-    0x17a626b175U, 0x17a626b176U, 0x17a626b177U,
-    0x310600109aU, 0x310600109bU, 0x310600109cU,
-    0x3107b71892U, 0x3107b71893U, 0x3107b71894U,
-    0x3105822e17U, 0x3105822e18U, 0x3105822e19U,
-    0x17a61e7a59U, 0x17a61e7a5aU, 0x17a61e7a5U,
-    0x6513470716cU, 0x6513470764cU, 0x6513470716dU, 0x65134707ba5U, 0x6513470764eU, 0x65134707ba6U,
-    0x3616641d8e1837eU, 0x3616641d8e183a3U, 0x3616641d8e183c4U,
-    0x3c498327d63654478U, //SamplerCube
-    0x47781b0f5de1e434f0d364U, 0x47781b0f5de1e435a29795U,
-    0x163479a4714d88e0e6433eU, 0x2c98144203a96c279e53412b264U, 
-    0x122485303c7395017U, 0x122485303c7395038U, 
-    0x1224905d4f23b7b63U, 0x1224905d4f23b7b84U};
+static const uint128_t builtin_shader_typehash[] = {
+    0x17a615d41, 0xba24308, {0x3c498b715c77a344d}, 0x3105a2e583,
+    0x17a626b175, 0x17a626b176, 0x17a626b177,
+    0x310600109a, 0x310600109b, 0x310600109c,
+    0x3107b71892, 0x3107b71893, 0x3107b71894,
+    0x3105822e17, 0x3105822e18, 0x3105822e19,
+    0x17a61e7a59, 0x17a61e7a5a, 0x17a61e7a5,
+    0x6513470716c, 0x6513470764c, 0x6513470716d, 0x65134707ba5, 0x6513470764e, 0x65134707ba6,
+    0x3616641d8e1837e, 0x3616641d8e183a3, 0x3616641d8e183c4,
+    0x3c498327d63654478, //SamplerCube
+    0x47781b0f5de1e434f0d364, 0x47781b0f5de1e435a29795,
+    0x163479a4714d88e0e6433e, 0x2c98144203a96c279e53412b264, 
+    0x122485303c7395017, 0x122485303c7395038, 
+    0x1224905d4f23b7b63, 0x1224905d4f23b7b84};
 
 const size_t NUM_BUILTIN_TYPES = sizeof(builtin_shader_typenames) / sizeof(builtin_shader_typenames[0]);
 
