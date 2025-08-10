@@ -2162,7 +2162,7 @@ In file included from /workspaces/Engine/engine/Public.h:6,
  1100 | #define glViewport glad_glViewport
       |                    ^~~~~~~~~~~~~~~
 /workspaces/Engine/Libraries/include/glad/glad.h:1099:25: note: previous declaration of ‘glad_glViewport’ with type ‘PFNGLVIEWPORTPROC’ {aka ‘void (*)(int,  int,  int,  int)’}
- 1099 | GLAPI PFNGLVIEWPORTPROC glad_glViewport;
+END OF GLAD errrorrr 1099 | GLAPI PFNGLVIEWPORTPROC glad_glViewport;
       |                         ^~~~~~~~~~~~~~~
 In file included from /workspaces/Engine/engine/Public.h:10:
 /workspaces/Engine/engine/graphics/drawingprotocol.h:82:1: warning: multi-line comment [-Wcomment]
