@@ -8,5 +8,6 @@
         "string.h": "c",
         "glad.h": "c",
         "stdlib.h": "c"
-    }
+    },
+    "C_Cpp.default.compilerPath": "C:/msys64/mingw64/bin/gcc.exe"
 }

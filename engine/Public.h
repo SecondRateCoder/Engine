@@ -3,7 +3,6 @@
 #ifndef _PUBLIC_H
 #define _PUBLIC_H
 
-// #include "glad/glad.h"
 #include "glad/glad.h"
 #include "KHR/khrplatform.h"
 #include "GLFW/glfw3.h"
