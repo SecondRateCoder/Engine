@@ -78,5 +78,5 @@ void str_tolower(char *str) {
     }
 }
 
-bool uint128_t_comps(__uint128_t a, size_t b){return a[1] == b;}
-bool uint128_t_comp(__uint128_t a, __uint128_t b){return a[0] == b[0] && a[1] == b[1];}
+bool uint128_t_comps(uint128_t a, size_t b){return a[1] == b;}
+bool uint128_t_comp(uint128_t a, uint128_t b){return a[0] == b[0] && a[1] == b[1];}

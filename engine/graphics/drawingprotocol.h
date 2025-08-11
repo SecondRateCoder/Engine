@@ -220,10 +220,11 @@ static const char* builtin_shader_typenames[] = {
     "sampler1D", "sampler2D", "sampler3D", "samplerCube",
     "sampler1DShadow", "sampler2DShadow", "sampler2DArray",
     "sampler2DArrayShadow", "isampler1D", "isampler2D",
-    "usampler1D", "usampler2D"
-};
+    "usampler1D", "usampler2D"};
 
-static const uint128_t builtin_shader_typehash[] = {
+
+/*
+OLD_TYPE_NAME_HASHES:
     0x17a615d41, 0xba24308, {0x3c498b715c77a344d}, 0x3105a2e583,
     0x17a626b175, 0x17a626b176, 0x17a626b177,
     0x310600109a, 0x310600109b, 0x310600109c,
@@ -237,6 +238,23 @@ static const uint128_t builtin_shader_typehash[] = {
     0x163479a4714d88e0e6433e, 0x2c98144203a96c279e53412b264, 
     0x122485303c7395017, 0x122485303c7395038, 
     0x1224905d4f23b7b63, 0x1224905d4f23b7b84};
+
+*/
+
+static const uint128_t builtin_shader_typehash[] = {
+    {0, 3646476,}, {0, 118091}, {0, 184466353937349512}, {0, 124969334},
+    {0, 4353872}, {0, 4353873},  {0, 4353874},
+    {0, 128875577},  {0, 128875578},  {0, 128875579},
+    {0, 143106629},  {0, 143106630},  {0, 143106631},
+    {0, 120574130},  {0, 120574131},  {0, 120574132},
+    {0, 4026644},  {0, 4026645},  {0, 4026646},
+    {0, 4385019327},  {0, 4385020415},  {0, 4385019328},  {0, 4385021504},  {0, 4385020417},  {0, 4385021505},
+    {0, 166016265074057},  {0, 166016265074090},  {0, 166016265074123},
+    {0, 180791712666351635}, //SamplerCube
+    {0, 16629051508994671055},  {0, 16629051551613114032},
+    {0, 3857864121005407689},  {0, 12598728139851495951}, 
+    {0, 5039222127279122},  {0, 5039222127279155}, 
+    {0, 5596159940102558},  {0, 5596159940102591}};
 
 const size_t NUM_BUILTIN_TYPES = sizeof(builtin_shader_typenames) / sizeof(builtin_shader_typenames[0]);
 

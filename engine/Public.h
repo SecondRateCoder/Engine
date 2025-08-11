@@ -3,6 +3,7 @@
 #ifndef _PUBLIC_H
 #define _PUBLIC_H
 
+// #include "glad/glad.h"
 #include "glad/glad.h"
 #include "KHR/khrplatform.h"
 #include "GLFW/glfw3.h"
@@ -25,7 +26,7 @@
 #define IS_SPACE(chr) (int)chr == (int)' '
 
 /// @brief A type with a size_t lower and size_t upper, using these to describe 16 byte values.
-typedef size_t uint128_t[2];
+typedef unsigned long long uint128_t[2];
 
 #if defined(__APPLE__)
 #include <stdlib.h>
