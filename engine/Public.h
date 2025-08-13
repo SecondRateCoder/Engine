@@ -3,10 +3,10 @@
 #ifndef _PUBLIC_H
 #define _PUBLIC_H
 
-#include "./Libraries/include/glad/glad.h"
-#include "./Libraries/include/KHR/khrplatform.h"
-#include "./Libraries/include/GLFW/glfw3.h"
-#include "./Libraries/include/GLFW/glfw3native.h"
+#include "./Libraries/include/glad.h"
+#include "./Libraries/include/khrplatform.h"
+#include "./Libraries/include/glfw3.h"
+#include "./Libraries/include/glfw3native.h"
 #include "./graphics/graphics.h"
 #include "./Libraries/include/cglm/cglm.h"
 #include <immintrin.h>

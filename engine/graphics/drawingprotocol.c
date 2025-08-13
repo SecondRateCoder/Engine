@@ -1,4 +1,4 @@
-#include "C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h"
+#include "../Engine/engine/Public.h"
 
 #define GL_GLEXT_PROTOTYPES
 
@@ -553,7 +553,8 @@ void win_draw(win_t *win, const GLfloat *points, size_t len, GLuint *indexes, si
 		win->buffers[0].VBO = malloc(sizeof(GLuint));
 		win->buffers[0].EBO = malloc(sizeof(GLuint));
 	}
-	BUFFEROBJECT_HANDLE(&win->buffers[win->buffer_curr], points, len, indexes, &ilen, GL_STATIC_DRAW, 10);
+	bufferobj_t *temp_ptr = &win->buffers[win->buffer_curr];
+	BUFFEROBJECT_HANDLE(temp_ptr, points, len, indexes, &ilen, GL_STATIC_DRAW, 10);
 	// Configure vertex attribute pointers
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
 	glEnableVertexAttribArray(0);
