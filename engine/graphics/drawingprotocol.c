@@ -1,4 +1,4 @@
-#include "Public.h"
+#include "C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h"
 
 #define GL_GLEXT_PROTOTYPES
 
@@ -407,31 +407,31 @@ void uniform_write(shaderblock_t* shader, const char* type, const char* name, co
 			glUniform4uiv(location, num_elements, (const GLuint*)value);
 			break;
 		case builtin_shader_typehash[13]: // mat2
-			glUniformMatrix2fv(location, num_elements, transpose != NULL && *transpose, (const GLfloat*)value);
+			glUniformMatrix2fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
 			break;
 		case builtin_shader_typehash[14]: // mat3
-			glUniformMatrix3fv(location, num_elements, transpose != NULL && *transpose, (const GLfloat*)value);
+			glUniformMatrix3fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
 			break;
 		case builtin_shader_typehash[15]: // mat4
-			glUniformMatrix4fv(location, num_elements, transpose != NULL && *transpose, (const GLfloat*)value);
+			glUniformMatrix4fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
 			break;
 		case builtin_shader_typehash[16]: // mat2x3
-			glUniformMatrix2x3fv(location, num_elements, transpose != NULL && *transpose, (const GLfloat*)value);
+			glUniformMatrix2x3fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
 			break;
 		case builtin_shader_typehash[17]: // mat3x2
-			glUniformMatrix3x2fv(location, num_elements, transpose != NULL && *transpose, (const GLfloat*)value);
+			glUniformMatrix3x2fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
 			break;
 		case builtin_shader_typehash[18]: // mat2x4
-			glUniformMatrix2x4fv(location, num_elements, transpose != NULL && *transpose, (const GLfloat*)value);
+			glUniformMatrix2x4fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
 			break;
 		case builtin_shader_typehash[19]: // mat4x2
-			glUniformMatrix4x2fv(location, num_elements, transpose != NULL && *transpose, (const GLfloat*)value);
+			glUniformMatrix4x2fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
 			break;
 		case builtin_shader_typehash[20]: // mat3x4
-			glUniformMatrix3x4fv(location, num_elements, transpose != NULL && *transpose, (const GLfloat*)value);
+			glUniformMatrix3x4fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
 			break;
 		case builtin_shader_typehash[21]: // mat4x3
-			glUniformMatrix4x3fv(location, num_elements, transpose != NULL && *transpose, (const GLfloat*)value);
+			glUniformMatrix4x3fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
 			break;
 		default:
 			fprintf(stderr, "Error: Unsupported shader type or uniform '%s' not found.\n", type);

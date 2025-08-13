@@ -1,0 +1,14 @@
+﻿cl : command line  warning D9007: '/C' requires '/E, /EP or /P'; option ignored
+  glad.c
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\glad.c(1143,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "stdafx.h"' to your source?
+  DrawingProtocol.c
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Graphics\DrawingProtocol.c(703,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "stdafx.h"' to your source?
+  Window.c
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Graphics\Window\Window.c(128,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "stdafx.h"' to your source?
+  main.c
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c(98,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "stdafx.h"' to your source?
+  _3D.c
+\engine\_3D.c(1,1): error C1083: Cannot open source file: 'engine\_3D.c': No such file or directory
+  (compiling source file '/engine/_3D.c')
+  
+  Generating Code...

@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "drawingprotocol.h"
+#include "./graphics/drawingprotocol.h"
 
 // Assuming 'cwd' is a global variable populated by cwd_init() from your Public.h
 // If it's not global, you would need to adjust how it's accessed.
@@ -62,7 +62,7 @@ int main() {
 
     win_poll(mainw);
     win_kill(mainw);
-    return 0; // Returning 0 is standard for a successful execution
+    return EXIT_SUCCESS; // Returning 0 is standard for a successful execution
 }
 
 void poll_draw(win_t *win, size_t pollcycles){

@@ -1,7 +1,28 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4C17C22A-624A-4D57-B06B-C22C91FD7609}|Engine.vcxproj|C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\Graphics\\DrawingProtocol.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{4C17C22A-624A-4D57-B06B-C22C91FD7609}|Engine.vcxproj|solutionrelative:engine\\Graphics\\DrawingProtocol.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C17C22A-624A-4D57-B06B-C22C91FD7609}|Engine.vcxproj|C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\Graphics\\Window\\Window.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{4C17C22A-624A-4D57-B06B-C22C91FD7609}|Engine.vcxproj|solutionrelative:engine\\Graphics\\Window\\Window.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C17C22A-624A-4D57-B06B-C22C91FD7609}|Engine.vcxproj|C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{4C17C22A-624A-4D57-B06B-C22C91FD7609}|Engine.vcxproj|solutionrelative:engine\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C17C22A-624A-4D57-B06B-C22C91FD7609}|Engine.vcxproj|C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\Graphics\\DrawingProtocol.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{4C17C22A-624A-4D57-B06B-C22C91FD7609}|Engine.vcxproj|solutionrelative:engine\\Graphics\\DrawingProtocol.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4C17C22A-624A-4D57-B06B-C22C91FD7609}|Engine.vcxproj|C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\glad.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{4C17C22A-624A-4D57-B06B-C22C91FD7609}|Engine.vcxproj|solutionrelative:engine\\glad.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -21,7 +42,76 @@
             },
             {
               "$type": "Bookmark",
+              "Name": "ST:0:0:{de1fc918-f32e-4dd7-a915-1792a051f26b}"
+            },
+            {
+              "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Window.h",
+              "DocumentMoniker": "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\graphics\\window\\window.h",
+              "RelativeDocumentMoniker": "engine\\graphics\\window\\window.h",
+              "ToolTip": "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\graphics\\window\\window.h",
+              "RelativeToolTip": "engine\\graphics\\window\\window.h",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAlwB8AAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-08-12T10:38:44.815Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DrawingProtocol.c",
+              "DocumentMoniker": "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\graphics\\drawingprotocol.c",
+              "RelativeDocumentMoniker": "engine\\graphics\\drawingprotocol.c",
+              "ToolTip": "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\graphics\\drawingprotocol.c",
+              "RelativeToolTip": "engine\\graphics\\drawingprotocol.c",
+              "ViewState": "AgIAAI4CAAAAAAAAAAAlwKECAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2025-08-12T10:36:07.436Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DrawingProtocol.h",
+              "DocumentMoniker": "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\graphics\\drawingprotocol.h",
+              "RelativeDocumentMoniker": "engine\\graphics\\drawingprotocol.h",
+              "ToolTip": "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\graphics\\drawingprotocol.h",
+              "RelativeToolTip": "engine\\graphics\\drawingprotocol.h",
+              "ViewState": "AgIAABgAAAAAAAAAAAAAACwAAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-08-12T10:33:12.744Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "main.c",
+              "DocumentMoniker": "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\main.c",
+              "RelativeDocumentMoniker": "engine\\main.c",
+              "ToolTip": "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\main.c",
+              "RelativeToolTip": "engine\\main.c",
+              "ViewState": "AgIAADAAAAAAAAAAAAAAAEEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2025-08-12T10:32:53.523Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "glad.c",
+              "DocumentMoniker": "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\glad.c",
+              "RelativeDocumentMoniker": "engine\\glad.c",
+              "ToolTip": "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\glad.c",
+              "RelativeToolTip": "engine\\glad.c",
+              "ViewState": "AgIAAGEEAAAAAAAAAAAAwGUEAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2025-08-12T10:32:37.618Z",
+              "EditorCaption": ""
             }
           ]
         }

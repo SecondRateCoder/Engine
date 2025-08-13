@@ -3,13 +3,13 @@
 #ifndef _PUBLIC_H
 #define _PUBLIC_H
 
-#include "glad/glad.h"
-#include "KHR/khrplatform.h"
-#include "GLFW/glfw3.h"
-#include "GLFW/glfw3native.h"
-#include "drawingprotocol.h"
-#include "window.h"
-#include "cglm/cglm.h"
+#include "./Libraries/include/glad/glad.h"
+#include "./Libraries/include/KHR/khrplatform.h"
+#include "./Libraries/include/GLFW/glfw3.h"
+#include "./Libraries/include/GLFW/glfw3native.h"
+#include "./graphics/drawingprotocol.h"
+#include "./graphics/window/window.h"
+#include "./Libraries/include/cglm/cglm.h"
 #include <immintrin.h>
 #include <xmmintrin.h>
 #include <stdbool.h>
