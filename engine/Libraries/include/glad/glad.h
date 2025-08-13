@@ -86,7 +86,7 @@ GLAPI int gladLoadGL(void);
 
 GLAPI int gladLoadGLLoader(GLADloadproc);
 
-#include "Libraries/include/KHR/khrplatform.h"
+#include "C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\KHR\khrplatform.h"
 typedef unsigned int GLenum;
 typedef unsigned char GLboolean;
 typedef unsigned int GLbitfield;

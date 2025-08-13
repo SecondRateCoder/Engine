@@ -42,7 +42,7 @@
     <ClCompile Include="engine\Graphics\DrawingProtocol.c">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="engine\Graphics\Window\Window.c">
+    <ClCompile Include="engine\graphics\Window.c">
       <Filter>Source Files\Graphics\Window</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,11 +53,8 @@
     <ClInclude Include="engine\Public.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\Graphics\DrawingProtocol.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\Graphics\Window\Window.h">
-      <Filter>Header Files\Graphics\Window</Filter>
+    <ClInclude Include="engine\graphics\graphics.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

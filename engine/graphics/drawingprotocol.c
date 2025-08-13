@@ -118,7 +118,7 @@ void shaders_pull(const char* filepath){
 			if (vs_cc == vsindex) {
 				// Found the correct vertex shader. Read its content.
 				long start_pos = ftell(shaders);
-				char temp[10];
+				char temp[10] = "\0\0\0\0\0\0\0\0\0\0";
 				long end_pos = start_pos;
 				while (fgets(line_buffer, sizeof(line_buffer), shaders) != NULL) {
 					if (strncmp(line_buffer, "#shaderend", 10) == 0) {
@@ -195,9 +195,7 @@ void uniform_init(shaderblock_t* sb_t) {
 
 	// Clear existing uniforms before populating
 	if (sb_t->uniforms) {
-		for (size_t i = 0; i < sb_t->uniform_len; ++i) {
-			destroy_arrkey(&sb_t->uniforms[i]);
-		}
+		for (size_t i = 0; i < sb_t->uniform_len; ++i) {destroy_arrkey(&sb_t->uniforms[i]);}
 		free(sb_t->uniforms);
 		sb_t->uniforms = NULL;
 		sb_t->uniform_len = 0;
@@ -552,10 +550,10 @@ void win_draw(win_t *win, const GLfloat *points, size_t len, GLuint *indexes, si
 		win->buffers = (bufferobj_t*)malloc(sizeof(bufferobj_t));
 		win->buffer_curr = 0;
 		win->buffer_len = 1;
-		win->buffers[0]->VBO = malloc(sizeof(GLuint));
-		win->buffers[0]->EBO = malloc(sizeof(GLuint));
+		win->buffers[0].VBO = malloc(sizeof(GLuint));
+		win->buffers[0].EBO = malloc(sizeof(GLuint));
 	}
-	BUFFEROBJECT_HANDLE(win->buffers[win->buffer_curr], points, len, indexes, &ilen, GL_STATIC_DRAW, 10);
+	BUFFEROBJECT_HANDLE(&win->buffers[win->buffer_curr], points, len, indexes, &ilen, GL_STATIC_DRAW, 10);
 	// Configure vertex attribute pointers
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
 	glEnableVertexAttribArray(0);
@@ -697,6 +695,6 @@ void *buffer_bufferdo(bufferobj_t* buffer, const size_t len, const BUFFER_OPTION
 
 bufferobj_t *win_buffercurr(win_t *win){
 	if(win->buffer_curr >= win->buffer_len){win->buffer_curr = win->buffer_len - 1;}
-	return win->buffers[win->buffer_curr];
+	return &win->buffers[win->buffer_curr];
 }
 

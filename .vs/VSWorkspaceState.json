@@ -1,10 +1,6 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\engine",
-    "\\engine\\graphics",
-    "\\engine\\graphics\\window"
+    ""
   ],
-  "SelectedNode": "\\engine\\graphics\\drawingprotocol.h",
-  "PreviewInSolutionExplorer": true
+  "PreviewInSolutionExplorer": false
 }

@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "./graphics/drawingprotocol.h"
+#include "./graphics/graphics.h"
 
 // Assuming 'cwd' is a global variable populated by cwd_init() from your Public.h
 // If it's not global, you would need to adjust how it's accessed.

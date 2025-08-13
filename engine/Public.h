@@ -7,8 +7,7 @@
 #include "./Libraries/include/KHR/khrplatform.h"
 #include "./Libraries/include/GLFW/glfw3.h"
 #include "./Libraries/include/GLFW/glfw3native.h"
-#include "./graphics/drawingprotocol.h"
-#include "./graphics/window/window.h"
+#include "./graphics/graphics.h"
 #include "./Libraries/include/cglm/cglm.h"
 #include <immintrin.h>
 #include <xmmintrin.h>

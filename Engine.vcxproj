@@ -136,14 +136,13 @@
   <ItemGroup>
     <ClCompile Include="engine\glad.c" />
     <ClCompile Include="engine\Graphics\DrawingProtocol.c" />
-    <ClCompile Include="engine\Graphics\Window\Window.c" />
+    <ClCompile Include="engine\graphics\Window.c" />
     <ClCompile Include="engine\main.c" />
     <ClCompile Include="engine\_3D.c" />
   </ItemGroup>
   <!-- Header Files -->
   <ItemGroup>
-    <ClInclude Include="engine\Graphics\DrawingProtocol.h" />
-    <ClInclude Include="engine\Graphics\Window\Window.h" />
+    <ClInclude Include="engine\graphics\graphics.h" />
     <ClInclude Include="engine\Public.h" />
     <ClInclude Include="engine\_3D.h" />
   </ItemGroup>
