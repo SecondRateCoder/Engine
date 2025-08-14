@@ -1,0 +1,10 @@
+3.30000000
+^Settings.
+
+#define fs
+
+#version 330 core
+
+layout()
+
+#shaderend

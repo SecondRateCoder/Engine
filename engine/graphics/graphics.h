@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Public.h"
+#include "engine/Public.h"
 //#include "./window/window.h"
 #include <stdint.h>
 #include <stdbool.h>
@@ -12,17 +12,15 @@
 
 /// @brief Handle a shaderblock_t *pointer, Handling errors and compiling it with available Shaders,
 /// As well as printing the necessary error Messages with printf.
-#define SHADERBLOCK_HANDLE(SB, CLEAN) if(!SB->compiled_[7]){   \
+#define SHADERBLOCK_HANDLE(SB, CLEAN, DO_UNIFORMS) if(!SB->compiled_[7]){   \
 	if(vertexshader == NULL || fragmentshader == NULL){ \
 		printf("Vertex or Fragment Shader not set, resolving.\n");  \
 		char *default_dir = cwd;    \
 		strncat(default_dir, "engine/Graphics/Shaders.txt", 30);    \
 		shaders_pull(default_dir);  \
 	}   \
-	if(SB->compiled_[7] == false){  \
-		SB =shader_compile(CLEAN); \
-		uniform_init(SB);   \
-	}    \
+	if(SB->compiled_[7] == false){SB =shader_compile(CLEAN);}    \
+	if(DO_UNIFORMS){uniform_init(SB);}	\
 }	\
 
 

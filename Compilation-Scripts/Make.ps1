@@ -29,7 +29,7 @@
 
 
 #! My Compilation command.
-# ./Compilation-Scripts/Make.ps1 -SourceDirectory "./engine" -OutputExecutableName "engine.exe" -GccFlags "-O1", "-Wextra", "-std=c99", "-Wall", "-Wl,--verbose" -LibraryPaths "./Libraries/lib" -Libraries "glfw3", "glfw3dll" -IncludePaths "./Libraries/include", "./engine", "./engine/graphics", "./engine/graphics/window"
+# ./Compilation-Scripts/Make.ps1 -SourceDirectory "./engine" -OutputExecutableName "engine.exe" -GccFlags "-O1", "-Wextra", "-std=c99", "-Wall", "-Wl,--verbose" -LibraryPaths "./engine/Libraries/lib" -Libraries "glfw3", "glfw3dll" -IncludePaths "./engine/Libraries/include", "./engine", "./engine/graphics"
 
 #! Optional GCC Flags:
 # -GccFlags "-O1", "-Wextra", "-std=c99", "-Wall", "-pedantic", "-Wl,--verbose"
@@ -62,8 +62,8 @@ param(
 )
 
 # --- Configuration ---
-$gccPath = "C:\msys64\mingw64\bin\gcc.exe"
-# $gccPath = "gcc"
+# $gccPath = "C:\msys64\mingw64\bin\gcc.exe"
+$gccPath = "gcc"
 # $gccPath = "x86_64-w64-mingw32-gcc"
 $buildDir = Join-Path (Get-Location) "Build"
 $logDir = Join-Path (Get-Location) "Resources\Logs"
@@ -108,12 +108,16 @@ function C_Compile {
     )
     $fileName = [System.IO.Path]::GetFileNameWithoutExtension($FilePath)
     $outputObjectFile = Join-Path $BuildDirectory "$($fileName).o"
-    New-Item -Path $outputObjectFile -ItemType File
+    New-Item -Path $FilePath -ItemType File -Force
+    New-Item -Path $outputObjectFile -ItemType File -Force
+    
+    # Remove the New-File and New-Item lines. They are not needed.
+    # The GCC command will create the file.
 
     Write-Log "Compiling $($FilePath) to $($outputObjectFile)..."
 
     $arguments = @(
-        "-c"
+        "-c",
         "$(Resolve-Path $FilePath)"
     )
 
@@ -141,18 +145,24 @@ function C_Compile {
         # Capture all output streams from GCC
         $gccOutput = & $GccExecutable $arguments 2>&1
         
-        # Write the captured output to the log file
-        $gccOutput | ForEach-Object { Write-Log $_ }
-
-        if ($LASTEXITCODE -eq 0) {
+        # Check the success status variable $? immediately after execution
+        if ($?) {
             Write-Log "Successfully compiled $($FilePath)"
+            if ($gccOutput) {
+                $gccOutput | ForEach-Object { Write-Log "Output: $_" }
+            }
             return $true
         } else {
             Write-Log "FAILED: Failed to compile $($FilePath). GCC Exit Code: $($LASTEXITCODE)"
+            # Write the captured error output to the log file
+            if ($gccOutput) {
+                $gccOutput | ForEach-Object { Write-Log "ERROR: $_" }
+            }
             return $false
         }
     } catch {
-        Write-Log "ERROR: Error during compilation of $($FilePath): $($_.Exception.Message)"
+        Write-Log "CRITICAL ERROR: Exception during compilation of $($FilePath):"
+        Write-Log $_.Exception.ToString()
         return $false
     }
 }
@@ -173,7 +183,6 @@ function Obj_Link {
     }
 
     $outputExecutablePath = Join-Path $BuildDirectory $OutputName
-    New-Item -Path $outputExecutablePath -ItemType File
     
     $arguments = @()
 
@@ -208,6 +217,7 @@ function Obj_Link {
     }
 
     $arguments += "-o"
+    New-Item -Path $outputExecutablePath -ItemType File -Force
     $arguments += "$(Resolve-Path $outputExecutablePath)"
 
     Write-Log "Linking object files into $($outputExecutablePath)..."
@@ -217,18 +227,23 @@ function Obj_Link {
         # Capture all output streams from GCC
         $gccOutput = & $GccExecutable $arguments 2>&1
         
-        # Write the captured output to the log file
-        $gccOutput | ForEach-Object { Write-Log $_ }
-
-        if ($LASTEXITCODE -eq 0) {
+        # Check the success status variable $? immediately after execution
+        if ($?) {
             Write-Log "Successfully linked all object files to $($outputExecutablePath)"
+             if ($gccOutput) {
+                $gccOutput | ForEach-Object { Write-Log "Output: $_" }
+            }
             return $true
         } else {
             Write-Log "FAILED: Failed to link object files. GCC Exit Code: $($LASTEXITCODE)"
+            if ($gccOutput) {
+                $gccOutput | ForEach-Object { Write-Log "ERROR: $_" }
+            }
             return $false
         }
     } catch {
-        Write-Log "ERROR: Error during linking: $($_.Exception.Message)"
+        Write-Log "CRITICAL ERROR: Exception during linking:"
+        Write-Log $_.Exception.ToString()
         return $false
     }
 }
@@ -286,7 +301,7 @@ if ($AdditionalSourceDirectory) {
 
 # 6. Link all .o files in the Build directory
 Write-Log "Starting linking phase..."
-if (-not (Obj_Link -BuildDirectory $buildDir -OutputName $OutputExecutableName -GccExecutable $gccPath -LibraryDirectories $LibraryPaths -LibraryNames $Libraries -CustomGccFlags $GccFlags) -eq 0) {
+if (-not (Obj_Link -BuildDirectory $buildDir -OutputName $OutputExecutableName -GccExecutable $gccPath -LibraryDirectories $LibraryPaths -LibraryNames $Libraries -CustomGccFlags $GccFlags)) {
     Write-Log "Linking failed. See previous errors."
     exit 1
 }

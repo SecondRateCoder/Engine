@@ -3,7 +3,7 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/",
+                "${workspaceFolder}",
                 "${workspaceFolder}/engine/Libraries/include",
                 "${workspaceFolder}/engine/Libraries/lib"
             ],

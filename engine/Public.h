@@ -9,6 +9,7 @@
 #include "./Libraries/include/glfw3native.h"
 #include "./graphics/graphics.h"
 #include "./Libraries/include/cglm/cglm.h"
+#include <ctype.h>
 #include <immintrin.h>
 #include <xmmintrin.h>
 #include <stdbool.h>

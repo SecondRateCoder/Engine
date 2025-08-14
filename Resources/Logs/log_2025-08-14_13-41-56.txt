@@ -1,0 +1,1080 @@
+Checking for GCC availability...
+GCC found: C:\msys64\mingw64\bin\gcc.exe
+Setting up Build directory: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build
+Clearing existing Build directory contents...
+Searching for .c files in './engine'...
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\Functions.o...
+Command: C:\msys64\mingw64\bin\gcc.exe -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -O1 -Wextra -std=c99 -Wall -Wl,--verbose -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\Functions.o
+FAILED: Failed to compile C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c. GCC Exit Code: 1
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\glad.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\glad.o...
+Command: C:\msys64\mingw64\bin\gcc.exe -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\glad.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -O1 -Wextra -std=c99 -Wall -Wl,--verbose -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\glad.o
+FAILED: Failed to compile C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\glad.c. GCC Exit Code: 1
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\main.o...
+Command: C:\msys64\mingw64\bin\gcc.exe -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -O1 -Wextra -std=c99 -Wall -Wl,--verbose -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\main.o
+FAILED: Failed to compile C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c. GCC Exit Code: 1
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\drawingprotocol.o...
+Command: C:\msys64\mingw64\bin\gcc.exe -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -O1 -Wextra -std=c99 -Wall -Wl,--verbose -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\drawingprotocol.o
+FAILED: Failed to compile C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c. GCC Exit Code: 1
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\Window.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\Window.o...
+Command: C:\msys64\mingw64\bin\gcc.exe -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\Window.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -O1 -Wextra -std=c99 -Wall -Wl,--verbose -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\Window.o
+FAILED: Failed to compile C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\Window.c. GCC Exit Code: 1
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\stb.o...
+Command: C:\msys64\mingw64\bin\gcc.exe -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -O1 -Wextra -std=c99 -Wall -Wl,--verbose -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\stb.o
+FAILED: Failed to compile C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb.c. GCC Exit Code: 1
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb_vorbis.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\stb_vorbis.o...
+Command: C:\msys64\mingw64\bin\gcc.exe -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb_vorbis.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -O1 -Wextra -std=c99 -Wall -Wl,--verbose -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\stb_vorbis.o
+FAILED: Failed to compile C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb_vorbis.c. GCC Exit Code: 1
+Starting linking phase...
+Linking object files into C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\engine.exe...
+Command: C:\msys64\mingw64\bin\gcc.exe C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\drawingprotocol.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\Functions.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\glad.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\main.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\stb.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\stb_vorbis.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\Window.o -L C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib -l glfw3 -l glfw3dll -O1 -Wextra -std=c99 -Wall -Wl,--verbose -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\engine.exe
+FAILED: Failed to link object files. GCC Exit Code: 1
+ERROR: GNU ld (GNU Binutils) 2.44
+ERROR:   Supported emulations:
+ERROR:    i386pep
+ERROR:    i386pe
+ERROR: using internal linker script:
+ERROR: ==================================================
+ERROR: /* Default linker script, for normal executables */
+ERROR: /* Copyright (C) 2014-2025 Free Software Foundation, Inc.
+ERROR:    Copying and distribution of this script, with or without modification,
+ERROR:    are permitted in any medium without royalty provided the copyright
+ERROR:    notice and this notice are preserved.  */
+ERROR: OUTPUT_FORMAT(pei-x86-64)
+ERROR: SEARCH_DIR("=/mingw64/x86_64-w64-mingw32/lib"); SEARCH_DIR("=/mingw64/lib"); SEARCH_DIR("=/usr/local/lib"); SEARCH_DIR("=/lib"); SEARCH_DIR("=/usr/lib");
+ERROR: SECTIONS
+ERROR: {
+ERROR:   /* Make the virtual address and file offset synced if the alignment is
+ERROR:      lower than the target page size. */
+ERROR:   . = SIZEOF_HEADERS;
+ERROR:   . = ALIGN(__section_alignment__);
+ERROR:   .text  __image_base__ + ( __section_alignment__ < 0x1000 ? . : __section_alignment__ ) :
+ERROR:   {
+ERROR:     KEEP (*(SORT_NONE(.init)))
+ERROR:     *(.text)
+ERROR:     *(SORT(.text$*))
+ERROR:      *(.text.*)
+ERROR:      *(.gnu.linkonce.t.*)
+ERROR:     *(.glue_7t)
+ERROR:     *(.glue_7)
+ERROR:     . = ALIGN(8);
+ERROR:     KEEP (*(SORT_NONE(.fini)))
+ERROR:     /* ??? Why is .gcc_exc here?  */
+ERROR:      *(.gcc_exc)
+ERROR:     PROVIDE (etext = .);
+ERROR:      KEEP (*(.gcc_except_table))
+ERROR:   }
+ERROR:   /* The Cygwin32 library uses a section to avoid copying certain data
+ERROR:      on fork.  This used to be named ".data".  The linker used
+ERROR:      to include this between __data_start__ and __data_end__, but that
+ERROR:      breaks building the cygwin32 dll.  Instead, we name the section
+ERROR:      ".data_cygwin_nocopy" and explicitly include it after __data_end__. */
+ERROR:   .data BLOCK(__section_alignment__) :
+ERROR:   {
+ERROR:     __data_start__ = . ;
+ERROR:     *(.data)
+ERROR:     *(.data2)
+ERROR:     *(SORT(.data$*))
+ERROR:     KEEP(*(.jcr))
+ERROR:     __data_end__ = . ;
+ERROR:     *(.data_cygwin_nocopy)
+ERROR:   }
+ERROR:   .rdata BLOCK(__section_alignment__) :
+ERROR:   {
+ERROR:     *(.rdata)
+ERROR: 	     *(SORT(.rdata$*))
+ERROR:     . = ALIGN(4);
+ERROR:     __rt_psrelocs_start = .;
+ERROR:     KEEP(*(.rdata_runtime_pseudo_reloc))
+ERROR:     __rt_psrelocs_end = .;
+ERROR:     /* .ctors & .dtors */
+ERROR:     . = ALIGN(8);
+ERROR:        /* Note: we always define __CTOR_LIST__ and ___CTOR_LIST__ here,
+ERROR:           we do not PROVIDE them.  This is because the ctors.o startup
+ERROR: 	  code in libgcc defines them as common symbols, with the
+ERROR:           expectation that they will be overridden by the definitions
+ERROR: 	  here.  If we PROVIDE the symbols then they will not be
+ERROR: 	  overridden and global constructors will not be run.
+ERROR: 	  See PR 22762 for more details.
+ERROR: 
+ERROR: 	  This does mean that it is not possible for a user to define
+ERROR: 	  their own __CTOR_LIST__ and __DTOR_LIST__ symbols; if they do,
+ERROR: 	  the content from those variables are included but the symbols
+ERROR: 	  defined here silently take precedence.  If they truly need to
+ERROR: 	  be redefined, a custom linker script will have to be used.
+ERROR: 	  (The custom script can just be a copy of this script with the
+ERROR: 	  PROVIDE() qualifiers added).
+ERROR: 	  In particular this means that ld -Ur does not work, because
+ERROR: 	  the proper __CTOR_LIST__ set by ld -Ur is overridden by a
+ERROR: 	  bogus __CTOR_LIST__ set by the final link.  See PR 46.  */
+ERROR:        ___CTOR_LIST__ = .;
+ERROR:        __CTOR_LIST__ = .;
+ERROR:        LONG (-1); LONG (-1);
+ERROR:        KEEP (*(.ctors));
+ERROR:        KEEP (*(.ctor));
+ERROR:        KEEP (*(SORT_BY_NAME(.ctors.*)));
+ERROR:        LONG (0); LONG (0);
+ERROR:        /* See comment about __CTOR_LIST__ above.  The same reasoning
+ERROR:     	  applies here too.  */
+ERROR:        ___DTOR_LIST__ = .;
+ERROR:        __DTOR_LIST__ = .;
+ERROR:        LONG (-1); LONG (-1);
+ERROR:        KEEP (*(.dtors));
+ERROR:        KEEP (*(.dtor));
+ERROR:        KEEP (*(SORT_BY_NAME(.dtors.*)));
+ERROR:        LONG (0); LONG (0);
+ERROR:     /* .CRT */
+ERROR:     ___crt_xc_start__ = . ;
+ERROR:     KEEP (*(SORT(.CRT$XC*)))  /* C initialization */
+ERROR:     ___crt_xc_end__ = . ;
+ERROR:     ___crt_xi_start__ = . ;
+ERROR:     KEEP (*(SORT(.CRT$XI*)))  /* C++ initialization */
+ERROR:     ___crt_xi_end__ = . ;
+ERROR:     ___crt_xl_start__ = . ;
+ERROR:     KEEP (*(SORT(.CRT$XL*)))  /* TLS callbacks */
+ERROR:     /* ___crt_xl_end__ is defined in the TLS Directory support code */
+ERROR:     ___crt_xp_start__ = . ;
+ERROR:     KEEP (*(SORT(.CRT$XP*)))  /* Pre-termination */
+ERROR:     ___crt_xp_end__ = . ;
+ERROR:     ___crt_xt_start__ = . ;
+ERROR:     KEEP (*(SORT(.CRT$XT*)))  /* Termination */
+ERROR:     ___crt_xt_end__ = . ;
+ERROR:     ___crt_xd_start__ = . ;
+ERROR:     KEEP (*(SORT(.CRT$XD*)))  /* Dynamic TLS Initializer */
+ERROR:     ___crt_xd_end__ = . ;
+ERROR:   }
+ERROR:   ___RUNTIME_PSEUDO_RELOC_LIST_END__ = __rt_psrelocs_end;
+ERROR:   __RUNTIME_PSEUDO_RELOC_LIST_END__ = __rt_psrelocs_end;
+ERROR:   ___RUNTIME_PSEUDO_RELOC_LIST__ = __rt_psrelocs_start;
+ERROR:   __RUNTIME_PSEUDO_RELOC_LIST__ = __rt_psrelocs_start;
+ERROR:   .eh_frame BLOCK(__section_alignment__) :
+ERROR:   {
+ERROR:     KEEP (*(.eh_frame*))
+ERROR:   }
+ERROR:   .pdata BLOCK(__section_alignment__) :
+ERROR:   {
+ERROR:     KEEP(*(.pdata*))
+ERROR:   }
+ERROR:   .xdata BLOCK(__section_alignment__) :
+ERROR:   {
+ERROR:     KEEP(*(.xdata*))
+ERROR:   }
+ERROR:   .bss BLOCK(__section_alignment__) :
+ERROR:   {
+ERROR:     __bss_start__ = . ;
+ERROR:     *(.bss)
+ERROR:     *(COMMON)
+ERROR:     __bss_end__ = . ;
+ERROR:   }
+ERROR:   .edata BLOCK(__section_alignment__) :
+ERROR:   {
+ERROR:     *(.edata)
+ERROR:   }
+ERROR:   /DISCARD/ :
+ERROR:   {
+ERROR:     *(.debug$S)
+ERROR:     *(.debug$T)
+ERROR:     *(.debug$F)
+ERROR:      *(.drectve)
+ERROR:      *(.note.GNU-stack)
+ERROR:      *(.gnu.lto_*)
+ERROR:      *(.gnu_object_only)
+ERROR:   }
+ERROR:   .idata BLOCK(__section_alignment__) :
+ERROR:   {
+ERROR:     /* This cannot currently be handled with grouped sections.
+ERROR: 	See pep.em:sort_sections.  */
+ERROR:     KEEP (SORT(*)(.idata$2))
+ERROR:     KEEP (SORT(*)(.idata$3))
+ERROR:     /* These zeroes mark the end of the import list.  */
+ERROR:     LONG (0); LONG (0); LONG (0); LONG (0); LONG (0);
+ERROR:     . = ALIGN(8);
+ERROR:     KEEP (SORT(*)(.idata$4))
+ERROR:     __IAT_start__ = .;
+ERROR:     SORT(*)(.idata$5)
+ERROR:     __IAT_end__ = .;
+ERROR:     KEEP (SORT(*)(.idata$6))
+ERROR:     KEEP (SORT(*)(.idata$7))
+ERROR:   }
+ERROR:   /* Windows TLS expects .tls$AAA to be at the start and .tls$ZZZ to be
+ERROR:      at the end of the .tls section.  This is important because _tls_start MUST
+ERROR:      be at the beginning of the section to enable SECREL32 relocations with TLS
+ERROR:      data.  */
+ERROR:   .tls BLOCK(__section_alignment__) :
+ERROR:   {
+ERROR:     ___tls_start__ = . ;
+ERROR:     KEEP (*(.tls$AAA))
+ERROR:     KEEP (*(.tls))
+ERROR:     KEEP (*(.tls$))
+ERROR:     KEEP (*(SORT(.tls$*)))
+ERROR:     KEEP (*(.tls$ZZZ))
+ERROR:     ___tls_end__ = . ;
+ERROR:   }
+ERROR:   .endjunk BLOCK(__section_alignment__) :
+ERROR:   {
+ERROR:     /* end is deprecated, don't use it */
+ERROR:     PROVIDE (end = .);
+ERROR:     PROVIDE ( _end = .);
+ERROR:      __end__ = .;
+ERROR:   }
+ERROR:   .rsrc BLOCK(__section_alignment__) : SUBALIGN(4)
+ERROR:   {
+ERROR:     KEEP (*(.rsrc))
+ERROR:     KEEP (*(.rsrc$*))
+ERROR:   }
+ERROR:   .reloc BLOCK(__section_alignment__) :
+ERROR:   {
+ERROR:     *(.reloc)
+ERROR:   }
+ERROR:   .stab BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.stab)
+ERROR:   }
+ERROR:   .stabstr BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.stabstr)
+ERROR:   }
+ERROR:   /* DWARF debug sections.
+ERROR:      Symbols in the DWARF debugging sections are relative to the beginning
+ERROR:      of the section.  Unlike other targets that fake this by putting the
+ERROR:      section VMA at 0, the PE format will not allow it.  */
+ERROR:   /* DWARF 1.1 and DWARF 2.  */
+ERROR:   .debug_aranges BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_aranges)
+ERROR:   }
+ERROR:   .zdebug_aranges BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_aranges)
+ERROR:   }
+ERROR:   .debug_pubnames BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_pubnames)
+ERROR:   }
+ERROR:   .zdebug_pubnames BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_pubnames)
+ERROR:   }
+ERROR:   /* DWARF 2.  */
+ERROR:   .debug_info BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_info .gnu.linkonce.wi.*)
+ERROR:   }
+ERROR:   .zdebug_info BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_info .zdebug.gnu.linkonce.wi.*)
+ERROR:   }
+ERROR:   .debug_abbrev BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_abbrev)
+ERROR:   }
+ERROR:   .zdebug_abbrev BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_abbrev)
+ERROR:   }
+ERROR:   .debug_line BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_line)
+ERROR:   }
+ERROR:   .zdebug_line BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_line)
+ERROR:   }
+ERROR:   .debug_frame BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_frame*)
+ERROR:   }
+ERROR:   .zdebug_frame BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_frame*)
+ERROR:   }
+ERROR:   .debug_str BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_str)
+ERROR:   }
+ERROR:   .zdebug_str BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_str)
+ERROR:   }
+ERROR:   .debug_loc BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_loc)
+ERROR:   }
+ERROR:   .zdebug_loc BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_loc)
+ERROR:   }
+ERROR:   .debug_macinfo BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_macinfo)
+ERROR:   }
+ERROR:   .zdebug_macinfo BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_macinfo)
+ERROR:   }
+ERROR:   /* SGI/MIPS DWARF 2 extensions.  */
+ERROR:   .debug_weaknames BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_weaknames)
+ERROR:   }
+ERROR:   .zdebug_weaknames BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_weaknames)
+ERROR:   }
+ERROR:   .debug_funcnames BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_funcnames)
+ERROR:   }
+ERROR:   .zdebug_funcnames BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_funcnames)
+ERROR:   }
+ERROR:   .debug_typenames BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_typenames)
+ERROR:   }
+ERROR:   .zdebug_typenames BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_typenames)
+ERROR:   }
+ERROR:   .debug_varnames BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_varnames)
+ERROR:   }
+ERROR:   .zdebug_varnames BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_varnames)
+ERROR:   }
+ERROR:   /* DWARF 3.  */
+ERROR:   .debug_pubtypes BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_pubtypes)
+ERROR:   }
+ERROR:   .zdebug_pubtypes BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_pubtypes)
+ERROR:   }
+ERROR:   .debug_ranges BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_ranges)
+ERROR:   }
+ERROR:   .zdebug_ranges BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_ranges)
+ERROR:   }
+ERROR:   /* DWARF 4.  */
+ERROR:   .debug_types BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_types .gnu.linkonce.wt.*)
+ERROR:   }
+ERROR:   .zdebug_types BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_types .gnu.linkonce.wt.*)
+ERROR:   }
+ERROR:   /* DWARF 5.  */
+ERROR:   .debug_addr BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_addr)
+ERROR:   }
+ERROR:   .zdebug_addr BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_addr)
+ERROR:   }
+ERROR:   .debug_line_str BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_line_str)
+ERROR:   }
+ERROR:   .zdebug_line_str BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_line_str)
+ERROR:   }
+ERROR:   .debug_loclists BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_loclists)
+ERROR:   }
+ERROR:   .zdebug_loclists BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_loclists)
+ERROR:   }
+ERROR:   .debug_macro BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_macro)
+ERROR:   }
+ERROR:   .zdebug_macro BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_macro)
+ERROR:   }
+ERROR:   .debug_names BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_names)
+ERROR:   }
+ERROR:   .zdebug_names BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_names)
+ERROR:   }
+ERROR:   .debug_rnglists BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_rnglists)
+ERROR:   }
+ERROR:   .zdebug_rnglists BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_rnglists)
+ERROR:   }
+ERROR:   .debug_str_offsets BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_str_offsets)
+ERROR:   }
+ERROR:   .zdebug_str_offsets BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_str_offsets)
+ERROR:   }
+ERROR:   .debug_sup BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_sup)
+ERROR:   }
+ERROR:   /* For Go and Rust.  */
+ERROR:   .debug_gdb_scripts BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.debug_gdb_scripts)
+ERROR:   }
+ERROR:   .zdebug_gdb_scripts BLOCK(__section_alignment__) (NOLOAD) :
+ERROR:   {
+ERROR:     *(.zdebug_gdb_scripts)
+ERROR:   }
+ERROR: }
+ERROR: 
+ERROR: 
+ERROR: ==================================================
+ERROR: C:/msys64/mingw64/bin/ld.exe: mode i386pep
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/crt2.o succeeded
+ERROR: C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/crt2.o
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/crtbegin.o succeeded
+ERROR: C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/crtbegin.o
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\drawingprotocol.o succeeded
+ERROR: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\drawingprotocol.o
+ERROR: opened script file C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\drawingprotocol.o
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\Functions.o succeeded
+ERROR: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\Functions.o
+ERROR: opened script file C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\Functions.o
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\glad.o succeeded
+ERROR: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\glad.o
+ERROR: opened script file C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\glad.o
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\main.o succeeded
+ERROR: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\main.o
+ERROR: opened script file C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\main.o
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\stb.o succeeded
+ERROR: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\stb.o
+ERROR: opened script file C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\stb.o
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\stb_vorbis.o succeeded
+ERROR: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\stb_vorbis.o
+ERROR: opened script file C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\stb_vorbis.o
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\Window.o succeeded
+ERROR: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\Window.o
+ERROR: opened script file C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\Window.o
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libglfw3.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/glfw3.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libglfw3.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/glfw3.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libglfw3.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libglfw3.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/glfw3.dll succeeded
+ERROR: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/glfw3.dll
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libglfw3dll.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/glfw3dll.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libglfw3dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/glfw3dll.lib succeeded
+ERROR: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/glfw3dll.lib
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmingw32.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/mingw32.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmingw32.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/mingw32.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmingw32.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmingw32.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/mingw32.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\libmingw32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmingw32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/mingw32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmingw32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/mingw32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmingw32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmingw32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/mingw32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0\libmingw32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmingw32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/mingw32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmingw32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/mingw32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmingw32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmingw32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/mingw32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc\libmingw32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/mingw32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/mingw32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/mingw32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib\libmingw32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/mingw32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a succeeded
+ERROR: C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a)lib64_libmingw32_a-crtexewin.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a)lib64_libmingw32_a-gccmain.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a)lib64_libmingw32_a-natstart.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a)lib64_libmingw32_a-wildcard.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a)lib64_libmingw32_a-dllargv.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a)lib64_libmingw32_a-_newmode.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a)lib64_libmingw32_a-tlssup.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a)lib64_libmingw32_a-xncommod.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a)lib64_libmingw32_a-cinitexe.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a)lib64_libmingw32_a-merr.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a)lib64_libmingw32_a-CRT_fp10.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a)lib64_libmingw32_a-mingw_helpers.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a)lib64_libmingw32_a-pseudo-reloc.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a)lib64_libmingw32_a-usermatherr.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a)lib64_libmingw32_a-xtxtmode.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a)lib64_libmingw32_a-crt_handler.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a)lib64_libmingw32_a-tlsthrd.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a)lib64_libmingw32_a-tlsmcrt.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a)lib64_libmingw32_a-pseudo-reloc-list.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a)lib64_libmingw32_a-pesect.o
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libgcc.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/gcc.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libgcc.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/gcc.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libgcc.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libgcc.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/gcc.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\libgcc.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libgcc.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/gcc.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libgcc.a succeeded
+ERROR: C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libgcc.a
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libgcc.a)_chkstk_ms.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libgcc.a)_ctors.o
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libgcc_eh.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/gcc_eh.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libgcc_eh.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/gcc_eh.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libgcc_eh.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libgcc_eh.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/gcc_eh.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\libgcc_eh.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libgcc_eh.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/gcc_eh.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libgcc_eh.a succeeded
+ERROR: C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libgcc_eh.a
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmingwex.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/mingwex.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmingwex.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/mingwex.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmingwex.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmingwex.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/mingwex.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\libmingwex.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmingwex.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/mingwex.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmingwex.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/mingwex.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmingwex.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmingwex.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/mingwex.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0\libmingwex.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmingwex.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/mingwex.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmingwex.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/mingwex.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmingwex.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmingwex.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/mingwex.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc\libmingwex.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/mingwex.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/mingwex.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/mingwex.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib\libmingwex.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingwex.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/mingwex.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingwex.a succeeded
+ERROR: C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingwex.a
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingwex.a)lib64_libmingwex_a-mingw_matherr.o
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmsvcrt.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/msvcrt.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmsvcrt.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/msvcrt.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmsvcrt.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmsvcrt.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/msvcrt.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\libmsvcrt.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmsvcrt.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/msvcrt.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmsvcrt.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/msvcrt.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmsvcrt.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmsvcrt.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/msvcrt.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0\libmsvcrt.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmsvcrt.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/msvcrt.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmsvcrt.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/msvcrt.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmsvcrt.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmsvcrt.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/msvcrt.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc\libmsvcrt.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/msvcrt.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/msvcrt.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/msvcrt.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib\libmsvcrt.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/msvcrt.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a succeeded
+ERROR: C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)lib64_libmsvcrt_extra_a-_initterm_e.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)lib64_libmsvcrt_extra_a-__p__fmode.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)lib64_libmsvcrt_extra_a-__p__commode.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)lib64_libmsvcrt_extra_a-__p__acmdln.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)lib64_libmsvcrt_extra_a-__p___initenv.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)lib64_libmsvcrt_extra_a-invalid_parameter_handler.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)lib64_libmsvcrt_common_a-acrt_iob_func.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs00089.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs00127.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs00128.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs00130.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs00146.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs00148.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs00168.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs00181.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs00202.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs00221.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs00322.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs00413.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs00441.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs01143.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs01155.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs01163.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs01178.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs01199.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs01206.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs01220.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs01268.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs01277.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs01309.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs01332.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs01335.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defs01367.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_defh.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a)libmsvcrt_deft.o
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libkernel32.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/kernel32.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libkernel32.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/kernel32.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libkernel32.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libkernel32.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/kernel32.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\libkernel32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libkernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/kernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libkernel32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/kernel32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libkernel32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libkernel32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/kernel32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0\libkernel32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libkernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/kernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libkernel32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/kernel32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libkernel32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libkernel32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/kernel32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc\libkernel32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/kernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/kernel32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/kernel32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib\libkernel32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libkernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/kernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libkernel32.a succeeded
+ERROR: C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libkernel32.a
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libkernel32.a)libkernel32s01535.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libkernel32.a)libkernel32s01533.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libkernel32.a)libkernel32s01485.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libkernel32.a)libkernel32s01449.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libkernel32.a)libkernel32s01433.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libkernel32.a)libkernel32s01012.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libkernel32.a)libkernel32s00918.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libkernel32.a)libkernel32s00765.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libkernel32.a)libkernel32s00648.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libkernel32.a)libkernel32s00333.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libkernel32.a)libkernel32s00295.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libkernel32.a)libkernel32h.o
+ERROR: (C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libkernel32.a)libkernel32t.o
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libpthread.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/pthread.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libpthread.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/pthread.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libpthread.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libpthread.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/pthread.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\libpthread.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libpthread.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/pthread.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libpthread.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/pthread.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libpthread.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libpthread.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/pthread.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0\libpthread.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libpthread.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/pthread.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libpthread.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/pthread.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libpthread.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libpthread.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/pthread.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc\libpthread.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libpthread.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/pthread.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libpthread.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/pthread.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libpthread.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libpthread.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/pthread.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib\libpthread.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libpthread.dll.a succeeded
+ERROR: C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libpthread.dll.a
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libadvapi32.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/advapi32.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libadvapi32.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/advapi32.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libadvapi32.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libadvapi32.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/advapi32.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\libadvapi32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libadvapi32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/advapi32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libadvapi32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/advapi32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libadvapi32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libadvapi32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/advapi32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0\libadvapi32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libadvapi32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/advapi32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libadvapi32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/advapi32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libadvapi32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libadvapi32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/advapi32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc\libadvapi32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libadvapi32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/advapi32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libadvapi32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/advapi32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libadvapi32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libadvapi32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/advapi32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib\libadvapi32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libadvapi32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/advapi32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libadvapi32.a succeeded
+ERROR: C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libadvapi32.a
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libshell32.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/shell32.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libshell32.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/shell32.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libshell32.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libshell32.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/shell32.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\libshell32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libshell32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/shell32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libshell32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/shell32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libshell32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libshell32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/shell32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0\libshell32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libshell32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/shell32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libshell32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/shell32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libshell32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libshell32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/shell32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc\libshell32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libshell32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/shell32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libshell32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/shell32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libshell32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libshell32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/shell32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib\libshell32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libshell32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/shell32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libshell32.a succeeded
+ERROR: C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libshell32.a
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libuser32.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/user32.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libuser32.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/user32.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libuser32.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libuser32.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/user32.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\libuser32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libuser32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/user32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libuser32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/user32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libuser32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libuser32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/user32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0\libuser32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libuser32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/user32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libuser32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/user32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libuser32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libuser32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/user32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc\libuser32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libuser32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/user32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libuser32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/user32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libuser32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libuser32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/user32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib\libuser32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libuser32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/user32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libuser32.a succeeded
+ERROR: C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libuser32.a
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libkernel32.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/kernel32.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libkernel32.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/kernel32.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libkernel32.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libkernel32.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/kernel32.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\libkernel32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libkernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/kernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libkernel32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/kernel32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libkernel32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libkernel32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/kernel32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0\libkernel32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libkernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/kernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libkernel32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/kernel32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libkernel32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libkernel32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/kernel32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc\libkernel32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/kernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/kernel32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/kernel32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib\libkernel32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libkernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/kernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libkernel32.a succeeded
+ERROR: C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libkernel32.a
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmingw32.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/mingw32.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmingw32.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/mingw32.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmingw32.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmingw32.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/mingw32.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\libmingw32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmingw32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/mingw32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmingw32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/mingw32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmingw32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmingw32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/mingw32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0\libmingw32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmingw32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/mingw32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmingw32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/mingw32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmingw32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmingw32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/mingw32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc\libmingw32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/mingw32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/mingw32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/mingw32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib\libmingw32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/mingw32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a succeeded
+ERROR: C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libgcc.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/gcc.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libgcc.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/gcc.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libgcc.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libgcc.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/gcc.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\libgcc.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libgcc.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/gcc.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libgcc.a succeeded
+ERROR: C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libgcc.a
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libgcc_eh.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/gcc_eh.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libgcc_eh.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/gcc_eh.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libgcc_eh.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libgcc_eh.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/gcc_eh.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\libgcc_eh.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libgcc_eh.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/gcc_eh.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libgcc_eh.a succeeded
+ERROR: C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libgcc_eh.a
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmingwex.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/mingwex.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmingwex.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/mingwex.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmingwex.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmingwex.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/mingwex.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\libmingwex.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmingwex.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/mingwex.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmingwex.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/mingwex.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmingwex.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmingwex.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/mingwex.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0\libmingwex.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmingwex.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/mingwex.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmingwex.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/mingwex.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmingwex.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmingwex.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/mingwex.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc\libmingwex.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/mingwex.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/mingwex.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingwex.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/mingwex.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib\libmingwex.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingwex.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/mingwex.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingwex.a succeeded
+ERROR: C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingwex.a
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmsvcrt.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/msvcrt.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmsvcrt.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/msvcrt.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmsvcrt.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libmsvcrt.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/msvcrt.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\libmsvcrt.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmsvcrt.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/msvcrt.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmsvcrt.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/msvcrt.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmsvcrt.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libmsvcrt.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/msvcrt.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0\libmsvcrt.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmsvcrt.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/msvcrt.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmsvcrt.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/msvcrt.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmsvcrt.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libmsvcrt.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/msvcrt.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc\libmsvcrt.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/msvcrt.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/msvcrt.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libmsvcrt.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/msvcrt.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib\libmsvcrt.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/msvcrt.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a succeeded
+ERROR: C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmsvcrt.a
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libkernel32.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/kernel32.dll.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libkernel32.a failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/kernel32.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libkernel32.lib failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/libkernel32.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib/kernel32.dll failed
+ERROR: attempt to open C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\libkernel32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libkernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/kernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libkernel32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/kernel32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libkernel32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/libkernel32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/kernel32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0\libkernel32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libkernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/kernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libkernel32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/kernel32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libkernel32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/libkernel32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/kernel32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc\libkernel32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/kernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/kernel32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.lib failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/libkernel32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib/kernel32.dll failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../x86_64-w64-mingw32/lib/../lib\libkernel32.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libkernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/kernel32.dll.a failed
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libkernel32.a succeeded
+ERROR: C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libkernel32.a
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/default-manifest.o succeeded
+ERROR: C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/default-manifest.o
+ERROR: attempt to open C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/crtend.o succeeded
+ERROR: C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/crtend.o
+ERROR: C:/msys64/mingw64/bin/ld.exe: C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a(lib64_libmingw32_a-crtexewin.o): in function `main':
+ERROR: C:/M/B/src/mingw-w64/mingw-w64-crt/crt/crtexewin.c:67:(.text.startup+0xc5): undefined reference to `WinMain'
+ERROR: C:/msys64/mingw64/bin/ld.exe: link errors found, deleting executable `C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\engine.exe'
+ERROR: collect2.exe: error: ld returned 1 exit status
+
+Compilation and Linking process completed successfully!
