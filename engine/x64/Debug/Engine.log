@@ -1,0 +1,592 @@
+﻿cl : command line  warning D9007: '/C' requires '/E, /EP or /P'; option ignored
+  glad.c
+  DrawingProtocol.c
+  Note: including file: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Graphics\../Public.h
+  Note: including file:  C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\./Libraries/include/glad.h
+  Note: including file:   C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\khrplatform.h
+  Note: including file:    C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\stdint.h
+  Note: including file:     C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vcruntime.h
+  Note: including file:      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\sal.h
+  Note: including file:       C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\concurrencysal.h
+  Note: including file:      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vadefs.h
+  Note: including file:  C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\./Libraries/include/glfw3.h
+  Note: including file:   C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\stddef.h
+  Note: including file:    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt.h
+  Note: including file:  C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\./Libraries/include/glfw3native.h
+  Note: including file:  C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\./graphics/graphics.h
+  Note: including file:   C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\stdbool.h
+  Note: including file:  C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\./Libraries/include/cglm/cglm.h
+  Note: including file:   C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\common.h
+  Note: including file:    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\stdlib.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_malloc.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_search.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_wstdlib.h
+  Note: including file:     C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\limits.h
+  Note: including file:    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\math.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math_defines.h
+  Note: including file:    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\float.h
+  Note: including file:    C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h
+  Note: including file:    C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\simd/intrin.h
+  Note: including file:   C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\vec2.h
+  Note: including file:    C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h
+  Window.c
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vcruntime.h(192,30): error C2371: 'size_t': redefinition; different basic types
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+      C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Graphics\DrawingProtocol.c(1,1):
+      see declaration of 'size_t'
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\graphics.h(295,24): error C2061: syntax error: identifier 'builtin_shader_typehash'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\graphics.h(295,24): error C2059: syntax error: ';'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\graphics.h(295,47): error C2059: syntax error: '['
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(656,49): error C2169: 'acosf': intrinsic function, cannot be defined
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(661,49): error C2169: 'asinf': intrinsic function, cannot be defined
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(666,49): error C2169: 'atan2f': intrinsic function, cannot be defined
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(671,49): error C2169: 'atanf': intrinsic function, cannot be defined
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(676,49): error C2169: 'ceilf': intrinsic function, cannot be defined
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(681,49): error C2169: 'cosf': intrinsic function, cannot be defined
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(686,49): error C2169: 'coshf': intrinsic function, cannot be defined
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(691,49): error C2169: 'expf': intrinsic function, cannot be defined
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(723,49): error C2169: 'floorf': intrinsic function, cannot be defined
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(728,49): error C2169: 'fmodf': intrinsic function, cannot be defined
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(764,49): error C2169: 'log10f': intrinsic function, cannot be defined
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(769,49): error C2169: 'logf': intrinsic function, cannot be defined
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(782,49): error C2169: 'powf': intrinsic function, cannot be defined
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(787,49): error C2169: 'sinf': intrinsic function, cannot be defined
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(792,49): error C2169: 'sinhf': intrinsic function, cannot be defined
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(797,49): error C2169: 'sqrtf': intrinsic function, cannot be defined
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(802,49): error C2169: 'tanf': intrinsic function, cannot be defined
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(807,49): error C2169: 'tanhf': intrinsic function, cannot be defined
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+  main.c
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(82,9): error C2143: syntax error: missing ')' before '('
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(82,9): error C2091: function returns function
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(82,9): error C2143: syntax error: missing ')' before 'constant'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(82,9): error C2143: syntax error: missing '{' before 'constant'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(82,9): error C2059: syntax error: 'constant'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(82,9): error C2059: syntax error: ')'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(83,33): error C2061: syntax error: identifier 'versor'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(83,33): error C2059: syntax error: ';'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(86,33): error C2061: syntax error: identifier 'mat3x4'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(86,33): error C2059: syntax error: ';'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(86,39): error C2059: syntax error: '['
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(87,9): error C2143: syntax error: missing ')' before '('
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(87,9): error C2091: function returns function
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(87,9): error C2143: syntax error: missing ')' before 'constant'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(87,9): error C2143: syntax error: missing '{' before 'constant'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(87,9): error C2059: syntax error: 'constant'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(87,9): error C2059: syntax error: ')'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(89,33): error C2061: syntax error: identifier 'mat2x4'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(89,33): error C2059: syntax error: ';'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(89,39): error C2059: syntax error: '['
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(90,9): error C2143: syntax error: missing ')' before '('
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(90,9): error C2091: function returns function
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(90,9): error C2143: syntax error: missing ')' before 'constant'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(90,9): error C2143: syntax error: missing '{' before 'constant'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(90,9): error C2059: syntax error: 'constant'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(90,9): error C2059: syntax error: ')'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(48,1): error C2143: syntax error: missing ')' before '('
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(48,1): error C2059: syntax error: ')'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(49,1): error C2143: syntax error: missing ')' before 'type'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(48,1): error C2091: function returns function
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(50,1): error C2085: 'glm_sign': not in formal parameter list
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(50,19): error C2143: syntax error: missing ';' before '{'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(51,12): error C2065: 'val': undeclared identifier
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(51,27): error C2065: 'val': undeclared identifier
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(51,3): warning C4047: 'return': 'int (__cdecl *)()' differs in levels of indirection from 'int'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(61,1): error C2143: syntax error: missing ')' before '('
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(61,1): error C2059: syntax error: ')'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(62,1): error C2143: syntax error: missing ')' before 'type'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(61,1): error C2091: function returns function
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(61,1): error C2084: function 'int (__cdecl *__attribute())()' already has a body
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+      C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(48,1):
+      see previous definition of '__attribute'
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(63,1): error C2085: 'glm_signf': not in formal parameter list
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(63,22): error C2143: syntax error: missing ';' before '{'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(64,19): error C2065: 'val': undeclared identifier
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(64,34): error C2065: 'val': undeclared identifier
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(64,3): error C2440: 'return': cannot convert from 'float' to 'int (__cdecl *)()'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(72,1): error C2143: syntax error: missing ')' before '('
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(72,1): error C2059: syntax error: ')'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(73,1): error C2143: syntax error: missing ')' before 'type'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(72,1): error C2091: function returns function
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(74,1): error C2085: 'glm_rad': not in formal parameter list
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(74,20): error C2143: syntax error: missing ';' before '{'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(75,10): error C2065: 'deg': undeclared identifier
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(75,3): error C2440: 'return': cannot convert from 'float' to 'int (__cdecl *)()'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(83,1): error C2143: syntax error: missing ')' before '('
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(83,1): error C2059: syntax error: ')'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(84,1): error C2143: syntax error: missing ')' before 'type'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(83,1): error C2091: function returns function
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(85,1): error C2085: 'glm_deg': not in formal parameter list
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(85,20): error C2143: syntax error: missing ';' before '{'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(86,10): error C2065: 'rad': undeclared identifier
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(86,3): error C2440: 'return': cannot convert from 'float' to 'int (__cdecl *)()'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(94,1): error C2143: syntax error: missing ')' before '('
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(94,1): error C2059: syntax error: ')'
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(94,1): error C1003: error count exceeds 100; stopping compilation
+  (compiling source file 'engine/Graphics/DrawingProtocol.c')
+  
+  Note: including file: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Public.h
+  Note: including file:  C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\./Libraries/include/glad.h
+  Note: including file:   C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\khrplatform.h
+  Note: including file:    C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\stdint.h
+  Note: including file:     C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vcruntime.h
+  Note: including file:      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\sal.h
+  Note: including file:       C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\concurrencysal.h
+  Note: including file:      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vadefs.h
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vcruntime.h(192,30): error C2371: 'size_t': redefinition; different basic types
+  (compiling source file 'engine/main.c')
+      C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c(1,1):
+      see declaration of 'size_t'
+  
+  Note: including file:  C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\./Libraries/include/glfw3.h
+  Note: including file:   C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\stddef.h
+  Note: including file:    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt.h
+  Note: including file:  C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\./Libraries/include/glfw3native.h
+  Note: including file:  C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\./graphics/graphics.h
+  Note: including file:   C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\stdbool.h
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\graphics.h(295,24): error C2061: syntax error: identifier 'builtin_shader_typehash'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\graphics.h(295,24): error C2059: syntax error: ';'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\graphics.h(295,47): error C2059: syntax error: '['
+  (compiling source file 'engine/main.c')
+  
+  Note: including file:  C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\./Libraries/include/cglm/cglm.h
+  Note: including file:   C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\common.h
+  Note: including file:    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\stdlib.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_malloc.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_search.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_wstdlib.h
+  Note: including file:     C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\limits.h
+  Note: including file:    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\math.h
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(656,49): error C2169: 'acosf': intrinsic function, cannot be defined
+  (compiling source file 'engine/main.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(661,49): error C2169: 'asinf': intrinsic function, cannot be defined
+  (compiling source file 'engine/main.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(666,49): error C2169: 'atan2f': intrinsic function, cannot be defined
+  (compiling source file 'engine/main.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(671,49): error C2169: 'atanf': intrinsic function, cannot be defined
+  (compiling source file 'engine/main.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(676,49): error C2169: 'ceilf': intrinsic function, cannot be defined
+  (compiling source file 'engine/main.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(681,49): error C2169: 'cosf': intrinsic function, cannot be defined
+  (compiling source file 'engine/main.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(686,49): error C2169: 'coshf': intrinsic function, cannot be defined
+  (compiling source file 'engine/main.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(691,49): error C2169: 'expf': intrinsic function, cannot be defined
+  (compiling source file 'engine/main.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(723,49): error C2169: 'floorf': intrinsic function, cannot be defined
+  (compiling source file 'engine/main.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(728,49): error C2169: 'fmodf': intrinsic function, cannot be defined
+  (compiling source file 'engine/main.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(764,49): error C2169: 'log10f': intrinsic function, cannot be defined
+  (compiling source file 'engine/main.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(769,49): error C2169: 'logf': intrinsic function, cannot be defined
+  (compiling source file 'engine/main.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(782,49): error C2169: 'powf': intrinsic function, cannot be defined
+  (compiling source file 'engine/main.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(787,49): error C2169: 'sinf': intrinsic function, cannot be defined
+  (compiling source file 'engine/main.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(792,49): error C2169: 'sinhf': intrinsic function, cannot be defined
+  (compiling source file 'engine/main.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(797,49): error C2169: 'sqrtf': intrinsic function, cannot be defined
+  (compiling source file 'engine/main.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(802,49): error C2169: 'tanf': intrinsic function, cannot be defined
+  (compiling source file 'engine/main.c')
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math.h(807,49): error C2169: 'tanhf': intrinsic function, cannot be defined
+  (compiling source file 'engine/main.c')
+  
+  Note: including file:     C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\corecrt_math_defines.h
+  Note: including file:    C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\float.h
+  Note: including file:    C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(82,9): error C2143: syntax error: missing ')' before '('
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(82,9): error C2091: function returns function
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(82,9): error C2143: syntax error: missing ')' before 'constant'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(82,9): error C2143: syntax error: missing '{' before 'constant'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(82,9): error C2059: syntax error: 'constant'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(82,9): error C2059: syntax error: ')'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(83,33): error C2061: syntax error: identifier 'versor'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(83,33): error C2059: syntax error: ';'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(86,33): error C2061: syntax error: identifier 'mat3x4'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(86,33): error C2059: syntax error: ';'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(86,39): error C2059: syntax error: '['
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(87,9): error C2143: syntax error: missing ')' before '('
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(87,9): error C2091: function returns function
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(87,9): error C2143: syntax error: missing ')' before 'constant'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(87,9): error C2143: syntax error: missing '{' before 'constant'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(87,9): error C2059: syntax error: 'constant'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(87,9): error C2059: syntax error: ')'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(89,33): error C2061: syntax error: identifier 'mat2x4'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(89,33): error C2059: syntax error: ';'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(89,39): error C2059: syntax error: '['
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(90,9): error C2143: syntax error: missing ')' before '('
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(90,9): error C2091: function returns function
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(90,9): error C2143: syntax error: missing ')' before 'constant'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(90,9): error C2143: syntax error: missing '{' before 'constant'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(90,9): error C2059: syntax error: 'constant'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\types.h(90,9): error C2059: syntax error: ')'
+  (compiling source file 'engine/main.c')
+  
+  Note: including file:    C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\simd/intrin.h
+  Note: including file:   C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\vec2.h
+  Note: including file:    C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(48,1): error C2143: syntax error: missing ')' before '('
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(48,1): error C2059: syntax error: ')'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(49,1): error C2143: syntax error: missing ')' before 'type'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(48,1): error C2091: function returns function
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(50,1): error C2085: 'glm_sign': not in formal parameter list
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(50,19): error C2143: syntax error: missing ';' before '{'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(51,12): error C2065: 'val': undeclared identifier
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(51,27): error C2065: 'val': undeclared identifier
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(51,3): warning C4047: 'return': 'int (__cdecl *)()' differs in levels of indirection from 'int'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(61,1): error C2143: syntax error: missing ')' before '('
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(61,1): error C2059: syntax error: ')'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(62,1): error C2143: syntax error: missing ')' before 'type'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(61,1): error C2091: function returns function
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(61,1): error C2084: function 'int (__cdecl *__attribute())()' already has a body
+  (compiling source file 'engine/main.c')
+      C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(48,1):
+      see previous definition of '__attribute'
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(63,1): error C2085: 'glm_signf': not in formal parameter list
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(63,22): error C2143: syntax error: missing ';' before '{'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(64,19): error C2065: 'val': undeclared identifier
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(64,34): error C2065: 'val': undeclared identifier
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(64,3): error C2440: 'return': cannot convert from 'float' to 'int (__cdecl *)()'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(72,1): error C2143: syntax error: missing ')' before '('
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(72,1): error C2059: syntax error: ')'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(73,1): error C2143: syntax error: missing ')' before 'type'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(72,1): error C2091: function returns function
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(74,1): error C2085: 'glm_rad': not in formal parameter list
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(74,20): error C2143: syntax error: missing ';' before '{'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(75,10): error C2065: 'deg': undeclared identifier
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(75,3): error C2440: 'return': cannot convert from 'float' to 'int (__cdecl *)()'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(83,1): error C2143: syntax error: missing ')' before '('
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(83,1): error C2059: syntax error: ')'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(84,1): error C2143: syntax error: missing ')' before 'type'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(83,1): error C2091: function returns function
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(85,1): error C2085: 'glm_deg': not in formal parameter list
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(85,20): error C2143: syntax error: missing ';' before '{'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(86,10): error C2065: 'rad': undeclared identifier
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(86,3): error C2440: 'return': cannot convert from 'float' to 'int (__cdecl *)()'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(94,1): error C2143: syntax error: missing ')' before '('
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(94,1): error C2059: syntax error: ')'
+  (compiling source file 'engine/main.c')
+  
+C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\cglm\util.h(94,1): error C1003: error count exceeds 100; stopping compilation
+  (compiling source file 'engine/main.c')
+  
+  _3D.c
+\engine\_3D.c(1,1): error C1083: Cannot open source file: 'engine\_3D.c': No such file or directory
+  (compiling source file '/engine/_3D.c')
+  
+  Generating Code...
