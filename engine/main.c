@@ -12,12 +12,41 @@
 extern char* cwd;
 
 // Forward declaration for poll_draw to make it visible to main()
-void poll_draw(win_t *win, size_t pollcycles);
+void poll_draw(win_t *win, size_t pollcycles){
+    mat4 out, view, proj_screen;
+    glm_mat4_identity(out);
+    glm_mat4_identity(view);
+    glm_mat4_identity(proj_screen);
+
+    // CORRECTED: The variable 'g' was undeclared.
+    // Declaring as a static float makes it persist between calls, creating an animation.
+    static float g = 0.0f;
+    g += 0.005f; // Increment rotation angle each frame for a spinning effect
+
+    glm_translate(view, (vec3){0.0f, 0.0f, -5.0f}); // Adjusted translation for better view
+    glm_perspective(glm_rad(45.0f), (float)win->w / (float)win->h, 0.1f, 100.0f, proj_screen);
+    glm_mat4_mul(proj_screen, view, out);
+    glm_rotate(out, g, (vec3){0.5f, 1.0f, 0.0f}); // Rotate on X and Y axis
+
+    GLuint tex0_uni = glGetUniformLocation(win->shaders->shaderProgram, "tex0");
+    glUniform1i(tex0_uni, 0);
+
+    // Note: Passing strings like "mat4\0" is redundant. "mat4" is sufficient.
+    uniform_write(win->shaders, "mat4", "matrices", "\0", true, out, 9);
+    uniform_write(win->shaders, "inputvectors_bounds", "bounds", "start", true, 0, 1);
+    uniform_write(win->shaders, "inputvectors_bounds", "bounds", "end", true, 100, 1);
+
+    win_attrblink(win, 0, 3, GL_FLOAT, 8 * sizeof(float), (void *)0);
+    win_attrblink(win, 1, 3, GL_FLOAT, 8 * sizeof(float), (void *)(3 * sizeof(float)));
+    win_attrblink(win, 2, 2, GL_FLOAT, 8 * sizeof(float), (void *)(6 * sizeof(float)));
+
+    return;
+}
 
 int main() {
     cwd_init();
     const float sqrt3 = sqrtf(3);
-    win_t *mainw = win_init("MainWindow", poll_draw, NULL, 800, 200);
+    win_t *mainw = win_init("MainWindow", &poll_draw, NULL, 800, 200);
     SHADERBLOCK_HANDLE(mainw->shaders, true, true);
     win_flood(mainw, (argb_t){.9, .7, .03, 1});
 
@@ -58,40 +87,9 @@ int main() {
             3, 0, 4
         }, 18);
 
-    glBindTextureEXT(GL_TEXTURE_2D, mainw->textures[mainw->textures_curr].img);
+    glBindTexture(GL_TEXTURE_2D, mainw->textures[mainw->textures_curr].img);
 
     win_poll(mainw);
     win_kill(mainw);
     return EXIT_SUCCESS; // Returning 0 is standard for a successful execution
-}
-
-void poll_draw(win_t *win, size_t pollcycles){
-    mat4 out, view, proj_screen;
-    glm_mat4_identity(out);
-    glm_mat4_identity(view);
-    glm_mat4_identity(proj_screen);
-
-    // CORRECTED: The variable 'g' was undeclared.
-    // Declaring as a static float makes it persist between calls, creating an animation.
-    static float g = 0.0f;
-    g += 0.005f; // Increment rotation angle each frame for a spinning effect
-
-    glm_translate(view, (vec3){0.0f, 0.0f, -5.0f}); // Adjusted translation for better view
-    glm_perspective(glm_rad(45.0f), (float)win->w / (float)win->h, 0.1f, 100.0f, proj_screen);
-    glm_mat4_mul(proj_screen, view, out);
-    glm_rotate(out, g, (vec3){0.5f, 1.0f, 0.0f}); // Rotate on X and Y axis
-
-    GLuint tex0_uni = glGetUniformLocation(win->shaders->shaderProgram, "tex0");
-    glUniform1i(tex0_uni, 0);
-
-    // Note: Passing strings like "mat4\0" is redundant. "mat4" is sufficient.
-    uniform_write(win->shaders, "mat4", "matrices", "\0", true, out, 9);
-    uniform_write(win->shaders, "inputvectors_bounds", "bounds", "start", true, 0, 1);
-    uniform_write(win->shaders, "inputvectors_bounds", "bounds", "end", true, 100, 1);
-
-    win_attrblink(win, 0, 3, GL_FLOAT, 8 * sizeof(float), (void *)0);
-    win_attrblink(win, 1, 3, GL_FLOAT, 8 * sizeof(float), (void *)(3 * sizeof(float)));
-    win_attrblink(win, 2, 2, GL_FLOAT, 8 * sizeof(float), (void *)(6 * sizeof(float)));
-
-    return;
 }

@@ -180,7 +180,7 @@ typedef enum BUFFER_OPTIONS {
 // The `poll_do` function signature should be `void (*poll_do)(struct window *, size_t);`
 // to ensure the `window` struct is a known type within the typedef.
 // It's also better to use `const size_t` for the size parameter if it's not modified.
-typedef void (*poll_do)(struct win_t*, const size_t);
+typedef void (*poll_do)(struct win_t*, size_t);
 
 /// @brief A function called when the Window should be killed.
 typedef void (*poll_kill)(struct win_t*);
