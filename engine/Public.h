@@ -7,6 +7,8 @@
 #include "./Libraries/include/khrplatform.h"
 #include "./Libraries/include/glfw3.h"
 #include "./Libraries/include/glfw3native.h"
+/// @brief A type with a size_t lower and size_t upper, using these to describe 16 byte values.
+typedef size_t uint128_t[2];
 #include "./graphics/graphics.h"
 #include "./Libraries/include/cglm/cglm.h"
 #include <ctype.h>
@@ -18,14 +20,13 @@
 #include <stdio.h>
 #include <math.h>
 
+
 #define IS_NUM(X) ((int)X < (int)'9') && ((int)X > (int)'0')
 #define IS_EVEN(X) (X%2 != 0)
 #define INT_SIMP(X) (X< 0? -1: 1)
 #define str_hash(str) _str_hash_(str)
 #define IS_SPACE(chr) (int)chr == (int)' '
 
-/// @brief A type with a size_t lower and size_t upper, using these to describe 16 byte values.
-typedef unsigned long long uint128_t[2];
 
 #if defined(__APPLE__)
 #include <stdlib.h>
@@ -46,4 +47,6 @@ typedef unsigned long long uint128_t[2];
 
 char *str_normalise(char *str, bool handle_spaces, bool handle_upper);
 size_t *str_hash_(const char *str);
+bool uint128_t_comps(uint128_t a, size_t b);
+bool uint128_t_comp(uint128_t a, uint128_t b);
 #endif

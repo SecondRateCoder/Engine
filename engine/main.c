@@ -34,7 +34,8 @@ void poll_draw(win_t *win, size_t pollcycles){
     // Note: Passing strings like "mat4\0" is redundant. "mat4" is sufficient.
     uniform_write(win->shaders, "mat4", "matrices", "\0", true, out, 9);
     uniform_write(win->shaders, "inputvectors_bounds", "bounds", "start", true, 0, 1);
-    uniform_write(win->shaders, "inputvectors_bounds", "bounds", "end", true, 100, 1);
+    const int _100 = 100;
+    uniform_write(win->shaders, "inputvectors_bounds", "bounds", "end", true, &_100, 1);
 
     win_attrblink(win, 0, 3, GL_FLOAT, 8 * sizeof(float), (void *)0);
     win_attrblink(win, 1, 3, GL_FLOAT, 8 * sizeof(float), (void *)(3 * sizeof(float)));
@@ -46,6 +47,7 @@ void poll_draw(win_t *win, size_t pollcycles){
 int main() {
     cwd_init();
     const float sqrt3 = sqrtf(3);
+    void (*poll_do)(win_t*, size_t);
     win_t *mainw = win_init("MainWindow", &poll_draw, NULL, 800, 200);
     SHADERBLOCK_HANDLE(mainw->shaders, true, true);
     win_flood(mainw, (argb_t){.9, .7, .03, 1});
@@ -87,7 +89,7 @@ int main() {
             3, 0, 4
         }, 18);
 
-    glBindTexture(GL_TEXTURE_2D, mainw->textures[mainw->textures_curr].img);
+    glBindTexture(GL_TEXTURE_2D, mainw->textures[mainw->textures_curr].ID);
 
     win_poll(mainw);
     win_kill(mainw);

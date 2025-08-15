@@ -1,4 +1,5 @@
 #include "../Engine/engine/Public.h"
+#include <string.h>
 
 #define GL_GLEXT_PROTOTYPES
 
@@ -345,12 +346,10 @@ void uniform_free(shaderblock_t* shader){
 
 // Corrected uniform_write function.
 // The original had a `return NULL` in a `void` function and incorrect pointer dereferencing.
-void uniform_write(shaderblock_t* shader, const char* type, const char* name, const char* property, bool transpose, const void* value, size_t num_elements){
+bool uniform_write(shaderblock_t* shader, const char* type, const char* name, const char* property, bool transpose, const void* value, size_t num_elements){
 	if (shader == NULL || name == NULL) return;
-
-	size_t hash = str_hash(str_normalise(type, true, true));
+	uint128_t typehash = str_hash(str_normalise(type, true, true));
 	GLint location = -1;
-
 	// Find the uniform location
 	for (size_t cc = 0; cc < shader->uniform_len; ++cc) {
 		if (strcmp(name, shader->uniforms[cc].name) == 0) {
@@ -363,78 +362,104 @@ void uniform_write(shaderblock_t* shader, const char* type, const char* name, co
 		fprintf(stderr, "Warning: Uniform '%s' not found.\n", name);
 		return;
 	}
-
-	// Use a switch statement for dispatching GL uniform functions
-	// Note: The original switch had incorrect pointer casts and logic for single vs. multiple elements.
-	switch (hash) {
-		case builtin_shader_typehash[0]: // GL_INT
-		case builtin_shader_typehash[1]: // GL_BOOL
-			glUniform1iv(location, num_elements, (const GLint*)value);
-			break;
-		case builtin_shader_typehash[2]: // GL_UNSIGNED_INT
-			glUniform1uiv(location, num_elements, (const GLuint*)value);
-			break;
-		case builtin_shader_typehash[3]: // GL_FLOAT
-			glUniform1fv(location, num_elements, (const GLfloat*)value);
-			break;
-		case builtin_shader_typehash[4]: // vec2
-			glUniform2fv(location, num_elements, (const GLfloat*)value);
-			break;
-		case builtin_shader_typehash[5]: // vec3
-			glUniform3fv(location, num_elements, (const GLfloat*)value);
-			break;
-		case builtin_shader_typehash[6]: // vec4
-			glUniform4fv(location, num_elements, (const GLfloat*)value);
-			break;
-		case builtin_shader_typehash[7]: // ivec2
-			glUniform2iv(location, num_elements, (const GLint*)value);
-			break;
-		case builtin_shader_typehash[8]: // ivec3
-			glUniform3iv(location, num_elements, (const GLint*)value);
-			break;
-		case builtin_shader_typehash[9]: // ivec4
-			glUniform4iv(location, num_elements, (const GLint*)value);
-			break;
-		case builtin_shader_typehash[10]: // uvec2
-			glUniform2uiv(location, num_elements, (const GLuint*)value);
-			break;
-		case builtin_shader_typehash[11]: // uvec3
-			glUniform3uiv(location, num_elements, (const GLuint*)value);
-			break;
-		case builtin_shader_typehash[12]: // uvec4
-			glUniform4uiv(location, num_elements, (const GLuint*)value);
-			break;
-		case builtin_shader_typehash[13]: // mat2
-			glUniformMatrix2fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
-			break;
-		case builtin_shader_typehash[14]: // mat3
-			glUniformMatrix3fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
-			break;
-		case builtin_shader_typehash[15]: // mat4
-			glUniformMatrix4fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
-			break;
-		case builtin_shader_typehash[16]: // mat2x3
-			glUniformMatrix2x3fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
-			break;
-		case builtin_shader_typehash[17]: // mat3x2
-			glUniformMatrix3x2fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
-			break;
-		case builtin_shader_typehash[18]: // mat2x4
-			glUniformMatrix2x4fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
-			break;
-		case builtin_shader_typehash[19]: // mat4x2
-			glUniformMatrix4x2fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
-			break;
-		case builtin_shader_typehash[20]: // mat3x4
-			glUniformMatrix3x4fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
-			break;
-		case builtin_shader_typehash[21]: // mat4x3
-			glUniformMatrix4x3fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
-			break;
-		default:
-			fprintf(stderr, "Error: Unsupported shader type or uniform '%s' not found.\n", type);
-			break;
+	for(size_t cc =0; cc < 37; ++cc){
+		if(uint128_t_comp(builtin_shader_typehash[cc], typehash) == true){
+			// Use a switch statement for dispatching GL uniform functions
+			// Note: The original switch had incorrect pointer casts and logic for single vs. multiple elements.
+			switch (cc) {
+				case 0: // GL_INT
+				case 1: // GL_BOOL
+					glUniform1iv(location, num_elements, (const GLint*)value);
+					break;
+				case 2: // GL_UNSIGNED_INT
+					glUniform1uiv(location, num_elements, (const GLuint*)value);
+					break;
+				case 3: // GL_FLOAT
+					glUniform1fv(location, num_elements, (const GLfloat*)value);
+					break;
+				case 4: // vec2
+					glUniform2fv(location, num_elements, (const GLfloat*)value);
+					break;
+				case 5: // vec3
+					glUniform3fv(location, num_elements, (const GLfloat*)value);
+					break;
+				case 6: // vec4
+					glUniform4fv(location, num_elements, (const GLfloat*)value);
+					break;
+				case 7: // ivec2
+					glUniform2iv(location, num_elements, (const GLint*)value);
+					break;
+				case 8: // ivec3
+					glUniform3iv(location, num_elements, (const GLint*)value);
+					break;
+				case 9: // ivec4
+					glUniform4iv(location, num_elements, (const GLint*)value);
+					break;
+				case 10: // uvec2
+					glUniform2uiv(location, num_elements, (const GLuint*)value);
+					break;
+				case 11: // uvec3
+					glUniform3uiv(location, num_elements, (const GLuint*)value);
+					break;
+				case 12: // uvec4
+					glUniform4uiv(location, num_elements, (const GLuint*)value);
+					break;
+				case 13: // mat2
+					glUniformMatrix2fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
+					break;
+				case 14: // mat3
+					glUniformMatrix3fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
+					break;
+				case 15: // mat4
+					glUniformMatrix4fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
+					break;
+				case 16: // mat2x3
+					glUniformMatrix2x3fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
+					break;
+				case 17: // mat3x2
+					glUniformMatrix3x2fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
+					break;
+				case 18: // mat2x4
+					glUniformMatrix2x4fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
+					break;
+				case 19: // mat4x2
+					glUniformMatrix4x2fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
+					break;
+				case 20: // mat3x4
+					glUniformMatrix3x4fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
+					break;
+				case 21: // mat4x3
+					glUniformMatrix4x3fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
+					break;
+				default:
+					//Just attempt writing something ngl.
+					// fprintf(stderr, "Error: Unsupported shader type or uniform '%s' not found.\n", type);
+					const size_t name_len  =strlen(name), type_len = strlen(type), pointerchar_len = 4, dotchar_len = 3;
+					char *full_access = malloc(strlen(name)+strlen(property)+strlen("->\0")+1);
+					full_access[strlen(name)+strlen(property)+strlen("->\0")] = '\0';
+					strncat(full_access, name, strlen(name));
+					strncat(full_access+name_len, "->\0", strlen("->\0"));
+					strncat(full_access+name_len+pointerchar_len, property, strlen(property));
+					GLint out = glGetUniformLocation(shader->shaderProgram, full_access);
+					if(out == -1){
+						//Try with just a "."
+						free(full_access);
+						full_access = realloc(full_access, strlen(name)+strlen(property)+strlen(".\0")+1);
+						full_access[strlen(name)+strlen(property)+strlen(".\0")] = '\0';
+						// strncat(full_access, name, strlen(name));
+						strncat(full_access+name_len, ".\0", strlen(".\0"));
+						strncat(full_access+name_len+dotchar_len, property, strlen(property));
+						out = glGetUniformLocation(shader->shaderProgram, full_access);
+						if(out == -1){return false;}
+					}
+					glUniform1f(out, ((const GLfloat*)value)[0]);
+					free(full_access);
+					return false;
+			}
+		}
 	}
+
+	return true;
 }
 
 
@@ -614,12 +639,12 @@ void winimage_append(win_t* win, const char* filepath, const argb_t* border_colo
 // Fixed win_flood function.
 // The original had no issues, but some minor formatting improvements were made for clarity.
 void win_flood(win_t* win, const argb_t c) {
-	if (win == NULL || win->window == NULL) return;
+	if (win == NULL || win->g_window == NULL) return;
 	
 	glViewport(0, 0, win->w, win->h);
 	glClearColor(c.r, c.g, c.b, c.a);
 	glClear(GL_COLOR_BUFFER_BIT);
-	glfwSwapBuffers(win->window);
+	glfwSwapBuffers(win->g_window);
 }
 
 /// @brief Do a function from BUFFER_OPTIONS on EBO or VBO of a Buffer Object.

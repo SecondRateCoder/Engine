@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.h": "c",
         "public.h": "c",
         "drawingprotocol.h": "c",
         "typeinfo": "c",
@@ -7,7 +8,10 @@
         "window.h": "c",
         "string.h": "c",
         "glad.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "type_traits": "c",
+        "xtr1common": "c",
+        "xutility": "c"
     },
     "C_Cpp.default.compilerPath": "C:/msys64/mingw64/bin/gcc.exe",
     "cpptest.compilerIdentifier": "gcc_10-64"

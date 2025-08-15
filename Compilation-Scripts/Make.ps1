@@ -25,11 +25,11 @@
 #!Compile Source with additional Source Directory.
 # ./Compilation-Scripts/Make.ps1 -SourceDirectory "./engine" -AdditionalSourceDirectory "./EXTRA_DIR" -OutputExecutableName "engine.exe"
 #!Compile Source with Additional Source Directory and Libraries.
-# ./Compilation-Scripts/Make.ps1 -SourceDirectory "./engine" -OutputExecutableName "app.exe" -IncludePaths "./Libraries/include" -LibraryPaths "./Libraries/lib" -Libraries "glfw3", "glfw3dll"
+# ./Compilation-Scripts/Make.ps1 -SourceDirectory "./engine" -OutputExecutableName "app.exe" -IncludePaths "./engine/Libraries/include" -LibraryPaths "./engine/Libraries/lib" -Libraries "glfw3", "glfw3dll"
 
 
 #! My Compilation command.
-# ./Compilation-Scripts/Make.ps1 -SourceDirectory "./engine" -OutputExecutableName "engine.exe" -GccFlags "-O1", "-Wextra", "-std=c99", "-Wall", "-Wl,--verbose" -LibraryPaths "./engine/Libraries/lib" -Libraries "glfw3", "glfw3dll" -IncludePaths "./engine/Libraries/include", "./engine", "./engine/graphics"
+# ./Compilation-Scripts/Make.ps1 -SourceDirectory "./engine" -OutputExecutableName "engine.exe"  -LibraryPaths "./engine/Libraries/lib" -Libraries "glfw3", "glfw3dll" -IncludePaths "./engine/Libraries/include", "./engine", "./engine/graphics"
 
 #! Optional GCC Flags:
 # -GccFlags "-O1", "-Wextra", "-std=c99", "-Wall", "-pedantic", "-Wl,--verbose"
@@ -37,6 +37,12 @@
 # -LibraryPaths "./Libraries/lib" -Libraries "glfw3", "glfw3dll"
 #! Additional Includes:
 # -IncludePaths "./Libraries/include", "./engine", "./engine/graphics", "./engine/graphics/window"
+
+#* gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c 
+#* -L C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib
+#* -l glfw3 glfw3dll
+#* -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics
+#* -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\main.o
 
 param(
     [Parameter(Mandatory=$true)]
@@ -108,7 +114,6 @@ function C_Compile {
     )
     $fileName = [System.IO.Path]::GetFileNameWithoutExtension($FilePath)
     $outputObjectFile = Join-Path $BuildDirectory "$($fileName).o"
-    New-Item -Path $FilePath -ItemType File -Force
     New-Item -Path $outputObjectFile -ItemType File -Force
     
     # Remove the New-File and New-Item lines. They are not needed.

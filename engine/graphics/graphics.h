@@ -171,46 +171,52 @@ typedef enum BUFFER_OPTIONS {
 	BUFFER_OPTIONS_COLLECT_EBO_MULTIPLE = 8,
 }BUFFER_OPTIONS;
 
-#define win_t window
-#define argb_t Color4
 
 // #include <excpt.h> // This is a Windows-specific header and may not be portable.
 
-// A Function Pointer for doing custom functions with the Polling of the Window.
-// The `poll_do` function signature should be `void (*poll_do)(struct window *, size_t);`
-// to ensure the `window` struct is a known type within the typedef.
-// It's also better to use `const size_t` for the size parameter if it's not modified.
-typedef void (*poll_do)(struct win_t*, size_t);
 
-/// @brief A function called when the Window should be killed.
-typedef void (*poll_kill)(struct win_t*);
+// // A Function Pointer for doing custom functions with the Polling of the Window.
+// // The `poll_do` function signature should be `void (*poll_do)(struct window *, size_t);`
+// // to ensure the `window` struct is a known type within the typedef.
+// // It's also better to use `const size_t` for the size parameter if it's not modified.
+// typedef void (*poll_do)(struct win_t*, size_t);
 
+// /// @brief A function called when the Window should be killed.
+// typedef void (*poll_kill)(struct win_t*);
+
+typedef struct window window;
+
+#define win_t window
+
+// Define your function pointer types using the forward-declared struct
+typedef void (*poll_do)(window*, size_t);
+typedef void (*poll_kill)(window*);
 
 typedef struct window {
-	GLFWwindow* window;
+	GLFWwindow* g_window;
 	char* name;
 	poll_do polld;
 	poll_kill pollk;
 	shaderblock_t* shaders;
 	size_t textures_len, textures_curr, vert_count;
-
+	
 	size_t buffer_len, buffer_curr;
 	bufferobj_t* buffers;
 	image_t* textures;
 	uint32_t x, y, w, h;
-}window;
-
+};
 
 // It is common practice to define the structs before their aliases.
 typedef struct Color4 {
 	// @brief a: 1.0f := Solid, 0.0f := Transparent.
 	float a, r, g, b;
 } Color4;
+#define argb_t Color4
 
 
 // The function pointer parameter should be a pointer to the `poll_do` type, not a pointer to a pointer.
 // Also, the return type should be `window *`
-win_t* win_init(char* name, poll_do polld, poll_kill pollk, uint32_t w, uint32_t h);
+win_t* win_init(char* name, void (*poll_do)(win_t*, size_t), void (*poll_kill)(win_t*), uint32_t w, uint32_t h);
 void win_poll(win_t* win);
 bool win_shouldclose(win_t* win);
 void win_kill(win_t* win);
@@ -292,7 +298,9 @@ OLD_TYPE_NAME_HASHES:
 
 */
 
-static const uint128_t builtin_shader_typehash[] = {
+
+// extern typedef uint128_t;
+static const uint128_t builtin_shader_typehash[37] = {
 	{0, 3646476,}, {0, 118091}, {0, 184466353937349512}, {0, 124969334},
 	{0, 4353872}, {0, 4353873},  {0, 4353874},
 	{0, 128875577},  {0, 128875578},  {0, 128875579},
@@ -302,8 +310,8 @@ static const uint128_t builtin_shader_typehash[] = {
 	{0, 4385019327},  {0, 4385020415},  {0, 4385019328},  {0, 4385021504},  {0, 4385020417},  {0, 4385021505},
 	{0, 166016265074057},  {0, 166016265074090},  {0, 166016265074123},
 	{0, 180791712666351635}, //SamplerCube
-	{0, 16629051508994671055},  {0, 16629051551613114032},
-	{0, 3857864121005407689},  {0, 12598728139851495951},
+	{0, 16629051508994671055U},  {0, 16629051551613114032U},
+	{0, 3857864121005407689},  {0, 12598728139851495951U},
 	{0, 5039222127279122},  {0, 5039222127279155},
 	{0, 5596159940102558},  {0, 5596159940102591} };
 
@@ -320,7 +328,7 @@ void win_flood(win_t *win, const argb_t c);
 void winimage_append(win_t *win, const char *filepath, const argb_t *border_color);
 void destroy_arrkey(arrk_t *arrk);
 void uniform_init(shaderblock_t * sb_t);
-void uniform_write(shaderblock_t* shader, const char* type, const char* name, const char* property, bool transpose, const void* value, size_t num_elements);
+bool uniform_write(shaderblock_t* shader, const char* type, const char* name, const char* property, bool transpose, const void* value, size_t num_elements);
 void uniform_free(shaderblock_t * shader);
 void* buffer_bufferdo(bufferobj_t * buffer, const size_t len, const BUFFER_OPTIONS option);
 bufferobj_t* win_buffercurr(win_t * win);
