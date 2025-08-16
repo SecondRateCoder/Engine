@@ -33,10 +33,11 @@ char *str_normalise(char *str, bool handle_spaces, bool handle_upper){
 /// @brief Return a __uint128_t variable.
 /// @param str The string to be hashed.
 /// @return A __uint128_t value.
-size_t *str_hash_(const char *str){
+size_t *str_hash(const char *str){
 	// A large, odd prime number is a good choice for the initial hash value.
     // 5381 is a common value used in the DJB2 algorithm.
-    uint128_t hash = 5381;
+    size_t *hash= (size_t *)malloc(sizeof(uint128_t));
+    hash[0]= 5381;
 	size_t cc =0;
     int c;
 
@@ -52,17 +53,6 @@ size_t *str_hash_(const char *str){
 		}else{hash[0] = ((hash[0] << 5) + hash[0]) + c;}
     }
     return hash;
-}
-
-char tolower(char c) {
-    // Check if the character is an uppercase letter (A-Z)
-    if (c >= 'A' && c <= 'Z') {
-        // If it is, convert it to lowercase by adding the difference in ASCII values
-        // For example, 'a' - 'A' = 32. So 'B' + 32 = 'b'.
-        return c + ('a' - 'A');
-    }
-    // If the character is not an uppercase letter, return it unchanged.
-    return c;
 }
 
 /**

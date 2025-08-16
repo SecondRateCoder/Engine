@@ -3,6 +3,7 @@
 #include "../Public.h"
 //#include "./window/window.h"
 #include <stdint.h>
+#include <string.h>
 #include <stdbool.h>
 
 
@@ -70,8 +71,8 @@ do { \
 				free_indexes_new = true;	\
 			}else{actual_indexes = (GLuint*)indexes;}   \
 			/*Finish handling EBO*/	\
-			if (BO->EBO == 0) { glGenBuffers(1, BO->EBO); }   \
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, BO->EBO);    \
+			if (BO->EBO == 0) {glGenBuffers(1, BO->EBO);}   \
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *BO->EBO);    \
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, (*ilen) * sizeof(GLuint), actual_indexes, DRAW_FORMAT);   \
 			if(free_indexes_new){free(actual_indexes);}	\
 	} \
@@ -184,15 +185,12 @@ typedef enum BUFFER_OPTIONS {
 // /// @brief A function called when the Window should be killed.
 // typedef void (*poll_kill)(struct win_t*);
 
-typedef struct window window;
-
-#define win_t window
 
 // Define your function pointer types using the forward-declared struct
-typedef void (*poll_do)(window*, size_t);
-typedef void (*poll_kill)(window*);
+typedef void (*poll_do)(void* self, size_t pollcycles);
+typedef void (*poll_kill)(void* self);
 
-typedef struct window {
+typedef struct window{
 	GLFWwindow* g_window;
 	char* name;
 	poll_do polld;
@@ -204,7 +202,8 @@ typedef struct window {
 	bufferobj_t* buffers;
 	image_t* textures;
 	uint32_t x, y, w, h;
-};
+}window;
+#define win_t window
 
 // It is common practice to define the structs before their aliases.
 typedef struct Color4 {
@@ -216,13 +215,13 @@ typedef struct Color4 {
 
 // The function pointer parameter should be a pointer to the `poll_do` type, not a pointer to a pointer.
 // Also, the return type should be `window *`
-win_t* win_init(char* name, void (*poll_do)(win_t*, size_t), void (*poll_kill)(win_t*), uint32_t w, uint32_t h);
+win_t* win_init(char* name, poll_do poll_do_, poll_kill poll_kill_, uint32_t w, uint32_t h);
 void win_poll(win_t* win);
 bool win_shouldclose(win_t* win);
 void win_kill(win_t* win);
 
 // The function signature for `win_attrblink` is a bit strange, `GLuint` for layout and `GLuint` for `component_num` is fine, but it's not clear what `win_attrblink` is doing. It's likely a typo and should be `glVertexAttribPointer`. I've left the signature as is, but it may require further correction in the implementation file. The `offset` parameter is usually a `const void *`.
-void win_attrblink(window* win, GLuint layout, GLuint component_num, GLenum type, GLsizeiptr stride, const void* offset);
+void win_attrblink(window *win, size_t curr_vbo, GLuint layout, GLuint component_num, GLenum type, GLsizeiptr stride, const void *offset);
 
 
 

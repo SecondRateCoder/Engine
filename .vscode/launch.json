@@ -4,7 +4,7 @@
         "name": "(gdb) Launch",
         "type": "cppdbg",
         "request": "launch",
-        "program": "${workspaceFolder}/Build/engine.exe",
+        "program": "${cwd}\\Build\\engine.exe",
         "args": [],
         "stopAtEntry": false,
         "cwd": "${fileDirname}",

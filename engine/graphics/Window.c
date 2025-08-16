@@ -5,7 +5,7 @@
 /// @param w The Width of the Window.
 /// @param h The Height of the Window.
 /// @return An initialised Pointer to the Window.
-win_t* win_init(char* name, void (*poll_do)(win_t*, size_t), void (*poll_kill)(win_t*), uint32_t w, uint32_t h){
+win_t* win_init(char* name, poll_do poll_do_, poll_kill poll_kill_, uint32_t w, uint32_t h){
 	//Initialise GLFW.
 	glfwInit();
 	//Enable Depth testing, So Triangles behind other Triangles are not drawn.
@@ -22,8 +22,8 @@ win_t* win_init(char* name, void (*poll_do)(win_t*, size_t), void (*poll_kill)(w
 
 	//malloc on heap.
 	win_t *win = malloc(sizeof(win_t));
-	if(poll_do != NULL){win->polld = poll_do;}else{win->polld = polld_default;}
-	if(poll_kill != NULL){win->pollk = poll_kill;}else{win->pollk = pollk_default;}
+	if(poll_do_ != NULL){win->polld = poll_do_;}else{win->polld = NULL;}
+	if(poll_kill_ != NULL){win->pollk = poll_kill_;}else{win->pollk = NULL;}
 	win->name = name;
 	win->w =w;
 	win->h =h;
@@ -78,18 +78,6 @@ bool win_shouldclose(win_t *win){return glfwWindowShouldClose(win->g_window);}
 /// @brief Terminate and free the specified Window Pointer.
 /// @param win The Window to be terminated.
 void win_kill(win_t *win){
-	//Delete buffers.
-	GLuint *VAOs, *VBOs, *EBOs;
-	size_t VBO_len, EBO_len;
-	//Coalesce the VAOs, VBOs, and EBOs.
-	for(size_t cc =0; cc < win->buffer_len; ++cc){
-		VAOs[cc] = win->buffers[cc].VAO;
-		const size_t len = (win->buffers[cc].VBO_len > win->buffers[cc].EBO_len) ? win->buffers[cc].VBO_len : win->buffers[cc].EBO_len;
-		for(size_t cc_ =0; cc_ < len; ++cc_){
-			if(cc_ < win->buffers[cc].VBO_len){VBOs[cc+cc_] = win->buffers[cc].VBO;}
-			if(cc_ < win->buffers[cc].EBO_len){EBOs[cc+cc_] = win->buffers[cc].EBO;}
-		}
-	}
 	buffer_bufferdo(win->buffers, win->buffer_len, BUFFER_OPTIONS_FREE_ALL);
 	glDeleteProgram(win->shaders->shaderProgram);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -117,8 +105,8 @@ void win_kill(win_t *win){
 /// @param type ...
 /// @param stride ...
 /// @param offset ...
-void win_attrblink(window *win, GLuint layout, GLuint component_num, GLenum type, GLsizeiptr stride, const void *offset){
-	glBindBuffer(GL_ARRAY_BUFFER, win->buffers[win->buffer_curr].VBO);
+void win_attrblink(window *win, size_t curr_buffer, GLuint layout, GLuint component_num, GLenum type, GLsizeiptr stride, const void *offset){
+	glBindBuffer(GL_ARRAY_BUFFER, win->buffers[win->buffer_curr].VBO[curr_buffer]);
 	glVertexAttribPointer(layout, component_num, type, GL_FALSE, stride, offset);
 	glEnableVertexAttribArray(layout);
 }

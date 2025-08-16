@@ -1,19 +1,22 @@
-#include "../Engine/engine/Public.h"
+#include "../Public.h"
 #include <string.h>
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "../Libraries/include/stb/stb_image.h"
 
 #define GL_GLEXT_PROTOTYPES
 
 // Function prototypes for missing functions, assuming they exist elsewhere
-extern const size_t builtin_shader_typehash[];
-extern const char* vertexshader_default;
-extern const char* fragmentshader_default;
-extern const char* vs_start;
-extern const char* fs_start;
-extern const char* shader_end;
-extern char cwd[MAX_PATHLENGTH];
-extern char* vertexshader;
-extern char* fragmentshader;
-extern char* geometryshader;
+// extern const uint128_t builtin_shader_typehash[];
+// extern const char* vertexshader_default;
+// extern const char* fragmentshader_default;
+// extern const char vs_start[10];
+// extern const char* fs_start;
+// extern const char* shader_end;
+// extern char cwd[MAX_PATHLENGTH];
+// extern char* vertexshader;
+// extern char* fragmentshader;
+// extern char* geometryshader;
 
 // Global variables should be declared if used globally
 // These are assumed to be defined in `DrawingProtocol.h` or elsewhere
@@ -34,6 +37,47 @@ bool cwd_init(){
 		return false;
 	}
 	return true;
+}
+
+// Corrected shader_error function.
+// The original had incorrect `printf` format specifiers and was not properly handling the return value of `strncmp`.
+// It also had inconsistent naming for the `_compiled` member. I've removed the state tracking as it's not robust.
+void shader_error(shaderblock_t* sb_t, const char* type) {
+	if (sb_t == NULL || type == NULL) return;
+
+	GLuint shader = 0;
+	GLint success;
+	char infoLog[1024];
+
+	if (strcmp(type, "PROGRAM") == 0) {
+		shader = sb_t->shaderProgram;
+		glGetProgramiv(shader, GL_LINK_STATUS, &success);
+		if (!success) {
+			glGetProgramInfoLog(shader, 1024, NULL, infoLog);
+			fprintf(stderr, "Shader PROGRAM linking error: %s\n", infoLog);
+		}
+	} else {
+		if (strcmp(type, "VERTEX") == 0) {
+			shader = sb_t->vertexshader;
+		} else if (strcmp(type, "FRAGMENT") == 0) {
+			shader = sb_t->fragmentshader;
+		} else if (strcmp(type, "GEOMETRY") == 0) {
+			shader = sb_t->geometryshader;
+		} else {
+			fprintf(stderr, "Error: Unknown shader type '%s'.\n", type);
+			return;
+		}
+
+		if (shader == 0) { // Check if shader was created
+			return;
+		}
+
+		glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+		if (!success) {
+			glGetShaderInfoLog(shader, 1024, NULL, infoLog);
+			fprintf(stderr, "Shader %s compilation error: %s\n", type, infoLog);
+		}
+	}
 }
 
 // Fixed function to read or write shader settings.
@@ -229,7 +273,7 @@ void uniform_init(shaderblock_t* sb_t) {
 					cc++;
 				}
 				size_t typename_len = cc - typename_start;
-				char* typename = strndup(&temp_txt[typename_start], typename_len);
+				char* typename = strdup(&temp_txt[typename_start]);
 
 				if (typename) {
 					bool is_duplicate = false;
@@ -273,7 +317,7 @@ void uniform_init(shaderblock_t* sb_t) {
 					cc++;
 				}
 				size_t type_len = cc - type_start;
-				char* type_pure = strndup(&temp_txt[type_start], type_len);
+				char* type_pure = strdup(&temp_txt[type_start]);
 				
 				while (cc < temptxt_len && isspace(temp_txt[cc])) { cc++; }
 				
@@ -282,7 +326,7 @@ void uniform_init(shaderblock_t* sb_t) {
 					cc++;
 				}
 				size_t name_len = cc - name_start;
-				char* name_pure = strndup(&temp_txt[name_start], name_len);
+				char* name_pure = strdup(&temp_txt[name_start]);
 
 				if (type_pure && name_pure) {
 					bool is_duplicate = false;
@@ -347,8 +391,9 @@ void uniform_free(shaderblock_t* shader){
 // Corrected uniform_write function.
 // The original had a `return NULL` in a `void` function and incorrect pointer dereferencing.
 bool uniform_write(shaderblock_t* shader, const char* type, const char* name, const char* property, bool transpose, const void* value, size_t num_elements){
-	if (shader == NULL || name == NULL) return;
-	uint128_t typehash = str_hash(str_normalise(type, true, true));
+	if (shader == NULL || name == NULL) return false;
+	size_t *typehash_ = str_hash(str_normalise(type, true, true));
+	const uint128_t typehash = {typehash[1], typehash[0]};
 	GLint location = -1;
 	// Find the uniform location
 	for (size_t cc = 0; cc < shader->uniform_len; ++cc) {
@@ -360,7 +405,7 @@ bool uniform_write(shaderblock_t* shader, const char* type, const char* name, co
 
 	if (location == -1) {
 		fprintf(stderr, "Warning: Uniform '%s' not found.\n", name);
-		return;
+		return false;
 	}
 	for(size_t cc =0; cc < 37; ++cc){
 		if(uint128_t_comp(builtin_shader_typehash[cc], typehash) == true){
@@ -524,46 +569,6 @@ shaderblock_t* shader_compile(bool delete_shaders_on_link) {
 	return shaderblock;
 }
 
-// Corrected shader_error function.
-// The original had incorrect `printf` format specifiers and was not properly handling the return value of `strncmp`.
-// It also had inconsistent naming for the `_compiled` member. I've removed the state tracking as it's not robust.
-void shader_error(shaderblock_t* sb_t, const char* type) {
-	if (sb_t == NULL || type == NULL) return;
-
-	GLuint shader = 0;
-	GLint success;
-	char infoLog[1024];
-
-	if (strcmp(type, "PROGRAM") == 0) {
-		shader = sb_t->shaderProgram;
-		glGetProgramiv(shader, GL_LINK_STATUS, &success);
-		if (!success) {
-			glGetProgramInfoLog(shader, 1024, NULL, infoLog);
-			fprintf(stderr, "Shader PROGRAM linking error: %s\n", infoLog);
-		}
-	} else {
-		if (strcmp(type, "VERTEX") == 0) {
-			shader = sb_t->vertexshader;
-		} else if (strcmp(type, "FRAGMENT") == 0) {
-			shader = sb_t->fragmentshader;
-		} else if (strcmp(type, "GEOMETRY") == 0) {
-			shader = sb_t->geometryshader;
-		} else {
-			fprintf(stderr, "Error: Unknown shader type '%s'.\n", type);
-			return;
-		}
-
-		if (shader == 0) { // Check if shader was created
-			return;
-		}
-
-		glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-		if (!success) {
-			glGetShaderInfoLog(shader, 1024, NULL, infoLog);
-			fprintf(stderr, "Shader %s compilation error: %s\n", type, infoLog);
-		}
-	}
-}
 
 
 // Corrected win_draw function.
@@ -655,7 +660,7 @@ void *buffer_bufferdo(bufferobj_t* buffer, const size_t len, const BUFFER_OPTION
 	switch(option){
 		//For single buffer objects.
 		case BUFFER_OPTIONS_CLEAR:
-			glDeleteVertexArrays(1, buffer->VAO);
+			glDeleteVertexArrays(1, &buffer->VAO);
 			buffer_bufferdo(buffer, 1, BUFFER_OPTIONS_CLEAR_VBO);
 			buffer_bufferdo(buffer, 1, BUFFER_OPTIONS_CLEAR_EBO);
 			return NULL;

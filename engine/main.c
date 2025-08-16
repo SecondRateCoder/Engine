@@ -1,4 +1,4 @@
-#include "Public.h"
+#include "../engine/Public.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -12,7 +12,8 @@
 extern char* cwd;
 
 // Forward declaration for poll_draw to make it visible to main()
-void poll_draw(win_t *win, size_t pollcycles){
+void poll_draw(void *self, size_t pollcycles){
+    win_t *win = (win_t *)self;
     mat4 out, view, proj_screen;
     glm_mat4_identity(out);
     glm_mat4_identity(view);
@@ -20,8 +21,8 @@ void poll_draw(win_t *win, size_t pollcycles){
 
     // CORRECTED: The variable 'g' was undeclared.
     // Declaring as a static float makes it persist between calls, creating an animation.
-    static float g = 0.0f;
-    g += 0.005f; // Increment rotation angle each frame for a spinning effect
+    float g = (360/pollcycles);
+    g *= 1.00000005f;
 
     glm_translate(view, (vec3){0.0f, 0.0f, -5.0f}); // Adjusted translation for better view
     glm_perspective(glm_rad(45.0f), (float)win->w / (float)win->h, 0.1f, 100.0f, proj_screen);
@@ -37,9 +38,9 @@ void poll_draw(win_t *win, size_t pollcycles){
     const int _100 = 100;
     uniform_write(win->shaders, "inputvectors_bounds", "bounds", "end", true, &_100, 1);
 
-    win_attrblink(win, 0, 3, GL_FLOAT, 8 * sizeof(float), (void *)0);
-    win_attrblink(win, 1, 3, GL_FLOAT, 8 * sizeof(float), (void *)(3 * sizeof(float)));
-    win_attrblink(win, 2, 2, GL_FLOAT, 8 * sizeof(float), (void *)(6 * sizeof(float)));
+    win_attrblink(win, 0, 0, 3, GL_FLOAT, 8 * sizeof(float), (void *)0);
+    win_attrblink(win, 0, 1, 3, GL_FLOAT, 8 * sizeof(float), (void *)(3 * sizeof(float)));
+    win_attrblink(win, 0, 2, 2, GL_FLOAT, 8 * sizeof(float), (void *)(6 * sizeof(float)));
 
     return;
 }
@@ -48,7 +49,7 @@ int main() {
     cwd_init();
     const float sqrt3 = sqrtf(3);
     void (*poll_do)(win_t*, size_t);
-    win_t *mainw = win_init("MainWindow", &poll_draw, NULL, 800, 200);
+    win_t *mainw = win_init("Main Window", poll_draw, NULL, 800, 200);
     SHADERBLOCK_HANDLE(mainw->shaders, true, true);
     win_flood(mainw, (argb_t){.9, .7, .03, 1});
 

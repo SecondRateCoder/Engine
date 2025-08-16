@@ -8,7 +8,7 @@ typedef size_t uint128_t[2];
 
 #define HASH_64BIT_LIMIT 12
 
-// size_t *str_hash_(const char *str);
+// size_t *str_hash(const char *str);
 
 static const char* builtin_shader_typenames[38] = {
     "bool", "int", "unsignedint", "float", "vec2", "vec3", "vec4",
@@ -23,7 +23,7 @@ static const char* builtin_shader_typenames[38] = {
 /// @brief Return a __uint128_t variable.
 /// @param str The string to be hashed.
 /// @return A __uint128_t value.
-size_t *str_hash_(const char *str){
+size_t *str_hash(const char *str){
     // A large, odd prime number is a good choice for the initial hash value.
     // 5381 is a common value used in the DJB2 algorithm.
     size_t *hash = malloc(sizeof(size_t)* 2), cc =0;
@@ -47,7 +47,7 @@ size_t *str_hash_(const char *str){
 int main(){
     FILE *hashes = fopen("C:/Users/olusa/OneDrive/Documents/GitHub/Engine/Resources/Hashes/hashes.txt", "w");
     for(size_t cc =0; builtin_shader_typenames[cc] != NULL; ++cc){
-        size_t *print = str_hash_(builtin_shader_typenames[cc]);
+        size_t *print = str_hash(builtin_shader_typenames[cc]);
         char *temp = malloc(sizeof(char)* 100);
         // fwrite(print, sizeof(size_t), 2, hashes);
         snprintf(temp, sizeof(size_t)* 20, "#0: %zu, ", print[0]);
