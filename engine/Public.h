@@ -8,9 +8,10 @@
 #include "./Libraries/include/glfw3.h"
 #include "./Libraries/include/glfw3native.h"
 /// @brief A type with a size_t lower and size_t upper, using these to describe 16 byte values.
-typedef size_t uint128_t[2];
+typedef size_t uint128_t[2];  // Simulate 128-bit with two 64-bit chunks
 #include "../engine/graphics/graphics.h"
 #include "./Libraries/include/cglm/cglm.h"
+#include "../engine/_3D.h"
 #include <ctype.h>
 #include <immintrin.h>
 #include <xmmintrin.h>
@@ -43,9 +44,9 @@ typedef size_t uint128_t[2];
 #error "Unknown operating system"
 #endif
 
-
-char *str_normalise(char *str, bool handle_spaces, bool handle_upper);
+char *str_normalise(const char *str, bool handle_spaces, bool handle_upper);
 size_t *str_hash(const char *str);
-bool uint128_t_comps(uint128_t a, size_t b);
-bool uint128_t_comp(uint128_t a, uint128_t b);
+void str_tolower(char *str);
+bool uint128_t_comps(const uint128_t a, const size_t b);
+bool uint128_t_comp(const uint128_t a, const uint128_t b);
 #endif

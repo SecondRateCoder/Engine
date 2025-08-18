@@ -14,14 +14,6 @@ out vec2 tex_coord;
 
 uniform float scale;
 
-struct inputvectors_bounds{
-    uint start;
-    unit end;
-};
-
-uniform inputvectors_bounds bounds[100];
-uniform mat3 matrices[100];
-
 void main(){
     gl_Position = vec4(aPos.x + (aPos.x* scale), aPos.y + (aPos.y* scale), aPos.z + (aPos.z* scale), 1.0);
     color = aColor;

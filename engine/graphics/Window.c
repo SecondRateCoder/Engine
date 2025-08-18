@@ -1,15 +1,16 @@
 #include "graphics.h"
 
+void handle_glfw_error_default(int error_code, const char *msg){fprintf(stderr, "GLFW Error: %d\n\t%s", error_code, msg);}
+
 /// @brief Initialise an Un-Resizable GLFW Window.
 /// @param name The Name of the Window.
 /// @param w The Width of the Window.
 /// @param h The Height of the Window.
 /// @return An initialised Pointer to the Window.
-win_t* win_init(char* name, poll_do poll_do_, poll_kill poll_kill_, uint32_t w, uint32_t h){
+win_t* win_init(char* name, GLFWerrorfun error_handle, poll_do poll_do_, poll_kill poll_kill_, uint32_t w, uint32_t h){
 	//Initialise GLFW.
-	glfwInit();
-	//Enable Depth testing, So Triangles behind other Triangles are not drawn.
-	glEnable(GL_DEPTH_TEST);
+	glfwSetErrorCallback(error_handle == NULL? handle_glfw_error_default: error_handle);
+	if(glfwInit() == GL_FALSE){fprintf(stderr, "YOOOOO!!!! Why is ts failing oml!!!");}
 	// glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 
 	//Not Resizable.
@@ -18,7 +19,7 @@ win_t* win_init(char* name, poll_do poll_do_, poll_kill poll_kill_, uint32_t w, 
 	//Using Legacy, OpenGL 3.3 for my 9800 GT GPU.
 	glfwWindowHint(GLFW_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 
 	//malloc on heap.
 	win_t *win = malloc(sizeof(win_t));
@@ -32,7 +33,7 @@ win_t* win_init(char* name, poll_do poll_do_, poll_kill poll_kill_, uint32_t w, 
 	if(win->g_window == NULL){
 		//If nothing was created, free the window and it's attributes.
 		printf("Window %s failed to Initialise\nError!", name);
-		free(name);
+		free(win->name);
 		glfwTerminate();
 		return NULL;
 	}else{
@@ -98,18 +99,18 @@ void win_kill(win_t *win){
 }
 
 
-/// @brief Link the win's VAO with the VBO.
-/// @param win The Window containing the VAO and VBO.
-/// @param layout ...
-/// @param component_num ...
-/// @param type ...
-/// @param stride ...
-/// @param offset ...
-void win_attrblink(window *win, size_t curr_buffer, GLuint layout, GLuint component_num, GLenum type, GLsizeiptr stride, const void *offset){
-	glBindBuffer(GL_ARRAY_BUFFER, win->buffers[win->buffer_curr].VBO[curr_buffer]);
-	glVertexAttribPointer(layout, component_num, type, GL_FALSE, stride, offset);
-	glEnableVertexAttribArray(layout);
-}
+// /// @brief Link the win's VAO with the VBO.
+// /// @param win The Window containing the VAO and VBO.
+// /// @param layout ...
+// /// @param component_num ...
+// /// @param type ...
+// /// @param stride ...
+// /// @param offset ...
+// void win_attrblink(window *win, size_t curr_buffer, GLuint layout_index, GLuint component_num, GLenum type, GLsizeiptr stride, const void *pointer){
+// 	glBindBuffer(GL_ARRAY_BUFFER, win->buffers[win->buffer_curr].VBO[curr_buffer]);
+// 	glVertexAttribPointer(layout_index, component_num, type, GL_FALSE, stride, pointer);
+// 	glEnableVertexAttribArray(layout_index);
+// }
 
 void polld_default(win_t *win, size_t cycles){return;}
 void pollk_default(win_t *win){return;}

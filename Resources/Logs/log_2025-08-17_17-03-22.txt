@@ -1,0 +1,36 @@
+Checking for GCC availability...
+GCC found: gcc
+Setting up Build directory: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build
+Clearing existing Build directory contents...
+Searching for .c files in './engine'...
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\Functions.o...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\Functions.o
+Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\glad.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\glad.o...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\glad.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\glad.o
+Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\glad.c
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\main.o...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\main.o
+Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\drawingprotocol.o...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\drawingprotocol.o
+FAILED: Failed to compile C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c. GCC Exit Code: 0
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c: In function 'uniform_write':
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:550:41: warning: 'strncat' specified bound 2 equals source length [-Wstringop-overflow=]
+#!:   550 |                                         strncat(full_access+name_len, "->\0", 2);
+#!:       |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:559:49: warning: 'strncat' specified bound 1 equals source length [-Wstringop-overflow=]
+#!:   559 |                                                 strncat(full_access+name_len, ".\0", 1);
+#!:       |                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\window.o...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\window.o
+Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb_vorbis.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\stb_vorbis.o...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb_vorbis.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\stb_vorbis.o
+Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb_vorbis.c
+Starting linking phase...
+Linking object files into C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\engine.exe...
+Command: gcc C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\drawingprotocol.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\Functions.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\glad.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\main.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\stb_vorbis.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\window.o -L C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib -l glfw3 -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\engine.exe
+Successfully linked all object files to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\engine.exe
+
+Compilation and Linking process completed successfully!

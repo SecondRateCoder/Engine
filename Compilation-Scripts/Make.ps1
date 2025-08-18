@@ -161,7 +161,7 @@ function C_Compile {
             Write-Log "FAILED: Failed to compile $($FilePath). GCC Exit Code: $($LASTEXITCODE)"
             # Write the captured error output to the log file
             if ($gccOutput) {
-                $gccOutput | ForEach-Object { Write-Log "ERROR: $_" }
+                $gccOutput | ForEach-Object { Write-Log "#!: $_" }
             }
             return $false
         }
@@ -191,10 +191,11 @@ function Obj_Link {
     
     $arguments = @()
 
+    # Coalesce .o files, object files
     foreach ($file in $objectFiles) {
         $arguments += "$(Resolve-Path $file)"
     }
-
+    # Coalesce Library Directories
     if ($LibraryDirectories) {
         foreach ($dir in $LibraryDirectories) {
             if (Test-Path $dir -PathType Container) {
@@ -205,7 +206,7 @@ function Obj_Link {
             }
         }
     }
-
+    # Coalesce library files, .dll files
     if ($LibraryNames) {
         foreach ($lib in $LibraryNames) {
             if (-not [string]::IsNullOrEmpty($lib)) {
@@ -213,6 +214,18 @@ function Obj_Link {
                 $arguments += $lib
             } else {
                 Write-Log "WARNING: Empty library name provided. Skipping."
+            }
+        }
+    }
+
+    # Coalesce include Directories,
+    if ($IncludeDirectories) {
+        foreach ($dir in $IncludeDirectories) {
+            if (Test-Path $dir -PathType Container) {
+                $arguments += "-I"
+                $arguments += "$(Resolve-Path $dir)"
+            } else {
+                Write-Log "WARNING: Include path not found or is not a directory: '$dir'. Skipping."
             }
         }
     }
@@ -311,4 +324,5 @@ if (-not (Obj_Link -BuildDirectory $buildDir -OutputName $OutputExecutableName -
     exit 1
 }
 
+Copy-Item -Path "C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\glfw3.dll" -Destination "C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build"
 Write-Log "`nCompilation and Linking process completed successfully!"

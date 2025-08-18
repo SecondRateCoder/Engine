@@ -31,6 +31,70 @@
 #include <unistd.h>
 #endif
 
+const uint128_t builtin_shader_typehash[37] = {
+	{0, 3646476,}, {0, 118091}, {0, 184466353937349512}, {0, 124969334},
+	{0, 4353872}, {0, 4353873},  {0, 4353874},
+	{0, 128875577},  {0, 128875578},  {0, 128875579},
+	{0, 143106629},  {0, 143106630},  {0, 143106631},
+	{0, 120574130},  {0, 120574131},  {0, 120574132},
+	{0, 4026644},  {0, 4026645},  {0, 4026646},
+	{0, 4385019327},  {0, 4385020415},  {0, 4385019328},  {0, 4385021504},  {0, 4385020417},  {0, 4385021505},
+	{0, 166016265074057},  {0, 166016265074090},  {0, 166016265074123},
+	{0, 180791712666351635}, //SamplerCube
+	{0, 16629051508994671055U},  {0, 16629051551613114032U},
+	{0, 3857864121005407689},  {0, 12598728139851495951U},
+	{0, 5039222127279122},  {0, 5039222127279155},
+	{0, 5596159940102558},  {0, 5596159940102591}
+};
+const char* builtin_shader_typenames[37] = {
+	"bool", "int", "unsignedint", "float", "vec2", "vec3", "vec4",
+	"ivec2", "ivec3", "ivec4", "uvec2", "uvec3", "uvec4",
+	"bvec2", "bvec3", "bvec4", "mat2", "mat3", "mat4",
+	"mat2x3", "mat3x2", "mat2x4", "mat4x2", "mat3x4", "mat4x3",
+	"sampler1D", "sampler2D", "sampler3D", "samplerCube",
+	"sampler1DShadow", "sampler2DShadow", "sampler2DArray",
+	"sampler2DArrayShadow", "isampler1D", "isampler2D",
+	"usampler1D", "usampler2D"
+};
+const char vs_start[10] = "#define vs",
+	fs_start[10] = "#define fs",
+	gs_start[10] = "#define gs",
+	// tcs_start[10]= "#define tc", 
+	// tes_start[10]= "#define te", 
+	// cs_start[10]= "#define cs", 
+	shader_end[10] = "#shaderend"
+;
+const char vertexshader_default[135] =
+	"#version 330 core\n"
+	"#define vs\n"
+	"layout(location = 0) in vec3 position;\n"
+	"void main(){\n"
+	"    gl_Position = vec4(position, 1.0);\n"
+	"}\n"
+	"#shaderend\n\0"
+;
+const char fragmentshader_default[111] =
+	"#version 330 core\n"
+	"#define fs\n"
+	"out vec4 color;\n"
+	"void main(){\n"
+	"    color = vec4(1.0, 0.0, 0.0, 1.0);\n"
+	"}\n"
+	"#shaderend\n\0"
+;
+size_t len_typenames = 36;
+
+char* vertexshader = NULL,
+	* fragmentshader = NULL,
+	* geometryshader = NULL,
+	** shader_typenames = NULL
+	/* *tessellation_controlshader,
+	*tessellation_evaluationshader,
+	*computeshader*/
+;
+char *cwd;
+
+
 bool cwd_init(){
 	if (getcwd(cwd, MAX_PATHLENGTH) == NULL) {
 		printf("getcwd() Error, cwd not Initialised.\n");
@@ -450,31 +514,31 @@ bool uniform_write(shaderblock_t* shader, const char* type, const char* name, co
 					glUniform4uiv(location, num_elements, (const GLuint*)value);
 					break;
 				case 13: // mat2
-					glUniformMatrix2fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
+					glUniformMatrix2fv(location, num_elements, transpose, (const GLfloat*)value);
 					break;
 				case 14: // mat3
-					glUniformMatrix3fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
+					glUniformMatrix3fv(location, num_elements, transpose, (const GLfloat*)value);
 					break;
 				case 15: // mat4
-					glUniformMatrix4fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
+					glUniformMatrix4fv(location, num_elements, transpose, (const GLfloat*)value);
 					break;
 				case 16: // mat2x3
-					glUniformMatrix2x3fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
+					glUniformMatrix2x3fv(location, num_elements, transpose, (const GLfloat*)value);
 					break;
 				case 17: // mat3x2
-					glUniformMatrix3x2fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
+					glUniformMatrix3x2fv(location, num_elements, transpose, (const GLfloat*)value);
 					break;
 				case 18: // mat2x4
-					glUniformMatrix2x4fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
+					glUniformMatrix2x4fv(location, num_elements, transpose, (const GLfloat*)value);
 					break;
 				case 19: // mat4x2
-					glUniformMatrix4x2fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
+					glUniformMatrix4x2fv(location, num_elements, transpose, (const GLfloat*)value);
 					break;
 				case 20: // mat3x4
-					glUniformMatrix3x4fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
+					glUniformMatrix3x4fv(location, num_elements, transpose, (const GLfloat*)value);
 					break;
 				case 21: // mat4x3
-					glUniformMatrix4x3fv(location, num_elements, transpose != NULL && transpose, (const GLfloat*)value);
+					glUniformMatrix4x3fv(location, num_elements, transpose, (const GLfloat*)value);
 					break;
 				default:
 					//Just attempt writing something ngl.
@@ -483,16 +547,16 @@ bool uniform_write(shaderblock_t* shader, const char* type, const char* name, co
 					char *full_access = malloc(strlen(name)+strlen(property)+strlen("->\0")+1);
 					full_access[strlen(name)+strlen(property)+strlen("->\0")] = '\0';
 					strncat(full_access, name, strlen(name));
-					strncat(full_access+name_len, "->\0", strlen("->\0"));
+					strncat(full_access+name_len, "->", 3);
 					strncat(full_access+name_len+pointerchar_len, property, strlen(property));
 					GLint out = glGetUniformLocation(shader->shaderProgram, full_access);
 					if(out == -1){
 						//Try with just a "."
 						free(full_access);
 						full_access = realloc(full_access, strlen(name)+strlen(property)+strlen(".\0")+1);
-						full_access[strlen(name)+strlen(property)+strlen(".\0")] = '\0';
+						full_access[strlen(name)+strlen(property)+strlen(".")] = '\0';
 						// strncat(full_access, name, strlen(name));
-						strncat(full_access+name_len, ".\0", strlen(".\0"));
+						strncat(full_access+name_len, ".", 2);
 						strncat(full_access+name_len+dotchar_len, property, strlen(property));
 						out = glGetUniformLocation(shader->shaderProgram, full_access);
 						if(out == -1){return false;}
@@ -574,23 +638,19 @@ shaderblock_t* shader_compile(bool delete_shaders_on_link) {
 // Corrected win_draw function.
 // The original code had incorrect OpenGL function calls, illogical error handling,
 // and a memory leak in the index handling.
-void win_draw(win_t *win, const GLfloat *points, size_t len, GLuint *indexes, size_t ilen){
-	if (win == NULL || points == NULL || len == 0) return;
-	if(win->buffer_len == 0 || win->buffers == NULL){
-		win->buffers = (bufferobj_t*)malloc(sizeof(bufferobj_t));
-		win->buffer_curr = 0;
-		win->buffer_len = 1;
-		win->buffers[0].VBO = malloc(sizeof(GLuint));
-		win->buffers[0].EBO = malloc(sizeof(GLuint));
-	}
+void win_draw(win_t *win, mesh_t *mesh){
+	if (win == NULL || mesh == NULL){return;}
 	bufferobj_t *temp_ptr = &win->buffers[win->buffer_curr];
-	BUFFEROBJECT_HANDLE(temp_ptr, points, len, indexes, &ilen, GL_STATIC_DRAW, 10);
-	// Configure vertex attribute pointers
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
-	glEnableVertexAttribArray(0);
-
+	BUFFEROBJECT_HANDLE(temp_ptr, mesh->mesh_data, mesh->data_len, mesh->vertex_index, &mesh->index_len, GL_STATIC_DRAW, 10);
+	// if(win->buffer_len == 0 || win->buffers == NULL){
+	// 	win->buffers = (bufferobj_t*)malloc(sizeof(bufferobj_t));
+	// 	win->buffer_curr = 0;
+	// 	win->buffer_len = 1;
+	// 	win->buffers[0].VBO = malloc(sizeof(GLuint));
+	// 	win->buffers[0].EBO = malloc(sizeof(GLuint));
+	// }
 	// Drawing call
-	glDrawElements(GL_TRIANGLES, ilen, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, mesh->data_len, GL_UNSIGNED_INT, mesh->mesh_data);
 }
 
 // Corrected winimage_append function.

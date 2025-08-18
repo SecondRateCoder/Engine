@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Public.h"
+#include "../_3D.h"
 //#include "./window/window.h"
 #include <stdint.h>
 #include <string.h>
@@ -38,9 +39,14 @@
 	}else{success = true;} \
 */
 
-#define BUFFEROBJECT_HANDLE(BO, VERTICES, len, INDEX_ORDER, ilen, DRAW_FORMAT, MAX_) \
+#define BUFFEROBJECT_HANDLE(BO_, VERTICES_, len_, INDEX_ORDER_, ilen_, DRAW_FORMAT, MAX_) \
 size_t counter = 3;	\
 bool success = false;	\
+bufferobj_t *BO = BO_;	\
+GLfloat *VERTICES = VERTICES_;	\
+size_t len = len_;	\
+GLuint *INDEX_ORDER = INDEX_ORDER_;	\
+size_t *ilen = ilen_;	\
 do { \
 	if(BO == NULL){break;}	\
 	success = true;	\
@@ -69,7 +75,7 @@ do { \
 				actual_indexes = (GLuint*)malloc((*ilen) * sizeof(GLuint)); \
 				if (actual_indexes){for (size_t cc = 0; cc < len; ++cc) { actual_indexes[cc] = cc; }}   \
 				free_indexes_new = true;	\
-			}else{actual_indexes = (GLuint*)indexes;}   \
+			}else{actual_indexes = INDEX_ORDER;}   \
 			/*Finish handling EBO*/	\
 			if (BO->EBO == 0) {glGenBuffers(1, BO->EBO);}   \
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *BO->EBO);    \
@@ -215,68 +221,42 @@ typedef struct Color4 {
 
 // The function pointer parameter should be a pointer to the `poll_do` type, not a pointer to a pointer.
 // Also, the return type should be `window *`
-win_t* win_init(char* name, poll_do poll_do_, poll_kill poll_kill_, uint32_t w, uint32_t h);
+win_t* win_init(char* name, GLFWerrorfun error_handle, poll_do poll_do_, poll_kill poll_kill_, uint32_t w, uint32_t h);
 void win_poll(win_t* win);
 bool win_shouldclose(win_t* win);
 void win_kill(win_t* win);
 
 // The function signature for `win_attrblink` is a bit strange, `GLuint` for layout and `GLuint` for `component_num` is fine, but it's not clear what `win_attrblink` is doing. It's likely a typo and should be `glVertexAttribPointer`. I've left the signature as is, but it may require further correction in the implementation file. The `offset` parameter is usually a `const void *`.
-void win_attrblink(window *win, size_t curr_vbo, GLuint layout, GLuint component_num, GLenum type, GLsizeiptr stride, const void *offset);
+// void win_attrblink(window *win, size_t curr_vbo, GLuint layout, GLuint component_num, GLenum type, GLsizeiptr stride, const void *offset);
 
 
 
-
-char* cwd;
+extern char *cwd;
 #define MAX_PATHLENGTH 1024* 1024
 
-//Length: 53
-const char* vertexshader_default =
-	"#version 330 core\n"
-	"#define vs\n"
-	"layout(location = 0) in vec3 position;\n"
-	"void main(){\n"
-	"    gl_Position = vec4(position, 1.0);\n"
-	"}\n"
-	"#shaderend\n\0";
-
-//Length: 54
-const char* fragmentshader_default =
-	"#version 330 core\n"
-	"#define fs\n"
-	"out vec4 color;\n"
-	"void main(){\n"
-	"    color = vec4(1.0, 0.0, 0.0, 1.0);\n"
-	"}\n"
-	"#shaderend\n\0";
+extern const char vertexshader_default[135];
+extern const char fragmentshader_default[111];
 
 /// @brief The Constant Shader keywords for Understanding Shader text.
-const char vs_start[10] = "#define vs",
-	fs_start[10] = "#define fs",
-	gs_start[10] = "#define gs",
-	// tcs_start[10]= "#define tc", 
-	// tes_start[10]= "#define te", 
-	// cs_start[10]= "#define cs", 
-	shader_end[10] = "#shaderend";
+extern const char vs_start[10],
+fs_start[10],gs_start[10],
+// tcs_start[10], tes_start[10], cs_start[10],
+shader_end[10];
 
-size_t len_typenames = 36;
+extern size_t len_typenames;
 /// @brief Shader RAWs in case any part of the Program needs them.
-char* vertexshader = NULL,
-	* fragmentshader = NULL,
-	* geometryshader = NULL,
-	** shader_typenames = NULL
+extern char* vertexshader,
+	* fragmentshader,
+	* geometryshader,
+	** shader_typenames
 	/* *tessellation_controlshader,
 	*tessellation_evaluationshader,
-	*computeshader*/;
+	*computeshader*/
+;
+extern const char* builtin_shader_typenames[];
+extern const uint128_t builtin_shader_typehash[37];
 
-static const char* builtin_shader_typenames[] = {
-	"bool", "int", "unsignedint", "float", "vec2", "vec3", "vec4",
-	"ivec2", "ivec3", "ivec4", "uvec2", "uvec3", "uvec4",
-	"bvec2", "bvec3", "bvec4", "mat2", "mat3", "mat4",
-	"mat2x3", "mat3x2", "mat2x4", "mat4x2", "mat3x4", "mat4x3",
-	"sampler1D", "sampler2D", "sampler3D", "samplerCube",
-	"sampler1DShadow", "sampler2DShadow", "sampler2DArray",
-	"sampler2DArrayShadow", "isampler1D", "isampler2D",
-	"usampler1D", "usampler2D" };
+#define NUM_BUILTIN_TYPES 37
 
 
 /*
@@ -298,31 +278,12 @@ OLD_TYPE_NAME_HASHES:
 */
 
 
-// extern typedef uint128_t;
-static const uint128_t builtin_shader_typehash[37] = {
-	{0, 3646476,}, {0, 118091}, {0, 184466353937349512}, {0, 124969334},
-	{0, 4353872}, {0, 4353873},  {0, 4353874},
-	{0, 128875577},  {0, 128875578},  {0, 128875579},
-	{0, 143106629},  {0, 143106630},  {0, 143106631},
-	{0, 120574130},  {0, 120574131},  {0, 120574132},
-	{0, 4026644},  {0, 4026645},  {0, 4026646},
-	{0, 4385019327},  {0, 4385020415},  {0, 4385019328},  {0, 4385021504},  {0, 4385020417},  {0, 4385021505},
-	{0, 166016265074057},  {0, 166016265074090},  {0, 166016265074123},
-	{0, 180791712666351635}, //SamplerCube
-	{0, 16629051508994671055U},  {0, 16629051551613114032U},
-	{0, 3857864121005407689},  {0, 12598728139851495951U},
-	{0, 5039222127279122},  {0, 5039222127279155},
-	{0, 5596159940102558},  {0, 5596159940102591} };
-
-const size_t NUM_BUILTIN_TYPES = sizeof(builtin_shader_typenames) / sizeof(builtin_shader_typenames[0]);
-
-
 
 bool cwd_init();
 void shaders_pull(const char* filepath);
 char* shadersettings_rw(const char* filepath, char* write);
 shaderblock_t* shader_compile(bool delete_shaders_on_link);
-void win_draw(win_t *win, const GLfloat *points, size_t len, GLuint *indexes, size_t ilen);
+void win_draw(win_t *win, mesh_t *mesh);
 void win_flood(win_t *win, const argb_t c);
 void winimage_append(win_t *win, const char *filepath, const argb_t *border_color);
 void destroy_arrkey(arrk_t *arrk);

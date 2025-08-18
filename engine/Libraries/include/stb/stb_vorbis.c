@@ -1,4 +1,3 @@
-@ -1,5584 +0,0 @@
 // Ogg Vorbis audio decoder - v1.22 - public domain
 // http://nothings.org/stb_vorbis/
 //
