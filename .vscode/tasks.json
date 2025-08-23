@@ -28,9 +28,22 @@
             "group": "none"
         },
         {
+        "label": "Prepare Build",
+        "type": "shell",
+        "command": "cmd.exe",
+        "args": [
+            "/c",
+            "copy",
+            "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\Libraries\\lib\\glfw3.dll",
+            "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\Build\\glfw3.dll"
+        ],
+        "problemMatcher": [],
+        "group": "none"
+        },
+        {
             "type": "cppbuild",
             "label": "Build and Debug Project",
-            "dependsOn": "Clear Terminal",
+            "dependsOn": ["Prepare Build", "Clear Terminal"],
             "command": "gcc",
             "args": [
                 "-fdiagnostics-color=always",
@@ -39,11 +52,13 @@
                 // "-o",
                 // "${fileDirname}\\${fileBasenameNoExtension}.exe"
                 "-g",
+                "-std=c99",
                 "${cwd}\\engine\\main.c",
                 "${cwd}\\engine\\functions.c",
                 "${cwd}\\engine\\graphics\\drawingprotocol.c",
                 "${cwd}\\engine\\graphics\\window.c",
                 "${cwd}\\engine\\glad.c",
+                "${cwd}\\engine\\Libraries\\include\\stb\\stb.c",
                 "-L",
                 "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\Libraries\\lib",
                 "-l",
@@ -55,7 +70,7 @@
                 "-I",
                 "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\Libraries\\include",
                 "-o",
-                "${cwd}\\Build\\engine"
+                "${cwd}\\Build\\engine",
             ],
             "options": {
                 "cwd": "C:\\msys64\\ucrt64\\bin"

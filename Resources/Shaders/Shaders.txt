@@ -1,4 +1,4 @@
-3.30000000
+3.300000000000
 ^Settings.
 
 #define vs
@@ -18,12 +18,6 @@ void main(){
     gl_Position = vec4(aPos.x + (aPos.x* scale), aPos.y + (aPos.y* scale), aPos.z + (aPos.z* scale), 1.0);
     color = aColor;
     tex_coord = aTex;
-
-    for(uint cc =0; cc < 100; cc++){
-        for(uint cc_ =0; cc_ < bounds[cc].end; cc_++){
-            gl_Position = gl_Position* matrices[bounds[cc].end+cc];
-        }
-    }
 }
 
 #shaderend

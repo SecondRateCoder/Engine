@@ -1,0 +1,113 @@
+Checking for GCC availability...
+GCC found: gcc
+Setting up Build directory: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build
+Clearing existing Build directory contents...
+Searching for .c files in './engine'...
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\Functions.o...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\Functions.o
+FAILED: Failed to compile C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c. GCC Exit Code: 1
+#!: In file included from C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:4,
+#!:                  from C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:15,
+#!:                  from C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:1:
+#!: C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/_3D.h:20:5: error: unknown type name 'image_t'
+#!:    20 |     image_t *textures;
+#!:       |     ^~~~~~~
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\glad.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\glad.o...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\glad.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\glad.o
+Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\glad.c
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\main.o...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\main.o
+FAILED: Failed to compile C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c. GCC Exit Code: 1
+#!: In file included from C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:4,
+#!:                  from C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:15,
+#!:                  from C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:1:
+#!: C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/_3D.h:20:5: error: unknown type name 'image_t'
+#!:    20 |     image_t *textures;
+#!:       |     ^~~~~~~
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c: In function 'main':
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:60:24: error: assignment to 'GLuint *' {aka 'unsigned int *'} from incompatible pointer type 'GLuint (*)[18]' {aka 'unsigned int (*)[18]'} [-Wincompatible-pointer-types]
+#!:    60 |     mesh->vertex_index = &(GLuint[]){
+#!:       |                        ^
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:88:25: error: incompatible types when assigning to type 'int' from type 'texture_image'
+#!:    88 |     mesh->textures[0] = (image_t){
+#!:       |                         ^
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:93:22: error: request for member 'img' in something not a structure or union
+#!:    93 |     mesh->textures[0].img = stbi_load(
+#!:       |                      ^
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:95:27: error: request for member 'width' in something not a structure or union
+#!:    95 |         &mesh->textures[0].width,
+#!:       |                           ^
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:96:27: error: request for member 'height' in something not a structure or union
+#!:    96 |         &mesh->textures[0].height,
+#!:       |                           ^
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:97:27: error: request for member 'color_channels' in something not a structure or union
+#!:    97 |         &mesh->textures[0].color_channels,
+#!:       |                           ^
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:98:27: error: request for member 'color_channels' in something not a structure or union
+#!:    98 |         &mesh->textures[0].color_channels
+#!:       |                           ^
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:100:40: error: request for member 'ID' in something not a structure or union
+#!:   100 |     glGenTextures(1, &mesh->textures[0].ID);
+#!:       |                                        ^
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:101:51: error: request for member 'ID' in something not a structure or union
+#!:   101 |     glBindTexture(GL_TEXTURE_2D, mesh->textures[0].ID);
+#!:       |                                                   ^
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\drawingprotocol.o...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\drawingprotocol.o
+FAILED: Failed to compile C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c. GCC Exit Code: 1
+#!: In file included from C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:4,
+#!:                  from C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:15,
+#!:                  from C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:1:
+#!: C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/_3D.h:20:5: error: unknown type name 'image_t'
+#!:    20 |     image_t *textures;
+#!:       |     ^~~~~~~
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c: In function 'winimage_append':
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:657:14: error: 'window' has no member named 'textures'; did you mean 'textures_len'?
+#!:   657 |         win->textures = (image_t*)realloc(win->textures, sizeof(image_t) * (win->textures_len + 1));
+#!:       |              ^~~~~~~~
+#!:       |              textures_len
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:657:48: error: 'window' has no member named 'textures'; did you mean 'textures_len'?
+#!:   657 |         win->textures = (image_t*)realloc(win->textures, sizeof(image_t) * (win->textures_len + 1));
+#!:       |                                                ^~~~~~~~
+#!:       |                                                textures_len
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:658:18: error: 'window' has no member named 'textures'; did you mean 'textures_len'?
+#!:   658 |         if (win->textures == NULL) {
+#!:       |                  ^~~~~~~~
+#!:       |                  textures_len
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:663:36: error: 'window' has no member named 'textures'; did you mean 'textures_len'?
+#!:   663 |         image_t* new_image = &win->textures[win->textures_len];
+#!:       |                                    ^~~~~~~~
+#!:       |                                    textures_len
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\window.o...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\window.o
+FAILED: Failed to compile C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c. GCC Exit Code: 1
+#!: In file included from C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:17,
+#!:                  from C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:3,
+#!:                  from C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c:1:
+#!: C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/_3D.h:20:5: error: unknown type name 'image_t'
+#!:    20 |     image_t *textures;
+#!:       |     ^~~~~~~
+#!: C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:56:20: error: unknown type name 'bufferobj_t'
+#!:    56 | void mesh_attrlink(bufferobj_t *buffer, uint32_t pos_layout,  uint32_t color_layout,  uint32_t texture_layout, mesh_t *_mesh);
+#!:       |                    ^~~~~~~~~~~
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c: In function 'win_kill':
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c:89:80: error: 'window' has no member named 'textures'; did you mean 'textures_len'?
+#!:    89 |         for(size_t cc =0; cc < win->textures_len; ++cc){TEXTURES_ID[cc] = win->textures[cc].ID;}
+#!:       |                                                                                ^~~~~~~~
+#!:       |                                                                                textures_len
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c:96:19: error: 'window' has no member named 'textures'; did you mean 'textures_len'?
+#!:    96 |         free(win->textures);
+#!:       |                   ^~~~~~~~
+#!:       |                   textures_len
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb_vorbis.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\stb_vorbis.o...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb_vorbis.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\stb_vorbis.o
+Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb_vorbis.c
+Starting linking phase...
+Linking object files into C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\engine.exe...
+Command: gcc C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\drawingprotocol.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\Functions.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\glad.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\main.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\stb_vorbis.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\window.o -L C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib -l glfw3 -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\engine.exe
+FAILED: Failed to link object files. GCC Exit Code: 1
+ERROR: C:/msys64/ucrt64/bin/ld.exe: C:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a(lib64_libmingw32_a-crtexewin.o): in function `main':
+ERROR: D:/W/B/src/mingw-w64/mingw-w64-crt/crt/crtexewin.c:66:(.text.startup+0xb5): undefined reference to `WinMain'
+ERROR: collect2.exe: error: ld returned 1 exit status
+
+Compilation and Linking process completed successfully!

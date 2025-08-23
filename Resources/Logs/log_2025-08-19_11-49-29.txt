@@ -1,0 +1,50 @@
+Checking for GCC availability...
+GCC found: gcc
+Setting up Build directory: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build
+Clearing existing Build directory contents...
+Searching for .c files in './engine'...
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\Functions.o...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\Functions.o
+Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\glad.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\glad.o...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\glad.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\glad.o
+Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\glad.c
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\main.o...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\main.o
+FAILED: Failed to compile C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c. GCC Exit Code: 1
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c: In function 'main':
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:58:22: error: assignment to 'GLfloat *' {aka 'float *'} from incompatible pointer type 'GLuint *' {aka 'unsigned int *'} [-Wincompatible-pointer-types]
+#!:    58 |     mesh->mesh_data = (GLuint[]){
+#!:       |                      ^
+#!: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:125:21: error: passing argument 2 of 'win_draw' from incompatible pointer type [-Wincompatible-pointer-types]
+#!:   125 |     win_draw(mainw, &mesh);
+#!:       |                     ^~~~~~
+#!:       |                     |
+#!:       |                     _mesh **
+#!: In file included from C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:12,
+#!:                  from C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:1:
+#!: C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:286:35: note: expected '_mesh *' but argument is of type '_mesh **'
+#!:   286 | void win_draw(win_t *win, mesh_t *_mesh);
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\drawingprotocol.o...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\drawingprotocol.o
+Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\window.o...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\window.o
+FAILED: Failed to compile C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c. GCC Exit Code: 1
+#!: In file included from C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:3,
+#!:                  from C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c:1:
+#!: C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:53:20: error: unknown type name 'bufferobj_t'
+#!:    53 | void mesh_attrlink(bufferobj_t *buffer, uint32_t pos_layout,  uint32_t color_layout,  uint32_t texture_layout, mesh_t *_mesh);
+#!:       |                    ^~~~~~~~~~~
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb_vorbis.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\stb_vorbis.o...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb_vorbis.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\stb_vorbis.o
+Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb_vorbis.c
+Starting linking phase...
+Linking object files into C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\engine.exe...
+Command: gcc C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\drawingprotocol.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\Functions.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\glad.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\main.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\stb_vorbis.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\window.o -L C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib -l glfw3 -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\Build\engine.exe
+FAILED: Failed to link object files. GCC Exit Code: 1
+ERROR: C:/msys64/ucrt64/bin/ld.exe: C:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/15.1.0/../../../../lib/libmingw32.a(lib64_libmingw32_a-crtexewin.o): in function `main':
+ERROR: D:/W/B/src/mingw-w64/mingw-w64-crt/crt/crtexewin.c:66:(.text.startup+0xb5): undefined reference to `WinMain'
+ERROR: collect2.exe: error: ld returned 1 exit status
+
+Compilation and Linking process completed successfully!

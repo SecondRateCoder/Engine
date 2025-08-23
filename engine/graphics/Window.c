@@ -1,4 +1,4 @@
-#include "graphics.h"
+#include "../graphics/graphics.h"
 
 void handle_glfw_error_default(int error_code, const char *msg){fprintf(stderr, "GLFW Error: %d\n\t%s", error_code, msg);}
 
@@ -14,13 +14,15 @@ win_t* win_init(char* name, GLFWerrorfun error_handle, poll_do poll_do_, poll_ki
 	// glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 
 	//Not Resizable.
-	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+	// glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
 	//Using Legacy, OpenGL 3.3 for my 9800 GT GPU.
-	glfwWindowHint(GLFW_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
-
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+#ifdef __APPLE__
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	//malloc on heap.
 	win_t *win = malloc(sizeof(win_t));
 	if(poll_do_ != NULL){win->polld = poll_do_;}else{win->polld = NULL;}
@@ -57,7 +59,7 @@ void win_poll(win_t *win){
 		SHADERBLOCK_HANDLE(win->shaders, true, true);
 		//Explicitly define the Shader to be Used.
 		glUseProgram(win->shaders->shaderProgram);
-		win->polld;
+		win->polld(win, cc);
 		//Bind win's VAO for Drawing.
 		glBindVertexArray(win->buffers[win->buffer_curr].VAO);
 		//Draw Triangles with GL_TRIANGLE Primitive.
@@ -86,14 +88,14 @@ void win_kill(win_t *win){
 	glBindVertexArray(0);
 	glfwDestroyWindow(win->g_window);
 	GLuint *TEXTURES_ID = (GLuint *)malloc(win->textures_len);
-	for(size_t cc =0; cc < win->textures_len; ++cc){TEXTURES_ID[cc] = win->textures[cc].ID;}
+	// for(size_t cc =0; cc < win->textures_len; ++cc){TEXTURES_ID[cc] = win->}
 	glDeleteTextures(win->textures_len, TEXTURES_ID);
 	free(TEXTURES_ID);
 	glfwTerminate();
 	free(win->name);
 	free(win->polld);
 	free(win->pollk);
-	free(win->textures);
+	// free(win->textures);
 	free(win->shaders);
 	free(win);
 }
