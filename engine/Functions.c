@@ -257,7 +257,7 @@ const char vs_start[10] = "#define vs",
 	tcs_start[10]= "#define tc", 
 	tes_start[10]= "#define te", 
 	cs_start[10]= "#define cs", 
-	shader_end[10] = "#shaderend"
+	shader_end[18] = "#define shaderend"
 ;
 const char vertexshader_default[135] =
 	"#version 330 core\n"

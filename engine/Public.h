@@ -86,7 +86,7 @@ extern const unsigned int settings_len;
 extern const char vs_start[10],
 fs_start[10],gs_start[10],
 tcs_start[10], tes_start[10],// cs_start[10],
-shader_end[10];
+shader_end[18];
 
 extern size_t len_typenames;
 /// @brief Shader RAWs in case any part of the Program needs them.

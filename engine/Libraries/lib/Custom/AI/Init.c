@@ -1,0 +1,5 @@
+
+
+void ai_init(){
+    
+}

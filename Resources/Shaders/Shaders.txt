@@ -20,7 +20,7 @@ void main(){
     tex_coord = aTex;
 }
 
-#shaderend
+#define shaderend
 
 #define fs
 #version 330 core
@@ -35,4 +35,4 @@ void main(){
     FragColor = vec4(tex0, tex_coord);
 }
 
-#shaderend
+#define shaderend

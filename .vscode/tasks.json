@@ -43,7 +43,7 @@
         {
             "type": "cppbuild",
             "label": "Build and Debug Project",
-            "dependsOn": ["Prepare Build", "Clear Terminal"],
+            "dependsOn": ["Clear Terminal"],
             "command": "gcc",
             "args": [
                 "-fdiagnostics-color=always",
@@ -61,8 +61,9 @@
                 "${cwd}\\engine\\Libraries\\include\\stb\\stb.c",
                 "-L",
                 "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\Libraries\\lib",
-                "-l",
-                "glfw3",
+                // "-l",
+                // "glfw3",
+                "-lglfw3dll",
                 "-I",
                 "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\graphics",
                 "-I",

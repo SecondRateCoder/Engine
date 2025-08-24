@@ -140,42 +140,79 @@ void shader_pull(const char *filepath, const bool redo_shaders[3]){
 		for(size_t cc = 0; cc < sizeof(line_buffer); ++cc){
 			if(line_buffer[cc] == '\n'){break;}
 			if(line_buffer[cc] == '#'){
-				if(strncmp(&line_buffer[cc], vs_start, sizeof(vs_start)) == 0 || strncmp(&line_buffer[cc], vs_start, sizeof(fs_start)) == 0 || strncmp(&line_buffer[cc], vs_start, sizeof(gs_start)) == 0){
+				bool which_[5] = {
+					strcmp(&line_buffer[cc], vs_start) == 0,
+					strcmp(&line_buffer[cc], fs_start) == 0,
+					strcmp(&line_buffer[cc], gs_start) == 0,
+					strcmp(&line_buffer[cc], tes_start) == 0,
+					strcmp(&line_buffer[cc], tcs_start) == 0
+				};
+				if(which_[0] == true ||which_[1] == true ||which_[2] == true ||which_[3] == true ||which_[4] == true){
 					start_pos = ftell(text);
 					cc+=sizeof(vs_start);
 					size_t cc_ =cc+2;
 					while(line_buffer[cc_+1] != '#' && cc_ < 255){if(line_buffer[cc_] == '\n'){break;}else{++cc_;}}
-					if(cc_ < 255 && line_buffer[cc_] == '#'){if(strncmp(&line_buffer[cc_], shader_end, sizeof(shader_end)) == 0){end_pos = ftell(text)+cc_;}}
+					if(cc_ < 255 && line_buffer[cc_] == '#'){if(strcmp(&line_buffer[cc_], shader_end)){end_pos = ftell(text)+cc_;}}
 					else{fgets(line_buffer, sizeof(line_buffer), text);}
 					while(fgets(line_buffer, sizeof(line_buffer), text)){
 						cc_ =0;
-						while(line_buffer[cc_+1] != '#' && cc_ < 255){if(line_buffer[cc_] == '\n'){break;}else{++cc_;}}
-						// if(cc_ == 255){continue;}
-						if(strncmp(&line_buffer[cc_], shader_end, sizeof(shader_end)) == 0){end_pos = ftell(text)+cc_;}
+						while(line_buffer[cc_] != '#' && cc_ < 255){if(line_buffer[cc_] == '\n'){break;}else{++cc_;}}
+						// cc_--;
+						if(cc_ == 255){continue;}
+						if(strcmp(&line_buffer[cc_], shader_end) == 0){
+							end_pos = ftell(text)+cc_;
+							break;
+						}
 						memset(line_buffer, 0, 256);
 					}
 					if(end_pos > start_pos){
+						size_t offs= sizeof(char)* (end_pos -start_pos);
 						fseek(text, start_pos, SEEK_SET);
-						if(strncmp(&line_buffer[cc], vs_start, sizeof(vs_start)) == 0){
+						if(which_[0]){
 							//VERTEX.
 							vs_cc++;
-							if(vs_cc == vsindex){fread(vertexshader, sizeof(char), end_pos -start_pos, text);}
-						}else if(strncmp(&line_buffer[cc], fs_start, sizeof(fs_start)) == 0){
+							if(vs_cc == vsindex){
+								vertexshader = malloc(offs);
+								fread(vertexshader, sizeof(char), end_pos -start_pos + 1, text);
+								memset(&vertexshader[offs], '\0', offs);
+								printf("vertexshader: %s", vertexshader);
+							}
+						}else if(which_[1]){
 							//FRAGMENT.
 							fs_cc++;
-							if(fs_cc == fsindex){fread(fragmentshader, sizeof(char), end_pos -start_pos, text);}
-						}else if(strncmp(&line_buffer[cc], gs_start, sizeof(gs_start)) == 0){
+							if(vs_cc == vsindex){
+								fragmentshader = malloc(offs);
+								fread(fragmentshader, sizeof(char), end_pos -start_pos + 1, text);
+								memset(&fragmentshader[offs], '\0', offs);
+								printf("fragmentshader: %s", fragmentshader);
+							}
+						}else if(which_[2]){
 							//GEOMETRY.
 							gs_cc++;
-							if(gs_cc == gsindex){fread(geometryshader, sizeof(char), end_pos -start_pos, text);}
-						}else if(strncmp(&line_buffer[cc], tes_start, sizeof(tes_start)) == 0){
+							if(vs_cc == vsindex){
+								geometryshader = malloc(offs);
+								fread(geometryshader, sizeof(char), end_pos -start_pos + 1, text);
+								memset(&geometryshader[offs], '\0', offs);
+								printf("geometryshader: %s", geometryshader);
+							}
+						}else if(which_[3]){
 							//TESSELATION EVAL.
 							tes_cc++;
-							if(tes_cc == tesindex){fread(tessellation_evaluationshader, sizeof(char), end_pos -start_pos, text);}
-						}else if(strncmp(&line_buffer[cc], tcs_start, sizeof(tcs_start)) == 0){
+							if(vs_cc == vsindex){
+								tessellation_evaluationshader = malloc(offs);
+								fread(tessellation_evaluationshader, sizeof(char), end_pos -start_pos + 1, text);
+								memset(&tessellation_evaluationshader[offs], '\0', offs);
+								printf("tessellation_evaluationshader: %s", tessellation_evaluationshader);
+							}
+						}else if(which_[4]){
 							//TESSELLATION CONTROL
 							tcs_cc++;
-							if(tcs_cc == tcsindex){fread(tessellation_controlshader, sizeof(char), end_pos -start_pos, text);}
+							if(vs_cc == vsindex){
+								tessellation_controlshader = malloc(offs);
+								fread(tessellation_controlshader, sizeof(char), end_pos -start_pos + 1, text);
+								memset(&tessellation_controlshader[offs], '\0', offs);
+								printf("tessellation_controlshader: %s", tessellation_controlshader);
+							}
 						}
 					}
 				}
@@ -184,7 +221,7 @@ void shader_pull(const char *filepath, const bool redo_shaders[3]){
 		memset(line_buffer, 0, 256);
 	}
     if (vertexshader == NULL){fprintf(stderr, "Warning: Vertex shader with index %d not found, using default: \"%s\".\n", vsindex, vertexshader_default);}
-    if (fragmentshader == NULL){fprintf(stderr, "Warning: Fragment shader with index %d not found, using default: \"%s\".\n", fsindex, fragmentshader_default);}
+    if (fragmentshader == NULL){printf("Warning: Fragment shader with index %d not found, using default: \" %s \".\n", fsindex, fragmentshader_default);}
 }
 
 // Corrected uniform_init function.
@@ -203,12 +240,12 @@ void uniform_init(shaderblock_t *sb){
 	char** temp_typenames = NULL;
 	size_t typenames_len = 0;
 	
-	if(sb->uniforms != NULL || sb->uniform_len > 0){
-		for (size_t i = 0; i < sb->uniform_len; ++i) {destroy_arrkey(&sb->uniforms[i]);}
-		free(sb->uniforms);
-		sb->uniforms = NULL;
-		sb->uniform_len = 0;
-	}
+	// if(sb->uniforms != NULL || sb->uniform_len > 0){
+	// 	for (size_t i = 0; i < sb->uniform_len; ++i) {destroy_arrkey(&sb->uniforms[i]);}
+	// 	free(sb->uniforms);
+	// 	sb->uniforms = NULL;
+	// 	sb->uniform_len = 0;
+	// }
 	// size_t sb_uniform_size = 0;
 	// for(size_t cc =0; cc < sb->uniform_len; ++cc){sb_uniform_size += strlen(sb->uniforms[sb->uniform_len].name) + strlen(sb->uniforms[sb->uniform_len].type) + sizeof(sb->uniforms[sb->uniform_len].Location);}
 	for(size_t cc =0; cc < 5; ++cc){
