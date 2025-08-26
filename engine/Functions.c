@@ -84,8 +84,16 @@ bool uint128_t_comp(const uint128_t a,const uint128_t b){ return a[0] == b[0] &&
 /// @param texture_layout The layout index to apply a reference to the model's texture co-ordinate data.
 /// @param _mesh The _mesh to be appended.
 void mesh_attrlink(bufferobj_t *buffer, uint32_t pos_layout,  uint32_t color_layout,  uint32_t texture_layout, mesh_t *_mesh){
-    buffer->VBO = realloc(buffer->VBO, sizeof(GLuint)* (buffer->VBO_len));
-    buffer->EBO = realloc(buffer->EBO, sizeof(GLuint)* (buffer->EBO_len));
+    size_t vbo_index = 0;
+    size_t ebo_index = 0;
+    if(buffer->VBO[buffer->VBO_len - 1] != GL_FALSE){
+        vbo_index = buffer->VBO_len;
+        buffer->VBO = realloc(buffer->VBO, sizeof(GLuint)* (buffer->VBO_len + 1));
+    }else{vbo_index = buffer->VBO_len - 1;}
+    if(buffer->EBO[buffer->EBO_len - 1] != GL_FALSE){
+        ebo_index = buffer->EBO_len;
+        buffer->EBO = realloc(buffer->EBO, sizeof(GLuint)* (buffer->EBO_len + 1));
+    }else{ebo_index = buffer->EBO_len - 1;}
     //Generate new buffers for _mesh.
     glGenBuffers(1, &buffer->VBO[buffer->VBO_len]);
     glGenBuffers(1, &buffer->EBO[buffer->EBO_len]);
@@ -94,15 +102,20 @@ void mesh_attrlink(bufferobj_t *buffer, uint32_t pos_layout,  uint32_t color_lay
     glBufferData(GL_ARRAY_BUFFER, _mesh->data_len, _mesh->mesh_data, GL_STATIC_DRAW);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, _mesh->index_len, _mesh->vertex_index, GL_STATIC_DRAW);
 
-    // Handle position layout.
-	glVertexAttribPointer(pos_layout, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->vertex_stride, _mesh->mesh_data);
-	glEnableVertexAttribArray(pos_layout);
-    // Handle color layout.
-	glVertexAttribPointer(color_layout, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->color_stride, &_mesh->mesh_data[_mesh->vertex_stride-1]);
-	glEnableVertexAttribArray(color_layout);
-    // Handle texture coord layout.
-	glVertexAttribPointer(texture_layout, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->dpi_stride, &_mesh->mesh_data[(_mesh->vertex_stride + _mesh->color_stride) - 2]);
-	glEnableVertexAttribArray(texture_layout);
+    size_t pos_offset = 0;
+    size_t color_offset = sizeof(GLfloat) * mesh->vertex_stride;
+    size_t tex_offset = color_offset + sizeof(GLfloat) * mesh->color_stride;
+
+    glVertexAttribPointer(mesh->pos_layoutindex, mesh->vertex_stride, GL_FLOAT, GL_FALSE, 0, (void*)pos_offset);
+    glEnableVertexAttribArray(mesh->pos_layoutindex);
+
+    glVertexAttribPointer(mesh->color_layoutindex, mesh->color_stride, GL_FLOAT, GL_FALSE, 0, (void*)color_offset);
+    glEnableVertexAttribArray(mesh->color_layoutindex);
+
+    glVertexAttribPointer(mesh->local_texcoordinates_layoutindex, mesh->dpi_stride, GL_FLOAT, GL_FALSE, mesh->align_stride, (void*)tex_offset);
+    glEnableVertexAttribArray(mesh->local_texcoordinates_layoutindex);
+
+
     buffer->EBO_len++;
     buffer->VBO_len++;
 }
@@ -164,59 +177,62 @@ void mesh_addtexture(mesh_t *m, image_t *texture){
 char *cwd;
 size_t cwd_len;
 
-bool cwd_init(){
 #ifdef _WIN32
     #include <direct.h>
     #define getcwd(BUFFER, COUNT) _getcwd(NULL, 0)
+    #define PATH_SEPARATOR '\\'
 #else
     #include <unistd.h>
+    #define PATH_SEPARATOR '/'
 #endif
-    cwd_init_label:
-	if ((cwd = getcwd(NULL, 0)) == NULL) {
-		printf("getcwd() Error, cwd not Initialised.\n");
-		return false;
-	}
-    "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine";
-    //Safely retrieve the string length, with a increment that will accept the .exe finish.
-    // while(true){
-    //     if(strncmp(&cwd[cwd_len], "Engine\\\0", 9) == 0){
-    //         cwd_len += 9;
-    //         break;
-    //     }
-    //     ++cwd_len;
-    // }
-    cwd_len = strlen(cwd);
-    // while(isascii(cwd[cc])){++cc;}
-    // if(cc > cwd_len){cwd_len = cc;}
-    //Move out to the Last directory to fully access neccessary data.
-    FILE *temp_ =NULL;
-    do{
-        fclose(temp_);
-        while(cwd_len > 0 && cwd[cwd_len] != '\\'){--cwd_len;}
-        cwd = realloc(cwd, sizeof(cwd[0])* (cwd_len));
-        if(cwd == NULL){cwd_init();}
-        cwd[cwd_len]= '\0';
-        char *temp = strdup(cwd);
-        temp = realloc(temp, sizeof(cwd[0])* (cwd_len + strlen("\\Resources\\Shaders\\Shaders.txt")));
-        strncat(&temp[cwd_len], "\\Resources\\Shaders\\Shaders.txt", 30);
-        temp_ = fopen(temp, "r");
-        free(temp);
-    }while(temp_ == NULL);
-    fclose(temp_);
-    // cwd = temp;
-    // uint8_t cc_ =0;
-    // while(cc_ < max_cwd_resolution_attempts){
-    //     for(size_t cc =0; cc < cwd_resource_paths_len; ++cc){
-    //         char *temp_char = malloc((cwd_len+strlen(cwd_resource_paths[cc]))* sizeof(char));
-    //         temp_char = strdup(cwd);
-    //         temp_char[strlen(cwd)] = strdup(cwd_resource_paths[cc]);
-    //         FILE *temp = fopen(temp_char, "r");
-    //         if(temp == NULL){break;/*And mov backwards a Directory.*/}
-    //     }
-    //     ++cc_;
-    // }
-	return true;
-} 
+
+#define MAX_ATTEMPTS 10
+#define TARGET_RELATIVE_PATH "\\Resources\\Shaders\\Shaders.txt"
+
+char *cwd = NULL;
+size_t cwd_len = 0;
+
+bool cwd_init() {
+    FILE *temp_ = NULL;
+    int attempts = 0;
+    if((cwd = getcwd(NULL, 0)) == NULL){
+        printf("getcwd() Error, cwd not initialized.\n");
+        return false;
+    }
+
+    while(attempts < MAX_ATTEMPTS){
+        cwd_len = strlen(cwd);
+
+        // Build full path to target file
+        size_t full_len = cwd_len + strlen(TARGET_RELATIVE_PATH) + 1;
+        char *full_path = malloc(full_len);
+        if (!full_path){break;}
+
+        snprintf(full_path, full_len, "%s%s", cwd, TARGET_RELATIVE_PATH);
+        temp_ = fopen(full_path, "r");
+        free(full_path);
+
+        if (temp_) {
+            fclose(temp_);
+            return true;
+        }
+
+        // Move up one directory
+        while (cwd_len > 0 && cwd[cwd_len - 1] != PATH_SEPARATOR){--cwd_len;}
+
+        if (cwd_len == 0){break;}
+
+        cwd[cwd_len - 1] = '\0'; // Truncate path
+        cwd = realloc(cwd, cwd_len);
+        if(!cwd){break;}
+        ++attempts;
+    }
+
+    printf("Failed to locate target file after %d attempts.\n", attempts);
+    return false;
+}
+
+
 
 //! Use later
 // const size_t cwd_resource_paths_len = 1;
@@ -259,23 +275,23 @@ const char vs_start[10] = "#define vs",
 	cs_start[10]= "#define cs", 
 	shader_end[18] = "#define shaderend"
 ;
-const char vertexshader_default[135] =
+const char vertexshader_default[142] =
 	"#version 330 core\n"
 	"#define vs\n"
 	"layout(location = 0) in vec3 position;\n"
 	"void main(){\n"
 	"    gl_Position = vec4(position, 1.0);\n"
 	"}\n"
-	"#shaderend\n\0"
+	"#define shaderend\n\0"
 ;
-const char fragmentshader_default[111] =
+const char fragmentshader_default[118] =
 	"#version 330 core\n"
 	"#define fs\n"
 	"out vec4 color;\n"
 	"void main(){\n"
 	"    color = vec4(1.0, 0.0, 0.0, 1.0);\n"
 	"}\n"
-	"#shaderend\n\0"
+	"#define shaderend\n\0"
 ;
 size_t len_typenames = 36;
 

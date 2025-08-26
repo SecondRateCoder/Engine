@@ -68,7 +68,7 @@ char* shadersettings_rw(const char* filepath, char* write){
 	FILE* shaders = fopen(filepath, "r+"); // Open for reading and writing
 
 	if(shaders != NULL){
-		settings = (char*)malloc((settings_len+1) * sizeof(char)); // Allocate space for 15 chars + null terminator
+		settings = (char*)calloc((settings_len+1), sizeof(char)); // Allocate space for 15 chars + null terminator
 		if(settings == NULL){
 			fprintf(stderr, "Error: Memory allocation failed in shadersettings_rw.\n");
 			fclose(shaders);
@@ -92,7 +92,7 @@ char* shadersettings_rw(const char* filepath, char* write){
 	return settings;
 }
 
-void shaders_pull(const char *filepath){shader_pull(filepath, (bool[3]){true, true, true});}
+void shaders_pull(const char *filepath){shader_pull(filepath, (bool[5]){true, true, false, false, false});}
 
 uint32_t parse_shader_index(const char *settings, size_t offset) {
     char temp[3] = { settings[offset], settings[offset + 1], '\0' };
@@ -104,8 +104,8 @@ uint32_t parse_shader_index(const char *settings, size_t offset) {
 /// @brief Pull shaders, populating vertexshader, fragmentshader and geometryshader with the relevant and found shaders.
 /// @param filepath The filepath to a shader or multiple shaders
 /// @param redo_shaders Choose between the shaders to be reset to NULL.
-/// [0] -> vertexshader, [1] -> fragmentshader, [2] ->geometryshader.
-void shader_pull(const char *filepath, const bool redo_shaders[3]){
+/// [0] -> vertexshader, [1] -> fragmentshader, [2] ->geometryshader, [3] -> tessellation_controlshader, [4] ->tessellation_evaluationshader.
+void shader_pull(const char *filepath, const bool redo_shaders[5]){
 	if(redo_shaders[0] == true){
 		free(vertexshader);
     	vertexshader = NULL;
@@ -117,6 +117,14 @@ void shader_pull(const char *filepath, const bool redo_shaders[3]){
 	if(redo_shaders[2] == true){
 		free(geometryshader);
     	geometryshader = NULL;
+	}
+	if(redo_shaders[3] == true){
+		free(tessellation_controlshader);
+    	tessellation_controlshader = NULL;
+	}
+	if(redo_shaders[4] == true){
+		free(tessellation_evaluationshader);
+    	tessellation_evaluationshader = NULL;
 	}
 	char *settings = shadersettings_rw(filepath, NULL);
 	settings[settings_len] = '\0';
@@ -138,80 +146,94 @@ void shader_pull(const char *filepath, const bool redo_shaders[3]){
     size_t start_pos, end_pos;
 	while(fgets(line_buffer, sizeof(line_buffer), text)){
 		for(size_t cc = 0; cc < sizeof(line_buffer); ++cc){
-			if(line_buffer[cc] == '\n'){break;}
+			if(line_buffer[cc] == '\n' || line_buffer[cc] == '\0'){break;}
 			if(line_buffer[cc] == '#'){
-				bool which_[5] = {
-					strcmp(&line_buffer[cc], vs_start) == 0,
-					strcmp(&line_buffer[cc], fs_start) == 0,
-					strcmp(&line_buffer[cc], gs_start) == 0,
-					strcmp(&line_buffer[cc], tes_start) == 0,
-					strcmp(&line_buffer[cc], tcs_start) == 0
+				const bool which_[5] = {
+					strncmp(&line_buffer[cc], vs_start, sizeof(vs_start) - 1) == 0 && redo_shaders[0] == true,
+					strncmp(&line_buffer[cc], fs_start, sizeof(vs_start) - 1) == 0 && redo_shaders[1] == true,
+					strncmp(&line_buffer[cc], gs_start, sizeof(vs_start) - 1) == 0 && redo_shaders[2] == true,
+					strncmp(&line_buffer[cc], tes_start, sizeof(vs_start) - 1) == 0 && redo_shaders[3] == true,
+					strncmp(&line_buffer[cc], tcs_start, sizeof(vs_start) - 1) == 0 && redo_shaders[4] == true
 				};
+				if(vertexshader != NULL && 
+					fragmentshader != NULL &&
+					(geometryshader == NULL && redo_shaders[2] != true) &&
+					(tessellation_evaluationshader == NULL && redo_shaders[3] != true) &&
+					(tessellation_controlshader == NULL && redo_shaders[4] != true)){return;}
 				if(which_[0] == true ||which_[1] == true ||which_[2] == true ||which_[3] == true ||which_[4] == true){
 					start_pos = ftell(text);
 					cc+=sizeof(vs_start);
 					size_t cc_ =cc+2;
-					while(line_buffer[cc_+1] != '#' && cc_ < 255){if(line_buffer[cc_] == '\n'){break;}else{++cc_;}}
-					if(cc_ < 255 && line_buffer[cc_] == '#'){if(strcmp(&line_buffer[cc_], shader_end)){end_pos = ftell(text)+cc_;}}
-					else{fgets(line_buffer, sizeof(line_buffer), text);}
+					// while(line_buffer[cc_+1] != '#' && cc_ < 255){if(line_buffer[cc_] == '\n'){break;}else{++cc_;}}
+					// if(cc_ < 255 && line_buffer[cc_] == '#'){if(strcmp(&line_buffer[cc_], shader_end)){end_pos = ftell(text)+cc_;}}
+					// else{fgets(line_buffer, sizeof(line_buffer), text);}
 					while(fgets(line_buffer, sizeof(line_buffer), text)){
 						cc_ =0;
-						while(line_buffer[cc_] != '#' && cc_ < 255){if(line_buffer[cc_] == '\n'){break;}else{++cc_;}}
+						while(line_buffer[cc_] != '#' && cc_ < 255){
+							if(line_buffer[cc_] == '\n'){
+								break;
+							}else{++cc_;}
+						}
 						// cc_--;
-						if(cc_ == 255){continue;}
-						if(strcmp(&line_buffer[cc_], shader_end) == 0){
+						if(cc_ == 255 || line_buffer[cc_] == '\n'){continue;}
+						if(strncmp(&line_buffer[cc_], shader_end, sizeof(shader_end) - 1) == 0){
 							end_pos = ftell(text)+cc_;
 							break;
 						}
 						memset(line_buffer, 0, 256);
 					}
 					if(end_pos > start_pos){
-						size_t offs= sizeof(char)* (end_pos -start_pos);
+						size_t offs= (end_pos -start_pos);
 						fseek(text, start_pos, SEEK_SET);
 						if(which_[0]){
 							//VERTEX.
 							vs_cc++;
 							if(vs_cc == vsindex){
-								vertexshader = malloc(offs);
+								while(vertexshader == NULL){vertexshader = calloc(offs, sizeof(char));}
 								fread(vertexshader, sizeof(char), end_pos -start_pos + 1, text);
-								memset(&vertexshader[offs], '\0', offs);
-								printf("vertexshader: %s", vertexshader);
+								memset(&vertexshader[sizeof(vertexshader[0])* (offs-1)], '\0', strlen(vertexshader)- offs);
+								printf("vertexshader:\n %s", vertexshader);
+								continue;
 							}
 						}else if(which_[1]){
 							//FRAGMENT.
 							fs_cc++;
-							if(vs_cc == vsindex){
-								fragmentshader = malloc(offs);
+							if(fs_cc == fsindex){
+								while(fragmentshader == NULL){fragmentshader = calloc(offs, sizeof(char));}
 								fread(fragmentshader, sizeof(char), end_pos -start_pos + 1, text);
-								memset(&fragmentshader[offs], '\0', offs);
-								printf("fragmentshader: %s", fragmentshader);
+								memset(&fragmentshader[offs* sizeof(fragmentshader[0])], '\0', strlen(fragmentshader)- offs);
+								printf("fragmentshader:\n %s", fragmentshader);
+								continue;
 							}
 						}else if(which_[2]){
 							//GEOMETRY.
 							gs_cc++;
-							if(vs_cc == vsindex){
-								geometryshader = malloc(offs);
+							if(gs_cc == gsindex){
+								while(geometryshader == NULL){geometryshader = calloc(offs, sizeof(char));}
 								fread(geometryshader, sizeof(char), end_pos -start_pos + 1, text);
-								memset(&geometryshader[offs], '\0', offs);
-								printf("geometryshader: %s", geometryshader);
+								memset(&geometryshader[offs* sizeof(geometryshader[0])], '\0', strlen(geometryshader)- offs);
+								printf("geometryshader:\n %s", geometryshader);
+								continue;
 							}
 						}else if(which_[3]){
 							//TESSELATION EVAL.
 							tes_cc++;
-							if(vs_cc == vsindex){
-								tessellation_evaluationshader = malloc(offs);
+							if(tes_cc == tesindex){
+								while(tessellation_evaluationshader == NULL){tessellation_evaluationshader = calloc(offs, sizeof(char));}
 								fread(tessellation_evaluationshader, sizeof(char), end_pos -start_pos + 1, text);
-								memset(&tessellation_evaluationshader[offs], '\0', offs);
-								printf("tessellation_evaluationshader: %s", tessellation_evaluationshader);
+								memset(&tessellation_evaluationshader[offs* sizeof(tessellation_evaluationshader[0])], '\0', strlen(tessellation_evaluationshader)- offs);
+								printf("tessellation_evaluationshader:\n %s", tessellation_evaluationshader);
+								continue;
 							}
 						}else if(which_[4]){
 							//TESSELLATION CONTROL
 							tcs_cc++;
-							if(vs_cc == vsindex){
-								tessellation_controlshader = malloc(offs);
+							if(tcs_cc == tcsindex){
+								while(tessellation_controlshader == NULL){tessellation_controlshader = calloc(offs, sizeof(char));}
 								fread(tessellation_controlshader, sizeof(char), end_pos -start_pos + 1, text);
-								memset(&tessellation_controlshader[offs], '\0', offs);
-								printf("tessellation_controlshader: %s", tessellation_controlshader);
+								memset(&tessellation_controlshader[offs* sizeof(tessellation_controlshader[0])], '\0', strlen(tessellation_controlshader)- offs);
+								printf("tessellation_controlshader:\n %s", tessellation_controlshader);
+								continue;
 							}
 						}
 					}
@@ -238,6 +260,7 @@ void uniform_init(shaderblock_t *sb){
 		tessellation_evaluationshader ? tessellation_evaluationshader : NULL
 	};
 	char** temp_typenames = NULL;
+
 	size_t typenames_len = 0;
 	
 	// if(sb->uniforms != NULL || sb->uniform_len > 0){
@@ -248,20 +271,48 @@ void uniform_init(shaderblock_t *sb){
 	// }
 	// size_t sb_uniform_size = 0;
 	// for(size_t cc =0; cc < sb->uniform_len; ++cc){sb_uniform_size += strlen(sb->uniforms[sb->uniform_len].name) + strlen(sb->uniforms[sb->uniform_len].type) + sizeof(sb->uniforms[sb->uniform_len].Location);}
+	sb->uniforms = calloc(sizeof(arrk_t), 1);
+	sb->uniform_len = 1;
+	bool first = true;
 	for(size_t cc =0; cc < 5; ++cc){
 		if(shaders[cc] == NULL){continue;}
+		"3.300000000000\n"
+		"^Settings.\n"
+		"\n"
+		"#define vs\n"
+		"\n"
+		"#version 330 core\n"
+		"\n"
+		"layout(location = 0) in vec3 aPos;\n"
+		"layout(location = 1) in vec3 aColor;\n"
+		"layout(location = 2) in vec2 aTex;\n"
+		"\n"
+		"out vec3 color;\n"
+		"out vec2 tex_coord;\n"
+		"\n"; "vertexshader: 176";
+
+		" #version 330 core\n"
+		"out vec4 FragColor;\n"
+		"in vec3 color;\n"
+		"in vec2 tex_coord;\n"
+		"\n"; "fragmentshader: 75";
 		const size_t shader_len = strlen(shaders[cc]);
 		for(size_t char_cc =0; char_cc < shader_len; ++char_cc){
-			while(char_cc < shader_len && isspace(shaders[cc][char_cc])){++char_cc;}
+			while(char_cc < shader_len && isspace(shaders[cc][char_cc])){
+				++char_cc;
+			}
+			printf("%c", shaders[cc][char_cc]);
 			if(shaders[cc][char_cc] == 'u'){
 				//Might be uniform.
-				if(strncmp(&shaders[cc][char_cc], "uniform", 8) == 0){
+				if(strncmp(&shaders[cc][char_cc], "uniform", 7) == 0){
 					char_cc+= 8;
 					while(char_cc < shader_len && isspace(shaders[cc][char_cc])){++char_cc;}
 					unsigned int len_char_cc =0;
 					//Get type definition.
 					while(len_char_cc + char_cc < shader_len && isalnum(shaders[cc][char_cc+len_char_cc])){++len_char_cc;}
-					sb->uniforms = realloc(sb->uniforms, sizeof(arrk_t)* (sb->uniform_len+1));
+					if(first == false){
+						sb->uniforms = realloc(sb->uniforms, sizeof(arrk_t)* (sb->uniform_len+1));
+					}
 					sb->uniforms[sb->uniform_len].type = malloc(sizeof(char)* (len_char_cc));
 					memcpy(sb->uniforms[sb->uniform_len].type, &shaders[cc][char_cc], len_char_cc);
 					sb->uniforms[sb->uniform_len].type[len_char_cc] = '\0';
@@ -276,11 +327,14 @@ void uniform_init(shaderblock_t *sb){
 					if((sb->uniforms[sb->uniform_len].Location = glGetUniformLocation(sb->shaderProgram, sb->uniforms[sb->uniform_len].name)) == -1){
 						printf("Uh-oh!, I couldn't access the uniform %s of type %s and at location %d", sb->uniforms[sb->uniform_len].name, sb->uniforms[sb->uniform_len].type, char_cc);
 					}
-					sb->uniform_len++;
+					if(!first){sb->uniform_len++;}
+					
 				}
 			}// else if(shaders[cc][char_cc] == 's'){continue;}
 		}
 	}
+	// sb->uniform_len++;
+	return;
 }
 
 // void uniform_init(shaderblock_t* sb_t) {
@@ -543,7 +597,7 @@ bool uniform_write(shaderblock_t* shader, const char* type, const char* name, co
 
 
 // Corrected shader_compile function.
-// The original had a few logical errors, incorrect checks, and was missing error handling for `malloc`.
+// The original had a few logical errors, incorrect checks, and was missing error handling for `calloc`.
 shaderblock_t* shader_compile(bool delete_shaders_on_link) {
 	shaderblock_t* shaderblock = (shaderblock_t*)malloc(sizeof(shaderblock_t));
 	if (shaderblock == NULL) {
@@ -611,10 +665,14 @@ shaderblock_t* shader_compile(bool delete_shaders_on_link) {
 void win_draw(win_t *win, mesh_t *mesh){
 	if (win == NULL || mesh == NULL){return;}
 	bufferobj_t *temp_ptr = &win->buffers[win->buffer_curr];
-	SHADERBLOCK_HANDLE(win->shaders, true, true);
+	if(temp_ptr == NULL){
+		win->buffers = malloc(sizeof(bufferobj_t));
+		temp_ptr = &win->buffers[win->buffer_curr];
+	}
+	SHADERBLOCK_HANDLE(&win->shaders[win->shaders_curr], true, true);
 	BUFFEROBJECT_HANDLE(temp_ptr, mesh->mesh_data, mesh->data_len, mesh->vertex_index, mesh->index_len, GL_STATIC_DRAW, 10);
-	mesh_attrlink(win->buffers, win->layout_offset, win->layout_offset+1, win->layout_offset+2, mesh);
-	glDrawElements(GL_TRIANGLES, mesh->data_len, GL_UNSIGNED_INT, mesh->mesh_data);
+	mesh_attrlink(temp_ptr, win->layout_offset, win->layout_offset+1, win->layout_offset+2, mesh);
+	glDrawElements(GL_TRIANGLES, mesh->data_len, GL_UNSIGNED_INT, (mesh->vertex_index == NULL? 0: mesh->mesh_data));
 }
 
 // Corrected winimage_append function.
@@ -723,7 +781,7 @@ void *buffer_bufferdo(bufferobj_t* buffer, const size_t len, const BUFFER_OPTION
 				return out_ebo;
 			}
 		default:
-			fprintf(stderr, "Error: Unknown BUFFER_OPTIONS value %zu.\n", option);
+			fprintf(stderr, "Error: Unknown BUFFER_OPTIONS value %d.\n", option);
 			return NULL;
 		
 	}
@@ -742,46 +800,40 @@ void shaderblock_handle(shaderblock_t *shader, bool clean, bool do_uniforms){
 		strncat(default_dir, "\\Resources\\Shaders\\Shaders.txt", 30);
 		shaders_pull(default_dir);
 	}
-	if(do_uniforms){uniform_init(shader);}
 	if(shader->compiled_[7] == false){shader =shader_compile(clean);}
+	if(do_uniforms && shader->uniforms == NULL){uniform_init(shader);}
 }
 void bufferobject_handle(bufferobj_t *buffer, GLfloat *vertices, size_t v_len, GLuint *index_order, size_t index_len, GLenum draw_format, uint8_t max_tries){
 	bool success = 0;
 	uint8_t counter = 0;
-	do { \
+	do {
 		if(buffer == NULL){break;}
 		success = true;
 		/*VAO not set-up*/ 
-		if (buffer->buffer_[0] == false) { 
-		if (buffer->VAO == 0){glGenVertexArrays(1, &buffer->VAO);}	
-		glBindVertexArray(buffer->VAO); 
+		if (buffer->buffer_[0] == false) {
+			if (buffer->VAO == 0){glGenVertexArrays(1, &buffer->VAO);}	
+			glBindVertexArray(buffer->VAO); 
+			buffer->buffer_[0] = true;
 		} 
 		/*VBO not set-up*/ 
 		if(buffer->buffer_[1] == false && vertices != NULL){	
-				if(buffer->VBO_len == 0){	
-					glGenBuffers(1, buffer->VBO); 
-					buffer->VBO_len = 1; 
-				} 
-				glBindBuffer(GL_ARRAY_BUFFER, *buffer->VBO); 
-				glBufferData(GL_ARRAY_BUFFER, v_len * sizeof(GLfloat), vertices, draw_format); 
+			buffer->VBO = malloc(sizeof(GLuint));
+			if(buffer->VBO_len == 0){	
+				glGenBuffers(1, buffer->VBO); 
+				buffer->VBO_len = 1; 
+			}
+			glBindBuffer(GL_ARRAY_BUFFER, *buffer->VBO); 
+			glBufferData(GL_ARRAY_BUFFER, v_len * sizeof(GLfloat), vertices, draw_format);
+			buffer->buffer_[1] = true;
 		} 
 		/*EBO not set-up*/ 
-		if(buffer->buffer_[2] == false && index_order != NULL){	
-			GLuint* actual_indexes = NULL;  
-			bool free_indexes_new = false;	
-			if((index_len) < v_len / 3){index_len = 0;}else{index_len = v_len / 3;}   
-				/*Handle when INDEX_ORDER is NULL, using an array of {1, 2, 3, 4... (v_len-1)}*/
-				if (index_order == NULL || (index_len) == 0) {	
-					index_len = v_len / 3;   
-					actual_indexes = (GLuint*)malloc((index_len) * sizeof(GLuint)); 
-					if (actual_indexes){for (size_t cc = 0; cc < v_len; ++cc) { actual_indexes[cc] = cc; }}   
-					free_indexes_new = true;	
-				}else{actual_indexes = index_order;}   
-				/*Finish handling EBO*/	
-				if (buffer->EBO == 0) {glGenBuffers(1, buffer->EBO);}   
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *buffer->EBO);    
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, (index_len) * sizeof(GLuint), actual_indexes, draw_format);   
-				if(free_indexes_new){free(actual_indexes);}	
-		} 
-	}while (counter < max_tries || success == false);
+		if(buffer->buffer_[2] == false){  
+			buffer->EBO = malloc(sizeof(GLuint));
+			glGenBuffers(1, buffer->EBO);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *buffer->EBO);    
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, (index_len) * sizeof(GLuint), index_order, draw_format);
+			buffer->buffer_[2] = true;
+		}
+		success = buffer->buffer_[0] == true && buffer->buffer_[1] == true && buffer->buffer_[2] == true;
+	}while (counter < max_tries && success == false);
 }

@@ -29,7 +29,7 @@
 
 
 #! My Compilation command.
-# ./Compilation-Scripts/Make.ps1 -SourceDirectory "./engine" -OutputExecutableName "engine.exe"  -LibraryPaths "./engine/Libraries/lib" -Libraries "glfw3" -IncludePaths "./engine/Libraries/include", "./engine", "./engine/graphics"
+# ./Compilation-Scripts/Make.ps1 -SourceDirectory "./engine" -OutputExecutableName "engine.exe"  -LibraryPaths "./engine/Libraries/lib" -Libraries "glfw3dll" -IncludePaths "./engine/Libraries/include", "./engine", "./engine/graphics" -GccFlags "-O1", "-Wextra", "-std=c99", "-Wall", "-pedantic"
 
 #! Optional GCC Flags:
 # -GccFlags "-O1", "-Wextra", "-std=c99", "-Wall", "-pedantic", "-Wl,--verbose"

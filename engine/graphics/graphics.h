@@ -91,7 +91,7 @@
 // }while (counter < MAX_ || success == false);
 
 #define BUFFEROBJECT_HANDLE(BO_, VERTICES_, len_, INDEX_ORDER_, ilen_, DRAW_FORMAT_, MAX_)	\
-	bufferobj_t *BO = BO;	\
+	bufferobj_t *BO = BO_;	\
 	GLfloat *VERTICES = VERTICES_;	\
 	size_t len = len_;	\
 	GLuint *INDEX_ORDER = INDEX_ORDER_;	\
@@ -221,7 +221,7 @@ typedef struct window{
 	poll_do polld;
 	poll_kill pollk;
 	shaderblock_t* shaders;
-	size_t textures_len, textures_curr, vert_count;
+	size_t textures_len, shaders_curr, vert_count;
 	
 	size_t buffer_len, buffer_curr;
 	bufferobj_t* buffers;

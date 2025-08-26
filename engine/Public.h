@@ -78,8 +78,8 @@ extern char *cwd;
 extern size_t cwd_len;
 bool cwd_init();
 
-extern const char vertexshader_default[135];
-extern const char fragmentshader_default[111];
+extern const char vertexshader_default[142];
+extern const char fragmentshader_default[118];
 extern const unsigned int settings_len;
 
 /// @brief The Constant Shader keywords for Understanding Shader text.

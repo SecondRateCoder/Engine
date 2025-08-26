@@ -20,6 +20,8 @@ typedef struct _mesh{
     size_t num_textures;
     image_t *textures;
 
+    /// @brief The number of @ref GLfloat values between each vertex, color or texture co-ord.
+    uint8_t align_stride;
     /// @brief The number of @ref GLfloat values that make up a Vertex in a _mesh's mesh_data. Hence "stride"
     uint8_t vertex_stride;
     /// @brief The number of @ref GLfloat values that make up a Vertex's Color mesh_data in a _mesh's mesh_data.

@@ -27,7 +27,7 @@ void poll_draw(void *self, size_t pollcycles){
     
     // CORRECTED: The variable 'g' was undeclared.
     // Declaring as a static float makes it persist between calls, creating an animation.
-    float g = (360/pollcycles)* 1.00000005f;
+    float g = (360/(pollcycles == 0? 1: pollcycles))* 1.00000005f;
     glm_translate(view, (vec3){0.0f, 0.0f, -5.0f}); // Adjusted translation for better view
     glm_perspective(glm_rad(45.0f), (float)win->w / (float)win->h, 0.1f, 100.0f, proj_screen);
     glm_mat4_mul(proj_screen, view, out);
@@ -99,7 +99,7 @@ int main(){
         2, 3, 4,
         3, 0, 4
     };
-    mesh->index_len = 18;
+    mesh->data_len = 48;
     mesh->index_len = 18;
     mesh->vertex_stride = 3;
     mesh->color_stride = 3;
@@ -107,11 +107,12 @@ int main(){
     mesh->pos_layoutindex = 0;
     mesh->color_layoutindex = 1;
     mesh->local_texcoordinates_layoutindex = 2;
-    win_t *mainw = win_init("Main Window\0", NULL, poll_draw, NULL, 800, 200);
+
+    win_t *mainw = win_init("Main Window\0", NULL, poll_draw, NULL, 8000, 2000);
     mainw->shaders = malloc(sizeof(shaderblock_t));
     for(uint8_t cc =0; cc < 7; ++cc){mainw->shaders[0].compiled_[cc] -= mainw->shaders[0].compiled_[cc];}
     // mainw->shaders[0].compiled_ = (bool[7]){0};
-    SHADERBLOCK_HANDLE(mainw->shaders, true, true);
+    // SHADERBLOCK_HANDLE(mainw->shaders, true, true);
     win_flood(mainw, (argb_t){.9, .7, .03, 1});
     //Enable Depth testing, So Triangles behind other Triangles are not drawn.
 	glEnable(GL_DEPTH_TEST);
@@ -140,13 +141,15 @@ int main(){
     // Safely build the shader path and pull shaders
     // The (cwd ? cwd : "") part handles case where cwd might be NULL after init
     snprintf(path_buffer, MAX_PATH_LEN, "%s/Resources/Shaders/Shaders.txt", cwd ? cwd : (cwd_init() == true? cwd: NULL));
-    shaders_pull(path_buffer);
+    // shaders_pull(path_buffer);
 
     // Safely build the texture path and append the image
     snprintf(path_buffer, MAX_PATH_LEN, "%s/Resources/Textures/AnotherBar.jpeg", cwd ? cwd : "");
     // winimage_append(mainw, path_buffer, &(argb_t){0, 0, 0, 1});
     // No 'free' is needed because we used a stack-allocated array (path_buffer)
-
+    mainw->buffers = calloc(1, sizeof(bufferobj_t));
+    mainw->buffer_curr = 0;
+    mainw->buffer_len = 1;
     win_draw(mainw, mesh);
     win_poll(mainw);
     win_kill(mainw);

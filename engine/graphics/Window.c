@@ -25,6 +25,7 @@ win_t* win_init(char* name, GLFWerrorfun error_handle, poll_do poll_do_, poll_ki
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	//malloc on heap.
 	win_t *win = malloc(sizeof(win_t));
+	memset(win, '\0', sizeof(win_t));
 	if(poll_do_ != NULL){win->polld = poll_do_;}else{win->polld = NULL;}
 	if(poll_kill_ != NULL){win->pollk = poll_kill_;}else{win->pollk = NULL;}
 	win->name = name;
@@ -52,13 +53,14 @@ win_t* win_init(char* name, GLFWerrorfun error_handle, poll_do poll_do_, poll_ki
 /// @remark If the Window is set to close, It will Kill it after calling a set poll_kill function.
 void win_poll(win_t *win){
 	size_t cc =0;
+	win->shaders_curr = 0;
+	SHADERBLOCK_HANDLE(&win->shaders[win->shaders_curr], true, true);
 	while(!win_shouldclose(win)){
 		//Flood color with Orange.
 		win_flood(win, (argb_t){0.5f, 0.5f, 0, 1});
 		//Ensure that win's Shader's are Handled.
-		SHADERBLOCK_HANDLE(win->shaders, true, true);
 		//Explicitly define the Shader to be Used.
-		glUseProgram(win->shaders->shaderProgram);
+		glUseProgram(win->shaders[win->shaders_curr].shaderProgram);
 		win->polld(win, cc);
 		//Bind win's VAO for Drawing.
 		glBindVertexArray(win->buffers[win->buffer_curr].VAO);
