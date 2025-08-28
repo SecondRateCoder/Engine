@@ -7,29 +7,27 @@
 
 
 
-char* str_normalise(const char *str, const bool handle_spaces, const bool handle_upper){
-    if (str == NULL){return  NULL;}
-    // char *out = malloc(sizeof(char)* strlen(str));
-	size_t str_len= strlen(str);
-    int i = 0, j = 0;
-	char *out = malloc(sizeof(char)* strlen(str));
-    // Iterate through the string until the null terminator is reached.
-    while (str[i] != '\0') { 
-        // Check if the current character is NOT a space
-        if (IS_SPACE((unsigned char)str[i]) && handle_spaces){
-			//If space write the next value.
-			if(i < str_len-1){
-				++i;
-				out[j] = str[i];
-			}
-        }else if(handle_upper){
-            // Convert to lowercase and copy to the new position
-            out[j] = tolower((unsigned char)str[i]);
-			i++;
-		}
-		j++;
+char* str_normalise(const char *str, bool handle_spaces, bool handle_upper) {
+    if (!str) return NULL;
+
+    size_t str_len = strlen(str);
+    char *out = malloc(str_len + 1);
+    if (!out) return NULL;
+
+    size_t i = 0, j = 0;
+    while (str[i] != '\0') {
+        char c = str[i];
+        if (handle_spaces && IS_SPACE(c)) {
+            i++;
+            continue;
+        }
+
+        if(handle_upper){c = (c >= 'A' && c <= 'Z') ? c + ('a' - 'A') : c;}
+        out[j++] = c;
+        i++;
     }
-    out[j] = '\0'; // Null-terminate the modified string
+
+    out[j] = '\0';
     return out;
 }
 
@@ -38,24 +36,18 @@ char* str_normalise(const char *str, const bool handle_spaces, const bool handle
 /// @brief Return a __uint128_t variable.
 /// @param str The string to be hashed.
 /// @return A __uint128_t value.
-size_t *str_hash(const char *str){
-	// A large, odd prime number is a good choice for the initial hash value.
-    // 5381 is a common value used in the DJB2 algorithm.
-    size_t *hash= (size_t *)malloc(sizeof(uint128_t));
-    hash[0]= 5381;
-	size_t cc =0;
+size_t* str_hash(const char *str) {
+    if(!str){return NULL;}
+    size_t *hash = malloc(sizeof(uint128_t));
+    if(!hash){return NULL;}
+    hash[0] = 5381;
+    hash[1] = 0;
+    size_t cc = 0;
     int c;
-
-    // A simple loop to iterate through the string until the null terminator is found.
-    while ((c = *str++)) {
-        // This is the core of the DJB2 algorithm:
-        // hash = hash * 33 + c;
-        // The bitwise left shift `(hash << 5)` is an efficient way to do `hash * 32`.
-        // Then we add the original hash to get `hash * 33`.
-		++cc;
-		if(cc > HASH_64BIT_LIMIT){
-			hash[1] = ((hash[1] << 5) + hash[1]) + c;
-		}else{hash[0] = ((hash[0] << 5) + hash[0]) + c;}
+    while((c = *str++)){
+        ++cc;
+        if(cc > HASH_64BIT_LIMIT){hash[1] = ((hash[1] << 5) + hash[1]) + c;
+        }else{hash[0] = ((hash[0] << 5) + hash[0]) + c;}
     }
     return hash;
 }
@@ -74,7 +66,16 @@ void str_tolower(char *str) {
 }
 
 bool uint128_t_comps(const uint128_t a, const size_t b){ return a[1] == b; }
-bool uint128_t_comp(const uint128_t a,const uint128_t b){ return a[0] == b[0] && a[1] == b[1]; }
+bool uint128_t_comp(const uint128_t a, const uint128_t b){
+    return a[0] == b[0] && a[1] == b[1];
+}
+
+void CheckGLError(const char* file, int line, const char* call){
+    GLenum err;
+    while ((err = glGetError()) != GL_NO_ERROR) {
+        fprintf(stderr, "\n[OpenGL Error] (%x): %s at %s:%d\n", err, call, file, line);
+    }
+}
 
 /// @brief Configure and Link a Model's VBO and EBO to the inputted bufferobj_t object.
 /// @param buffer The Buffer object to be written to.
@@ -95,58 +96,70 @@ void mesh_attrlink(bufferobj_t *buffer, uint32_t pos_layout,  uint32_t color_lay
         buffer->EBO = realloc(buffer->EBO, sizeof(GLuint)* (buffer->EBO_len + 1));
     }else{ebo_index = buffer->EBO_len - 1;}
     //Generate new buffers for _mesh.
-    glGenBuffers(1, &buffer->VBO[buffer->VBO_len]);
-    glGenBuffers(1, &buffer->EBO[buffer->EBO_len]);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer->VBO[buffer->VBO_len]);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->EBO[buffer->EBO_len]);
-    glBufferData(GL_ARRAY_BUFFER, _mesh->data_len, _mesh->mesh_data, GL_STATIC_DRAW);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, _mesh->index_len, _mesh->vertex_index, GL_STATIC_DRAW);
+    GLCall(glGenBuffers(1, &buffer->VBO[buffer->VBO_len]));
+    GLCall(glGenBuffers(1, &buffer->EBO[buffer->EBO_len]));
+    GLCall(glBindVertexArray(buffer->VAO));
+    GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer->VBO[buffer->VBO_len]));
+    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->EBO[buffer->EBO_len]));
+    GLCall(glBufferData(GL_ARRAY_BUFFER, _mesh->data_len, _mesh->mesh_data, GL_STATIC_DRAW));
+    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, _mesh->index_len, _mesh->vertex_index, GL_STATIC_DRAW));
 
     size_t pos_offset = 0;
-    size_t color_offset = sizeof(GLfloat) * mesh->vertex_stride;
-    size_t tex_offset = color_offset + sizeof(GLfloat) * mesh->color_stride;
+    size_t color_offset = sizeof(GLfloat) * _mesh->vertex_stride;
+    size_t tex_offset = color_offset + sizeof(GLfloat) * _mesh->color_stride;
 
-    glVertexAttribPointer(mesh->pos_layoutindex, mesh->vertex_stride, GL_FLOAT, GL_FALSE, 0, (void*)pos_offset);
-    glEnableVertexAttribArray(mesh->pos_layoutindex);
+    const size_t stride = sizeof(GLfloat) * (_mesh->vertex_stride + _mesh->color_stride + _mesh->dpi_stride);
+    GLCall(glVertexAttribPointer(_mesh->pos_layoutindex, _mesh->vertex_stride, GL_FLOAT, GL_FALSE, stride, (void*)pos_offset));
+    GLCall(glEnableVertexAttribArray(_mesh->pos_layoutindex));
 
-    glVertexAttribPointer(mesh->color_layoutindex, mesh->color_stride, GL_FLOAT, GL_FALSE, 0, (void*)color_offset);
-    glEnableVertexAttribArray(mesh->color_layoutindex);
+    GLCall(glVertexAttribPointer(_mesh->color_layoutindex, _mesh->color_stride, GL_FLOAT, GL_FALSE, stride, (void*)color_offset));
+    GLCall(glEnableVertexAttribArray(_mesh->color_layoutindex));
 
-    glVertexAttribPointer(mesh->local_texcoordinates_layoutindex, mesh->dpi_stride, GL_FLOAT, GL_FALSE, mesh->align_stride, (void*)tex_offset);
-    glEnableVertexAttribArray(mesh->local_texcoordinates_layoutindex);
+    GLCall(glVertexAttribPointer(_mesh->local_texcoordinates_layoutindex, _mesh->dpi_stride, GL_FLOAT, GL_FALSE, stride, (void*)tex_offset));
+    GLCall(glEnableVertexAttribArray(_mesh->local_texcoordinates_layoutindex));
+    /*
+    glVertexAttribPointer(_mesh->pos_layoutindex, _mesh->vertex_stride, GL_FLOAT, GL_FALSE, total_stride, (void*)pos_offset);
+    glEnableVertexAttribArray(_mesh->pos_layoutindex);
 
+    glVertexAttribPointer(_mesh->color_layoutindex, _mesh->color_stride, GL_FLOAT, GL_FALSE, total_stride, (void*)color_offset);
+    glEnableVertexAttribArray(_mesh->color_layoutindex);
 
+    glVertexAttribPointer(_mesh->local_texcoordinates_layoutindex, _mesh->dpi_stride, GL_FLOAT, GL_FALSE, total_stride, (void*)tex_offset);
+    glEnableVertexAttribArray(_mesh->local_texcoordinates_layoutindex);
+*/
+
+    GLCall(glBindVertexArray(0));
     buffer->EBO_len++;
     buffer->VBO_len++;
 }
 
 void mesh_arttr_relink(const mesh_t *_mesh){
-    glVertexAttribPointer(_mesh->pos_layoutindex, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->vertex_stride, _mesh->mesh_data);
-	glEnableVertexAttribArray(_mesh->pos_layoutindex);
+    GLCall(glVertexAttribPointer(_mesh->pos_layoutindex, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->vertex_stride, _mesh->mesh_data));
+    GLCall(glEnableVertexAttribArray(_mesh->pos_layoutindex));
     // Handle color layout.
-	glVertexAttribPointer(_mesh->color_layoutindex, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->color_stride, &_mesh->mesh_data[_mesh->vertex_stride-1]);
-	glEnableVertexAttribArray(_mesh->color_layoutindex);
+    GLCall(glVertexAttribPointer(_mesh->color_layoutindex, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->color_stride, &_mesh->mesh_data[_mesh->vertex_stride-1]));
+    GLCall(glEnableVertexAttribArray(_mesh->color_layoutindex));
     // Handle texture coord layout.
-	glVertexAttribPointer(_mesh->local_texcoordinates_layoutindex, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->dpi_stride, &_mesh->mesh_data[(_mesh->vertex_stride + _mesh->color_stride) - 2]);
-	glEnableVertexAttribArray(_mesh->local_texcoordinates_layoutindex);
+    GLCall(glVertexAttribPointer(_mesh->local_texcoordinates_layoutindex, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->dpi_stride, &_mesh->mesh_data[(_mesh->vertex_stride + _mesh->color_stride) - 2]));
+	GLCall(glEnableVertexAttribArray(_mesh->local_texcoordinates_layoutindex));
 }
 
 void mesh_addtexture(mesh_t *m, image_t *texture){
     //Handle texture.
-    glGenTextures(1, &texture->ID);
-    glBindTexture(GL_TEXTURE_2D, texture->ID);
+    GLCall(glGenTextures(1, &texture->ID));
+    GLCall(glBindTexture(GL_TEXTURE_2D, texture->ID));
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-    glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, texture->border);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
+    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
+	GLCall(glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, texture->border));
     
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture->width, texture->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture->img);
-	glGenerateMipmap(GL_TEXTURE_2D);
+    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
+    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+	
+    GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture->width, texture->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture->img));
+    GLCall(glGenerateMipmap(GL_TEXTURE_2D));
     //Add to mesh
-    m->textures = realloc(m->textures, memsize(m->textures)+(memsize(texture)));
+    m->textures = realloc(m->textures, sizeof(image_t)* (m->num_textures+1));
     m->textures[m->num_textures] = *texture;
     m->num_textures++;
 
@@ -174,12 +187,9 @@ void mesh_addtexture(mesh_t *m, image_t *texture){
     */
 }
 
-char *cwd;
-size_t cwd_len;
-
 #ifdef _WIN32
     #include <direct.h>
-    #define getcwd(BUFFER, COUNT) _getcwd(NULL, 0)
+    #define getcwd _getcwd(NULL, 0)
     #define PATH_SEPARATOR '\\'
 #else
     #include <unistd.h>
@@ -195,7 +205,7 @@ size_t cwd_len = 0;
 bool cwd_init() {
     FILE *temp_ = NULL;
     int attempts = 0;
-    if((cwd = getcwd(NULL, 0)) == NULL){
+    if((cwd = getcwd) == NULL){
         printf("getcwd() Error, cwd not initialized.\n");
         return false;
     }
@@ -232,6 +242,39 @@ bool cwd_init() {
     return false;
 }
 
+void draw_debug_trace(const char* file, int line) {
+    GLint currentProgram = 0;
+    GLint boundVAO = 0;
+    GLint boundArrayBuffer = 0;
+    GLint boundElementBuffer = 0;
+
+    glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
+    glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &boundVAO);
+    glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &boundArrayBuffer);
+    glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING, &boundElementBuffer);
+
+    fprintf(stderr, "\n[Draw Debug Trace] @ %s:%d\n", file, line);
+    fprintf(stderr, "  Shader Program: %d\n", currentProgram);
+    fprintf(stderr, "  VAO Bound     : %d\n", boundVAO);
+    fprintf(stderr, "  VBO Bound     : %d\n", boundArrayBuffer);
+    fprintf(stderr, "  EBO Bound     : %d\n", boundElementBuffer);
+
+    // Optional: Check for active attributes
+    GLint maxAttribs = 0;
+    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxAttribs);
+    for (int i = 0; i < maxAttribs; ++i) {
+        GLint enabled = 0;
+        glGetVertexAttribiv(i, GL_VERTEX_ATTRIB_ARRAY_ENABLED, &enabled);
+        if (enabled) {
+            fprintf(stderr, "  Attribute %d: ENABLED\n", i);
+        }
+    }
+
+    GLenum err = glGetError();
+    if (err != GL_NO_ERROR) {
+        fprintf(stderr, "  OpenGL Error Before Draw: 0x%x\n", err);
+    }
+}
 
 
 //! Use later
@@ -242,21 +285,6 @@ bool cwd_init() {
 //     "glfw3.dll"
 // };
 
-const uint128_t builtin_shader_typehash[37] = {
-	{0, 3646476,}, {0, 118091}, {0, 184466353937349512}, {0, 124969334},
-	{0, 4353872}, {0, 4353873},  {0, 4353874},
-	{0, 128875577},  {0, 128875578},  {0, 128875579},
-	{0, 143106629},  {0, 143106630},  {0, 143106631},
-	{0, 120574130},  {0, 120574131},  {0, 120574132},
-	{0, 4026644},  {0, 4026645},  {0, 4026646},
-	{0, 4385019327},  {0, 4385020415},  {0, 4385019328},  {0, 4385021504},  {0, 4385020417},  {0, 4385021505},
-	{0, 166016265074057},  {0, 166016265074090},  {0, 166016265074123},
-	{0, 180791712666351635}, //SamplerCube
-	{0, 16629051508994671055U},  {0, 16629051551613114032U},
-	{0, 3857864121005407689},  {0, 12598728139851495951U},
-	{0, 5039222127279122},  {0, 5039222127279155},
-	{0, 5596159940102558},  {0, 5596159940102591}
-};
 const char* builtin_shader_typenames[37] = {
 	"bool", "int", "unsignedint", "float", "vec2", "vec3", "vec4",
 	"ivec2", "ivec3", "ivec4", "uvec2", "uvec3", "uvec4",
@@ -301,8 +329,23 @@ const unsigned int settings_version_end_index = 5;
 char* vertexshader = NULL,
 	* fragmentshader = NULL,
 	* geometryshader = NULL,
-	** shader_typenames = NULL,
 	*tessellation_controlshader = NULL,
-	*tessellation_evaluationshader = NULL
+	*tessellation_evaluationshader = NULL,
+	** shader_typenames = NULL
 	/**computeshader*/
 ;
+
+void GLAPIENTRY debug_callback(GLenum source, GLenum type, GLuint id,
+                               GLenum severity, GLsizei length,
+                               const GLchar *message, const void *userParam){
+    fprintf(stderr, 
+        "GL DEBUG:"
+            "\tMessage: %s\n\n"
+            "\tsource: %s\n"
+            "\ttype: %d\n"
+            "\tid: %d\n"
+            "\tseverity: %d\n"
+            "\tlength: %zu\n"
+            "\tuserParam: %s\n"
+        , message, source, type, id, severity, length, message, userParam);
+}

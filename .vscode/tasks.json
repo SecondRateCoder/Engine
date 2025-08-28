@@ -28,21 +28,21 @@
             "group": "none"
         },
         {
-        "label": "Prepare Build",
-        "type": "shell",
-        "command": "cmd.exe",
-        "args": [
-            "/c",
-            "copy",
-            "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\Libraries\\lib\\glfw3.dll",
-            "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\Build\\glfw3.dll"
-        ],
-        "problemMatcher": [],
-        "group": "none"
+            "label": "Prepare Build",
+            "type": "shell",
+            "command": "cmd.exe",
+            "args": [
+                "/c",
+                "copy",
+                "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\engine\\Libraries\\lib\\glfw3.dll",
+                "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\Build\\glfw3.dll"
+            ],
+            "problemMatcher": [],
+            "group": "none"
         },
         {
             "type": "cppbuild",
-            "label": "Build and Debug Project",
+            "label": "Build and Debug Core Project",
             "dependsOn": ["Clear Terminal"],
             "command": "gcc",
             "args": [

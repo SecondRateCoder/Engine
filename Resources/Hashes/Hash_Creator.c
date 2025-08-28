@@ -1,14 +1,17 @@
 #include <stdint.h>
+#include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
+#include <ctype.h>
 
-
-//! ./Compilation-Scripts/Make.ps1 -SourceDirectory "./Resources\Hashes\Hash_Creator.c" -OutputExecutableName "hasher.exe"
 typedef size_t uint128_t[2];
 
 #define HASH_64BIT_LIMIT 12
-
-// size_t *str_hash(const char *str);
+#define IS_NUM(c)    (((c) >= '0') && ((c) <= '9'))
+#define IS_EVEN(x)   (((x) % 2) == 0)
+#define INT_SIMP(x)  (((x) < 0) ? -1 : 1)
+#define IS_SPACE(c)  ((c) == ' ')
 
 static const char* builtin_shader_typenames[38] = {
     "bool", "int", "unsignedint", "float", "vec2", "vec3", "vec4",
@@ -18,43 +21,67 @@ static const char* builtin_shader_typenames[38] = {
     "sampler1D", "sampler2D", "sampler3D", "samplerCube",
     "sampler1DShadow", "sampler2DShadow", "sampler2DArray",
     "sampler2DArrayShadow", "isampler1D", "isampler2D",
-    "usampler1D", "usampler2D", "\0"};
+    "usampler1D", "usampler2D", NULL
+};
 
-/// @brief Return a __uint128_t variable.
-/// @param str The string to be hashed.
-/// @return A __uint128_t value.
-size_t *str_hash(const char *str){
-    // A large, odd prime number is a good choice for the initial hash value.
-    // 5381 is a common value used in the DJB2 algorithm.
-    size_t *hash = malloc(sizeof(size_t)* 2), cc =0;
-    hash[0] = 0;hash[1] = 0;
+char* str_normalise(const char *str, bool handle_spaces, bool handle_upper) {
+    if (!str) return NULL;
+
+    size_t str_len = strlen(str);
+    char *out = malloc(str_len + 1);
+    if (!out) return NULL;
+
+    size_t i = 0, j = 0;
+    while (str[i] != '\0') {
+        char c = str[i];
+        if (handle_spaces && IS_SPACE(c)) {
+            i++;
+            continue;
+        }
+
+        if(handle_upper){c = (c >= 'A' && c <= 'Z') ? c + ('a' - 'A') : c;}
+        out[j++] = c;
+        i++;
+    }
+
+    out[j] = '\0';
+    return out;
+}
+
+size_t* str_hash(const char *str) {
+    if(!str){return NULL;}
+    size_t *hash = malloc(sizeof(uint128_t));
+    if(!hash){return NULL;}
+    hash[0] = 5381;
+    hash[1] = 0;
+    size_t cc = 0;
     int c;
-
-    // A simple loop to iterate through the string until the null terminator is found.
-    while ((c = *str++)) {
-        // This is the core of the DJB2 algorithm:
-        // hash = hash * 33 + c;
-        // The bitwise left shift `(hash << 5)` is an efficient way to do `hash * 32`.
-        // Then we add the original hash to get `hash * 33`.
+    while((c = *str++)){
         ++cc;
-        if(hash[0] >= (SIZE_MAX-10)){
-            hash[1] = ((hash[1] << 5) + hash[1]) + c;
+        if(cc > HASH_64BIT_LIMIT){hash[1] = ((hash[1] << 5) + hash[1]) + c;
         }else{hash[0] = ((hash[0] << 5) + hash[0]) + c;}
     }
     return hash;
 }
 
-int main(){
+int main() {
     FILE *hashes = fopen("C:/Users/olusa/OneDrive/Documents/GitHub/Engine/Resources/Hashes/hashes.txt", "w");
-    for(size_t cc =0; builtin_shader_typenames[cc] != NULL; ++cc){
-        size_t *print = str_hash(builtin_shader_typenames[cc]);
-        char *temp = malloc(sizeof(char)* 100);
-        // fwrite(print, sizeof(size_t), 2, hashes);
-        snprintf(temp, sizeof(size_t)* 20, "#0: %zu, ", print[0]);
-        snprintf(&temp[50], sizeof(size_t)* 20, "#1: %zu", print[1]);
-        fwrite(temp, sizeof(char), 100, hashes);
-        free(print);
-        free(temp);
+    if (!hashes) {
+        fprintf(stderr, "Failed to open output file.\n");
+        return EXIT_FAILURE;
     }
+
+    for (size_t cc = 0; builtin_shader_typenames[cc] != NULL; ++cc) {
+        char *normalized = str_normalise(builtin_shader_typenames[cc], false, true);
+        size_t *hash = str_hash(normalized);
+        free(normalized);
+
+        if (!hash){continue;}
+
+        fprintf(hashes, "#0: %zu, #1: %zu\n", hash[0], hash[1]);
+        free(hash);
+    }
+    fclose(hashes);
     return EXIT_SUCCESS;
 }
+

@@ -26,6 +26,23 @@
 #  error "Unknown platform for memsize"
 #endif
 
+#define _DEBUG_
+
+#define GLCallUseProgram(prog) \
+    glUseProgram(prog); \
+    GLenum err = glGetError(); \
+    if (err != GL_NO_ERROR) \
+        fprintf(stderr, "[OpenGL Error] (%d): glUseProgram(%u)\n", err, prog);
+
+#ifdef _DEBUG_
+	#define GLCall(x) \
+		x; \
+		CheckGLError(__FILE__, __LINE__, #x);
+#else
+	#define GLCall(x)	\
+		x;
+#endif
+
 // 3. Utility macros
 #define IS_NUM(c)    ( ((int)(c) >= '0') && ((int)(c) <= '9') )
 #define IS_EVEN(x)   ( ((x) % 2) == 0 )
@@ -62,7 +79,6 @@ bool uint128_t_comp (const uint128_t a, const uint128_t b);
 // 9. Global engine object
 extern mesh_t *mesh;
 
-
 // 10. Mesh helpers
 void mesh_attrlink(bufferobj_t *buffer,
                    uint32_t        pos_layout,
@@ -71,8 +87,8 @@ void mesh_attrlink(bufferobj_t *buffer,
                    mesh_t         *_mesh);
 
 void mesh_addtexture(mesh_t *m, image_t *texture);
-
-
+void CheckGLError(const char* file, int line, const char* call);
+void draw_debug_trace(const char* file, int line);
 
 extern char *cwd;
 extern size_t cwd_len;
@@ -100,6 +116,10 @@ extern char* vertexshader,
 ;
 extern const char* builtin_shader_typenames[];
 extern const uint128_t builtin_shader_typehash[37];
+void GLAPIENTRY debug_callback(
+	GLenum source, GLenum type, GLuint id,
+	GLenum severity, GLsizei length,
+	const GLchar *message, const void *userParam);
 
 #endif // _PUBLIC_H
 

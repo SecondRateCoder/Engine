@@ -25,8 +25,8 @@
 // Corrected shader_error function.
 // The original had incorrect `printf` format specifiers and was not properly handling the return value of `strncmp`.
 // It also had inconsistent naming for the `_compiled` member. I've removed the state tracking as it's not robust.
-void shader_error(shaderblock_t* sb_t, const char* type) {
-	if (sb_t == NULL || type == NULL) return;
+bool shader_error(shaderblock_t* sb_t, const char* type) {
+	if(sb_t == NULL || type == NULL){return false;}
 
 	GLuint shader = 0;
 	GLint success;
@@ -34,10 +34,11 @@ void shader_error(shaderblock_t* sb_t, const char* type) {
 
 	if (strcmp(type, "PROGRAM") == 0) {
 		shader = sb_t->shaderProgram;
-		glGetProgramiv(shader, GL_LINK_STATUS, &success);
+		GLCallUseProgram(shader);
 		if (!success) {
-			glGetProgramInfoLog(shader, 1024, NULL, infoLog);
+			GLCall(glGetProgramInfoLog(shader, 1024, NULL, infoLog));
 			fprintf(stderr, "Shader PROGRAM linking error: %s\n", infoLog);
+			return false;
 		}
 	} else {
 		if(strcmp(type, "VERTEX") == 0){shader = sb_t->vertexshader;
@@ -45,17 +46,19 @@ void shader_error(shaderblock_t* sb_t, const char* type) {
 		}else if(strcmp(type, "GEOMETRY") == 0){shader = sb_t->geometryshader;
 		}else{
 			fprintf(stderr, "Error: Unknown shader type '%s'.\n", type);
-			return;
+			return false;
 		}
 
-		if (shader == 0) {return;}
+		if (shader == 0) {return false;}
 
-		glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+		GLCall(glGetShaderiv(shader, GL_COMPILE_STATUS, &success));
 		if (!success) {
-			glGetShaderInfoLog(shader, 1024, NULL, infoLog);
+			GLCall(glGetShaderInfoLog(shader, 1024, NULL, infoLog));
 			fprintf(stderr, "Shader %s compilation error: %s\n", type, infoLog);
+			return false;
 		}
 	}
+	return true;
 }
 
 // Fixed function to read or write shader settings.
@@ -249,9 +252,7 @@ void shader_pull(const char *filepath, const bool redo_shaders[5]){
 // Corrected uniform_init function.
 // The original was missing crucial cleanup and had logical errors in memory management.
 // The `strndup` calls and the `realloc` logic were a particular problem.
-void uniform_init(shaderblock_t *sb){
-	if(sb == NULL){return;}
-
+arrk_t *uniform_init(size_t *uniform_len_, const GLuint shaderProgram){
 	const char *shaders[] = {
 		vertexshader ? vertexshader : vertexshader_default,
 		fragmentshader ? fragmentshader : fragmentshader_default,
@@ -271,9 +272,8 @@ void uniform_init(shaderblock_t *sb){
 	// }
 	// size_t sb_uniform_size = 0;
 	// for(size_t cc =0; cc < sb->uniform_len; ++cc){sb_uniform_size += strlen(sb->uniforms[sb->uniform_len].name) + strlen(sb->uniforms[sb->uniform_len].type) + sizeof(sb->uniforms[sb->uniform_len].Location);}
-	sb->uniforms = calloc(sizeof(arrk_t), 1);
-	sb->uniform_len = 1;
-	bool first = true;
+	arrk_t *uniforms = calloc(sizeof(arrk_t), 1);
+	size_t uniform_len = 0;
 	for(size_t cc =0; cc < 5; ++cc){
 		if(shaders[cc] == NULL){continue;}
 		"3.300000000000\n"
@@ -295,7 +295,7 @@ void uniform_init(shaderblock_t *sb){
 		"out vec4 FragColor;\n"
 		"in vec3 color;\n"
 		"in vec2 tex_coord;\n"
-		"\n"; "fragmentshader: 75";
+		"\n"; "fragmentshader: 80";
 		const size_t shader_len = strlen(shaders[cc]);
 		for(size_t char_cc =0; char_cc < shader_len; ++char_cc){
 			while(char_cc < shader_len && isspace(shaders[cc][char_cc])){
@@ -310,31 +310,29 @@ void uniform_init(shaderblock_t *sb){
 					unsigned int len_char_cc =0;
 					//Get type definition.
 					while(len_char_cc + char_cc < shader_len && isalnum(shaders[cc][char_cc+len_char_cc])){++len_char_cc;}
-					if(first == false){
-						sb->uniforms = realloc(sb->uniforms, sizeof(arrk_t)* (sb->uniform_len+1));
-					}
-					sb->uniforms[sb->uniform_len].type = malloc(sizeof(char)* (len_char_cc));
-					memcpy(sb->uniforms[sb->uniform_len].type, &shaders[cc][char_cc], len_char_cc);
-					sb->uniforms[sb->uniform_len].type[len_char_cc] = '\0';
+					uniforms = realloc(uniforms, sizeof(arrk_t) * (uniform_len + 1));
+					uniforms[uniform_len].type = malloc(sizeof(char)* (len_char_cc + 1));
+					memcpy(uniforms[uniform_len].type, &shaders[cc][char_cc], len_char_cc);
+					uniforms[uniform_len].type[len_char_cc] = '\0';
 					char_cc += len_char_cc;
 					len_char_cc = 0;
 					//Get name definition.
 					while(char_cc < shader_len && isspace(shaders[cc][char_cc])){char_cc++;}
 					while(len_char_cc + char_cc < shader_len && isalnum(shaders[cc][char_cc+len_char_cc])){++len_char_cc;}
-					sb->uniforms[sb->uniform_len].name = malloc(sizeof(char)* (len_char_cc));
-					memcpy(sb->uniforms[sb->uniform_len].name, &shaders[cc][char_cc], len_char_cc);
-					sb->uniforms[sb->uniform_len].name[len_char_cc] = '\0';
-					if((sb->uniforms[sb->uniform_len].Location = glGetUniformLocation(sb->shaderProgram, sb->uniforms[sb->uniform_len].name)) == -1){
-						printf("Uh-oh!, I couldn't access the uniform %s of type %s and at location %d", sb->uniforms[sb->uniform_len].name, sb->uniforms[sb->uniform_len].type, char_cc);
+					uniforms[uniform_len].name = malloc(sizeof(char)* (len_char_cc + 1));
+					memcpy(uniforms[uniform_len].name, &shaders[cc][char_cc], len_char_cc);
+					uniforms[uniform_len].name[len_char_cc] = '\0';
+					if((uniforms[uniform_len].Location = glGetUniformLocation(shaderProgram, uniforms[uniform_len].name)) == -1){
+						printf("Uh-oh!, I couldn't access the uniform %s of type %s and at location %d", uniforms[uniform_len].name, uniforms[uniform_len].type, char_cc);
 					}
-					if(!first){sb->uniform_len++;}
+					uniform_len++;
 					
 				}
 			}// else if(shaders[cc][char_cc] == 's'){continue;}
 		}
 	}
-	// sb->uniform_len++;
-	return;
+	*uniform_len_ = uniform_len++;
+	return uniforms;
 }
 
 // void uniform_init(shaderblock_t* sb_t) {
@@ -478,15 +476,30 @@ void uniform_free(shaderblock_t* shader){
 
 // Corrected uniform_write function.
 // The original had a `return NULL` in a `void` function and incorrect pointer dereferencing.
-bool uniform_write(shaderblock_t* shader, const char* type, const char* name, const char* property, bool transpose, const void* value, size_t num_elements){
-	if (shader == NULL || name == NULL) return false;
+bool uniform_write(shaderblock_t* shader, const char* type, const char* name, const void* property_, const bool transpose, void* value, const size_t num_elements){
+	printf("[0]: \n\tName: %zu; \n\tType: %zu, \n[1]: \n\tName: %zu; \n\tType: %zu\n", 
+        shader->uniforms[0].name,
+        shader->uniforms[0].type,
+        shader->uniforms[1].name,
+        shader->uniforms[1].type
+    );
+	assert(shader != NULL);
+	assert(shader->uniforms != NULL);
+	assert(shader->uniform_len < 1000);
+	if (shader == NULL || name == NULL){return false;}
 	size_t *typehash_ = str_hash(str_normalise(type, true, true));
-	const uint128_t typehash = {typehash[1], typehash[0]};
+	const uint128_t typehash = {typehash_[0], typehash_[1]};
 	GLint location = -1;
 	// Find the uniform location
+	GLCallUseProgram(shader->shaderProgram);
 	for (size_t cc = 0; cc < shader->uniform_len; ++cc) {
 		if (strcmp(name, shader->uniforms[cc].name) == 0) {
 			location = shader->uniforms[cc].Location;
+			if((location = glGetUniformLocation(shader->shaderProgram, shader->uniforms[cc].name)) != shader->uniforms[cc].Location){
+				shader->uniforms[cc].Location = location;
+				if(location == -1){printf("\tUniform %s not found, \n\t\tLocation %u returned", shader->uniforms[cc].name, location);}
+			}
+			printf("\nLocation: \t%d", location);
 			break;
 		}
 	}
@@ -496,109 +509,195 @@ bool uniform_write(shaderblock_t* shader, const char* type, const char* name, co
 		return false;
 	}
 	for(size_t cc =0; cc < 37; ++cc){
-		if(uint128_t_comp(builtin_shader_typehash[cc], typehash) == true){
+		if(uint128_t_comp(str_hash(str_normalise(builtin_shader_typenames[cc], true, true)), typehash) == true){
 			// Use a switch statement for dispatching GL uniform functions
 			// Note: The original switch had incorrect pointer casts and logic for single vs. multiple elements.
 			switch (cc) {
-				case 0: // GL_INT
-				case 1: // GL_BOOL
-					glUniform1iv(location, num_elements, (const GLint*)value);
+				case 0: // GL_BOOL
+				case 1: // GL_INT
+					GLCall(glUniform1i(location, *((GLint*)value)));
 					break;
 				case 2: // GL_UNSIGNED_INT
-					glUniform1uiv(location, num_elements, (const GLuint*)value);
+					GLCall(glUniform1uiv(location, num_elements,  (GLuint*)value));
 					break;
 				case 3: // GL_FLOAT
-					glUniform1fv(location, num_elements, (const GLfloat*)value);
+					GLfloat tempf = *((GLfloat*)value);
+					GLCall(glUniform1f(location, tempf));
 					break;
-				case 4: // vec2
-					glUniform2fv(location, num_elements, (const GLfloat*)value);
+				case 4: // float vec2
+					GLfloat *tempf2 = (GLfloat*)value;
+					GLCall(glUniform2f(location, 
+						tempf2[0], 
+						(num_elements >= 2? tempf2[1]: 0)
+					));
 					break;
-				case 5: // vec3
-					glUniform3fv(location, num_elements, (const GLfloat*)value);
+				case 5: // float vec3
+					GLfloat *tempf3 = (GLfloat*)value;
+					GLCall(glUniform3f(location, 
+						tempf3[0], 
+						(num_elements >= 2? tempf3[1]: 0), 
+						(num_elements >= 3? tempf3[2]: 0)
+					));
 					break;
-				case 6: // vec4
-					glUniform4fv(location, num_elements, (const GLfloat*)value);
+				case 6: // float vec4
+					GLfloat *tempf4 = (GLfloat*)value;
+					GLCall(glUniform4f(location, 
+						tempf4[0], 
+						(num_elements >= 2? tempf4[1]: 0), 
+						(num_elements >= 3? tempf4[2]: 0), 
+						(num_elements >= 4? tempf4[3]: 0)
+					));
 					break;
-				case 7: // ivec2
-					glUniform2iv(location, num_elements, (const GLint*)value);
+				case 7: // int vec2
+					GLint *tempi2 = (GLint*)value;
+					GLCall(glUniform2i(location, 
+						tempi2[0], 
+						(num_elements >= 2? tempi2[1]: 0)
+					));
 					break;
-				case 8: // ivec3
-					glUniform3iv(location, num_elements, (const GLint*)value);
+				case 8: // int vec3
+					GLint *tempi3 = (GLint*)value;
+					GLCall(glUniform3i(location, 
+						tempi3[0], 
+						(num_elements >= 2? tempi3[1]: 0), 
+						(num_elements >= 3? tempi3[2]: 0)
+					));
 					break;
-				case 9: // ivec4
-					glUniform4iv(location, num_elements, (const GLint*)value);
+				case 9: // int vec4
+					GLint *tempi4 = (GLint*)value;
+					GLCall(glUniform4i(location, 
+						tempi4[0], 
+						(num_elements >= 2? tempi4[1]: 0), 
+						(num_elements >= 3? tempi4[2]: 0), 
+						(num_elements >= 4? tempi4[3]: 0)
+					));
 					break;
-				case 10: // uvec2
-					glUniform2uiv(location, num_elements, (const GLuint*)value);
+				case 10: // unsigned int vec2
+					GLuint *tempui2 = (GLuint*)value;
+					GLCall(glUniform2ui(location, 
+						tempui2[0], 
+						(num_elements >= 2? tempui2[1]: 0)
+					));
+				case 11: // unsigned int vec3
+					GLuint *tempui3 = (GLuint*)value;
+					GLCall(glUniform3ui(location, 
+						tempui3[0], 
+						(num_elements >= 2? tempui3[1]: 0), 
+						(num_elements >= 3? tempui3[2]: 0)
+					));
+				case 12: // unsigned int vec4
+					GLuint *tempui4 = (GLuint*)value;
+					GLCall(glUniform4ui(location, 
+						tempui4[0], 
+						(num_elements >= 2? tempui4[1]: 0), 
+						(num_elements >= 3? tempui4[2]: 0), 
+						(num_elements >= 4? tempui4[3]: 0)
+					));
+				case 13: // Boolean vec2
+					GLint *tempb2 = (GLint *)value;
+					GLCall(glUniform2i(location,
+						tempb2[0],
+						(num_elements >= 2? tempb2[1]: 0)
+					));
+				case 14: // Boolean vec3
+					GLint *tempb3 = (GLint *)value;
+					GLCall(glUniform3i(location,
+						tempb3[0],
+						(num_elements >= 2? tempb2[1]: 0),
+						(num_elements >= 3? tempb2[2]: 0)
+					));
+				case 15: // Boolean vec4
+					GLint *tempb4 = (GLint *)value;
+					GLCall(glUniform4i(location,
+						tempb4[0],
+						(num_elements >= 2? tempb2[1]: 0), 
+						(num_elements >= 3? tempb2[2]: 0), 
+						(num_elements >= 4? tempb2[3]: 0)
+					));
+				case 16: // mat2
+					GLCall(glUniformMatrix2fv(location, num_elements, transpose, (const GLfloat*)value));
 					break;
-				case 11: // uvec3
-					glUniform3uiv(location, num_elements, (const GLuint*)value);
+				case 17: // mat3
+					GLCall(glUniformMatrix3fv(location, num_elements, transpose, (const GLfloat*)value));
 					break;
-				case 12: // uvec4
-					glUniform4uiv(location, num_elements, (const GLuint*)value);
+				case 18: // mat4
+					GLCall(glUniformMatrix4fv(location, num_elements, transpose, (const GLfloat*)value));
 					break;
-				case 13: // mat2
-					glUniformMatrix2fv(location, num_elements, transpose, (const GLfloat*)value);
+				case 19: // mat2x3
+					GLCall(glUniformMatrix2x3fv(location, num_elements, transpose, (const GLfloat*)value));
 					break;
-				case 14: // mat3
-					glUniformMatrix3fv(location, num_elements, transpose, (const GLfloat*)value);
+				case 20: // mat3x2
+					GLCall(glUniformMatrix3x2fv(location, num_elements, transpose, (const GLfloat*)value));
 					break;
-				case 15: // mat4
-					glUniformMatrix4fv(location, num_elements, transpose, (const GLfloat*)value);
+				case 21: // mat2x4
+					GLCall(glUniformMatrix2x4fv(location, num_elements, transpose, (const GLfloat*)value));
 					break;
-				case 16: // mat2x3
-					glUniformMatrix2x3fv(location, num_elements, transpose, (const GLfloat*)value);
+				case 22: // mat4x2
+					GLCall(glUniformMatrix4x2fv(location, num_elements, transpose, (const GLfloat*)value));
 					break;
-				case 17: // mat3x2
-					glUniformMatrix3x2fv(location, num_elements, transpose, (const GLfloat*)value);
+				case 23: // mat3x4
+					GLCall(glUniformMatrix3x4fv(location, num_elements, transpose, (const GLfloat*)value));
 					break;
-				case 18: // mat2x4
-					glUniformMatrix2x4fv(location, num_elements, transpose, (const GLfloat*)value);
+				case 24: // mat4x3
+					GLCall(glUniformMatrix4x3fv(location, num_elements, transpose, (const GLfloat*)value));
 					break;
-				case 19: // mat4x2
-					glUniformMatrix4x2fv(location, num_elements, transpose, (const GLfloat*)value);
-					break;
-				case 20: // mat3x4
-					glUniformMatrix3x4fv(location, num_elements, transpose, (const GLfloat*)value);
-					break;
-				case 21: // mat4x3
-					glUniformMatrix4x3fv(location, num_elements, transpose, (const GLfloat*)value);
+				case 25: // Sampler 1D
+				case 26: // Sampler 2D
+				case 27: // Sampler 3D
+				case 28: // Sampler Cube
+				case 29: // Sampler 1D Shadow
+				case 30: // Sampler 2D Shadow
+				case 31: // Sampler 2D Array
+				case 32: // Sampler 2D Array Shadow
+				case 33: // Integer Sampler 1D
+				case 34: // Integer Sampler 2D
+				case 35: // Unsigned Integer Sampler 1D
+				case 36: // Unsigned Integer Sampler 2D
+					const GLenum property_enum = *((GLenum *)property_);
+					switch(property_enum){
+						case GL_TEXTURE_1D:
+						case GL_TEXTURE_2D:
+						case GL_TEXTURE_3D:
+						case GL_TEXTURE_CUBE_MAP:
+						case GL_TEXTURE_1D_ARRAY:
+						case GL_TEXTURE_2D_ARRAY:
+							glUniform1i(location, *((const GLint*)value));
+							break;
+					}
 					break;
 				default:
 					//Just attempt writing something ngl.
 					// fprintf(stderr, "Error: Unsupported shader type or uniform '%s' not found.\n", type);
-					const size_t name_len  =strlen(name), type_len = strlen(type), pointerchar_len = 4, dotchar_len = 3;
-					char *full_access = malloc(strlen(name)+strlen(property)+strlen("->\0")+1);
-					full_access[strlen(name)+strlen(property)+strlen("->\0")] = '\0';
-					strncat(full_access, name, strlen(name));
-					strncat(full_access+name_len, "->", 3);
-					strncat(full_access+name_len+pointerchar_len, property, strlen(property));
+					const char *property = property_;
+					size_t full_len = strlen(name) + (property == NULL? 0: strlen(property)) + 3 + 1;
+					char *full_access = malloc(full_len);
+					if (!full_access){break;}
+					snprintf(full_access, full_len, "%s->%s", name, property);
+
 					GLint out = glGetUniformLocation(shader->shaderProgram, full_access);
-					if(out == -1){
-						//Try with just a "."
-						free(full_access);
-						full_access = realloc(full_access, strlen(name)+strlen(property)+strlen(".\0")+1);
-						full_access[strlen(name)+strlen(property)+strlen(".")] = '\0';
-						// strncat(full_access, name, strlen(name));
-						strncat(full_access+name_len, ".", 2);
-						strncat(full_access+name_len+dotchar_len, property, strlen(property));
+					if (out == -1) {
+						if(property != NULL){snprintf(full_access, full_len, "%s.%s", name, property);}
 						out = glGetUniformLocation(shader->shaderProgram, full_access);
-						if(out == -1){return false;}
+						if (out == -1) {
+							free(full_access);
+							break;
+						}
 					}
-					glUniform1f(out, ((const GLfloat*)value)[0]);
+					GLCall(glUniform1f(out, ((GLfloat*)value)[0]));
 					free(full_access);
-					return false;
+					break;
 			}
+			break;
 		}
 	}
-
+	free(typehash_);
 	return true;
 }
 
 
 // Corrected shader_compile function.
 // The original had a few logical errors, incorrect checks, and was missing error handling for `calloc`.
-shaderblock_t* shader_compile(bool delete_shaders_on_link) {
+shaderblock_t *shader_compile(bool delete_shaders_on_link) {
 	shaderblock_t* shaderblock = (shaderblock_t*)malloc(sizeof(shaderblock_t));
 	if (shaderblock == NULL) {
 		fprintf(stderr, "Error: Failed to allocate memory for shaderblock.\n");
@@ -611,42 +710,64 @@ shaderblock_t* shader_compile(bool delete_shaders_on_link) {
 	const char* vs_source = (vertexshader != NULL) ? vertexshader : vertexshader_default;
 	glShaderSource(shaderblock->vertexshader, 1, &vs_source, NULL);
 	glCompileShader(shaderblock->vertexshader);
-	shader_error(shaderblock, "VERTEX");
+	shaderblock->compiled_[1] = shader_error(shaderblock, "VERTEX");
+	
 
 	// Compile Fragment Shader.
 	shaderblock->fragmentshader = glCreateShader(GL_FRAGMENT_SHADER);
 	const char* fs_source = (fragmentshader != NULL) ? fragmentshader : fragmentshader_default;
 	glShaderSource(shaderblock->fragmentshader, 1, &fs_source, NULL);
 	glCompileShader(shaderblock->fragmentshader);
-	shader_error(shaderblock, "FRAGMENT");
+	shaderblock->compiled_[2] = shader_error(shaderblock, "FRAGMENT");
 
 	// Compile Geometry Shader (optional).
-	if (geometryshader != NULL) {
+	if(geometryshader != NULL){
 		shaderblock->geometryshader = glCreateShader(GL_GEOMETRY_SHADER);
 		glShaderSource(shaderblock->geometryshader, 1, (const char* const*)&geometryshader, NULL);
 		glCompileShader(shaderblock->geometryshader);
-		shader_error(shaderblock, "GEOMETRY");
-	} else {
+		shaderblock->compiled_[3] = shader_error(shaderblock, "GEOMETRY");
+	}else{
 		shaderblock->geometryshader = 0;
+		shaderblock->compiled_[3] = false;
 	}
+
+	// if(tessellation_controlshader != NULL){
+	// 	shaderblock->tessellation_controlshader = glCreateShader(GL_TESS_CO);
+	// 	glShaderSource(shaderblock->geometryshader, 1, (const char* const*)&geometryshader, NULL);
+	// 	glCompileShader(shaderblock->geometryshader);
+	// 	shaderblock->compiled_[3] = shader_error(shaderblock, "GEOMETRY");
+	// }else{
+	// 	shaderblock->geometryshader = 0;
+	// 	shaderblock->compiled_[3] = false;
+	// }
+
+	// if(geometryshader != NULL){
+	// 	shaderblock->geometryshader = glCreateShader(GL_GEOMETRY_SHADER);
+	// 	glShaderSource(shaderblock->geometryshader, 1, (const char* const*)&geometryshader, NULL);
+	// 	glCompileShader(shaderblock->geometryshader);
+	// 	shaderblock->compiled_[3] = shader_error(shaderblock, "GEOMETRY");
+	// }else{
+	// 	shaderblock->geometryshader = 0;
+	// 	shaderblock->compiled_[3] = false;
+	// }
 	
 	// Link Program.
 	shaderblock->shaderProgram = glCreateProgram();
 	glAttachShader(shaderblock->shaderProgram, shaderblock->vertexshader);
 	glAttachShader(shaderblock->shaderProgram, shaderblock->fragmentshader);
-	if (shaderblock->geometryshader != 0) {
-		glAttachShader(shaderblock->shaderProgram, shaderblock->geometryshader);
-	}
+	if(shaderblock->geometryshader != 0){glAttachShader(shaderblock->shaderProgram, shaderblock->geometryshader);}
 	glLinkProgram(shaderblock->shaderProgram);
-	shader_error(shaderblock, "PROGRAM");
+	shaderblock->compiled_[0] = shader_error(shaderblock, "PROGRAM");
+	shaderblock->compiled_[7] = shaderblock->compiled_[0];
 
 	// Delete if needed.
 	if (delete_shaders_on_link) {
+		for(uint8_t cc =1; cc < 6; ++cc){shaderblock->compiled_[cc] = false;}
 		glDeleteShader(shaderblock->vertexshader);
 		glDeleteShader(shaderblock->fragmentshader);
-		if (shaderblock->geometryshader != 0) {
-			glDeleteShader(shaderblock->geometryshader);
-		}
+		if(shaderblock->geometryshader != 0){glDeleteShader(shaderblock->geometryshader);}
+		if(shaderblock->tessellation_controlshader != 0){glDeleteShader(shaderblock->tessellation_controlshader);}
+		if(shaderblock->tessellation_evaluationshader != 0){glDeleteShader(shaderblock->tessellation_evaluationshader);}
 	}
 	
 	// The original code was using `shaderblock->compiled_` and `shaderblock->_compiled`.
@@ -669,10 +790,12 @@ void win_draw(win_t *win, mesh_t *mesh){
 		win->buffers = malloc(sizeof(bufferobj_t));
 		temp_ptr = &win->buffers[win->buffer_curr];
 	}
-	SHADERBLOCK_HANDLE(&win->shaders[win->shaders_curr], true, true);
+	shaderblock_handle(&win->shaders[win->shaders_curr], true, true);
 	BUFFEROBJECT_HANDLE(temp_ptr, mesh->mesh_data, mesh->data_len, mesh->vertex_index, mesh->index_len, GL_STATIC_DRAW, 10);
 	mesh_attrlink(temp_ptr, win->layout_offset, win->layout_offset+1, win->layout_offset+2, mesh);
-	glDrawElements(GL_TRIANGLES, mesh->data_len, GL_UNSIGNED_INT, (mesh->vertex_index == NULL? 0: mesh->mesh_data));
+	glUseProgram(win->shaders[win->shaders_curr].shaderProgram);
+	draw_debug_trace(__FILE__, __LINE__);
+	GLCall(glDrawElements(GL_TRIANGLES, mesh->data_len, GL_UNSIGNED_INT, (mesh->vertex_index == NULL? 0: mesh->mesh_data)));
 }
 
 // Corrected winimage_append function.
@@ -800,40 +923,71 @@ void shaderblock_handle(shaderblock_t *shader, bool clean, bool do_uniforms){
 		strncat(default_dir, "\\Resources\\Shaders\\Shaders.txt", 30);
 		shaders_pull(default_dir);
 	}
-	if(shader->compiled_[7] == false){shader =shader_compile(clean);}
-	if(do_uniforms && shader->uniforms == NULL){uniform_init(shader);}
+	if(shader->compiled_[7] == false){*shader = *shader_compile(clean);}
+	if(do_uniforms && shader->uniforms == NULL){shader->uniforms = uniform_init(&shader->uniform_len, shader->shaderProgram);}
 }
 void bufferobject_handle(bufferobj_t *buffer, GLfloat *vertices, size_t v_len, GLuint *index_order, size_t index_len, GLenum draw_format, uint8_t max_tries){
 	bool success = 0;
 	uint8_t counter = 0;
+	/*
+		GLuint vao, vbo, ebo;
+		glGenVertexArrays(1, &vao);
+		glGenBuffers(1, &vbo);
+		glGenBuffers(1, &ebo);
+
+		glBindVertexArray(vao);        // Start recording VAO state
+
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+		// Configure vertex attributes
+		glVertexAttribPointer(...);
+		glEnableVertexAttribArray(...);
+
+		glBindVertexArray(0);          // Done recording VAO state
+	*/
 	do {
 		if(buffer == NULL){break;}
 		success = true;
 		/*VAO not set-up*/ 
 		if (buffer->buffer_[0] == false) {
-			if (buffer->VAO == 0){glGenVertexArrays(1, &buffer->VAO);}	
-			glBindVertexArray(buffer->VAO); 
+			if (buffer->VAO == 0){GLCall(glGenVertexArrays(1, &buffer->VAO));}	
 			buffer->buffer_[0] = true;
+			//Generate VBO.
+			if(buffer->buffer_[1] == false || buffer->VBO == NULL){
+				buffer->VBO = malloc(sizeof(GLuint));
+				if(buffer->VBO_len == 0){	
+					GLCall(glGenBuffers(1, buffer->VBO)); 
+					buffer->VBO_len = 1; 
+				}
+				// buffer->buffer_[1] = true;
+			}
+			if(buffer->buffer_[2] == false || buffer->EBO == NULL){
+				buffer->EBO = malloc(sizeof(GLuint));
+				if(buffer->EBO_len == 0){	
+					GLCall(glGenBuffers(1, buffer->EBO)); 
+					buffer->EBO_len = 1; 
+				}
+				// buffer->buffer_[2] = true;
+			}
+			GLCall(glBindVertexArray(buffer->VAO)); // Begin recording state.
 		} 
 		/*VBO not set-up*/ 
 		if(buffer->buffer_[1] == false && vertices != NULL){	
-			buffer->VBO = malloc(sizeof(GLuint));
-			if(buffer->VBO_len == 0){	
-				glGenBuffers(1, buffer->VBO); 
-				buffer->VBO_len = 1; 
-			}
-			glBindBuffer(GL_ARRAY_BUFFER, *buffer->VBO); 
-			glBufferData(GL_ARRAY_BUFFER, v_len * sizeof(GLfloat), vertices, draw_format);
+			GLCall(glBindBuffer(GL_ARRAY_BUFFER, *buffer->VBO)); 
+			GLCall(glBufferData(GL_ARRAY_BUFFER, v_len, vertices, draw_format));
 			buffer->buffer_[1] = true;
 		} 
 		/*EBO not set-up*/ 
 		if(buffer->buffer_[2] == false){  
-			buffer->EBO = malloc(sizeof(GLuint));
-			glGenBuffers(1, buffer->EBO);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *buffer->EBO);    
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, (index_len) * sizeof(GLuint), index_order, draw_format);
+			GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *buffer->EBO));    
+			GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, (index_len), index_order, draw_format));
 			buffer->buffer_[2] = true;
 		}
 		success = buffer->buffer_[0] == true && buffer->buffer_[1] == true && buffer->buffer_[2] == true;
 	}while (counter < max_tries && success == false);
+	GLCall(glBindVertexArray(0));
 }

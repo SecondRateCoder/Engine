@@ -113,10 +113,10 @@ typedef struct ComputeShaderBlock {
 	[1]: Is Vertex Shader compiled?
 	[2]: Is Fragment Shader compiled?
 	[3]: Is Geometry Shader compiled?
-	! DEPRECATED, [4]: Is Tessellation Control Shader compiled?
-	! DEPRECATED, [5]: Is Tesselation Evaluation Shader compiled?
+	[4]: Is Tessellation Control Shader compiled?
+	[5]: Is Tesselation Evaluation Shader compiled?
 	! DEPRECATED, [6]: Is Compute Shader compiled?
-	[7]: Is ShaderBlock usable?
+	[6]: Is ShaderBlock usable?
 	*/
 	bool compiled_[7];
 	size_t uniform_len;
@@ -125,9 +125,9 @@ typedef struct ComputeShaderBlock {
 	GLuint shaderProgram,
 		vertexshader,
 		fragmentshader,
-		geometryshader
-		// *tessellation_controlshader, 
-		// *tessellation_evaluationshader, 
+		geometryshader,
+		tessellation_controlshader, 
+		tessellation_evaluationshader
 		// *computeShader
 		;
 }ComputeShaderBlock;
@@ -168,6 +168,7 @@ typedef struct buffer_object {
 typedef struct texture_image {
 	int width, height, color_channels;
 	GLuint ID;
+	uint8_t unit;
 	unsigned char* img;
 	float border[4];
 }texture_image;
@@ -272,7 +273,8 @@ OLD_TYPE_NAME_HASHES:
 
 bool cwd_init();
 void shaders_pull(const char* filepath);
-void shader_pull(const char *filepath, const bool redo_shaders[3]);
+void shader_pull(const char *filepath, const bool redo_shaders[5]);
+bool shader_error(shaderblock_t* sb_t, const char* type);
 char* shadersettings_rw(const char* filepath, char* write);
 shaderblock_t* shader_compile(bool delete_shaders_on_link);
 #include "../_3D.h"
@@ -280,8 +282,8 @@ void win_draw(win_t *win, mesh_t *_mesh);
 void win_flood(win_t *win, const argb_t c);
 // void winimage_append(win_t *win, const char *filepath, const argb_t *border_color);
 void destroy_arrkey(arrk_t *arrk);
-void uniform_init(shaderblock_t * sb_t);
-bool uniform_write(shaderblock_t* shader, const char* type, const char* name, const char* property, bool transpose, const void* value, size_t num_elements);
+arrk_t *uniform_init(size_t *uniform_len, const GLuint shaderProgram);
+bool uniform_write(shaderblock_t* shader, const char* type, const char* name, const void* property_, const bool transpose, void* value, const size_t num_elements);
 void uniform_free(shaderblock_t * shader);
 void* buffer_bufferdo(bufferobj_t * buffer, const size_t len, const BUFFER_OPTIONS option);
 bufferobj_t* win_buffercurr(win_t * win);

@@ -12,6 +12,7 @@
 
 const float sqrt3 =  1.7320508075688772935274463415059f;
 mesh_t *mesh;
+uint8_t unit =0;
 
 // Assuming 'cwd' is a global variable populated by cwd_init() from your Public.h
 // If it's not global, you would need to adjust how it's accessed.
@@ -27,14 +28,16 @@ void poll_draw(void *self, size_t pollcycles){
     
     // CORRECTED: The variable 'g' was undeclared.
     // Declaring as a static float makes it persist between calls, creating an animation.
-    float g = (360/(pollcycles == 0? 1: pollcycles))* 1.00000005f;
+    float g = (pollcycles == 0? 1: pollcycles)/(360* 1.00000005f);
     glm_translate(view, (vec3){0.0f, 0.0f, -5.0f}); // Adjusted translation for better view
     glm_perspective(glm_rad(45.0f), (float)win->w / (float)win->h, 0.1f, 100.0f, proj_screen);
     glm_mat4_mul(proj_screen, view, out);
     glm_rotate(out, g, (vec3){0.5f, 1.0f, 0.0f}); // Rotate on X and Y axis
-    GLuint tex0_uni = glGetUniformLocation(win->shaders->shaderProgram, "tex0");
-    glUniform1i(tex0_uni, 0);
-    
+    // GLuint tex0_uni = glGetUniformLocation(win->shaders->shaderProgram, "tex0");
+    // glUseProgram(win->shaders[win->shaders_curr].shaderProgram);
+    // glUniform1i(tex0_uni, 0);
+    uniform_write(win->shaders, "mat4", "matrix", NULL, true, out, 16);
+
     // Note: Passing strings like "mat4\0" is redundant. "mat4" is sufficient.
     // uniform_write(win->shaders, "mat4", "matrices", "\0", true, out, 9);
     // uniform_write(win->shaders, "inputvectors_bounds", "bounds", "start", true, 0, 1);
@@ -76,11 +79,12 @@ void test_win_init(){
     return;
 
 }
+
 int main(){
     // test_win_init();
     // return EXIT_SUCCESS;
     cwd_init();
-    mesh = malloc(sizeof(_mesh));
+    mesh = calloc(1, sizeof(_mesh));
     mesh->mesh_data = malloc(sizeof(GLfloat)* 48);
     mesh->mesh_data = (GLfloat[48]){
         -0.5f,   (-0.5f * sqrt3) / 3,    0,      8.0f, 0.3f, 0.2f,    0.0f, 5.0f,
@@ -112,10 +116,13 @@ int main(){
     mainw->shaders = malloc(sizeof(shaderblock_t));
     for(uint8_t cc =0; cc < 7; ++cc){mainw->shaders[0].compiled_[cc] -= mainw->shaders[0].compiled_[cc];}
     // mainw->shaders[0].compiled_ = (bool[7]){0};
-    // SHADERBLOCK_HANDLE(mainw->shaders, true, true);
+    // shaderblock_handle(mainw->shaders, true, true);
     win_flood(mainw, (argb_t){.9, .7, .03, 1});
     //Enable Depth testing, So Triangles behind other Triangles are not drawn.
-	glEnable(GL_DEPTH_TEST);
+    // GLCall(glEnable(GL_DEPTH_TEST));
+    // glEnable(GLFW_CONTEXT_DEBUG);
+    // glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+    // glDebugMessageCallback(debug_callback, nullptr);
 
     // --- REPLACED UNSAFE STRING HANDLING ---
     // Using a fixed-size buffer and snprintf is much safer than manual
@@ -124,19 +131,30 @@ int main(){
     char path_buffer[MAX_PATH_LEN];
     mesh->textures = malloc(sizeof(image_t));
     mesh->textures[0] = (image_t){
-        .width = 800,
-        .height = 200,
+        .width = 700,
+        .height = 700,
         .color_channels =4,
     };
-    mesh->textures[0].img = stbi_load(
-        "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\Resources\\Textures\\AnotherBar.png",
-        &(mesh->textures[0].width),
-        &(mesh->textures[0].height),
-        &(mesh->textures[0].color_channels),
-        mesh->textures[0].color_channels
-    );
-    glGenTextures(1, &(mesh->textures[0].ID));
-    glBindTexture(GL_TEXTURE_2D, mesh->textures[0].ID);
+    //Fails to load Image.
+    bool DEBUG_BREAK = false;
+    char *_temp_ = strdup(cwd);
+    _temp_ = realloc(_temp_, (strlen(cwd)+ strlen("\\Resources\\Textures\\no_texture.png"))* sizeof(cwd));
+    strncat(&_temp_[strlen(cwd)], "\\Resources\\Textures\\no_texture.png", strlen("\\Resources\\Textures\\no_texture.png"));
+    while(DEBUG_BREAK == true || mesh->textures[0].img == NULL){
+        if((mesh->textures[0].img = stbi_load(
+            _temp_,
+            &(mesh->textures[0].width),
+            &(mesh->textures[0].height),
+            &(mesh->textures[0].color_channels),
+            mesh->textures[0].color_channels)
+        ) == NULL){
+            printf("Image Load Error: %s", stbi_failure_reason());
+        }
+    }
+    GLCall(glGenTextures(1, &(mesh->textures[0].ID)));
+    mesh->textures[0].unit = 0;
+    GLCall(glActiveTexture(GL_TEXTURE0 + mesh->textures[0].unit));
+    GLCall(glBindTexture(GL_TEXTURE_2D, mesh->textures[0].ID));
 
     // Safely build the shader path and pull shaders
     // The (cwd ? cwd : "") part handles case where cwd might be NULL after init
@@ -150,7 +168,28 @@ int main(){
     mainw->buffers = calloc(1, sizeof(bufferobj_t));
     mainw->buffer_curr = 0;
     mainw->buffer_len = 1;
+    mainw->vert_count = 48;
     win_draw(mainw, mesh);
+
+    //Why is shaderblock_handle failing?
+    shaderblock_handle(mainw->shaders, true, true);
+    mainw->shaders->uniforms = uniform_init(&mainw->shaders->uniform_len, mainw->shaders->shaderProgram);
+    // #ifdef __WIN32
+    //     system("cls");
+    // #else
+    //     system("clear");
+    // #endif
+    printf("\n[0]: Name: %s; Type: %s, [1] Name: %s; Type: %s", 
+        mainw->shaders[mainw->shaders_curr].uniforms[0].name,
+        mainw->shaders[mainw->shaders_curr].uniforms[0].type,
+        mainw->shaders[mainw->shaders_curr].uniforms[1].name,
+        mainw->shaders[mainw->shaders_curr].uniforms[1].type
+    );
+    const float _temp = 0.5f;
+    const GLenum _temp___ = GL_TEXTURE_2D;
+    uniform_write(&mainw->shaders[mainw->shaders_curr], "float", "scale", NULL, false, &_temp, 1);
+    // GLCall(glGenTextures())
+    uniform_write(&mainw->shaders[mainw->shaders_curr], "sampler2D", "tex0", &_temp___, false, &mesh->textures[0].unit, 1);
     win_poll(mainw);
     win_kill(mainw);
     scanf("Skibidi...");

@@ -54,20 +54,23 @@ win_t* win_init(char* name, GLFWerrorfun error_handle, poll_do poll_do_, poll_ki
 void win_poll(win_t *win){
 	size_t cc =0;
 	win->shaders_curr = 0;
-	SHADERBLOCK_HANDLE(&win->shaders[win->shaders_curr], true, true);
+	shaderblock_handle(&win->shaders[win->shaders_curr], true, true);
 	while(!win_shouldclose(win)){
 		//Flood color with Orange.
-		win_flood(win, (argb_t){0.5f, 0.5f, 0, 1});
+		win_flood(win, (argb_t){1.5f, 0.5f, 0, 1});
 		//Ensure that win's Shader's are Handled.
 		//Explicitly define the Shader to be Used.
-		glUseProgram(win->shaders[win->shaders_curr].shaderProgram);
+		GLCall(glUseProgram(win->shaders[win->shaders_curr].shaderProgram));
 		win->polld(win, cc);
 		//Bind win's VAO for Drawing.
-		glBindVertexArray(win->buffers[win->buffer_curr].VAO);
+		printf("Current VAO: %u", glad_glIsVertexArray(win->buffers[win->buffer_curr].VAO));
+		GLCall(glBindVertexArray(win->buffers[win->buffer_curr].VAO));
 		//Draw Triangles with GL_TRIANGLE Primitive.
-		glDrawElements(GL_TRIANGLES, win->vert_count, GL_UNSIGNED_INT, 0);
+		// glDrawArrays()
+		GLCall(glDrawElements(GL_TRIANGLES, win->vert_count, GL_UNSIGNED_INT, /*mesh->mesh_data*/NULL));
 		// glDrawElements(GL);
 		glfwSwapBuffers(win->g_window);
+		printf("%d", glGetError());
 		glfwPollEvents();
 		++cc;
 	}
