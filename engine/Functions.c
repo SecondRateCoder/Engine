@@ -99,8 +99,10 @@ void mesh_attrlink(bufferobj_t *buffer, uint32_t pos_layout,  uint32_t color_lay
     GLCall(glGenBuffers(1, &buffer->VBO[buffer->VBO_len]));
     GLCall(glGenBuffers(1, &buffer->EBO[buffer->EBO_len]));
     GLCall(glBindVertexArray(buffer->VAO));
+    
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer->VBO[buffer->VBO_len]));
     GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->EBO[buffer->EBO_len]));
+
     GLCall(glBufferData(GL_ARRAY_BUFFER, _mesh->data_len, _mesh->mesh_data, GL_STATIC_DRAW));
     GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, _mesh->index_len, _mesh->vertex_index, GL_STATIC_DRAW));
 
@@ -117,16 +119,6 @@ void mesh_attrlink(bufferobj_t *buffer, uint32_t pos_layout,  uint32_t color_lay
 
     GLCall(glVertexAttribPointer(_mesh->local_texcoordinates_layoutindex, _mesh->dpi_stride, GL_FLOAT, GL_FALSE, stride, (void*)tex_offset));
     GLCall(glEnableVertexAttribArray(_mesh->local_texcoordinates_layoutindex));
-    /*
-    glVertexAttribPointer(_mesh->pos_layoutindex, _mesh->vertex_stride, GL_FLOAT, GL_FALSE, total_stride, (void*)pos_offset);
-    glEnableVertexAttribArray(_mesh->pos_layoutindex);
-
-    glVertexAttribPointer(_mesh->color_layoutindex, _mesh->color_stride, GL_FLOAT, GL_FALSE, total_stride, (void*)color_offset);
-    glEnableVertexAttribArray(_mesh->color_layoutindex);
-
-    glVertexAttribPointer(_mesh->local_texcoordinates_layoutindex, _mesh->dpi_stride, GL_FLOAT, GL_FALSE, total_stride, (void*)tex_offset);
-    glEnableVertexAttribArray(_mesh->local_texcoordinates_layoutindex);
-*/
 
     GLCall(glBindVertexArray(0));
     buffer->EBO_len++;

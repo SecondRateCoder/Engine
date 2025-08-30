@@ -98,7 +98,8 @@
 	size_t ilen = ilen_;	\
 	GLenum DRAW_FORMAT = DRAW_FORMAT_;	\
 	uint8_t MAX = MAX_;	\
-	bufferobject_handle(BO, VERTICES, len, INDEX_ORDER, ilen, DRAW_FORMAT, MAX);
+	bufferobject_handle(BO, VERTICES, len, INDEX_ORDER, ilen, DRAW_FORMAT, MAX);	\
+	BO_ = BO;	\
 
 typedef struct arrkey{
 	GLint Location;
