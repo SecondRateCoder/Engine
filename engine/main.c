@@ -50,29 +50,92 @@ void poll_draw(void *self, size_t pollcycles){
 void test_win_init(){
     glfwSetErrorCallback(handle_glfw_error_default);
     if (!glfwInit()) {
-        fprintf(stderr, "GLFW init failed\n");
+        fprintf(stderr, ANSI_RED( "GLFW init failed\n" ));
         return;
     }
-
+    
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-
-#ifdef __APPLE__
+    
+    #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
-
-    // Optional: comment out if unsupported
+    #endif
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Main Window", NULL, NULL);
-    if (!window) {
-        fprintf(stderr, "Window creation failed\n");
-        glfwTerminate();
-        return;
-    }
-
+    const size_t width = 800, height = 600;
+    GLFWwindow* window = glfwCreateWindow(width, height, "Main Window", NULL, NULL);
     glfwMakeContextCurrent(window);
+
+    // gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+    
+    // Optional: comment out if unsupported
+    glfwMaximizeWindow(window);
+    bufferobj_t *buffer = calloc(sizeof(bufferobj_t), 1);
+    shaderblock_t *shader = shaderblock_gen(true, true);
+    buffer->buffer_[0] = false;
+    buffer->buffer_[1] = false;
+    buffer->buffer_[2] = false;
+    mesh = calloc(sizeof(mesh), 1);
+    mesh->mesh_data = malloc(sizeof(GLfloat)* 48);
+    mesh->mesh_data = (GLfloat[48]){
+        -0.5f,   (-0.5f * sqrt3) / 3,    0,      8.0f, 0.3f, 0.2f,    0.0f, 5.0f,
+        0.5f,    (-0.5f * sqrt3) / 3,    0,      8.0f, 0.3f, 0.2f,    5.0f, 0.0f,
+        -0.5f,   (-0.5f * sqrt3 * 2) / 3,0,      8.0f, 0.3f, 0.2f,    0.0f, 0.0f,
+        -0.5f/2, (0.5f * sqrt3) / 6,     0,      8.0f, 0.3f, 0.2f,    2.5f, 5.0f,
+        0.5f/2,  (0.5f * sqrt3) / 6,     0,      8.0f, 0.3f, 0.2f,    2.5f, 5.0f,
+        0.0f,    (0.5f * sqrt3) / 3,     0,      8.0f, 0.3f, 0.2f,    2.5f, 10.0f // Example texture coords
+    };
+    mesh->vertex_index = malloc(sizeof(GLuint)* 18);
+    mesh->vertex_index = (GLuint[]){
+        0, 1, 2,
+        0, 2, 3,
+        0, 1, 4,
+        1, 2, 4,
+        2, 3, 4,
+        3, 0, 4
+    };
+    mesh->data_len = 48;
+    mesh->index_len = 18;
+    mesh->vertex_stride = 3;
+    mesh->color_stride = 3;
+    mesh->dpi_stride = 2;
+    mesh->pos_layoutindex = 0;
+    mesh->color_layoutindex = 1;
+    mesh->local_texcoordinates_layoutindex = 2;
+    bufferobject_handle(buffer, mesh->mesh_data, mesh->data_len, mesh->vertex_index, mesh->index_len, GL_STATIC_DRAW, 3);
+    mesh_attrlink(buffer, 0, 1, 2, mesh);
+    mesh->textures = malloc(sizeof(image_t));
+    GLCall(glGenTextures(1, &(mesh->textures[0].ID)));
+    mesh->textures[0].unit = 0;
+    GLCall(glActiveTexture(GL_TEXTURE0 + mesh->textures[0].unit));
+    GLCall(glBindTexture(GL_TEXTURE_2D, mesh->textures[0].ID));
+    
+    const float _temp = 0.5f;
+    const GLenum _temp___ = GL_TEXTURE_2D;
+    uniform_write(shader, "float", "scale", NULL, false, &_temp, 1);
+    // GLCall(glGenTextures())
+    uniform_write(shader, "sampler2D", "tex0", &_temp___, false, &mesh->textures[0].unit, 1);
+
     // Your rendering loop here...
+
+    size_t pollcycles = 0;
+    while(!glfwWindowShouldClose(window)){
+        glfwPollEvents();
+    
+        mat4 out, view, proj_screen;
+        glm_mat4_identity(out);
+        glm_mat4_identity(view);
+        glm_mat4_identity(proj_screen);
+        
+        float g = (pollcycles == 0? 1: pollcycles)/(360* 1.00000005f);
+        glm_translate(view, (vec3){0.0f, 0.0f, -5.0f}); // Adjusted translation for better view
+        glm_perspective(glm_rad(45.0f), (float)width / (float)height, 0.1f, 100.0f, proj_screen);
+        glm_mat4_mul(proj_screen, view, out);
+        glm_rotate(out, g, (vec3){0.5f, 1.0f, 0.0f}); // Rotate on X and Y axis
+        uniform_write(shader, "mat4", "matrix", NULL, true, out, 1);
+        glDrawBuffer(GL_VERTEX_ARRAY_BINDING);
+        pollcycles++;
+    }
 
     glfwDestroyWindow(window);
     glfwTerminate();
@@ -81,9 +144,9 @@ void test_win_init(){
 }
 
 int main(){
-    // test_win_init();
-    // return EXIT_SUCCESS;
     cwd_init();
+    test_win_init();
+    return EXIT_SUCCESS;
     mesh = calloc(1, sizeof(_mesh));
     mesh->mesh_data = malloc(sizeof(GLfloat)* 48);
     mesh->mesh_data = (GLfloat[48]){
@@ -148,7 +211,7 @@ int main(){
             &(mesh->textures[0].color_channels),
             mesh->textures[0].color_channels)
         ) == NULL){
-            printf("Image Load Error: %s", stbi_failure_reason());
+            printf(ANSI_RED("Image Load Error: %s"), stbi_failure_reason());
         }
     }
     GLCall(glGenTextures(1, &(mesh->textures[0].ID)));
@@ -172,14 +235,14 @@ int main(){
     win_draw(mainw, mesh);
 
     //Why is shaderblock_handle failing?
-    shaderblock_handle(mainw->shaders, true, true);
+    mainw->shaders = shaderblock_gen(true, true);
     mainw->shaders->uniforms = uniform_init(&mainw->shaders->uniform_len, mainw->shaders->shaderProgram);
     // #ifdef __WIN32
     //     system("cls");
     // #else
     //     system("clear");
     // #endif
-    printf("\n[0]: Name: %s; Type: %s, [1] Name: %s; Type: %s", 
+    printf(ANSI_YELLOW("\n[0]: Name: %s; Type: %s, [1] Name: %s; Type: %s"), 
         mainw->shaders[mainw->shaders_curr].uniforms[0].name,
         mainw->shaders[mainw->shaders_curr].uniforms[0].type,
         mainw->shaders[mainw->shaders_curr].uniforms[1].name,

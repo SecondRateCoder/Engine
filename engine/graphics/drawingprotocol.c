@@ -37,7 +37,7 @@ bool shader_error(shaderblock_t* sb_t, const char* type) {
 		GLCallUseProgram(shader);
 		if (!success) {
 			GLCall(glGetProgramInfoLog(shader, 1024, NULL, infoLog));
-			fprintf(stderr, "Shader PROGRAM linking error: %s\n", infoLog);
+			fprintf(stderr, ANSI_RED("Shader PROGRAM linking error: %s\n"), infoLog);
 			return false;
 		}
 	} else {
@@ -45,7 +45,7 @@ bool shader_error(shaderblock_t* sb_t, const char* type) {
 		}else if(strcmp(type, "FRAGMENT") == 0){shader = sb_t->fragmentshader;
 		}else if(strcmp(type, "GEOMETRY") == 0){shader = sb_t->geometryshader;
 		}else{
-			fprintf(stderr, "Error: Unknown shader type '%s'.\n", type);
+			fprintf(stderr, ANSI_YELLOW("Error: Unknown shader type '%s'.\n"), type);
 			return false;
 		}
 
@@ -54,7 +54,7 @@ bool shader_error(shaderblock_t* sb_t, const char* type) {
 		GLCall(glGetShaderiv(shader, GL_COMPILE_STATUS, &success));
 		if (!success) {
 			GLCall(glGetShaderInfoLog(shader, 1024, NULL, infoLog));
-			fprintf(stderr, "Shader %s compilation error: %s\n", type, infoLog);
+			fprintf(stderr, ANSI_RED("Shader %s compilation error: %s\n"), type, infoLog);
 			return false;
 		}
 	}
@@ -73,13 +73,13 @@ char* shadersettings_rw(const char* filepath, char* write){
 	if(shaders != NULL){
 		settings = (char*)calloc((settings_len+1), sizeof(char)); // Allocate space for 15 chars + null terminator
 		if(settings == NULL){
-			fprintf(stderr, "Error: Memory allocation failed in shadersettings_rw.\n");
+			fprintf(stderr, ANSI_RED("Error: Memory allocation failed in shadersettings_rw.\n"));
 			fclose(shaders);
 			return NULL;
 		}
 
 		if(fread(settings, sizeof(char), settings_len, shaders) != settings_len){
-			fprintf(stderr, "Error: Could not read 10 characters from file.\n");
+			fprintf(stderr, ANSI_RED("Error: Could not read 10 characters from file.\n"));
 			free(settings);
 			settings = NULL;
 		}else{settings[settings_len] = '\0';}
@@ -87,11 +87,11 @@ char* shadersettings_rw(const char* filepath, char* write){
 		if(write != NULL){
 			fseek(shaders, 0, SEEK_SET);
 			if (fwrite(write, sizeof(char), settings_len, shaders) != settings_len) {
-				fprintf(stderr, "Error: Could not write 10 characters to file.\n");
+				fprintf(stderr, ANSI_RED("Error: Could not write 10 characters to file.\n"));
 			}
 		}
 		fclose(shaders);
-	}else{fprintf(stderr, "Error: Failed to open file at '%s'.\n", filepath);}
+	}else{fprintf(stderr, ANSI_RED("Error: Failed to open file at '%s'.\n"), filepath);}
 	return settings;
 }
 
@@ -133,7 +133,7 @@ void shader_pull(const char *filepath, const bool redo_shaders[5]){
 	settings[settings_len] = '\0';
 	FILE *text = fopen(filepath, "rb");
 	if (text == NULL) {
-		fprintf(stderr, "Error: Failed to open shader file at '%s'.\n", filepath);
+		fprintf(stderr, ANSI_RED("Error: Failed to open shader file at '%s'.\n"), filepath);
 		return;
 	}else{fseek(text, settings_len, SEEK_SET);}
 	const uint32_t vsindex = parse_shader_index(settings, 6);
@@ -195,7 +195,7 @@ void shader_pull(const char *filepath, const bool redo_shaders[5]){
 								while(vertexshader == NULL){vertexshader = calloc(offs, sizeof(char));}
 								fread(vertexshader, sizeof(char), end_pos -start_pos + 1, text);
 								memset(&vertexshader[sizeof(vertexshader[0])* (offs-1)], '\0', strlen(vertexshader)- offs);
-								printf("vertexshader:\n %s", vertexshader);
+								printf(ANSI_YELLOW("vertexshader:\n %s"), vertexshader);
 								continue;
 							}
 						}else if(which_[1]){
@@ -205,7 +205,7 @@ void shader_pull(const char *filepath, const bool redo_shaders[5]){
 								while(fragmentshader == NULL){fragmentshader = calloc(offs, sizeof(char));}
 								fread(fragmentshader, sizeof(char), end_pos -start_pos + 1, text);
 								memset(&fragmentshader[offs* sizeof(fragmentshader[0])], '\0', strlen(fragmentshader)- offs);
-								printf("fragmentshader:\n %s", fragmentshader);
+								printf(ANSI_YELLOW("fragmentshader:\n %s"), fragmentshader);
 								continue;
 							}
 						}else if(which_[2]){
@@ -215,7 +215,7 @@ void shader_pull(const char *filepath, const bool redo_shaders[5]){
 								while(geometryshader == NULL){geometryshader = calloc(offs, sizeof(char));}
 								fread(geometryshader, sizeof(char), end_pos -start_pos + 1, text);
 								memset(&geometryshader[offs* sizeof(geometryshader[0])], '\0', strlen(geometryshader)- offs);
-								printf("geometryshader:\n %s", geometryshader);
+								printf(ANSI_YELLOW("geometryshader:\n %s"), geometryshader);
 								continue;
 							}
 						}else if(which_[3]){
@@ -225,7 +225,7 @@ void shader_pull(const char *filepath, const bool redo_shaders[5]){
 								while(tessellation_evaluationshader == NULL){tessellation_evaluationshader = calloc(offs, sizeof(char));}
 								fread(tessellation_evaluationshader, sizeof(char), end_pos -start_pos + 1, text);
 								memset(&tessellation_evaluationshader[offs* sizeof(tessellation_evaluationshader[0])], '\0', strlen(tessellation_evaluationshader)- offs);
-								printf("tessellation_evaluationshader:\n %s", tessellation_evaluationshader);
+								printf(ANSI_YELLOW("tessellation_evaluationshader:\n %s"), tessellation_evaluationshader);
 								continue;
 							}
 						}else if(which_[4]){
@@ -235,7 +235,7 @@ void shader_pull(const char *filepath, const bool redo_shaders[5]){
 								while(tessellation_controlshader == NULL){tessellation_controlshader = calloc(offs, sizeof(char));}
 								fread(tessellation_controlshader, sizeof(char), end_pos -start_pos + 1, text);
 								memset(&tessellation_controlshader[offs* sizeof(tessellation_controlshader[0])], '\0', strlen(tessellation_controlshader)- offs);
-								printf("tessellation_controlshader:\n %s", tessellation_controlshader);
+								printf(ANSI_YELLOW("tessellation_controlshader:\n %s"), tessellation_controlshader);
 								continue;
 							}
 						}
@@ -245,8 +245,8 @@ void shader_pull(const char *filepath, const bool redo_shaders[5]){
 		}
 		memset(line_buffer, 0, 256);
 	}
-    if (vertexshader == NULL){fprintf(stderr, "Warning: Vertex shader with index %d not found, using default: \"%s\".\n", vsindex, vertexshader_default);}
-    if (fragmentshader == NULL){printf("Warning: Fragment shader with index %d not found, using default: \" %s \".\n", fsindex, fragmentshader_default);}
+    if (vertexshader == NULL){fprintf(stderr, ANSI_YELLOW("Warning: Vertex shader with index %d not found, using default: \"%s\".\n"), vsindex, vertexshader_default);}
+    if (fragmentshader == NULL){printf(ANSI_YELLOW("Warning: Fragment shader with index %d not found, using default: \" %s \".\n"), fsindex, fragmentshader_default);}
 }
 
 // Corrected uniform_init function.
@@ -301,7 +301,7 @@ arrk_t *uniform_init(size_t *uniform_len_, const GLuint shaderProgram){
 			while(char_cc < shader_len && isspace(shaders[cc][char_cc])){
 				++char_cc;
 			}
-			printf("%c", shaders[cc][char_cc]);
+			printf(ANSI_YELLOW("%c"), shaders[cc][char_cc]);
 			if(shaders[cc][char_cc] == 'u'){
 				//Might be uniform.
 				if(strncmp(&shaders[cc][char_cc], "uniform", 7) == 0){
@@ -323,7 +323,7 @@ arrk_t *uniform_init(size_t *uniform_len_, const GLuint shaderProgram){
 					memcpy(uniforms[uniform_len].name, &shaders[cc][char_cc], len_char_cc);
 					uniforms[uniform_len].name[len_char_cc] = '\0';
 					if((uniforms[uniform_len].Location = glGetUniformLocation(shaderProgram, uniforms[uniform_len].name)) == -1){
-						printf("Uh-oh!, I couldn't access the uniform %s of type %s and at location %d", uniforms[uniform_len].name, uniforms[uniform_len].type, char_cc);
+						printf(ANSI_RED("Uh-oh!, I couldn't access the uniform %s of type %s and at location %d"), uniforms[uniform_len].name, uniforms[uniform_len].type, char_cc);
 					}
 					uniform_len++;
 					
@@ -334,127 +334,6 @@ arrk_t *uniform_init(size_t *uniform_len_, const GLuint shaderProgram){
 	*uniform_len_ = uniform_len++;
 	return uniforms;
 }
-
-// void uniform_init(shaderblock_t* sb_t) {
-// 	for (size_t i = 0; i < num_shaders; ++i) {
-// 		const char* temp_txt = shader_sources[i];
-// 		if (temp_txt == NULL) continue;
-// 		size_t temptxt_len = strlen(temp_txt);
-
-// 		// This loop parses the shader source code
-// 		for (size_t cc = 0; cc < temptxt_len; ) {
-// 			// Find the start of a potential declaration
-// 			while (cc < temptxt_len && isspace(temp_txt[cc])) {
-// 				cc++;
-// 			}
-// 			if (cc >= temptxt_len) break;
-
-// 			// Check for 'uniform' or 'struct' keywords
-// 			if (cc + 6 <= temptxt_len && strncmp(&temp_txt[cc], "struct", 6) == 0) {
-// 				cc += 6;
-// 				while (cc < temptxt_len && isspace(temp_txt[cc])) { cc++; }
-
-// 				size_t typename_start = cc;
-// 				while (cc < temptxt_len && !isspace(temp_txt[cc]) && temp_txt[cc] != '{' && temp_txt[cc] != ';') {
-// 					cc++;
-// 				}
-// 				size_t typename_len = cc - typename_start;
-// 				char* typename = strdup(&temp_txt[typename_start]);
-
-// 				if (typename) {
-// 					bool is_duplicate = false;
-// 					for (size_t _dupecc = 0; _dupecc < typenames_len; ++_dupecc) {
-// 						if (strcmp(typename, temp_typenames[_dupecc]) == 0) {
-// 							is_duplicate = true;
-// 							break;
-// 						}
-// 					}
-					
-// 					if (!is_duplicate) {
-// 						char** temp_arr = (char**)realloc(temp_typenames, sizeof(char*) * (typenames_len + 1));
-// 						if (temp_arr) {
-// 							temp_typenames = temp_arr;
-// 							temp_typenames[typenames_len] = typename;
-// 							typenames_len++;
-// 						} else {
-// 							fprintf(stderr, "Error: Failed to reallocate memory for struct names.\n");
-// 							free(typename);
-// 						}
-// 					} else {
-// 						free(typename);
-// 					}
-// 				}
-				
-// 				// Skip the rest of the struct definition
-// 				int brace_count = 0;
-// 				while (cc < temptxt_len) {
-// 					if (temp_txt[cc] == '{') brace_count++;
-// 					else if (temp_txt[cc] == '}') brace_count--;
-// 					if (brace_count == 0) break;
-// 					cc++;
-// 				}
-// 				if (cc < temptxt_len) cc++;
-// 			} else if (cc + 7 <= temptxt_len && strncmp(&temp_txt[cc], "uniform", 7) == 0) {
-// 				cc += 7;
-// 				while (cc < temptxt_len && isspace(temp_txt[cc])) { cc++; }
-
-// 				size_t type_start = cc;
-// 				while (cc < temptxt_len && !isspace(temp_txt[cc]) && temp_txt[cc] != ';' && temp_txt[cc] != '=') {
-// 					cc++;
-// 				}
-// 				size_t type_len = cc - type_start;
-// 				char* type_pure = strdup(&temp_txt[type_start]);
-				
-// 				while (cc < temptxt_len && isspace(temp_txt[cc])) { cc++; }
-				
-// 				size_t name_start = cc;
-// 				while (cc < temptxt_len && !isspace(temp_txt[cc]) && temp_txt[cc] != ';' && temp_txt[cc] != '=') {
-// 					cc++;
-// 				}
-// 				size_t name_len = cc - name_start;
-// 				char* name_pure = strdup(&temp_txt[name_start]);
-
-// 				if (type_pure && name_pure) {
-// 					bool is_duplicate = false;
-// 					for (size_t u_cc = 0; u_cc < sb_t->uniform_len; ++u_cc) {
-// 						if (sb_t->uniforms[u_cc].name && strcmp(sb_t->uniforms[u_cc].name, name_pure) == 0) {
-// 							is_duplicate = true;
-// 							break;
-// 						}
-// 					}
-
-// 					if (!is_duplicate) {
-// 						GLint _ID = glGetUniformLocation(sb_t->shaderProgram, name_pure);
-						
-// 						if (_ID != -1) {
-// 							arrk_t new_uniform = (arrk_t){_ID, name_pure, type_pure};
-// 							arrk_t* temp_arr = (arrk_t*)realloc(sb_t->uniforms, sizeof(arrk_t) * (sb_t->uniform_len + 1));
-// 							if (temp_arr) {
-// 								sb_t->uniforms = temp_arr;
-// 								sb_t->uniforms[sb_t->uniform_len++] = new_uniform;
-// 							} else {
-// 								destroy_arrkey(&new_uniform);
-// 								fprintf(stderr, "Error: Failed to reallocate memory for uniforms.\n");
-// 							}
-// 						} else {
-// 							fprintf(stderr, "Error: Failed to get uniform location for '%s'.\n", name_pure);
-// 						}
-// 					}
-// 				}
-// 				free(type_pure);
-// 				free(name_pure);
-// 			} else {
-// 				while (cc < temptxt_len && temp_txt[cc] != '\n' && temp_txt[cc] != ';') { cc++; }
-// 				if (cc < temptxt_len) cc++;
-// 			}
-// 		}
-// 	}
-
-// 	for (size_t i = 0; i < typenames_len; ++i) {
-// 		free(temp_typenames[i]);
-// 	}
-// 	free(temp_typenames);
-// }
 
 void destroy_arrkey(arrk_t *arrk){
 	if(arrk->name != NULL){free(arrk->name);}
@@ -477,12 +356,13 @@ void uniform_free(shaderblock_t* shader){
 // Corrected uniform_write function.
 // The original had a `return NULL` in a `void` function and incorrect pointer dereferencing.
 bool uniform_write(shaderblock_t* shader, const char* type, const char* name, const void* property_, const bool transpose, void* value, const size_t num_elements){
-	printf("[0]: \n\tName: %zu; \n\tType: %zu, \n[1]: \n\tName: %zu; \n\tType: %zu\n", 
-        shader->uniforms[0].name,
-        shader->uniforms[0].type,
-        shader->uniforms[1].name,
-        shader->uniforms[1].type
-    );
+	for(uint8_t cc =0; cc < shader->uniform_len; ++cc){
+		printf(ANSI_YELLOW("\n%u: \n  Name: %s; \n  Type: %s"), 
+			cc, 
+			shader->uniforms[cc].name,
+			shader->uniforms[cc].type
+		);
+	}
 	assert(shader != NULL);
 	assert(shader->uniforms != NULL);
 	assert(shader->uniform_len < 1000);
@@ -491,27 +371,30 @@ bool uniform_write(shaderblock_t* shader, const char* type, const char* name, co
 	const uint128_t typehash = {typehash_[0], typehash_[1]};
 	GLint location = -1;
 	// Find the uniform location
-	GLCallUseProgram(shader->shaderProgram);
+	printf(ANSI_YELLOW("\nShader Program ID: %u\n"), shader->shaderProgram);
+	GLCall(glUseProgram(shader->shaderProgram));
 	for (size_t cc = 0; cc < shader->uniform_len; ++cc) {
 		if (strcmp(name, shader->uniforms[cc].name) == 0) {
 			location = shader->uniforms[cc].Location;
 			if((location = glGetUniformLocation(shader->shaderProgram, shader->uniforms[cc].name)) != shader->uniforms[cc].Location){
 				shader->uniforms[cc].Location = location;
-				if(location == -1){printf("\tUniform %s not found, \n\t\tLocation %u returned", shader->uniforms[cc].name, location);}
+				if(location == -1){printf(ANSI_RED("\tUniform %s not found, \n\t\tLocation %u returned"), shader->uniforms[cc].name, location);}
 			}
-			printf("\nLocation: \t%d", location);
+			printf(ANSI_YELLOW("\nLocation: \t%d"), location);
 			break;
 		}
 	}
 
 	if (location == -1) {
-		fprintf(stderr, "Warning: Uniform '%s' not found.\n", name);
+		fprintf(stderr, ANSI_YELLOW("Warning: Uniform '%s' not found.\n"), name);
 		return false;
 	}
+	// GLCallUseProgram(shader->shaderProgram);
 	for(size_t cc =0; cc < 37; ++cc){
 		if(uint128_t_comp(str_hash(str_normalise(builtin_shader_typenames[cc], true, true)), typehash) == true){
 			// Use a switch statement for dispatching GL uniform functions
 			// Note: The original switch had incorrect pointer casts and logic for single vs. multiple elements.
+			GLCall(glUseProgram(shader->shaderProgram));
 			switch (cc) {
 				case 0: // GL_BOOL
 				case 1: // GL_INT
@@ -698,12 +581,12 @@ bool uniform_write(shaderblock_t* shader, const char* type, const char* name, co
 // Corrected shader_compile function.
 // The original had a few logical errors, incorrect checks, and was missing error handling for `calloc`.
 shaderblock_t *shader_compile(bool delete_shaders_on_link) {
-	shaderblock_t* shaderblock = (shaderblock_t*)malloc(sizeof(shaderblock_t));
+	shaderblock_t* shaderblock = (shaderblock_t*)calloc(sizeof(shaderblock_t), 1);
 	if (shaderblock == NULL) {
-		fprintf(stderr, "Error: Failed to allocate memory for shaderblock.\n");
+		fprintf(stderr, ANSI_RED("Error: Failed to allocate memory for shaderblock.\n"));
 		return NULL;
 	}
-	memset(shaderblock, 0, sizeof(shaderblock_t));
+	// memset(shaderblock, 0, sizeof(shaderblock_t));
 
 	// Compile Vertex Shader.
 	shaderblock->vertexshader = glCreateShader(GL_VERTEX_SHADER);
@@ -753,10 +636,10 @@ shaderblock_t *shader_compile(bool delete_shaders_on_link) {
 	
 	// Link Program.
 	shaderblock->shaderProgram = glCreateProgram();
-	glAttachShader(shaderblock->shaderProgram, shaderblock->vertexshader);
-	glAttachShader(shaderblock->shaderProgram, shaderblock->fragmentshader);
-	if(shaderblock->geometryshader != 0){glAttachShader(shaderblock->shaderProgram, shaderblock->geometryshader);}
-	glLinkProgram(shaderblock->shaderProgram);
+	GLCall(glAttachShader(shaderblock->shaderProgram, shaderblock->vertexshader));
+	GLCall(glAttachShader(shaderblock->shaderProgram, shaderblock->fragmentshader));
+	if(shaderblock->geometryshader != 0){GLCall(glAttachShader(shaderblock->shaderProgram, shaderblock->geometryshader));}
+	GLCall(glLinkProgram(shaderblock->shaderProgram));
 	shaderblock->compiled_[0] = shader_error(shaderblock, "PROGRAM");
 	shaderblock->compiled_[7] = shaderblock->compiled_[0];
 
@@ -784,18 +667,23 @@ shaderblock_t *shader_compile(bool delete_shaders_on_link) {
 /// @param win The Window the _mesh will be drawn in.
 /// @param _mesh The _mesh to be drawn.
 void win_draw(win_t *win, mesh_t *mesh){
-	if (win == NULL || mesh == NULL){return;}
-	bufferobj_t *temp_ptr = &win->buffers[win->buffer_curr];
-	if(temp_ptr == NULL){
-		win->buffers = malloc(sizeof(bufferobj_t));
-		temp_ptr = &win->buffers[win->buffer_curr];
-	}
-	shaderblock_handle(&win->shaders[win->shaders_curr], true, true);
-	BUFFEROBJECT_HANDLE(temp_ptr, mesh->mesh_data, mesh->data_len, mesh->vertex_index, mesh->index_len, GL_STATIC_DRAW, 10);
-	mesh_attrlink(temp_ptr, win->layout_offset, win->layout_offset+1, win->layout_offset+2, mesh);
-	glUseProgram(win->shaders[win->shaders_curr].shaderProgram);
-	draw_debug_trace(__FILE__, __LINE__);
-	GLCall(glDrawElements(GL_TRIANGLES, mesh->data_len, GL_UNSIGNED_INT, (mesh->vertex_index == NULL? 0: mesh->mesh_data)));
+    if (win == NULL || mesh == NULL){return;}
+    bufferobj_t *temp_ptr = &win->buffers[win->buffer_curr];
+    if(temp_ptr == NULL){
+        // Allocate space for one buffer object
+        win->buffers = malloc(sizeof(bufferobj_t));
+        win->buffer_len = 1; // Track the buffer count
+        win->buffer_curr = 0;
+        temp_ptr = &win->buffers[win->buffer_curr];
+        memset(temp_ptr, 0, sizeof(bufferobj_t)); // Initialize buffer memory
+    }
+    win->shaders[win->shaders_curr] = *shaderblock_gen(true, true);
+    BUFFEROBJECT_HANDLE(temp_ptr, mesh->mesh_data, mesh->data_len, mesh->vertex_index, mesh->index_len, GL_STATIC_DRAW, 10);
+    mesh_attrlink(temp_ptr, win->layout_offset, win->layout_offset+1, win->layout_offset+2, mesh);
+    glUseProgram(win->shaders[win->shaders_curr].shaderProgram);
+    draw_debug_trace(__FILE__, __LINE__);
+	GLCall(glBindVertexArray(temp_ptr->VAO));
+    GLCall(glDrawElements(GL_TRIANGLES, mesh->data_len, GL_UNSIGNED_INT, (mesh->vertex_index == NULL? 0: mesh->mesh_data)));
 }
 
 // Corrected winimage_append function.
@@ -851,20 +739,14 @@ void *buffer_bufferdo(bufferobj_t* buffer, const size_t len, const BUFFER_OPTION
 			buffer_bufferdo(buffer, 1, BUFFER_OPTIONS_CLEAR_EBO);
 			return NULL;
 		case BUFFER_OPTIONS_CLEAR_VBO:
-			glDeleteBuffers(1, buffer->VBO);
-			buffer->VBO_len = 0;
-			free(buffer->VBO);
+			glDeleteBuffer(buffer->VBO);
 			return NULL;
 		case BUFFER_OPTIONS_CLEAR_EBO:
-			glDeleteBuffers(1, buffer->EBO);
-			buffer->EBO_len = 0;
-			free(buffer->EBO);
+			glDeleteBuffer(buffer->EBO);
 			return NULL;
 		case BUFFER_OPTIONS_FREE:
 			// Free the buffer object itself.
 			buffer_bufferdo(buffer, 1, BUFFER_OPTIONS_CLEAR);
-			free(buffer->VBO);
-			free(buffer->EBO);
 			return NULL;
 		
 		//For multiple buffer objects.
@@ -879,7 +761,7 @@ void *buffer_bufferdo(bufferobj_t* buffer, const size_t len, const BUFFER_OPTION
 		case BUFFER_OPTIONS_COLLECT_VAO:
 			GLuint *out = (GLuint*)malloc(sizeof(GLuint) * len);
 			if (out == NULL) {
-				fprintf(stderr, "Error: Memory allocation failed in BUFFER_OPTIONS_COLLECT_VAO.\n");
+				fprintf(stderr, ANSI_RED("Error: Memory allocation failed in BUFFER_OPTIONS_COLLECT_VAO.\n"));
 				return NULL;
 			}else{
 				for(size_t cc =0; cc < len; ++cc){out[cc] = buffer[cc].VAO;}
@@ -888,23 +770,23 @@ void *buffer_bufferdo(bufferobj_t* buffer, const size_t len, const BUFFER_OPTION
 		case BUFFER_OPTIONS_COLLECT_VBO_MULTIPLE:
 			GLuint *out_vbo = (GLuint*)malloc(sizeof(GLuint) * len);
 			if (out_vbo == NULL) {
-				fprintf(stderr, "Error: Memory allocation failed in BUFFER_OPTIONS_COLLECT_VBO_MULTIPLE.\n");
+				fprintf(stderr, ANSI_RED("Error: Memory allocation failed in BUFFER_OPTIONS_COLLECT_VBO_MULTIPLE.\n"));
 				return NULL;
 			}else{
-				for(size_t cc =0; cc < len; ++cc){out_vbo[cc] = buffer[cc].VBO[0];}
+				for(size_t cc =0; cc < len; ++cc){out_vbo[cc] = buffer[cc].VBO;}
 				return out_vbo;
 			}
 		case BUFFER_OPTIONS_COLLECT_EBO_MULTIPLE:
 			GLuint *out_ebo = (GLuint*)malloc(sizeof(GLuint) * len);
 			if (out_ebo == NULL) {
-				fprintf(stderr, "Error: Memory allocation failed in BUFFER_OPTIONS_COLLECT_EBO_MULTIPLE.\n");
+				fprintf(stderr, ANSI_RED("Error: Memory allocation failed in BUFFER_OPTIONS_COLLECT_EBO_MULTIPLE.\n"));
 				return NULL;
 			}else{
-				for(size_t cc =0; cc < len; ++cc){out_ebo[cc] = buffer[cc].EBO[0];}
+				for(size_t cc =0; cc < len; ++cc){out_ebo[cc] = buffer[cc].EBO;}
 				return out_ebo;
 			}
 		default:
-			fprintf(stderr, "Error: Unknown BUFFER_OPTIONS value %d.\n", option);
+			fprintf(stderr, ANSI_RED("Error: Unknown BUFFER_OPTIONS value %d.\n"), option);
 			return NULL;
 		
 	}
@@ -915,16 +797,17 @@ bufferobj_t *win_buffercurr(win_t *win){
 	return &win->buffers[win->buffer_curr];
 }
 
-void shaderblock_handle(shaderblock_t *shader, bool clean, bool do_uniforms){
+shaderblock_t *shaderblock_gen(bool clean, bool do_uniforms){
 	if(vertexshader == NULL || fragmentshader == NULL){
-		printf("Vertex or Fragment Shader not set, resolving.\n");
+		printf(ANSI_YELLOW("Vertex or Fragment Shader not set, resolving.\n"));
 		char *default_dir = strdup(cwd);
 		// default_dir = realloc(default_dir, (cwd_len)* sizeof(char));
 		strncat(default_dir, "\\Resources\\Shaders\\Shaders.txt", 30);
 		shaders_pull(default_dir);
 	}
-	if(shader->compiled_[7] == false){*shader = *shader_compile(clean);}
-	if(do_uniforms && shader->uniforms == NULL){shader->uniforms = uniform_init(&shader->uniform_len, shader->shaderProgram);}
+	shaderblock_t *shader = shader_compile(clean);
+	shader->uniforms = uniform_init(&shader->uniform_len, shader->shaderProgram);
+	return shader;
 }
 void bufferobject_handle(bufferobj_t *buffer, GLfloat *vertices, size_t v_len, GLuint *index_order, size_t index_len, GLenum draw_format, uint8_t max_tries){
 	bool success = 0;
@@ -957,33 +840,25 @@ void bufferobject_handle(bufferobj_t *buffer, GLfloat *vertices, size_t v_len, G
 			if (buffer->VAO == 0){GLCall(glGenVertexArrays(1, &buffer->VAO));}	
 			buffer->buffer_[0] = true;
 			//Generate VBO.
-			if(buffer->buffer_[1] == false || buffer->VBO == NULL){
-				buffer->VBO = malloc(sizeof(GLuint));
-				if(buffer->VBO_len == 0){	
-					GLCall(glGenBuffers(1, buffer->VBO)); 
-					buffer->VBO_len = 1; 
-				}
-				// buffer->buffer_[1] = true;
+			if(buffer->VBO == GL_FALSE){
+				GLCall(glGenBuffer(buffer->VBO));
+				buffer->buffer_[1] = false;
 			}
-			if(buffer->buffer_[2] == false || buffer->EBO == NULL){
-				buffer->EBO = malloc(sizeof(GLuint));
-				if(buffer->EBO_len == 0){	
-					GLCall(glGenBuffers(1, buffer->EBO)); 
-					buffer->EBO_len = 1; 
-				}
-				// buffer->buffer_[2] = true;
+			if(buffer->EBO == GL_FALSE){
+				GLCall(glGenBuffer(buffer->EBO));
+				buffer->buffer_[2] = false;
 			}
 			GLCall(glBindVertexArray(buffer->VAO)); // Begin recording state.
 		} 
-		/*VBO not set-up*/ 
+		/*VBO not set-up*/
 		if(buffer->buffer_[1] == false && vertices != NULL){	
-			GLCall(glBindBuffer(GL_ARRAY_BUFFER, *buffer->VBO)); 
+			GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer->VBO)); 
 			GLCall(glBufferData(GL_ARRAY_BUFFER, v_len, vertices, draw_format));
 			buffer->buffer_[1] = true;
 		} 
 		/*EBO not set-up*/ 
 		if(buffer->buffer_[2] == false){  
-			GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *buffer->EBO));    
+			GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->EBO));    
 			GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, (index_len), index_order, draw_format));
 			buffer->buffer_[2] = true;
 		}

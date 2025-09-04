@@ -11,7 +11,10 @@
         "stdlib.h": "c",
         "type_traits": "c",
         "xtr1common": "c",
-        "xutility": "c"
+        "xutility": "c",
+        "format": "c",
+        "__locale": "c",
+        "ios": "c"
     },
     "C_Cpp.default.compilerPath": "C:/msys64/mingw64/bin/gcc.exe",
     "cpptest.compilerIdentifier": "gcc_10-64"

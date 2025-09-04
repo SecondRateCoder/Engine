@@ -12,6 +12,19 @@ typedef size_t uint128_t[2];
 #define IS_EVEN(x)   (((x) % 2) == 0)
 #define INT_SIMP(x)  (((x) < 0) ? -1 : 1)
 #define IS_SPACE(c)  ((c) == ' ')
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_CYAN    "\x1b[36m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
+#define ANSI_RED(TEXT) ANSI_COLOR_RED TEXT ANSI_COLOR_RESET
+#define ANSI_GREEN(TEXT) ANSI_COLOR_GREEN TEXT ANSI_COLOR_RESET
+#define ANSI_YELLOW(TEXT) ANSI_COLOR_YELLOW TEXT ANSI_COLOR_RESET
+#define ANSI_BLUE(TEXT) ANSI_COLOR_BLUE TEXT ANSI_COLOR_RESET
+#define ANSI_MAGENTA(TEXT) ANSI_COLOR_MAGENTA TEXT ANSI_COLOR_RESET
+#define ANSI_CYAN(TEXT) ANSI_COLOR_CYAN TEXT ANSI_COLOR_RESET
 
 static const char* builtin_shader_typenames[38] = {
     "bool", "int", "unsignedint", "float", "vec2", "vec3", "vec4",
@@ -67,7 +80,7 @@ size_t* str_hash(const char *str) {
 int main() {
     FILE *hashes = fopen("C:/Users/olusa/OneDrive/Documents/GitHub/Engine/Resources/Hashes/hashes.txt", "w");
     if (!hashes) {
-        fprintf(stderr, "Failed to open output file.\n");
+        fprintf(stderr, ANSI_RED("Failed to open output file.\n"));
         return EXIT_FAILURE;
     }
 
@@ -78,7 +91,7 @@ int main() {
 
         if (!hash){continue;}
 
-        fprintf(hashes, "#0: %zu, #1: %zu\n", hash[0], hash[1]);
+        fprintf(hashes, ANSI_YELLOW("#0: %zu, #1: %zu\n"), hash[0], hash[1]);
         free(hash);
     }
     fclose(hashes);

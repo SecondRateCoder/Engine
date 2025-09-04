@@ -71,9 +71,9 @@ bool uint128_t_comp(const uint128_t a, const uint128_t b){
 }
 
 void CheckGLError(const char* file, int line, const char* call){
-    GLenum err;
-    while ((err = glGetError()) != GL_NO_ERROR) {
-        fprintf(stderr, "\n[OpenGL Error] (%x): %s at %s:%d\n", err, call, file, line);
+    GLenum err_check;
+    while ((err_check = glGetError()) != GL_NO_ERROR) {
+        fprintf(stderr, ANSI_RED("\n[OpenGL Error] (%x): %s at %s:%d\n"), err_check, call, file, line);
     }
 }
 
@@ -85,26 +85,18 @@ void CheckGLError(const char* file, int line, const char* call){
 /// @param texture_layout The layout index to apply a reference to the model's texture co-ordinate data.
 /// @param _mesh The _mesh to be appended.
 void mesh_attrlink(bufferobj_t *buffer, uint32_t pos_layout,  uint32_t color_layout,  uint32_t texture_layout, mesh_t *_mesh){
-    size_t vbo_index = 0;
-    size_t ebo_index = 0;
-    if(buffer->VBO[buffer->VBO_len - 1] != GL_FALSE){
-        vbo_index = buffer->VBO_len;
-        buffer->VBO = realloc(buffer->VBO, sizeof(GLuint)* (buffer->VBO_len + 1));
-    }else{vbo_index = buffer->VBO_len - 1;}
-    if(buffer->EBO[buffer->EBO_len - 1] != GL_FALSE){
-        ebo_index = buffer->EBO_len;
-        buffer->EBO = realloc(buffer->EBO, sizeof(GLuint)* (buffer->EBO_len + 1));
-    }else{ebo_index = buffer->EBO_len - 1;}
     //Generate new buffers for _mesh.
-    GLCall(glGenBuffers(1, &buffer->VBO[buffer->VBO_len]));
-    GLCall(glGenBuffers(1, &buffer->EBO[buffer->EBO_len]));
+    if(buffer->VBO == GL_FALSE){GLCall(glGenBuffers(1, &buffer->VBO));}
+    if(buffer->EBO == GL_FALSE){GLCall(glGenBuffers(1, &buffer->EBO));}
     GLCall(glBindVertexArray(buffer->VAO));
     
-    GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer->VBO[buffer->VBO_len]));
-    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->EBO[buffer->EBO_len]));
+    GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer->VBO));
+    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->EBO));
+    draw_debug_trace(__FILE__, __LINE__);
 
     GLCall(glBufferData(GL_ARRAY_BUFFER, _mesh->data_len, _mesh->mesh_data, GL_STATIC_DRAW));
     GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, _mesh->index_len, _mesh->vertex_index, GL_STATIC_DRAW));
+    draw_debug_trace(__FILE__, __LINE__);
 
     size_t pos_offset = 0;
     size_t color_offset = sizeof(GLfloat) * _mesh->vertex_stride;
@@ -113,28 +105,60 @@ void mesh_attrlink(bufferobj_t *buffer, uint32_t pos_layout,  uint32_t color_lay
     const size_t stride = sizeof(GLfloat) * (_mesh->vertex_stride + _mesh->color_stride + _mesh->dpi_stride);
     GLCall(glVertexAttribPointer(_mesh->pos_layoutindex, _mesh->vertex_stride, GL_FLOAT, GL_FALSE, stride, (void*)pos_offset));
     GLCall(glEnableVertexAttribArray(_mesh->pos_layoutindex));
+    draw_debug_trace(__FILE__, __LINE__);
 
     GLCall(glVertexAttribPointer(_mesh->color_layoutindex, _mesh->color_stride, GL_FLOAT, GL_FALSE, stride, (void*)color_offset));
     GLCall(glEnableVertexAttribArray(_mesh->color_layoutindex));
+    draw_debug_trace(__FILE__, __LINE__);
 
     GLCall(glVertexAttribPointer(_mesh->local_texcoordinates_layoutindex, _mesh->dpi_stride, GL_FLOAT, GL_FALSE, stride, (void*)tex_offset));
     GLCall(glEnableVertexAttribArray(_mesh->local_texcoordinates_layoutindex));
+    draw_debug_trace(__FILE__, __LINE__);
 
     GLCall(glBindVertexArray(0));
-    buffer->EBO_len++;
-    buffer->VBO_len++;
 }
 
-void mesh_arttr_relink(const mesh_t *_mesh){
-    GLCall(glVertexAttribPointer(_mesh->pos_layoutindex, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->vertex_stride, _mesh->mesh_data));
+void mesh_attrlinkf(bufferobj_t *buffer, mesh_t *_mesh, const size_t buffer_index){
+    GLCall(glBindVertexArray(buffer->VAO));
+    
+    GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer->VBO));
+    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->EBO));
+    draw_debug_trace(__FILE__, __LINE__);
+
+    GLCall(glBufferData(GL_ARRAY_BUFFER, _mesh->data_len, _mesh->mesh_data, GL_STATIC_DRAW));
+    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, _mesh->index_len, _mesh->vertex_index, GL_STATIC_DRAW));
+    draw_debug_trace(__FILE__, __LINE__);
+
+    size_t pos_offset = 0;
+    size_t color_offset = sizeof(GLfloat) * _mesh->vertex_stride;
+    size_t tex_offset = color_offset + sizeof(GLfloat) * _mesh->color_stride;
+
+    const size_t stride = sizeof(GLfloat) * (_mesh->vertex_stride + _mesh->color_stride + _mesh->dpi_stride);
+    GLCall(glVertexAttribPointer(_mesh->pos_layoutindex, _mesh->vertex_stride, GL_FLOAT, GL_FALSE, stride, (void*)pos_offset));
     GLCall(glEnableVertexAttribArray(_mesh->pos_layoutindex));
-    // Handle color layout.
-    GLCall(glVertexAttribPointer(_mesh->color_layoutindex, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->color_stride, &_mesh->mesh_data[_mesh->vertex_stride-1]));
+    draw_debug_trace(__FILE__, __LINE__);
+
+    GLCall(glVertexAttribPointer(_mesh->color_layoutindex, _mesh->color_stride, GL_FLOAT, GL_FALSE, stride, (void*)color_offset));
     GLCall(glEnableVertexAttribArray(_mesh->color_layoutindex));
-    // Handle texture coord layout.
-    GLCall(glVertexAttribPointer(_mesh->local_texcoordinates_layoutindex, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->dpi_stride, &_mesh->mesh_data[(_mesh->vertex_stride + _mesh->color_stride) - 2]));
-	GLCall(glEnableVertexAttribArray(_mesh->local_texcoordinates_layoutindex));
+    draw_debug_trace(__FILE__, __LINE__);
+
+    GLCall(glVertexAttribPointer(_mesh->local_texcoordinates_layoutindex, _mesh->dpi_stride, GL_FLOAT, GL_FALSE, stride, (void*)tex_offset));
+    GLCall(glEnableVertexAttribArray(_mesh->local_texcoordinates_layoutindex));
+    draw_debug_trace(__FILE__, __LINE__);
+
+    GLCall(glBindVertexArray(0));
 }
+
+// void mesh_arttr_relink(const mesh_t *_mesh){
+//     GLCall(glVertexAttribPointer(_mesh->pos_layoutindex, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->vertex_stride, _mesh->mesh_data));
+//     GLCall(glEnableVertexAttribArray(_mesh->pos_layoutindex));
+//     // Handle color layout.
+//     GLCall(glVertexAttribPointer(_mesh->color_layoutindex, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->color_stride, &_mesh->mesh_data[_mesh->vertex_stride-1]));
+//     GLCall(glEnableVertexAttribArray(_mesh->color_layoutindex));
+//     // Handle texture coord layout.
+//     GLCall(glVertexAttribPointer(_mesh->local_texcoordinates_layoutindex, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->dpi_stride, &_mesh->mesh_data[(_mesh->vertex_stride + _mesh->color_stride) - 2]));
+// 	GLCall(glEnableVertexAttribArray(_mesh->local_texcoordinates_layoutindex));
+// }
 
 void mesh_addtexture(mesh_t *m, image_t *texture){
     //Handle texture.
@@ -179,6 +203,8 @@ void mesh_addtexture(mesh_t *m, image_t *texture){
     */
 }
 
+
+
 #ifdef _WIN32
     #include <direct.h>
     #define getcwd _getcwd(NULL, 0)
@@ -198,7 +224,7 @@ bool cwd_init() {
     FILE *temp_ = NULL;
     int attempts = 0;
     if((cwd = getcwd) == NULL){
-        printf("getcwd() Error, cwd not initialized.\n");
+        printf(ANSI_RED("getcwd() Error, cwd not initialized.\n"));
         return false;
     }
 
@@ -230,7 +256,7 @@ bool cwd_init() {
         ++attempts;
     }
 
-    printf("Failed to locate target file after %d attempts.\n", attempts);
+    printf(ANSI_RED("Failed to locate target file after %d attempts.\n"), attempts);
     return false;
 }
 
@@ -245,11 +271,11 @@ void draw_debug_trace(const char* file, int line) {
     glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &boundArrayBuffer);
     glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING, &boundElementBuffer);
 
-    fprintf(stderr, "\n[Draw Debug Trace] @ %s:%d\n", file, line);
-    fprintf(stderr, "  Shader Program: %d\n", currentProgram);
-    fprintf(stderr, "  VAO Bound     : %d\n", boundVAO);
-    fprintf(stderr, "  VBO Bound     : %d\n", boundArrayBuffer);
-    fprintf(stderr, "  EBO Bound     : %d\n", boundElementBuffer);
+    fprintf(stderr, ANSI_YELLOW("\n[Draw Debug Trace] @ %s:%d\n"), file, line);
+    fprintf(stderr, ANSI_YELLOW("  Shader Program: %d\n"), currentProgram);
+    fprintf(stderr, ANSI_YELLOW("  VAO Bound     : %d\n"), boundVAO);
+    fprintf(stderr, ANSI_YELLOW("  VBO Bound     : %d\n"), boundArrayBuffer);
+    fprintf(stderr, ANSI_YELLOW("  EBO Bound     : %d\n"), boundElementBuffer);
 
     // Optional: Check for active attributes
     GLint maxAttribs = 0;
@@ -258,13 +284,13 @@ void draw_debug_trace(const char* file, int line) {
         GLint enabled = 0;
         glGetVertexAttribiv(i, GL_VERTEX_ATTRIB_ARRAY_ENABLED, &enabled);
         if (enabled) {
-            fprintf(stderr, "  Attribute %d: ENABLED\n", i);
+            fprintf(stderr, ANSI_YELLOW("  Attribute %d: ENABLED\n"), i);
         }
     }
 
-    GLenum err = glGetError();
-    if (err != GL_NO_ERROR) {
-        fprintf(stderr, "  OpenGL Error Before Draw: 0x%x\n", err);
+    GLenum err_debug = glGetError();
+    if (err_debug != GL_NO_ERROR) {
+        fprintf(stderr, ANSI_RED("  OpenGL Error Before Draw: 0x%x\n"), err_debug);
     }
 }
 
@@ -330,7 +356,7 @@ char* vertexshader = NULL,
 void GLAPIENTRY debug_callback(GLenum source, GLenum type, GLuint id,
                                GLenum severity, GLsizei length,
                                const GLchar *message, const void *userParam){
-    fprintf(stderr, 
+    fprintf(stderr, ANSI_YELLOW(
         "GL DEBUG:"
             "\tMessage: %s\n\n"
             "\tsource: %s\n"
@@ -338,6 +364,6 @@ void GLAPIENTRY debug_callback(GLenum source, GLenum type, GLuint id,
             "\tid: %d\n"
             "\tseverity: %d\n"
             "\tlength: %zu\n"
-            "\tuserParam: %s\n"
+            "\tuserParam: %s\n" )
         , message, source, type, id, severity, length, message, userParam);
 }

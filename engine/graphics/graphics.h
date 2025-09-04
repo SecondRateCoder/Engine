@@ -30,7 +30,7 @@
 	shaderblock_t *SB = SB_;	\
 	bool CLEAN = CLEAN_;	\
 	bool DO_UNIFORMS = DO_UNIFORMS_;	\
-	shaderblock_handle(SB, CLEAN, DO_UNIFORMS);	\
+	SB = shaderblock_gen(CLEAN, DO_UNIFORMS);	\
 
 /*
 /*Ensure BO is not NULL \
@@ -122,7 +122,7 @@ typedef struct ComputeShaderBlock {
 	bool compiled_[7];
 	size_t uniform_len;
 	/// @brief A List of (size_t, char *) to support uniform access in @ref uniforms.
-	struct arrk_t* uniforms;
+	arrk_t* uniforms;
 	GLuint shaderProgram,
 		vertexshader,
 		fragmentshader,
@@ -147,22 +147,18 @@ typedef struct buffer_object {
 	/// @remark VAO is used to store the state of the OpenGL pipeline.
 	GLuint VAO;
 
-	/// @brief The number of initialised VBOs.
-	size_t VBO_len;
-	/// @brief The length of the initialised EBOs.
-	size_t EBO_len;
 	/// @brief An array of VBO GLuint IDs, for accessing each VBO element.
 	/// As in, the Literal GLfloat vertices to be drawn.
 	/// Accepts whole Model's, in the format of Vertex arrays.
 	/// @remark VBO is used to store the vertex data for the OpenGL pipeline.
-	GLuint* VBO;
+	GLuint VBO;
 	/// @brief An array of EBO GLuint IDs, for accessing each one.
 	/// @remark The EBO is used to store the index data for the OpenGL pipeline, 
 	/// if there is only one the same EBO will be applied to each VBO item.
 	/// If EBO_curr isn't equal to VBO_curr, this buffer_oject is considered invalid.
 	/// If it is invalid and there are no other valid buffer_objects then the first EBO item will be used.
 	/// If there are no EBOs then a default will be attributed.
-	GLuint* EBO;
+	GLuint EBO;
 }buffer_object;
 #define bufferobj_t buffer_object
 
@@ -290,6 +286,6 @@ void* buffer_bufferdo(bufferobj_t * buffer, const size_t len, const BUFFER_OPTIO
 bufferobj_t* win_buffercurr(win_t * win);
 void handle_glfw_error_default(int error_code, const char *msg);
 
-void shaderblock_handle(shaderblock_t *shader, bool clean, bool do_uniforms);
+shaderblock_t *shaderblock_gen(bool clean, bool do_uniforms);
 void bufferobject_handle(bufferobj_t *buffer, GLfloat *vertices, size_t v_len, GLuint *index_order, size_t index_len, GLenum draw_format, uint8_t max_tries);
 #endif

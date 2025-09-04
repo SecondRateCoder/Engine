@@ -30,10 +30,10 @@
 
 #define GLCallUseProgram(prog) \
     glUseProgram(prog); \
-    GLenum err = glGetError(); \
-    if (err != GL_NO_ERROR) \
-        fprintf(stderr, "[OpenGL Error] (%d): glUseProgram(%u)\n", err, prog);
-
+    GLenum err_uprogram = glGetError(); \
+    if (err_uprogram != GL_NO_ERROR){	\
+        fprintf(stderr, "[OpenGL Error] (%d): glUseProgram(%u)\n", err_uprogram, prog);	\
+	}
 #ifdef _DEBUG_
 	#define GLCall(x) \
 		x; \
@@ -48,6 +48,22 @@
 #define IS_EVEN(x)   ( ((x) % 2) == 0 )
 #define INT_SIMP(x)  ( ((x) < 0) ? -1 : 1 )
 #define IS_SPACE(c)  ( (c) == ' ' )
+#define glDeleteBuffer(BUFFER) glDeleteBuffers(1, &BUFFER)
+#define glGenBuffer(BUFFER) glGenBuffers(1, &BUFFER)
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_CYAN    "\x1b[36m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
+#define ANSI_RED(TEXT) ANSI_COLOR_RED TEXT ANSI_COLOR_RESET
+#define ANSI_GREEN(TEXT) ANSI_COLOR_GREEN TEXT ANSI_COLOR_RESET
+#define ANSI_YELLOW(TEXT) ANSI_COLOR_YELLOW TEXT ANSI_COLOR_RESET
+#define ANSI_BLUE(TEXT) ANSI_COLOR_BLUE TEXT ANSI_COLOR_RESET
+#define ANSI_MAGENTA(TEXT) ANSI_COLOR_MAGENTA TEXT ANSI_COLOR_RESET
+#define ANSI_CYAN(TEXT) ANSI_COLOR_CYAN TEXT ANSI_COLOR_RESET
+
 
 // 4. String utils
 char   *str_normalise(const char *str, bool handle_spaces, bool handle_upper);

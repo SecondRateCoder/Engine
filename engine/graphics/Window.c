@@ -1,6 +1,6 @@
 #include "../graphics/graphics.h"
 
-void handle_glfw_error_default(int error_code, const char *msg){fprintf(stderr, "GLFW Error: %d\n\t%s", error_code, msg);}
+void handle_glfw_error_default(int error_code, const char *msg){fprintf(stderr, ANSI_RED("GLFW Error: %d\n\t%s"), error_code, msg);}
 
 /// @brief Initialise an Un-Resizable GLFW Window.
 /// @param name The Name of the Window.
@@ -10,7 +10,7 @@ void handle_glfw_error_default(int error_code, const char *msg){fprintf(stderr, 
 win_t* win_init(char* name, GLFWerrorfun error_handle, poll_do poll_do_, poll_kill poll_kill_, uint32_t w, uint32_t h){
 	//Initialise GLFW.
 	glfwSetErrorCallback(error_handle == NULL? handle_glfw_error_default: error_handle);
-	if(glfwInit() == GL_FALSE){fprintf(stderr, "YOOOOO!!!! Why is ts failing oml!!!");}
+	if(glfwInit() == GL_FALSE){fprintf(stderr, ANSI_RED("YOOOOO!!!! Why is ts failing oml!!!"));}
 	// glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 
 	//Not Resizable.
@@ -35,13 +35,13 @@ win_t* win_init(char* name, GLFWerrorfun error_handle, poll_do poll_do_, poll_ki
 	//Handle errors.
 	if(win->g_window == NULL){
 		//If nothing was created, free the window and it's attributes.
-		printf("Window %s failed to Initialise\nError!", name);
+		printf(ANSI_RED("Window %s failed to Initialise\nError!"), name);
 		free(win->name);
 		glfwTerminate();
 		return NULL;
 	}else{
 		// Window successfully created.
-		printf("Window %s successfully created\n", name);
+		printf(ANSI_GREEN("Window %s successfully created\n"), name);
 		glfwMakeContextCurrent(win->g_window);
 		gladLoadGL();
 	}
@@ -54,7 +54,7 @@ win_t* win_init(char* name, GLFWerrorfun error_handle, poll_do poll_do_, poll_ki
 void win_poll(win_t *win){
 	size_t cc =0;
 	win->shaders_curr = 0;
-	shaderblock_handle(&win->shaders[win->shaders_curr], true, true);
+	win->shaders[win->shaders_curr] = *shaderblock_gen(true, true);
 	while(!win_shouldclose(win)){
 		//Flood color with Orange.
 		win_flood(win, (argb_t){1.5f, 0.5f, 0, 1});
@@ -63,14 +63,14 @@ void win_poll(win_t *win){
 		GLCall(glUseProgram(win->shaders[win->shaders_curr].shaderProgram));
 		win->polld(win, cc);
 		//Bind win's VAO for Drawing.
-		printf("Current VAO: %u", glad_glIsVertexArray(win->buffers[win->buffer_curr].VAO));
+		printf(ANSI_YELLOW("Current VAO: %u"), glad_glIsVertexArray(win->buffers[win->buffer_curr].VAO));
 		GLCall(glBindVertexArray(win->buffers[win->buffer_curr].VAO));
 		//Draw Triangles with GL_TRIANGLE Primitive.
 		// glDrawArrays()
-		GLCall(glDrawElements(GL_TRIANGLES, win->vert_count, GL_UNSIGNED_INT, /*mesh->mesh_data*/NULL));
+		GLCall(glDrawElements(GL_TRIANGLES, win->vert_count, GL_UNSIGNED_INT, NULL));
 		// glDrawElements(GL);
 		glfwSwapBuffers(win->g_window);
-		printf("%d", glGetError());
+		printf(ANSI_YELLOW("%d"), glGetError());
 		glfwPollEvents();
 		++cc;
 	}
