@@ -65,11 +65,11 @@ void test_win_init(){
     const size_t width = 800, height = 600;
     GLFWwindow* window = glfwCreateWindow(width, height, "Main Window", NULL, NULL);
     glfwMakeContextCurrent(window);
-
-    // gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+    glfwMaximizeWindow(window);
+    
+    gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
     
     // Optional: comment out if unsupported
-    glfwMaximizeWindow(window);
     bufferobj_t *buffer = calloc(sizeof(bufferobj_t), 1);
     shaderblock_t *shader = shaderblock_gen(true, true);
     buffer->buffer_[0] = false;
@@ -120,8 +120,12 @@ void test_win_init(){
 
     size_t pollcycles = 0;
     while(!glfwWindowShouldClose(window)){
+	
+        glViewport(0, 0, width, height);
+        glClearColor(0xC9, 0x4A, 0X99, 0XFD);
+        glClear(GL_COLOR_BUFFER_BIT);
         glfwPollEvents();
-    
+        
         mat4 out, view, proj_screen;
         glm_mat4_identity(out);
         glm_mat4_identity(view);
@@ -134,6 +138,7 @@ void test_win_init(){
         glm_rotate(out, g, (vec3){0.5f, 1.0f, 0.0f}); // Rotate on X and Y axis
         uniform_write(shader, "mat4", "matrix", NULL, true, out, 1);
         glDrawBuffer(GL_VERTEX_ARRAY_BINDING);
+        glfwSwapBuffers(window);
         pollcycles++;
     }
 

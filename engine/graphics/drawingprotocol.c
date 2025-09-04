@@ -363,6 +363,12 @@ bool uniform_write(shaderblock_t* shader, const char* type, const char* name, co
 			shader->uniforms[cc].type
 		);
 	}
+	GLint succ;
+	glGetProgramiv(shader->shaderProgram, GL_LINK_STATUS, &succ);
+	char infoLog[1024];
+	memset(infoLog, '\0', 1024);
+    glGetProgramInfoLog(shader->shaderProgram, 1024, NULL, infoLog);
+	printf(ANSI_YELLOW("\nPROGRAM STATUS: \n\tSuccess? %u\n\tInfo log: %s"), succ, infoLog);
 	assert(shader != NULL);
 	assert(shader->uniforms != NULL);
 	assert(shader->uniform_len < 1000);
