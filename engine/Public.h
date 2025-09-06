@@ -3,6 +3,8 @@
 #ifndef _PUBLIC_H
 #define _PUBLIC_H
 
+#include "../include/stb/stb_image.h"
+
 // 1. Standard C
 #include <stdbool.h>
 #include <stdint.h>
@@ -28,12 +30,9 @@
 
 #define _DEBUG_
 
-#define GLCallUseProgram(prog) \
-    glUseProgram(prog); \
-    GLenum err_uprogram = glGetError(); \
-    if (err_uprogram != GL_NO_ERROR){	\
-        fprintf(stderr, "[OpenGL Error] (%d): glUseProgram(%u)\n", err_uprogram, prog);	\
-	}
+#define GLUseProgram(prog) _GLUseprogram(prog);
+
+	
 #ifdef _DEBUG_
 	#define GLCall(x) \
 		x; \
@@ -49,7 +48,7 @@
 #define INT_SIMP(x)  ( ((x) < 0) ? -1 : 1 )
 #define IS_SPACE(c)  ( (c) == ' ' )
 #define glDeleteBuffer(BUFFER) glDeleteBuffers(1, &BUFFER)
-#define glGenBuffer(BUFFER) glGenBuffers(1, &BUFFER)
+#define glGenBuffer(BUFFER) glGenBuffers(1, BUFFER)
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
 #define ANSI_COLOR_YELLOW  "\x1b[33m"
@@ -57,12 +56,12 @@
 #define ANSI_COLOR_MAGENTA "\x1b[35m"
 #define ANSI_COLOR_CYAN    "\x1b[36m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
-#define ANSI_RED(TEXT) ANSI_COLOR_RED TEXT ANSI_COLOR_RESET
-#define ANSI_GREEN(TEXT) ANSI_COLOR_GREEN TEXT ANSI_COLOR_RESET
-#define ANSI_YELLOW(TEXT) ANSI_COLOR_YELLOW TEXT ANSI_COLOR_RESET
-#define ANSI_BLUE(TEXT) ANSI_COLOR_BLUE TEXT ANSI_COLOR_RESET
-#define ANSI_MAGENTA(TEXT) ANSI_COLOR_MAGENTA TEXT ANSI_COLOR_RESET
-#define ANSI_CYAN(TEXT) ANSI_COLOR_CYAN TEXT ANSI_COLOR_RESET
+#define ANSI_RED(TEXT) "\n" ANSI_COLOR_RED TEXT ANSI_COLOR_RESET
+#define ANSI_GREEN(TEXT) "\n" ANSI_COLOR_GREEN TEXT ANSI_COLOR_RESET
+#define ANSI_YELLOW(TEXT) "\n" ANSI_COLOR_YELLOW TEXT ANSI_COLOR_RESET
+#define ANSI_BLUE(TEXT) "\n" ANSI_COLOR_BLUE TEXT ANSI_COLOR_RESET
+#define ANSI_MAGENTA(TEXT) "\n" ANSI_COLOR_MAGENTA TEXT ANSI_COLOR_RESET
+#define ANSI_CYAN(TEXT) "\n" ANSI_COLOR_CYAN  TEXT ANSI_COLOR_RESET
 
 
 // 4. String utils
@@ -76,7 +75,6 @@ bool uint128_t_comps(const uint128_t a, const size_t b);
 bool uint128_t_comp (const uint128_t a, const uint128_t b);
 
 // 6. stb_image
-#include "../include/stb/stb_image.h"
 
 // 7. OpenGL / GLFW / cglm
 #include "glad.h"
@@ -96,15 +94,11 @@ bool uint128_t_comp (const uint128_t a, const uint128_t b);
 extern mesh_t *mesh;
 
 // 10. Mesh helpers
-void mesh_attrlink(bufferobj_t *buffer,
-                   uint32_t        pos_layout,
-                   uint32_t        color_layout,
-                   uint32_t        tex_layout,
-                   mesh_t         *_mesh);
-
-void mesh_addtexture(mesh_t *m, image_t *texture);
+void mesh_attrlink(bufferobj_t *buffer, const int pos_layout,  const int col_layout,  const int tex_layout, mesh_t *_mesh);
+void mesh_bindtexture(mesh_t *m, image_t *texture);
 void CheckGLError(const char* file, int line, const char* call);
 void draw_debug_trace(const char* file, int line);
+void _GLUseprogram(GLuint prog);
 
 extern char *cwd;
 extern size_t cwd_len;
@@ -135,7 +129,8 @@ extern const uint128_t builtin_shader_typehash[37];
 void GLAPIENTRY debug_callback(
 	GLenum source, GLenum type, GLuint id,
 	GLenum severity, GLsizei length,
-	const GLchar *message, const void *userParam);
+	const GLchar *message, const void *userParam
+);
 
 #endif // _PUBLIC_H
 

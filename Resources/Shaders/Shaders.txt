@@ -1,9 +1,7 @@
-3.300000000000
+3300000000000
 ^Settings.
 
 #define vs
-
-#version 330 core
 
 layout(location = 0) in vec3 aPos;
 layout(location = 1) in vec3 aColor;
@@ -14,9 +12,14 @@ out vec2 tex_coord;
  
 uniform mat4 matrix;
 uniform float scale;
+uniform vec3 offs;
 
 void main(){
-    gl_Position = vec4(aPos.x + (aPos.x* scale), aPos.y + (aPos.y* scale), aPos.z + (aPos.z* scale), 1.0)* matrix;
+    vec4 _temp = vec4(aPos.x + (aPos.x* scale), aPos.y + (aPos.y* scale), aPos.z + (aPos.z* scale), 1.0)* matrix;
+    _temp.x = offs.x;
+    _temp.y = offs.y;
+    _temp.z = offs.z;
+    gl_Position = _temp;
     color = aColor;
     tex_coord = aTex;
 }
@@ -24,7 +27,6 @@ void main(){
 #define shaderend
 
 #define fs
-#version 330 core
 
 out vec4 FragColor;
 in vec3 color;

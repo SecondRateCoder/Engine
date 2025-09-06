@@ -14,7 +14,9 @@
         "xutility": "c",
         "format": "c",
         "__locale": "c",
-        "ios": "c"
+        "ios": "c",
+        "cstdint": "c",
+        "*.rh": "c"
     },
     "C_Cpp.default.compilerPath": "C:/msys64/mingw64/bin/gcc.exe",
     "cpptest.compilerIdentifier": "gcc_10-64"

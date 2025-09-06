@@ -11,6 +11,7 @@ win_t* win_init(char* name, GLFWerrorfun error_handle, poll_do poll_do_, poll_ki
 	//Initialise GLFW.
 	glfwSetErrorCallback(error_handle == NULL? handle_glfw_error_default: error_handle);
 	if(glfwInit() == GL_FALSE){fprintf(stderr, ANSI_RED("YOOOOO!!!! Why is ts failing oml!!!"));}
+	if(error_handle == NULL){error_handle = handle_glfw_error_default;}
 	// glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 
 	//Not Resizable.
@@ -23,6 +24,7 @@ win_t* win_init(char* name, GLFWerrorfun error_handle, poll_do poll_do_, poll_ki
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_VISIBLE, GL_TRUE);
 	//malloc on heap.
 	win_t *win = malloc(sizeof(win_t));
 	memset(win, '\0', sizeof(win_t));
@@ -48,35 +50,99 @@ win_t* win_init(char* name, GLFWerrorfun error_handle, poll_do poll_do_, poll_ki
 	return win;
 }
 
+// void *win_truepoll(void *arg){
+// 	win_t *win_ = (win_t *)arg;
+// 	win_t *win = calloc(1, sizeof(win_t));
+
+// 	// Set context hints
+// 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+// 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+// 	#ifdef __APPLE__
+// 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+// 	#endif
+// 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+// 	glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
+
+// 	// Create new window with shared context
+// 	*win = *win_;
+// 	win->g_window = glfwCreateWindow(win_->w, win_->h, win_->name, NULL, win_->g_window);
+// 	glfwMakeContextCurrent(win_->g_window);
+// 	// Now copy the rest of the data
+// 	// win->g_window = new_window; // preserve the new window pointer
+// 	size_t cc =0;
+// 	while(!win_shouldclose(win)){
+// 		//Flood color with Orange.
+// 		if(cc%5 == 0){win_flood(win, (argb_t){1.5f, 0.5f, 0, 1});}
+		
+// 		//Ensure that win's Shader's are Handled.
+// 		//Explicitly define the Shader to be Used.
+// 		GLUseProgram(win->shaders[win->shaders_curr].shaderProgram);
+// 		if(win->polld != NULL){win->polld(win, cc);}
+// 		//Bind win's VAO for Drawing.
+// 		// printf(ANSI_YELLOW("Current VAO: %u"), glad_glIsVertexArray(win->buffers[win->buffer_curr].VAO));
+		
+// 		for(size_t cc_draw =0; cc_draw < win->buffer_len; ++cc_draw){
+// 			glBindVertexArray(win->buffers[cc_draw].VAO);
+// 			if(win->buffers[cc_draw].buffer_[2] == true){
+// 				glDrawElements(GL_TRIANGLES, win->buffers[cc_draw].element_num, GL_UNSIGNED_INT, 0);
+// 			}else{glDrawArrays(GL_TRIANGLES, 0, win->buffers[cc_draw].vertex_num);}
+// 		}
+// 		glfwSwapBuffers(win->g_window);
+
+// 		printf(ANSI_YELLOW("%d"), glGetError());
+// 		glfwPollEvents();
+// 		++cc;
+// 	}
+// 	if(win->pollk != NULL){win->pollk(win);}
+// 	win_kill(win);
+// 	return NULL;
+// }
+
+#define MAX_POLLS 0xafffffffffffffffull
+
 /// @brief Poll the GLFW window's events.
 /// @param win The Window to be Polled.
 /// @remark If the Window is set to close, It will Kill it after calling a set poll_kill function.
-void win_poll(win_t *win){
-	size_t cc =0;
-	win->shaders_curr = 0;
-	win->shaders[win->shaders_curr] = *shaderblock_gen(true, true);
+void win_poll(win_t *win, pthread_attr_t *thread_attr){
+	size_t cc =0, cycles = 0;
+	//Spawn a thread that runs the drawing of Meshes.
 	while(!win_shouldclose(win)){
 		//Flood color with Orange.
-		win_flood(win, (argb_t){1.5f, 0.5f, 0, 1});
+		if(cc%5 == 0){win_flood(win, (argb_t){1.5f, 0.5f, 0, 1});}
+		
 		//Ensure that win's Shader's are Handled.
 		//Explicitly define the Shader to be Used.
-		GLCall(glUseProgram(win->shaders[win->shaders_curr].shaderProgram));
-		win->polld(win, cc);
+		GLUseProgram(win->shaders[win->shaders_curr].shaderProgram);
+		if(win->polld != NULL){
+			win->polld(win, cc, cycles);
+			// ipoll_t *poll_t = (ipoll_t *){win, cc};
+			// pthread_create(&win->poll_thread, thread_attr, win->polld, (void *)poll_t);
+			// pthread_join(win->poll_thread, NULL);
+		}
 		//Bind win's VAO for Drawing.
-		printf(ANSI_YELLOW("Current VAO: %u"), glad_glIsVertexArray(win->buffers[win->buffer_curr].VAO));
-		GLCall(glBindVertexArray(win->buffers[win->buffer_curr].VAO));
-		//Draw Triangles with GL_TRIANGLE Primitive.
-		// glDrawArrays()
-		GLCall(glDrawElements(GL_TRIANGLES, win->vert_count, GL_UNSIGNED_INT, NULL));
-		// glDrawElements(GL);
+		// printf(ANSI_YELLOW("Current VAO: %u"), glad_glIsVertexArray(win->buffers[win->buffer_curr].VAO));
+		
+		for(size_t cc_draw =0; cc_draw < win->buffer_len; ++cc_draw){
+			glBindVertexArray(win->buffers[cc_draw].VAO);
+			if(win->buffers[cc_draw].buffer_[2] == true){
+				GLCall(glDrawElements(GL_TRIANGLES, win->buffers[cc_draw].element_num, GL_UNSIGNED_INT, 0));
+			}else{GLCall(glDrawArrays(GL_TRIANGLES, 0, win->buffers[cc_draw].vertex_num));}
+		}
 		glfwSwapBuffers(win->g_window);
+
 		printf(ANSI_YELLOW("%d"), glGetError());
 		glfwPollEvents();
+		if(cc > MAX_POLLS){
+			cc = 0;
+			cycles++;
+		}
 		++cc;
 	}
-	win->pollk(win);
+	if(win->pollk != NULL){win->pollk(win);}
 	win_kill(win);
+	return;
 }
+
 
 /// @brief Check if the specified Window was set to be closed.
 /// @param win The Window to be checked.
@@ -92,14 +158,11 @@ void win_kill(win_t *win){
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 	glfwDestroyWindow(win->g_window);
-	GLuint *TEXTURES_ID = (GLuint *)malloc(win->textures_len);
-	// for(size_t cc =0; cc < win->textures_len; ++cc){TEXTURES_ID[cc] = win->}
-	glDeleteTextures(win->textures_len, TEXTURES_ID);
-	free(TEXTURES_ID);
 	glfwTerminate();
 	free(win->name);
-	free(win->polld);
-	free(win->pollk);
+	if(win->polld != NULL){free(win->polld);}
+	if(win->pollk != NULL){free(win->pollk);}
+	
 	// free(win->textures);
 	free(win->shaders);
 	free(win);
@@ -118,6 +181,3 @@ void win_kill(win_t *win){
 // 	glVertexAttribPointer(layout_index, component_num, type, GL_FALSE, stride, pointer);
 // 	glEnableVertexAttribArray(layout_index);
 // }
-
-void polld_default(win_t *win, size_t cycles){return;}
-void pollk_default(win_t *win){return;}

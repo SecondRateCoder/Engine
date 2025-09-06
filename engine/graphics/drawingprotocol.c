@@ -22,6 +22,18 @@
 // char* fragmentshader_code;
 // char* geometryshader_code;
 
+/*
+Shader setting conventions:
+	[0 - 4]: OpenGL Version,
+	[5]: Core or Compatibility?
+	[6 - 10]: Vertex Shader index
+	[11 - 15]: Fragment Shader index
+	[16 - 20]: Geometry Shader index
+	[21 - 25]: Tesselation Eval index
+	[26 - 30]: Tess Control index
+*/
+
+
 // Corrected shader_error function.
 // The original had incorrect `printf` format specifiers and was not properly handling the return value of `strncmp`.
 // It also had inconsistent naming for the `_compiled` member. I've removed the state tracking as it's not robust.
@@ -34,7 +46,7 @@ bool shader_error(shaderblock_t* sb_t, const char* type) {
 
 	if (strcmp(type, "PROGRAM") == 0) {
 		shader = sb_t->shaderProgram;
-		GLCallUseProgram(shader);
+		GLUseProgram(shader);
 		if (!success) {
 			GLCall(glGetProgramInfoLog(shader, 1024, NULL, infoLog));
 			fprintf(stderr, ANSI_RED("Shader PROGRAM linking error: %s\n"), infoLog);
@@ -49,8 +61,12 @@ bool shader_error(shaderblock_t* sb_t, const char* type) {
 			return false;
 		}
 
-		if (shader == 0) {return false;}
-
+		if(shader == 0){
+			if(glIsShader(shader) == GL_FALSE){
+				printf(ANSI_RED("SHADER FAIL!!!"));
+			}
+			return false;
+		}
 		GLCall(glGetShaderiv(shader, GL_COMPILE_STATUS, &success));
 		if (!success) {
 			GLCall(glGetShaderInfoLog(shader, 1024, NULL, infoLog));
@@ -97,10 +113,30 @@ char* shadersettings_rw(const char* filepath, char* write){
 
 void shaders_pull(const char *filepath){shader_pull(filepath, (bool[5]){true, true, false, false, false});}
 
-uint32_t parse_shader_index(const char *settings, size_t offset) {
-    char temp[3] = { settings[offset], settings[offset + 1], '\0' };
-    int raw = strtol(temp, NULL, 10);
+uint32_t parse_shader_index(const char *settings, uint8_t offset, const uint8_t len){
+	char *temp = malloc(sizeof(settings[0])* (len));
+	uint8_t cc_ = 0;
+	for(uint8_t cc =offset; cc < (len < strlen(settings)? len: strlen(settings)); ++cc, ++cc_){
+		temp[cc_] = settings[cc];
+	}
+	temp[len] = '\0';
+    int raw = strtol(temp, NULL, len);
+	free(temp);
     return raw < 0 ? 0 : (uint32_t)raw;
+}
+
+dsetting_t settings_decode(char settings[settings_len]){
+	dsetting_t out = {
+		.vsindex = parse_shader_index(settings, 6, SHADER_INDEX_LEN),
+		.fsindex = parse_shader_index(settings, 11, SHADER_INDEX_LEN),
+		.gsindex = parse_shader_index(settings, 16, SHADER_INDEX_LEN),
+		.tesindex = parse_shader_index(settings, 21, SHADER_INDEX_LEN),
+		.tcsindex = parse_shader_index(settings, 26, SHADER_INDEX_LEN),
+		.version = NULL
+	};
+	out.version = calloc(strlen("\n#version ") + 4, sizeof(settings[0]));
+	memcpy(out.version, "\n#version ", strlen("\n#version ")* sizeof(settings[0]));
+	memcpy(&out.version[strlen("\n#version ")], settings, 4* sizeof(settings[0]));
 }
 
 
@@ -136,11 +172,7 @@ void shader_pull(const char *filepath, const bool redo_shaders[5]){
 		fprintf(stderr, ANSI_RED("Error: Failed to open shader file at '%s'.\n"), filepath);
 		return;
 	}else{fseek(text, settings_len, SEEK_SET);}
-	const uint32_t vsindex = parse_shader_index(settings, 6);
-    const uint32_t fsindex = parse_shader_index(settings, 8);
-	const uint32_t gsindex = parse_shader_index(settings, 10);
-	const uint32_t tesindex = parse_shader_index(settings, 12);
-    const uint32_t tcsindex = parse_shader_index(settings, 14);
+	const dsetting_t decoded = settings_decode(settings);
 
 
     int vs_cc = -1, fs_cc = -1, gs_cc = -1, tes_cc = -1, tcs_cc = -1;
@@ -301,7 +333,7 @@ arrk_t *uniform_init(size_t *uniform_len_, const GLuint shaderProgram){
 			while(char_cc < shader_len && isspace(shaders[cc][char_cc])){
 				++char_cc;
 			}
-			printf(ANSI_YELLOW("%c"), shaders[cc][char_cc]);
+			// printf(ANSI_COLOR_YELLOW "%c" ANSI_COLOR_RESET, shaders[cc][char_cc]);
 			if(shaders[cc][char_cc] == 'u'){
 				//Might be uniform.
 				if(strncmp(&shaders[cc][char_cc], "uniform", 7) == 0){
@@ -357,18 +389,13 @@ void uniform_free(shaderblock_t* shader){
 // The original had a `return NULL` in a `void` function and incorrect pointer dereferencing.
 bool uniform_write(shaderblock_t* shader, const char* type, const char* name, const void* property_, const bool transpose, void* value, const size_t num_elements){
 	for(uint8_t cc =0; cc < shader->uniform_len; ++cc){
-		printf(ANSI_YELLOW("\n%u: \n  Name: %s; \n  Type: %s"), 
+		printf(ANSI_YELLOW("\n%u: \n  Name: %s \n  Type: %s \n  Location: %d"), 
 			cc, 
 			shader->uniforms[cc].name,
-			shader->uniforms[cc].type
+			shader->uniforms[cc].type,
+			shader->uniforms[cc].Location
 		);
 	}
-	GLint succ;
-	glGetProgramiv(shader->shaderProgram, GL_LINK_STATUS, &succ);
-	char infoLog[1024];
-	memset(infoLog, '\0', 1024);
-    glGetProgramInfoLog(shader->shaderProgram, 1024, NULL, infoLog);
-	printf(ANSI_YELLOW("\nPROGRAM STATUS: \n\tSuccess? %u\n\tInfo log: %s"), succ, infoLog);
 	assert(shader != NULL);
 	assert(shader->uniforms != NULL);
 	assert(shader->uniform_len < 1000);
@@ -378,7 +405,7 @@ bool uniform_write(shaderblock_t* shader, const char* type, const char* name, co
 	GLint location = -1;
 	// Find the uniform location
 	printf(ANSI_YELLOW("\nShader Program ID: %u\n"), shader->shaderProgram);
-	GLCall(glUseProgram(shader->shaderProgram));
+	// GLUseProgram(shader->shaderProgram);
 	for (size_t cc = 0; cc < shader->uniform_len; ++cc) {
 		if (strcmp(name, shader->uniforms[cc].name) == 0) {
 			location = shader->uniforms[cc].Location;
@@ -386,7 +413,7 @@ bool uniform_write(shaderblock_t* shader, const char* type, const char* name, co
 				shader->uniforms[cc].Location = location;
 				if(location == -1){printf(ANSI_RED("\tUniform %s not found, \n\t\tLocation %u returned"), shader->uniforms[cc].name, location);}
 			}
-			printf(ANSI_YELLOW("\nLocation: \t%d"), location);
+			printf(ANSI_YELLOW("\nLocation: %d"), location);
 			break;
 		}
 	}
@@ -400,7 +427,7 @@ bool uniform_write(shaderblock_t* shader, const char* type, const char* name, co
 		if(uint128_t_comp(str_hash(str_normalise(builtin_shader_typenames[cc], true, true)), typehash) == true){
 			// Use a switch statement for dispatching GL uniform functions
 			// Note: The original switch had incorrect pointer casts and logic for single vs. multiple elements.
-			GLCall(glUseProgram(shader->shaderProgram));
+			GLUseProgram(shader->shaderProgram);
 			switch (cc) {
 				case 0: // GL_BOOL
 				case 1: // GL_INT
@@ -647,7 +674,7 @@ shaderblock_t *shader_compile(bool delete_shaders_on_link) {
 	if(shaderblock->geometryshader != 0){GLCall(glAttachShader(shaderblock->shaderProgram, shaderblock->geometryshader));}
 	GLCall(glLinkProgram(shaderblock->shaderProgram));
 	shaderblock->compiled_[0] = shader_error(shaderblock, "PROGRAM");
-	shaderblock->compiled_[7] = shaderblock->compiled_[0];
+	shaderblock->compiled_[6] = shaderblock->compiled_[0];
 
 	// Delete if needed.
 	if (delete_shaders_on_link) {
@@ -674,19 +701,17 @@ shaderblock_t *shader_compile(bool delete_shaders_on_link) {
 /// @param _mesh The _mesh to be drawn.
 void win_draw(win_t *win, mesh_t *mesh){
     if (win == NULL || mesh == NULL){return;}
-    bufferobj_t *temp_ptr = &win->buffers[win->buffer_curr];
-    if(temp_ptr == NULL){
-        // Allocate space for one buffer object
-        win->buffers = malloc(sizeof(bufferobj_t));
-        win->buffer_len = 1; // Track the buffer count
-        win->buffer_curr = 0;
-        temp_ptr = &win->buffers[win->buffer_curr];
-        memset(temp_ptr, 0, sizeof(bufferobj_t)); // Initialize buffer memory
-    }
-    win->shaders[win->shaders_curr] = *shaderblock_gen(true, true);
+	// Allocate space for one buffer object
+	win->buffers = malloc(sizeof(bufferobj_t));
+	win->buffer_len = 1; // Track the buffer count
+	win->buffers = realloc(win->buffers, (win->buffer_len + 1)* sizeof(bufferobj_t));
+	bufferobj_t *temp_ptr = &win->buffers[win->buffer_len];
+	win->buffer_len++;
+	memset(temp_ptr, 0, sizeof(bufferobj_t)); // Initialize buffer memory
+    shaderblock_handle(&win->shaders[win->shaders_curr], true, true);
     BUFFEROBJECT_HANDLE(temp_ptr, mesh->mesh_data, mesh->data_len, mesh->vertex_index, mesh->index_len, GL_STATIC_DRAW, 10);
     mesh_attrlink(temp_ptr, win->layout_offset, win->layout_offset+1, win->layout_offset+2, mesh);
-    glUseProgram(win->shaders[win->shaders_curr].shaderProgram);
+    GLUseProgram(win->shaders[win->shaders_curr].shaderProgram);
     draw_debug_trace(__FILE__, __LINE__);
 	GLCall(glBindVertexArray(temp_ptr->VAO));
     GLCall(glDrawElements(GL_TRIANGLES, mesh->data_len, GL_UNSIGNED_INT, (mesh->vertex_index == NULL? 0: mesh->mesh_data)));
@@ -729,7 +754,7 @@ void win_flood(win_t* win, const argb_t c) {
 	glViewport(0, 0, win->w, win->h);
 	glClearColor(c.r, c.g, c.b, c.a);
 	glClear(GL_COLOR_BUFFER_BIT);
-	glfwSwapBuffers(win->g_window);
+	// glfwSwapBuffers(win->g_window);
 }
 
 /// @brief Do a function from BUFFER_OPTIONS on EBO or VBO of a Buffer Object.
@@ -798,11 +823,6 @@ void *buffer_bufferdo(bufferobj_t* buffer, const size_t len, const BUFFER_OPTION
 	}
 }
 
-bufferobj_t *win_buffercurr(win_t *win){
-	if(win->buffer_curr >= win->buffer_len){win->buffer_curr = win->buffer_len - 1;}
-	return &win->buffers[win->buffer_curr];
-}
-
 shaderblock_t *shaderblock_gen(bool clean, bool do_uniforms){
 	if(vertexshader == NULL || fragmentshader == NULL){
 		printf(ANSI_YELLOW("Vertex or Fragment Shader not set, resolving.\n"));
@@ -812,46 +832,64 @@ shaderblock_t *shaderblock_gen(bool clean, bool do_uniforms){
 		shaders_pull(default_dir);
 	}
 	shaderblock_t *shader = shader_compile(clean);
-	shader->uniforms = uniform_init(&shader->uniform_len, shader->shaderProgram);
+	if(do_uniforms == true){shader->uniforms = uniform_init(&shader->uniform_len, shader->shaderProgram);}
+	
 	return shader;
 }
+
+void shaderblock_handle(shaderblock_t *sb, bool clean, bool do_uniforms){
+	if(sb == NULL){
+		*sb = *shader_compile(clean);
+		if(do_uniforms){sb->uniforms = uniform_init(&sb->uniform_len, sb->shaderProgram);}
+		return;
+	}
+	if(glIsVertexArray(sb->shaderProgram) == GL_TRUE && sb->compiled_[6] == true){return;}
+	GLint status;
+	glGetProgramiv(sb->shaderProgram, GL_LINK_STATUS, &status);
+	if (status != GL_TRUE){
+		sb = shader_compile(clean);
+		if(do_uniforms){sb->uniforms = uniform_init(&sb->uniform_len, sb->shaderProgram);}
+	}
+	// Dump log
+	char log[512];
+	glGetProgramInfoLog(sb->shaderProgram, 512, NULL, log);
+	if(strlen(log) == 0){return;}else{
+		printf("\nLink error: %s\n", log);
+	}
+
+}
+
+/// @brief Generate a Buffer Object for 1 Mesh.
+/// @param mesh The mesh to be given a Buffer.
+/// @param draw_format The format to be used when attributing.
+/// @param pos_layout The Layout the Position vector should be applied to.
+/// @param col_layout The Layout the Colour vector should be applied to.
+/// @param tex_layout The Layout the Texture pixel data should be applied to.
+/// @return A fully generated texture.
+bufferobj_t *bufferobj_gen(mesh_t *mesh, const GLenum draw_format, const int pos_layout, int col_layout, int tex_layout){
+	bufferobj_t *out = malloc(sizeof(bufferobj_t));
+	bufferobject_handle(out, mesh->mesh_data, mesh->data_len, mesh->vertex_index, mesh->index_len, draw_format, 9);
+	mesh_attrlink(out, pos_layout, col_layout, tex_layout, mesh);
+	return out;
+}
+
 void bufferobject_handle(bufferobj_t *buffer, GLfloat *vertices, size_t v_len, GLuint *index_order, size_t index_len, GLenum draw_format, uint8_t max_tries){
 	bool success = 0;
 	uint8_t counter = 0;
-	/*
-		GLuint vao, vbo, ebo;
-		glGenVertexArrays(1, &vao);
-		glGenBuffers(1, &vbo);
-		glGenBuffers(1, &ebo);
-
-		glBindVertexArray(vao);        // Start recording VAO state
-
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-		// Configure vertex attributes
-		glVertexAttribPointer(...);
-		glEnableVertexAttribArray(...);
-
-		glBindVertexArray(0);          // Done recording VAO state
-	*/
 	do {
 		if(buffer == NULL){break;}
 		success = true;
 		/*VAO not set-up*/ 
 		if (buffer->buffer_[0] == false) {
-			if (buffer->VAO == 0){GLCall(glGenVertexArrays(1, &buffer->VAO));}	
+			if (glIsVertexArray(buffer->VAO) == GL_FALSE){GLCall(glGenVertexArrays(1, &buffer->VAO));}	
 			buffer->buffer_[0] = true;
 			//Generate VBO.
-			if(buffer->VBO == GL_FALSE){
-				GLCall(glGenBuffer(buffer->VBO));
+			if(glIsBuffer(buffer->VBO) == GL_FALSE){
+				GLCall(glGenBuffer(&buffer->VBO));
 				buffer->buffer_[1] = false;
 			}
-			if(buffer->EBO == GL_FALSE){
-				GLCall(glGenBuffer(buffer->EBO));
+			if(glIsBuffer(buffer->EBO) == GL_FALSE){
+				GLCall(glGenBuffer(&buffer->EBO));
 				buffer->buffer_[2] = false;
 			}
 			GLCall(glBindVertexArray(buffer->VAO)); // Begin recording state.
@@ -871,4 +909,6 @@ void bufferobject_handle(bufferobj_t *buffer, GLfloat *vertices, size_t v_len, G
 		success = buffer->buffer_[0] == true && buffer->buffer_[1] == true && buffer->buffer_[2] == true;
 	}while (counter < max_tries && success == false);
 	GLCall(glBindVertexArray(0));
+	buffer->vertex_num = v_len;
+	buffer->element_num = index_len;
 }

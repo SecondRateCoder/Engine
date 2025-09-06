@@ -5,6 +5,7 @@
 // #include "./window/window.h"
 // #include <stdint.h>
 #include <string.h>
+#include <pthread.h>
 // #include <stdbool.h>
 
 
@@ -30,7 +31,7 @@
 	shaderblock_t *SB = SB_;	\
 	bool CLEAN = CLEAN_;	\
 	bool DO_UNIFORMS = DO_UNIFORMS_;	\
-	SB = shaderblock_gen(CLEAN, DO_UNIFORMS);	\
+	SB = shaderblock_handle(CLEAN, DO_UNIFORMS);	\
 
 /*
 /*Ensure BO is not NULL \
@@ -141,6 +142,8 @@ typedef struct buffer_object {
 	[2]: Is EBO set-up?
 	*/
 	bool buffer_[3];
+	size_t element_num,
+		vertex_num;
 
 	/// @brief The Vertex Array Object for the Window, it contains Multiple States about the Window's OpenGL state.
 	/// It describes the VBO and EBO.
@@ -162,16 +165,28 @@ typedef struct buffer_object {
 }buffer_object;
 #define bufferobj_t buffer_object
 
+typedef struct tex_format{
+	GLenum target,
+		pixel_format,
+		pixel_type
+	;
+	GLint level,
+		internalFormat,
+		depth;
+}tex_format;
+#define texformat_t tex_format
+
 typedef struct texture_image {
 	int width, height, color_channels;
 	GLuint ID;
 	uint8_t unit;
 	unsigned char* img;
 	float border[4];
+	texformat_t *format;
 }texture_image;
 #define image_t texture_image
 
-typedef enum BUFFER_OPTIONS {
+typedef enum BUFFER_OPTIONS{
 	//For single buffer objects.
 	BUFFER_OPTIONS_CLEAR = 0,
 	//For single buffer objects.
@@ -208,7 +223,7 @@ typedef enum BUFFER_OPTIONS {
 
 
 // Define your function pointer types using the forward-declared struct
-typedef void (*poll_do)(void* self, size_t pollcycles);
+typedef void (*poll_do)(void *self, size_t polls, uint32_t pollcycles);
 typedef void (*poll_kill)(void* self);
 
 typedef struct window{
@@ -221,11 +236,17 @@ typedef struct window{
 	shaderblock_t* shaders;
 	size_t textures_len, shaders_curr, vert_count;
 	
-	size_t buffer_len, buffer_curr;
+	size_t buffer_len;
 	bufferobj_t* buffers;
 	uint32_t x, y, w, h;
 }window;
 #define win_t window
+
+typedef struct poll_intermediary{
+	win_t *window;
+	size_t poll_cycles;
+}poll_intermediary;
+#define ipoll_t poll_intermediary
 
 // It is common practice to define the structs before their aliases.
 typedef struct Color4 {
@@ -238,7 +259,7 @@ typedef struct Color4 {
 // The function pointer parameter should be a pointer to the `poll_do` type, not a pointer to a pointer.
 // Also, the return type should be `window *`
 win_t* win_init(char* name, GLFWerrorfun error_handle, poll_do poll_do_, poll_kill poll_kill_, uint32_t w, uint32_t h);
-void win_poll(win_t* win);
+void win_poll(win_t *win, pthread_attr_t *thread_attr);
 bool win_shouldclose(win_t* win);
 void win_kill(win_t* win);
 
@@ -266,6 +287,26 @@ OLD_TYPE_NAME_HASHES:
 
 */
 
+#define SHADER_INDEX_LEN 4
+/*
+Shader setting conventions:
+	[0 - 4]: OpenGL Version,
+	[5]: Core or Compatibility?
+	[6 - 10]: Vertex Shader index
+	[11 - 15]: Fragment Shader index
+	[16 - 20]: Geometry Shader index
+	[21 - 25]: Tesselation Eval index
+	[26 - 30]: Tess Control index
+*/
+typedef struct decoded_settings{
+	const uint32_t vsindex,
+		fsindex,
+		gsindex,
+		tesindex,
+		tcsindex;
+	char *version;
+}decoded_settings;
+#define dsetting_t decoded_settings
 
 
 bool cwd_init();
@@ -283,9 +324,10 @@ arrk_t *uniform_init(size_t *uniform_len, const GLuint shaderProgram);
 bool uniform_write(shaderblock_t* shader, const char* type, const char* name, const void* property_, const bool transpose, void* value, const size_t num_elements);
 void uniform_free(shaderblock_t * shader);
 void* buffer_bufferdo(bufferobj_t * buffer, const size_t len, const BUFFER_OPTIONS option);
-bufferobj_t* win_buffercurr(win_t * win);
 void handle_glfw_error_default(int error_code, const char *msg);
 
 shaderblock_t *shaderblock_gen(bool clean, bool do_uniforms);
+void shaderblock_handle(shaderblock_t *sb, bool clean, bool do_uniforms);
+bufferobj_t *bufferobj_gen(mesh_t *mesh, const GLenum draw_format, const int pos_layout, int col_layout, int tex_layout);
 void bufferobject_handle(bufferobj_t *buffer, GLfloat *vertices, size_t v_len, GLuint *index_order, size_t index_len, GLenum draw_format, uint8_t max_tries);
 #endif

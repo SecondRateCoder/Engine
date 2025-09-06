@@ -84,37 +84,48 @@ void CheckGLError(const char* file, int line, const char* call){
 /// @param color_layout The layout index to apply a reference to the model's color data.
 /// @param texture_layout The layout index to apply a reference to the model's texture co-ordinate data.
 /// @param _mesh The _mesh to be appended.
-void mesh_attrlink(bufferobj_t *buffer, uint32_t pos_layout,  uint32_t color_layout,  uint32_t texture_layout, mesh_t *_mesh){
+void mesh_attrlink(bufferobj_t *buffer, const int pos_layout,  const int col_layout,  const int tex_layout, mesh_t *_mesh){
     //Generate new buffers for _mesh.
+    if(glIsVertexArray(buffer->VAO) == GL_FALSE){GLCall(glGenBuffer(&buffer->VAO))}
     if(buffer->VBO == GL_FALSE){GLCall(glGenBuffers(1, &buffer->VBO));}
     if(buffer->EBO == GL_FALSE){GLCall(glGenBuffers(1, &buffer->EBO));}
     GLCall(glBindVertexArray(buffer->VAO));
     
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer->VBO));
     GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->EBO));
-    draw_debug_trace(__FILE__, __LINE__);
+    // draw_debug_trace(__FILE__, __LINE__);
 
     GLCall(glBufferData(GL_ARRAY_BUFFER, _mesh->data_len, _mesh->mesh_data, GL_STATIC_DRAW));
     GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, _mesh->index_len, _mesh->vertex_index, GL_STATIC_DRAW));
-    draw_debug_trace(__FILE__, __LINE__);
+    // draw_debug_trace(__FILE__, __LINE__);
 
     size_t pos_offset = 0;
     size_t color_offset = sizeof(GLfloat) * _mesh->vertex_stride;
     size_t tex_offset = color_offset + sizeof(GLfloat) * _mesh->color_stride;
+    mesh->pos_layoutindex = pos_layout;
+    mesh->color_layoutindex = col_layout;
+    mesh->local_texcoordinates_layoutindex = tex_layout;
 
     const size_t stride = sizeof(GLfloat) * (_mesh->vertex_stride + _mesh->color_stride + _mesh->dpi_stride);
-    GLCall(glVertexAttribPointer(_mesh->pos_layoutindex, _mesh->vertex_stride, GL_FLOAT, GL_FALSE, stride, (void*)pos_offset));
-    GLCall(glEnableVertexAttribArray(_mesh->pos_layoutindex));
-    draw_debug_trace(__FILE__, __LINE__);
+    if(pos_layout != INT32_MIN){
+        GLCall(glVertexAttribPointer(_mesh->pos_layoutindex, _mesh->vertex_stride, GL_FLOAT, GL_FALSE, stride, (void*)pos_offset));
+        GLCall(glEnableVertexAttribArray(_mesh->pos_layoutindex));
+        // draw_debug_trace(__FILE__, __LINE__);
+    }
 
-    GLCall(glVertexAttribPointer(_mesh->color_layoutindex, _mesh->color_stride, GL_FLOAT, GL_FALSE, stride, (void*)color_offset));
-    GLCall(glEnableVertexAttribArray(_mesh->color_layoutindex));
-    draw_debug_trace(__FILE__, __LINE__);
+    if(col_layout != INT32_MIN){
+        GLCall(glVertexAttribPointer(_mesh->color_layoutindex, _mesh->color_stride, GL_FLOAT, GL_FALSE, stride, (void*)color_offset));
+        GLCall(glEnableVertexAttribArray(_mesh->color_layoutindex));
+        // draw_debug_trace(__FILE__, __LINE__);
+    }
 
-    GLCall(glVertexAttribPointer(_mesh->local_texcoordinates_layoutindex, _mesh->dpi_stride, GL_FLOAT, GL_FALSE, stride, (void*)tex_offset));
-    GLCall(glEnableVertexAttribArray(_mesh->local_texcoordinates_layoutindex));
-    draw_debug_trace(__FILE__, __LINE__);
+    if(tex_layout != INT32_MIN){
+        GLCall(glVertexAttribPointer(_mesh->local_texcoordinates_layoutindex, _mesh->dpi_stride, GL_FLOAT, GL_FALSE, stride, (void*)tex_offset));
+        GLCall(glEnableVertexAttribArray(_mesh->local_texcoordinates_layoutindex));
+        // draw_debug_trace(__FILE__, __LINE__);
+    }
 
+    draw_debug_trace(__FILE__, __LINE__);
     GLCall(glBindVertexArray(0));
 }
 
@@ -160,11 +171,19 @@ void mesh_attrlinkf(bufferobj_t *buffer, mesh_t *_mesh, const size_t buffer_inde
 // 	GLCall(glEnableVertexAttribArray(_mesh->local_texcoordinates_layoutindex));
 // }
 
-void mesh_addtexture(mesh_t *m, image_t *texture){
-    //Handle texture.
-    GLCall(glGenTextures(1, &texture->ID));
-    GLCall(glBindTexture(GL_TEXTURE_2D, texture->ID));
+size_t texture_num = 0;
 
+void mesh_bindtexture(mesh_t *m, image_t *texture){
+    //Handle texture.
+    if(memsize(texture->img) == 0){return;}
+    if(glIsTexture(texture->ID) == GL_FALSE){
+        GLCall(glGenTextures(1, &texture->ID));
+        if(glIsTexture(texture->ID) == GL_TRUE){
+            texture->unit = texture_num++;
+            GLCall(glActiveTexture(GL_TEXTURE0 + texture->unit));
+            GLCall(glBindTexture(texture->format->target, texture->ID));
+        }
+    }
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
 	GLCall(glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, texture->border));
@@ -172,35 +191,47 @@ void mesh_addtexture(mesh_t *m, image_t *texture){
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 	
-    GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture->width, texture->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture->img));
-    GLCall(glGenerateMipmap(GL_TEXTURE_2D));
-    //Add to mesh
-    m->textures = realloc(m->textures, sizeof(image_t)* (m->num_textures+1));
-    m->textures[m->num_textures] = *texture;
-    m->num_textures++;
-
-    /*
-    glGenTextures(1, &new_image->ID);
-	glBindTexture(GL_TEXTURE_2D, new_image->ID);
-
-	// Set texture wrapping and filtering options
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-	float borderColor[4] = {
-		(float)border_color->r,
-		(float)border_color->g,
-		(float)border_color->b,
-		(float)border_color->a
-	};
-	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	
-	// Upload image data to the texture
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, new_image->width, new_image->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, new_image->img);
-	glGenerateMipmap(GL_TEXTURE_2D);
-    */
+    const texformat_t *temp = texture->format;
+    switch(temp->target){
+        case GL_TEXTURE_1D:
+        case GL_TEXTURE_1D_ARRAY:
+            GLCall(glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
+            GLCall(glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
+            GLCall(glTexParameterfv(GL_TEXTURE_1D, GL_TEXTURE_BORDER_COLOR, texture->border));
+            
+            GLCall(glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
+            GLCall(glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+            GLCall(glTexImage1D(GL_TEXTURE_1D, temp->level, temp->internalFormat, texture->width, 0, temp->pixel_format, temp->pixel_type, texture->img));
+            GLCall(glGenerateMipmap(GL_TEXTURE_1D));
+            break;
+        case GL_TEXTURE_2D:
+        case GL_TEXTURE_2D_ARRAY:
+            GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
+            GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
+            GLCall(glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, texture->border));
+            
+            GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
+            GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+            GLCall(glTexImage2D(GL_TEXTURE_2D, temp->level, temp->internalFormat, texture->width, texture->height, 0, temp->pixel_format, temp->pixel_type, texture->img));
+            GLCall(glGenerateMipmap(GL_TEXTURE_2D));
+            break;
+        case GL_TEXTURE_3D:
+            GLCall(glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
+            GLCall(glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
+            GLCall(glTexParameterfv(GL_TEXTURE_3D, GL_TEXTURE_BORDER_COLOR, texture->border));
+            
+            GLCall(glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
+            GLCall(glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+            GLCall(glTexImage3D(GL_TEXTURE_3D, temp->level, temp->internalFormat, texture->width, texture->height, temp->depth, 0, temp->pixel_format, temp->pixel_type, texture->img));
+            GLCall(glGenerateMipmap(GL_TEXTURE_3D));
+            break;
+        default:
+            GLCall(glDeleteTextures(1, &texture->ID));
+            texture->ID=0;
+            return;
+    }
+    m->texture = texture;
+    return;
 }
 
 
@@ -240,8 +271,9 @@ bool cwd_init() {
         temp_ = fopen(full_path, "r");
         free(full_path);
 
-        if (temp_) {
+        if (temp_){
             fclose(temp_);
+            printf(ANSI_GREEN("%s"), cwd);
             return true;
         }
 
@@ -260,6 +292,20 @@ bool cwd_init() {
     return false;
 }
 
+void _GLUseprogram(GLuint prog){
+    do{
+        GLint current;
+        glGetIntegerv(GL_CURRENT_PROGRAM, &current);
+        if (current != prog || current == 0){
+            glUseProgram(prog);
+            GLenum err = glGetError();
+            if(err != GL_NO_ERROR){
+                fprintf(stderr, "[OpenGL Error] (%d): glUseProgram(%u)\n", err, prog);
+            }
+        }
+    }while(0);
+}
+
 void draw_debug_trace(const char* file, int line) {
     GLint currentProgram = 0;
     GLint boundVAO = 0;
@@ -271,11 +317,14 @@ void draw_debug_trace(const char* file, int line) {
     glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &boundArrayBuffer);
     glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING, &boundElementBuffer);
 
-    fprintf(stderr, ANSI_YELLOW("\n[Draw Debug Trace] @ %s:%d\n"), file, line);
-    fprintf(stderr, ANSI_YELLOW("  Shader Program: %d\n"), currentProgram);
-    fprintf(stderr, ANSI_YELLOW("  VAO Bound     : %d\n"), boundVAO);
-    fprintf(stderr, ANSI_YELLOW("  VBO Bound     : %d\n"), boundArrayBuffer);
-    fprintf(stderr, ANSI_YELLOW("  EBO Bound     : %d\n"), boundElementBuffer);
+    fprintf(stderr, ANSI_YELLOW(
+        "\n[Draw Debug Trace] @ %s:%d\n"
+        "  Shader Program: %d\n"
+        "  VAO Bound     : %d\n"
+        "  VBO Bound     : %d\n"
+        "  EBO Bound     : %d\n"
+    ), 
+    file, line, currentProgram, boundVAO, boundArrayBuffer, boundElementBuffer);
 
     // Optional: Check for active attributes
     GLint maxAttribs = 0;
@@ -341,8 +390,7 @@ const char fragmentshader_default[118] =
 ;
 size_t len_typenames = 36;
 
-const unsigned int settings_len = 15;
-const unsigned int settings_version_end_index = 5;
+const unsigned int settings_len = 30;
 
 char* vertexshader = NULL,
 	* fragmentshader = NULL,

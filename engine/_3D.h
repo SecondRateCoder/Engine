@@ -17,8 +17,7 @@ typedef struct _mesh{
     /// @brief The length of @ref mesh_index_order.
     size_t index_len;
 
-    size_t num_textures;
-    image_t *textures;
+    image_t *texture;
 
     /// @brief The number of @ref GLfloat values between each vertex, color or texture co-ord.
     uint8_t align_stride;
