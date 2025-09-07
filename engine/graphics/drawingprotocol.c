@@ -87,7 +87,7 @@ char* shadersettings_rw(const char* filepath, char* write){
 	FILE* shaders = fopen(filepath, "r+"); // Open for reading and writing
 
 	if(shaders != NULL){
-		settings = (char*)calloc((settings_len+1), sizeof(char)); // Allocate space for 15 chars + null terminator
+		settings = (char*)calloc((settings_len), sizeof(char)); // Allocate space for 15 chars + null terminator
 		if(settings == NULL){
 			fprintf(stderr, ANSI_RED("Error: Memory allocation failed in shadersettings_rw.\n"));
 			fclose(shaders);
@@ -95,7 +95,7 @@ char* shadersettings_rw(const char* filepath, char* write){
 		}
 
 		if(fread(settings, sizeof(char), settings_len, shaders) != settings_len){
-			fprintf(stderr, ANSI_RED("Error: Could not read 10 characters from file.\n"));
+			fprintf(stderr, ANSI_RED("Error: Could not read %d characters from file.\n"), settings_len);
 			free(settings);
 			settings = NULL;
 		}else{settings[settings_len] = '\0';}
@@ -114,7 +114,7 @@ char* shadersettings_rw(const char* filepath, char* write){
 void shaders_pull(const char *filepath){shader_pull(filepath, (bool[5]){true, true, false, false, false});}
 
 uint32_t parse_shader_index(const char *settings, uint8_t offset, const uint8_t len){
-	char *temp = malloc(sizeof(settings[0])* (len));
+	char *temp = malloc(sizeof(settings[0])* (len + 1));
 	uint8_t cc_ = 0;
 	for(uint8_t cc =offset; cc < (len < strlen(settings)? len: strlen(settings)); ++cc, ++cc_){
 		temp[cc_] = settings[cc];
@@ -134,9 +134,20 @@ dsetting_t settings_decode(char settings[settings_len]){
 		.tcsindex = parse_shader_index(settings, 26, SHADER_INDEX_LEN),
 		.version = NULL
 	};
-	out.version = calloc(strlen("\n#version ") + 4, sizeof(settings[0]));
-	memcpy(out.version, "\n#version ", strlen("\n#version ")* sizeof(settings[0]));
-	memcpy(&out.version[strlen("\n#version ")], settings, 4* sizeof(settings[0]));
+	out.version = calloc(15, sizeof(settings[0]));
+	memcpy(out.version, "\n#version ", 10* sizeof(settings[0]));
+	memcpy(&out.version[10], settings, 4* sizeof(settings[0]));
+	if(settings[5] == '0'){
+		out.version = realloc(out.version, strlen(out.version) + 6);
+		memcpy(&out.version[14], " core", 5* sizeof(settings[0]));
+		out.version[19] = '\0';
+	}else{
+		out.version = realloc(out.version, strlen(out.version) + 15);
+		memcpy(&out.version[14], " compatibility", 15* sizeof(settings[0]));
+		out.version[14] = '\0';
+	}
+	out.version_len = strlen(out.version);
+	return out;
 }
 
 
@@ -165,6 +176,7 @@ void shader_pull(const char *filepath, const bool redo_shaders[5]){
 		free(tessellation_evaluationshader);
     	tessellation_evaluationshader = NULL;
 	}
+
 	char *settings = shadersettings_rw(filepath, NULL);
 	settings[settings_len] = '\0';
 	FILE *text = fopen(filepath, "rb");
@@ -176,7 +188,7 @@ void shader_pull(const char *filepath, const bool redo_shaders[5]){
 
 
     int vs_cc = -1, fs_cc = -1, gs_cc = -1, tes_cc = -1, tcs_cc = -1;
-	"3.300000000000";
+	"3300000000000000000000000";
     char line_buffer[256];
     size_t start_pos, end_pos;
 	while(fgets(line_buffer, sizeof(line_buffer), text)){
@@ -223,51 +235,56 @@ void shader_pull(const char *filepath, const bool redo_shaders[5]){
 						if(which_[0]){
 							//VERTEX.
 							vs_cc++;
-							if(vs_cc == vsindex){
-								while(vertexshader == NULL){vertexshader = calloc(offs, sizeof(char));}
-								fread(vertexshader, sizeof(char), end_pos -start_pos + 1, text);
-								memset(&vertexshader[sizeof(vertexshader[0])* (offs-1)], '\0', strlen(vertexshader)- offs);
+							if(vs_cc == decoded.vsindex){
+								vertexshader = strdup(decoded.version);
+								while(vertexshader == NULL){vertexshader = realloc(vertexshader, sizeof(char)* (offs + decoded.version_len));}
+								fread(&vertexshader[decoded.version_len], sizeof(char), end_pos -start_pos + 1, text);
+								vertexshader[decoded.version_len + offs - 1] = '\0';
 								printf(ANSI_YELLOW("vertexshader:\n %s"), vertexshader);
 								continue;
 							}
 						}else if(which_[1]){
 							//FRAGMENT.
 							fs_cc++;
-							if(fs_cc == fsindex){
-								while(fragmentshader == NULL){fragmentshader = calloc(offs, sizeof(char));}
-								fread(fragmentshader, sizeof(char), end_pos -start_pos + 1, text);
-								memset(&fragmentshader[offs* sizeof(fragmentshader[0])], '\0', strlen(fragmentshader)- offs);
+							if(fs_cc == decoded.fsindex){
+								fragmentshader = strdup(decoded.version);
+								while(fragmentshader == NULL){fragmentshader = realloc(fragmentshader, sizeof(char)* (offs + decoded.version_len));}
+								fread(&fragmentshader[decoded.version_len], sizeof(char), end_pos -start_pos + 1, text);
+								fragmentshader[decoded.version_len + offs - 1] = '\0';
 								printf(ANSI_YELLOW("fragmentshader:\n %s"), fragmentshader);
 								continue;
 							}
 						}else if(which_[2]){
 							//GEOMETRY.
 							gs_cc++;
-							if(gs_cc == gsindex){
-								while(geometryshader == NULL){geometryshader = calloc(offs, sizeof(char));}
-								fread(geometryshader, sizeof(char), end_pos -start_pos + 1, text);
-								memset(&geometryshader[offs* sizeof(geometryshader[0])], '\0', strlen(geometryshader)- offs);
+							if(gs_cc == decoded.gsindex){
+								geometryshader = strdup(decoded.version);
+								while(geometryshader == NULL){vertexshader = realloc(geometryshader, sizeof(char)* (offs + decoded.version_len));}
+								fread(&geometryshader[decoded.version_len], sizeof(char), end_pos -start_pos + 1, text);
+								geometryshader[decoded.version_len + offs - 1] = '\0';
 								printf(ANSI_YELLOW("geometryshader:\n %s"), geometryshader);
 								continue;
 							}
 						}else if(which_[3]){
 							//TESSELATION EVAL.
 							tes_cc++;
-							if(tes_cc == tesindex){
-								while(tessellation_evaluationshader == NULL){tessellation_evaluationshader = calloc(offs, sizeof(char));}
-								fread(tessellation_evaluationshader, sizeof(char), end_pos -start_pos + 1, text);
-								memset(&tessellation_evaluationshader[offs* sizeof(tessellation_evaluationshader[0])], '\0', strlen(tessellation_evaluationshader)- offs);
-								printf(ANSI_YELLOW("tessellation_evaluationshader:\n %s"), tessellation_evaluationshader);
+							if(tes_cc == decoded.tesindex){
+								tessellation_evaluationshader= strdup(decoded.version);
+								while(tessellation_evaluationshader == NULL){vertexshader = realloc(tessellation_evaluationshader, sizeof(char)* (offs + decoded.version_len));}
+								fread(&tessellation_evaluationshader[decoded.version_len], sizeof(char), end_pos -start_pos + 1, text);
+								tessellation_evaluationshader[decoded.version_len + offs - 1] = '\0';
+								printf(ANSI_YELLOW("tessellation evaluation shader:\n %s"), tessellation_evaluationshader);
 								continue;
 							}
 						}else if(which_[4]){
 							//TESSELLATION CONTROL
 							tcs_cc++;
-							if(tcs_cc == tcsindex){
-								while(tessellation_controlshader == NULL){tessellation_controlshader = calloc(offs, sizeof(char));}
-								fread(tessellation_controlshader, sizeof(char), end_pos -start_pos + 1, text);
-								memset(&tessellation_controlshader[offs* sizeof(tessellation_controlshader[0])], '\0', strlen(tessellation_controlshader)- offs);
-								printf(ANSI_YELLOW("tessellation_controlshader:\n %s"), tessellation_controlshader);
+							if(tcs_cc == decoded.tcsindex){
+								vertexshader = strdup(decoded.version);
+								while(tessellation_controlshader == NULL){tessellation_controlshader = realloc(tessellation_controlshader, sizeof(char)* (offs + decoded.version_len));}
+								fread(&tessellation_controlshader[decoded.version_len], sizeof(char), end_pos -start_pos + 1, text);
+								tessellation_controlshader[decoded.version_len + offs - 1] = '\0';
+								printf(ANSI_YELLOW("tesselation control shader:\n %s"), tessellation_controlshader);
 								continue;
 							}
 						}
@@ -277,8 +294,14 @@ void shader_pull(const char *filepath, const bool redo_shaders[5]){
 		}
 		memset(line_buffer, 0, 256);
 	}
-    if (vertexshader == NULL){fprintf(stderr, ANSI_YELLOW("Warning: Vertex shader with index %d not found, using default: \"%s\".\n"), vsindex, vertexshader_default);}
-    if (fragmentshader == NULL){printf(ANSI_YELLOW("Warning: Fragment shader with index %d not found, using default: \" %s \".\n"), fsindex, fragmentshader_default);}
+    if (vertexshader == NULL){
+		fprintf(stderr, ANSI_YELLOW("Warning: Vertex shader with index %d not found, using default: \n\t\" %s \t\".\n"), decoded.vsindex, vertexshader_default);
+		vertexshader = strdup(vertexshader_default);
+	}
+    if (fragmentshader == NULL){
+		printf(ANSI_YELLOW("Warning: Fragment shader with index %d not found, using default: \n\t\" %s \n\".\n"), decoded.fsindex, fragmentshader_default);
+		fragmentshader = strdup(fragmentshader_default);
+	}
 }
 
 // Corrected uniform_init function.

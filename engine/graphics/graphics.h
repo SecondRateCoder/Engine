@@ -304,6 +304,7 @@ typedef struct decoded_settings{
 		gsindex,
 		tesindex,
 		tcsindex;
+	uint32_t version_len;
 	char *version;
 }decoded_settings;
 #define dsetting_t decoded_settings

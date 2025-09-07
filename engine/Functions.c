@@ -390,7 +390,7 @@ const char fragmentshader_default[118] =
 ;
 size_t len_typenames = 36;
 
-const unsigned int settings_len = 30;
+const unsigned int settings_len = 26;
 
 char* vertexshader = NULL,
 	* fragmentshader = NULL,
