@@ -1,0 +1,1 @@
+& (Join-Path (Get-Location) "\\Compilation-Scripts\\Make.ps1") -SourceDirectory "$(Get-Location)\\engine\" -OutputExecutableName "engine" -Libraries "glfw3" -GccFlags "-O1", "-Wextra", "-std=c99", "-Wall", "-pedantic", "-g", "-fdiagnostics-color=always"

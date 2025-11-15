@@ -86,12 +86,8 @@ bool uint128_t_comp (const uint128_t a, const uint128_t b);
 #include <cglm/cglm.h>
 
 // 8. Engine headers
-#include "../engine/graphics/graphics.h"   // defines image_t, bufferobj_t
-#include "../engine/_3D.h"                 // uses mesh_t, image_t, bufferobj_t
-
-
-// 9. Global engine object
-extern mesh_t *mesh;
+#include "../graphics/graphics.h"   // defines image_t, bufferobj_t
+#include "../_3D.h"                 // uses mesh_t, image_t, bufferobj_t
 
 // 10. Mesh helpers
 void mesh_attrlink(bufferobj_t *buffer, const int pos_layout,  const int col_layout,  const int tex_layout, mesh_t *_mesh);
@@ -104,6 +100,7 @@ extern char *cwd;
 extern size_t cwd_len;
 bool cwd_init();
 
+extern const float sqrt3;
 extern const char vertexshader_default[142];
 extern const char fragmentshader_default[118];
 extern const unsigned int settings_len;
@@ -119,9 +116,7 @@ extern size_t len_typenames;
 extern char* vertexshader,
 	* fragmentshader,
 	* geometryshader,
-	** shader_typenames,
-	*tessellation_controlshader,
-	*tessellation_evaluationshader
+	** shader_typenames
 	/**computeshader*/
 ;
 extern const char* builtin_shader_typenames[];

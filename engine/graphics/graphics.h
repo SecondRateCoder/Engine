@@ -1,11 +1,11 @@
-// #pragma once
+#pragma once
 
 #include "../Public.h"
+#include "../_3D.h"
 // #include "../_3D.h"
 // #include "./window/window.h"
 // #include <stdint.h>
 #include <string.h>
-#include <pthread.h>
 // #include <stdbool.h>
 
 
@@ -115,8 +115,6 @@ typedef struct ComputeShaderBlock {
 	[1]: Is Vertex Shader compiled?
 	[2]: Is Fragment Shader compiled?
 	[3]: Is Geometry Shader compiled?
-	[4]: Is Tessellation Control Shader compiled?
-	[5]: Is Tesselation Evaluation Shader compiled?
 	! DEPRECATED, [6]: Is Compute Shader compiled?
 	[6]: Is ShaderBlock usable?
 	*/
@@ -124,90 +122,15 @@ typedef struct ComputeShaderBlock {
 	size_t uniform_len;
 	/// @brief A List of (size_t, char *) to support uniform access in @ref uniforms.
 	arrk_t* uniforms;
+	char *vertex, *fragment, *geometry;
 	GLuint shaderProgram,
 		vertexshader,
 		fragmentshader,
-		geometryshader,
-		tessellation_controlshader, 
-		tessellation_evaluationshader
+		geometryshader
 		// *computeShader
 		;
 }ComputeShaderBlock;
 #define shaderblock_t ComputeShaderBlock
-
-typedef struct buffer_object {
-	/*
-	[0]: Is VAO set-up?
-	[1]: Is VBO set-up?
-	[2]: Is EBO set-up?
-	*/
-	bool buffer_[3];
-	size_t element_num,
-		vertex_num;
-
-	/// @brief The Vertex Array Object for the Window, it contains Multiple States about the Window's OpenGL state.
-	/// It describes the VBO and EBO.
-	/// @remark VAO is used to store the state of the OpenGL pipeline.
-	GLuint VAO;
-
-	/// @brief An array of VBO GLuint IDs, for accessing each VBO element.
-	/// As in, the Literal GLfloat vertices to be drawn.
-	/// Accepts whole Model's, in the format of Vertex arrays.
-	/// @remark VBO is used to store the vertex data for the OpenGL pipeline.
-	GLuint VBO;
-	/// @brief An array of EBO GLuint IDs, for accessing each one.
-	/// @remark The EBO is used to store the index data for the OpenGL pipeline, 
-	/// if there is only one the same EBO will be applied to each VBO item.
-	/// If EBO_curr isn't equal to VBO_curr, this buffer_oject is considered invalid.
-	/// If it is invalid and there are no other valid buffer_objects then the first EBO item will be used.
-	/// If there are no EBOs then a default will be attributed.
-	GLuint EBO;
-}buffer_object;
-#define bufferobj_t buffer_object
-
-typedef struct tex_format{
-	GLenum target,
-		pixel_format,
-		pixel_type
-	;
-	GLint level,
-		internalFormat,
-		depth;
-}tex_format;
-#define texformat_t tex_format
-
-typedef struct texture_image {
-	int width, height, color_channels;
-	GLuint ID;
-	uint8_t unit;
-	unsigned char* img;
-	float border[4];
-	texformat_t *format;
-}texture_image;
-#define image_t texture_image
-
-typedef enum BUFFER_OPTIONS{
-	//For single buffer objects.
-	BUFFER_OPTIONS_CLEAR = 0,
-	//For single buffer objects.
-	BUFFER_OPTIONS_CLEAR_VBO = 1,
-	//For single buffer objects.
-	BUFFER_OPTIONS_CLEAR_EBO = 2,
-	//For single buffer objects.
-	BUFFER_OPTIONS_FREE = 3,
-
-	//For multiple buffer objects.
-	BUFFER_OPTIONS_FREE_ALL = 4,
-	//For multiple buffer objects.
-	BUFFER_OPTIONS_CLEAR_VAO = 5,
-	//For multiple buffer objects.
-	BUFFER_OPTIONS_COLLECT_VAO = 6,
-	//For multiple buffer objects.
-	BUFFER_OPTIONS_COLLECT_VBO_MULTIPLE = 7,
-	//For multiple buffer objects.
-	BUFFER_OPTIONS_COLLECT_EBO_MULTIPLE = 8,
-}BUFFER_OPTIONS;
-
 
 // #include <excpt.h> // This is a Windows-specific header and may not be portable.
 
@@ -221,23 +144,30 @@ typedef enum BUFFER_OPTIONS{
 // /// @brief A function called when the Window should be killed.
 // typedef void (*poll_kill)(struct win_t*);
 
+typedef struct scene_header{
+	char *name;
+}scene_header;
+typedef struct scene_type{
+	shaderblock_t* shaders;
+	size_t shader_num, meshes_num;
+	int32_t shader_curr;
+	scene_header header;
+	mesh_t *meshes;
+}scene_type;
+#define scene_t scene_type
 
 // Define your function pointer types using the forward-declared struct
 typedef void (*poll_do)(void *self, size_t polls, uint32_t pollcycles);
 typedef void (*poll_kill)(void* self);
 
+#define wscene_curr(WIN) ((scene_t)WIN->scenes[*WIN->loaded_scenes])
 typedef struct window{
 	GLFWwindow* g_window;
 	char* name;
-	/// @brief A counter that controls the offsets of layouts.
-	uint32_t layout_offset;
 	poll_do polld;
 	poll_kill pollk;
-	shaderblock_t* shaders;
-	size_t textures_len, shaders_curr, vert_count;
-	
-	size_t buffer_len;
-	bufferobj_t* buffers;
+	size_t scene_num, *loaded_scenes;
+	scene_t *scenes;
 	uint32_t x, y, w, h;
 }window;
 #define win_t window
@@ -248,18 +178,12 @@ typedef struct poll_intermediary{
 }poll_intermediary;
 #define ipoll_t poll_intermediary
 
-// It is common practice to define the structs before their aliases.
-typedef struct Color4 {
-	// @brief a: 1.0f := Solid, 0.0f := Transparent.
-	float a, r, g, b;
-} Color4;
-#define argb_t Color4
 
 
 // The function pointer parameter should be a pointer to the `poll_do` type, not a pointer to a pointer.
 // Also, the return type should be `window *`
 win_t* win_init(char* name, GLFWerrorfun error_handle, poll_do poll_do_, poll_kill poll_kill_, uint32_t w, uint32_t h);
-void win_poll(win_t *win, pthread_attr_t *thread_attr);
+void win_poll(win_t *win);
 bool win_shouldclose(win_t* win);
 void win_kill(win_t* win);
 
@@ -316,7 +240,6 @@ void shader_pull(const char *filepath, const bool redo_shaders[5]);
 bool shader_error(shaderblock_t* sb_t, const char* type);
 char* shadersettings_rw(const char* filepath, char* write);
 shaderblock_t* shader_compile(bool delete_shaders_on_link);
-#include "../_3D.h"
 void win_draw(win_t *win, mesh_t *_mesh);
 void win_flood(win_t *win, const argb_t c);
 // void winimage_append(win_t *win, const char *filepath, const argb_t *border_color);
@@ -326,9 +249,18 @@ bool uniform_write(shaderblock_t* shader, const char* type, const char* name, co
 void uniform_free(shaderblock_t * shader);
 void* buffer_bufferdo(bufferobj_t * buffer, const size_t len, const BUFFER_OPTIONS option);
 void handle_glfw_error_default(int error_code, const char *msg);
+mesh_t *mesh_gen(GLfloat *vertices, GLuint *indices, size_t len[2], uint8_t strides[4], uint32_t layout_indices[3], GLenum format, image_t *texture);
+image_t *image_gen(uint8_t color_channels, char *image_path, float border[4], texformat_t format);
 
 shaderblock_t *shaderblock_gen(bool clean, bool do_uniforms);
 void shaderblock_handle(shaderblock_t *sb, bool clean, bool do_uniforms);
 bufferobj_t *bufferobj_gen(mesh_t *mesh, const GLenum draw_format, const int pos_layout, int col_layout, int tex_layout);
 void bufferobject_handle(bufferobj_t *buffer, GLfloat *vertices, size_t v_len, GLuint *index_order, size_t index_len, GLenum draw_format, uint8_t max_tries);
+
+scene_t *scene_load(const char *path);
+void scene_draw(scene_t *scene);
+bool scene_save(scene_t *scene, char *target_file);
+void scene_kill(scene_t *scene, bool save);
+void **scene_bufferdo(scene_t *scene, const BUFFER_OPTIONS option);
+scene_t *scene_gen(char *name, mesh_t *meshes, shaderblock_t *shaders, size_t len[2]);
 #endif

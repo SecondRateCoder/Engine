@@ -1,10 +1,13 @@
 {
     "configurations": [
+        
+        
         {
-            "name": "(gdb) Launch",
+            "name": "(gdb) Debug engine",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${cwd}\\Build\\engine.exe",
+            "preLaunchTask": "Build engine",
+            "program": "${cwd}\\build\\temp\\engine.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
@@ -16,12 +19,37 @@
                 {
                     "description": "Enable pretty-printing for gdb",
                     "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
+                    "ignoreFailures": false
                 },
                 {
                     "description": "Set Disassembly Flavor to Intel",
                     "text": "-gdb-set disassembly-flavor intel",
-                    "ignoreFailures": true
+                    "ignoreFailures": false
+                }
+            ]
+        },
+        {
+            "name": "(gdb) Quick-Debug engine",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${cwd}\\build\\temp\\engine.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "miDebuggerPath": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": false
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": false
                 }
             ]
         },
@@ -36,7 +64,7 @@
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "miDebuggerPath": "gdb.exe",
+            "miDebuggerPath": "gdb",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",

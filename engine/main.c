@@ -9,7 +9,6 @@
 #include "./graphics/graphics.h"
 
 const float sqrt3 =  1.7320508075688772935274463415059f;
-mesh_t *mesh;
 uint8_t unit =0;
 
 // Assuming 'cwd' is a global variable populated by cwd_init() from your Public.h
@@ -39,8 +38,8 @@ void poll_draw(void *self, size_t polls, uint32_t pollcycles){
     // GLUseProgram(win->shaders[win->shaders_curr].shaderProgram);
     // glUniform1i(tex0_uni, 0);
     const vec3 offs_temp = {-1.5f, sin(polls), -0.5f};
-    uniform_write(win->shaders, "vec3", "offs", NULL, true, &offs_temp, 3);
-    uniform_write(win->shaders, "mat4", "matrix", NULL, true, out, 1);
+    uniform_write(wscene_curr(win).shaders + wscene_curr(win).shader_curr, "vec3", "offs", NULL, true, &offs_temp, 3);
+    uniform_write(wscene_curr(win).shaders + wscene_curr(win).shader_curr, "mat4", "matrix", NULL, true, out, 1);
 
     // Note: Passing strings like "mat4\0" is redundant. "mat4" is sufficient.
     // uniform_write(win->shaders, "mat4", "matrices", "\0", true, out, 9);
@@ -51,7 +50,8 @@ void poll_draw(void *self, size_t polls, uint32_t pollcycles){
     return;
 }
 
-const GLfloat mesh_data[48] = {
+const GLfloat vertdata[48] = {
+    // Position coords                      // Color data           // Texture coords
     -0.5f,   (-0.5f * sqrt3) / 3,    0,      8.0f, 0.3f, 0.2f,    0.0f, 5.0f,
     0.5f,    (-0.5f * sqrt3) / 3,    0,      8.0f, 0.3f, 0.2f,    5.0f, 0.0f,
     -0.5f,   (-0.5f * sqrt3 * 2) / 3,0,      8.0f, 0.3f, 0.2f,    0.0f, 0.0f,
@@ -60,7 +60,7 @@ const GLfloat mesh_data[48] = {
     0.0f,    (0.5f * sqrt3) / 3,     0,      8.0f, 0.3f, 0.2f,    2.5f, 10.0f // Example texture coords
 };
 
-const GLuint mesh_index[18] = {
+const GLuint indexdata[18] = {
     0, 1, 2,
     0, 2, 3,
     0, 1, 4,
@@ -99,11 +99,11 @@ void test_win_init(){
     buffer->buffer_[1] = false;
     buffer->buffer_[2] = false;
 
-    mesh = calloc(sizeof(mesh), 1);
-    mesh->mesh_data = malloc(sizeof(GLfloat)* 48);
-    memcpy(mesh->mesh_data, mesh_data, 48* sizeof(GLfloat));
-    mesh->vertex_index = malloc(sizeof(GLuint)* 18);
-    memcpy(mesh->vertex_index, mesh_index, 18* sizeof(GLuint));
+    mesh_t *mesh = calloc(1, sizeof(mesh_t));
+    mesh->vertex_data = malloc(sizeof(GLfloat)* 48);
+    memcpy(mesh->vertex_data, vertdata, 48* sizeof(GLfloat));
+    mesh->index_data = malloc(sizeof(GLuint)* 18);
+    memcpy(mesh->index_data, indexdata, 18* sizeof(GLuint));
 
     mesh->data_len = 48;
     mesh->index_len = 18;
@@ -113,7 +113,7 @@ void test_win_init(){
     mesh->pos_layoutindex = 0;
     mesh->color_layoutindex = 1;
     mesh->local_texcoordinates_layoutindex = 2;
-    bufferobject_handle(buffer, mesh->mesh_data, mesh->data_len, mesh->vertex_index, mesh->index_len, GL_STATIC_DRAW, 3);
+    bufferobject_handle(buffer, mesh->vertex_data, mesh->data_len, mesh->index_data, mesh->index_len, GL_STATIC_DRAW, 3);
     mesh_attrlink(buffer, 0, 1, 2, mesh);
     mesh->texture = malloc(sizeof(image_t));
     GLCall(glGenTextures(1, &(mesh->texture[0].ID)));
@@ -162,73 +162,86 @@ void test_win_init(){
 
 }
 
+#ifdef _WIN32
+#include <windows.h>
+void enableANSI() {
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD dwMode = 0;
+    if (hOut == INVALID_HANDLE_VALUE){return;}
+    if (!GetConsoleMode(hOut, &dwMode)){return;}
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hOut, dwMode);
+}
+
+#endif
+
 int main(){
     cwd_init();
-    // test_win_init();
-    // return EXIT_SUCCESS;
-    win_t *mainw = win_init("MainWindow", NULL, poll_draw, NULL, 1000, 800);
-    mainw->shaders = shaderblock_gen(true, true);
-    
-    mesh = calloc(sizeof(mesh), 1);
-    mesh->mesh_data = malloc(sizeof(GLfloat)* 48);
-    memcpy(mesh->mesh_data, mesh_data, 48* sizeof(GLfloat));
-    mesh->vertex_index = malloc(sizeof(GLuint)* 18);
-    memcpy(mesh->vertex_index, mesh_index, 18* sizeof(GLuint));
-    mesh->texture = calloc(1, sizeof(image_t));
-    
-    mesh->data_len = 48;
-    mesh->index_len = 18;
-    mesh->vertex_stride = 3;
-    mesh->color_stride = 3;
-    mesh->dpi_stride = 2;
-    mesh->pos_layoutindex = 0;
-    mesh->color_layoutindex = 1;
-    mesh->local_texcoordinates_layoutindex = 2;
-
-    mesh->texture->width = 800;
-    mesh->texture->height = 200;
-    mesh->texture->border[0] = 1;
-    mesh->texture->border[1] = 1;
-    mesh->texture->border[2] = 1;
-    mesh->texture->border[3] = 1;
-    mesh->texture->color_channels = 4;
-    mesh->texture->format = calloc(1, sizeof(texformat_t));
-    *mesh->texture->format = (texformat_t){
-        .target = GL_TEXTURE_2D,
-        .pixel_format = GL_RGBA,
-        .pixel_type = GL_UNSIGNED_BYTE,
-        .level = 0,
-        .internalFormat = GL_RGBA,
-        .depth = 0,
-    };
+#ifdef _WIN32
+    enableANSI();
+#endif
     char *temp = strdup(cwd);
     temp = realloc(temp, strlen(cwd)+ strlen("\\Resources\\Textures\\no_texture.png"));
     strncat(temp, "\\Resources\\Textures\\no_texture.png", strlen("\\Resources\\Textures\\no_texture.png"));
-    mesh->texture->img = stbi_load(
-        temp,
-        &mesh->texture->width,
-        &mesh->texture->height,
-        &mesh->texture->color_channels,
-        4
-    );
-    free(temp);
-    mesh_bindtexture(mesh, mesh->texture);
+    
+    win_t *mainw = win_init("MainWindow", NULL, poll_draw, NULL, 1000, 800);
+    // mesh = calloc(sizeof(mesh), 1);
+    // mesh->vertex_data = malloc(sizeof(GLfloat)* 48);
+    // memcpy(mesh->vertex_data, vertex_data, 48* sizeof(GLfloat));
+    // mesh->index_data = malloc(sizeof(GLuint)* 18);
+    // memcpy(mesh->index_data, mesh_index, 18* sizeof(GLuint));
+    // mesh->texture = calloc(1, sizeof(image_t));
+    
+    // mesh->data_len = 48;
+    // mesh->index_len = 18;
+    // mesh->vertex_stride = 3;
+    // mesh->color_stride = 3;
+    // mesh->dpi_stride = 2;
+    // mesh->pos_layoutindex = 0;
+    // mesh->color_layoutindex = 1;
+    // mesh->local_texcoordinates_layoutindex = 2;
 
-    mainw->buffers = bufferobj_gen(mesh, GL_STATIC_DRAW, 0, 1, 2);
-    mainw->buffer_len = 1;
-    mesh->texture = malloc(sizeof(image_t));
+    // mesh->texture->width = 800;
+    // mesh->texture->height = 200;
+    // mesh->texture->border[0] = 1;
+    // mesh->texture->border[1] = 1;
+    // mesh->texture->border[2] = 1;
+    // mesh->texture->border[3] = 1;
+    // mesh->texture->color_channels = 4;
+    // // mesh->texture->format = calloc(1, sizeof(texformat_t));
+    // mesh->texture->format = (texformat_t){
+    //     .target = GL_TEXTURE_2D,
+    //     .pixel_format = GL_RGBA,
+    //     .pixel_type = GL_UNSIGNED_BYTE,
+    //     .level = 0,
+    //     .internalFormat = GL_RGBA,
+    //     .depth = 0,
+    // };
+    // mesh->texture->img = stbi_load(
+    //     temp,
+    //     &mesh->texture->width,
+    //     &mesh->texture->height,
+    //     &mesh->texture->color_channels,
+    //     4
+    // );
+    // free(temp);
+    mesh_bindtexture(wscene_curr(mainw).meshes, wscene_curr(mainw).meshes->texture);
+
+    // mainw->buffers = bufferobj_gen(mesh, GL_STATIC_DRAW, 0, 1, 2);
+    // mainw->buffer_len = 1;
+    // mesh->texture = malloc(sizeof(image_t));
 
     const float _temp = 0.5f;
     const GLenum _temp_ = GL_TEXTURE_2D;
-    uniform_write(mainw->shaders, "float", "scale", NULL, false, &_temp, 1);
+    uniform_write(wscene_curr(mainw).shaders, "float", "scale", NULL, false, &_temp, 1);
     // GLCall(glGenTextures())
-    uniform_write(mainw->shaders, "sampler2D", "tex0", &_temp_, false, &mesh->texture[0].unit, 1);
+    uniform_write(wscene_curr(mainw).shaders, "sampler2D", "tex0", &_temp_, false, &wscene_curr(mainw).meshes->texture[0].unit, 1);
     vec3 offs_temp = {-1.5f, -2.0f, -0.5f};
-    uniform_write(mainw->shaders, "vec3", "offs", NULL, true, &offs_temp, 3);
+    uniform_write(wscene_curr(mainw).shaders, "vec3", "offs", NULL, true, &offs_temp, 3);
 
-    mainw->vert_count = 8;
+    // mainw->vert_count = 8;
     glEnable(GL_DEPTH);
-    win_poll(mainw, NULL);
+    win_poll(mainw);
     if(mainw->g_window != NULL){win_kill(mainw);}
     
     return EXIT_SUCCESS; // Returning 0 is standard for a successful execution

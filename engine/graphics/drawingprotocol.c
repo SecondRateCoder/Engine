@@ -29,8 +29,6 @@ Shader setting conventions:
 	[6 - 10]: Vertex Shader index
 	[11 - 15]: Fragment Shader index
 	[16 - 20]: Geometry Shader index
-	[21 - 25]: Tesselation Eval index
-	[26 - 30]: Tess Control index
 */
 
 
@@ -154,27 +152,19 @@ dsetting_t settings_decode(char settings[settings_len]){
 /// @brief Pull shaders, populating vertexshader, fragmentshader and geometryshader with the relevant and found shaders.
 /// @param filepath The filepath to a shader or multiple shaders
 /// @param redo_shaders Choose between the shaders to be reset to NULL.
-/// [0] -> vertexshader, [1] -> fragmentshader, [2] ->geometryshader, [3] -> tessellation_controlshader, [4] ->tessellation_evaluationshader.
+/// [0] -> vertexshader, [1] -> fragmentshader, [2] ->geometryshader.
 void shader_pull(const char *filepath, const bool redo_shaders[5]){
-	if(redo_shaders[0] == true){
+	if(redo_shaders[0] == true && vertexshader != NULL){
 		free(vertexshader);
     	vertexshader = NULL;
 	}
-	if(redo_shaders[1] == true){
+	if(redo_shaders[1] == true && fragmentshader != NULL){
 		free(fragmentshader);
     	fragmentshader = NULL;
 	}
-	if(redo_shaders[2] == true){
+	if(redo_shaders[2] == true && geometryshader != NULL){
 		free(geometryshader);
     	geometryshader = NULL;
-	}
-	if(redo_shaders[3] == true){
-		free(tessellation_controlshader);
-    	tessellation_controlshader = NULL;
-	}
-	if(redo_shaders[4] == true){
-		free(tessellation_evaluationshader);
-    	tessellation_evaluationshader = NULL;
 	}
 
 	char *settings = shadersettings_rw(filepath, NULL);
@@ -204,9 +194,7 @@ void shader_pull(const char *filepath, const bool redo_shaders[5]){
 				};
 				if(vertexshader != NULL && 
 					fragmentshader != NULL &&
-					(geometryshader == NULL && redo_shaders[2] != true) &&
-					(tessellation_evaluationshader == NULL && redo_shaders[3] != true) &&
-					(tessellation_controlshader == NULL && redo_shaders[4] != true)){return;}
+					(geometryshader == NULL && redo_shaders[2] != true)){return;}
 				if(which_[0] == true ||which_[1] == true ||which_[2] == true ||which_[3] == true ||which_[4] == true){
 					start_pos = ftell(text);
 					cc+=sizeof(vs_start);
@@ -236,9 +224,10 @@ void shader_pull(const char *filepath, const bool redo_shaders[5]){
 							//VERTEX.
 							vs_cc++;
 							if(vs_cc == decoded.vsindex){
-								vertexshader = strdup(decoded.version);
-								while(vertexshader == NULL){vertexshader = realloc(vertexshader, sizeof(char)* (offs + decoded.version_len));}
-								fread(&vertexshader[decoded.version_len], sizeof(char), end_pos -start_pos + 1, text);
+								vertexshader = malloc(sizeof(char)* (offs + decoded.version_len + 1));
+								strncpy(vertexshader, decoded.version, strlen(decoded.version - 1));
+								// while(vertexshader == NULL){vertexshader = realloc(vertexshader, );}
+								fread(vertexshader + decoded.version_len, sizeof(char), offs, text);
 								vertexshader[decoded.version_len + offs - 1] = '\0';
 								printf(ANSI_YELLOW("vertexshader:\n %s"), vertexshader);
 								continue;
@@ -247,9 +236,9 @@ void shader_pull(const char *filepath, const bool redo_shaders[5]){
 							//FRAGMENT.
 							fs_cc++;
 							if(fs_cc == decoded.fsindex){
-								fragmentshader = strdup(decoded.version);
-								while(fragmentshader == NULL){fragmentshader = realloc(fragmentshader, sizeof(char)* (offs + decoded.version_len));}
-								fread(&fragmentshader[decoded.version_len], sizeof(char), end_pos -start_pos + 1, text);
+								fragmentshader = malloc(sizeof(char)* (offs + decoded.version_len + 1));
+								strncpy(fragmentshader, decoded.version, strlen(decoded.version - 1));
+								fread(fragmentshader + decoded.version_len, sizeof(char), offs, text);
 								fragmentshader[decoded.version_len + offs - 1] = '\0';
 								printf(ANSI_YELLOW("fragmentshader:\n %s"), fragmentshader);
 								continue;
@@ -258,33 +247,11 @@ void shader_pull(const char *filepath, const bool redo_shaders[5]){
 							//GEOMETRY.
 							gs_cc++;
 							if(gs_cc == decoded.gsindex){
-								geometryshader = strdup(decoded.version);
-								while(geometryshader == NULL){vertexshader = realloc(geometryshader, sizeof(char)* (offs + decoded.version_len));}
-								fread(&geometryshader[decoded.version_len], sizeof(char), end_pos -start_pos + 1, text);
+								geometryshader = malloc(sizeof(char)* (offs + decoded.version_len + 1));
+								strncpy(geometryshader, decoded.version, strlen(decoded.version - 1));
+								fread(geometryshader + decoded.version_len, sizeof(char), offs, text);
 								geometryshader[decoded.version_len + offs - 1] = '\0';
 								printf(ANSI_YELLOW("geometryshader:\n %s"), geometryshader);
-								continue;
-							}
-						}else if(which_[3]){
-							//TESSELATION EVAL.
-							tes_cc++;
-							if(tes_cc == decoded.tesindex){
-								tessellation_evaluationshader= strdup(decoded.version);
-								while(tessellation_evaluationshader == NULL){vertexshader = realloc(tessellation_evaluationshader, sizeof(char)* (offs + decoded.version_len));}
-								fread(&tessellation_evaluationshader[decoded.version_len], sizeof(char), end_pos -start_pos + 1, text);
-								tessellation_evaluationshader[decoded.version_len + offs - 1] = '\0';
-								printf(ANSI_YELLOW("tessellation evaluation shader:\n %s"), tessellation_evaluationshader);
-								continue;
-							}
-						}else if(which_[4]){
-							//TESSELLATION CONTROL
-							tcs_cc++;
-							if(tcs_cc == decoded.tcsindex){
-								vertexshader = strdup(decoded.version);
-								while(tessellation_controlshader == NULL){tessellation_controlshader = realloc(tessellation_controlshader, sizeof(char)* (offs + decoded.version_len));}
-								fread(&tessellation_controlshader[decoded.version_len], sizeof(char), end_pos -start_pos + 1, text);
-								tessellation_controlshader[decoded.version_len + offs - 1] = '\0';
-								printf(ANSI_YELLOW("tesselation control shader:\n %s"), tessellation_controlshader);
 								continue;
 							}
 						}
@@ -311,9 +278,7 @@ arrk_t *uniform_init(size_t *uniform_len_, const GLuint shaderProgram){
 	const char *shaders[] = {
 		vertexshader ? vertexshader : vertexshader_default,
 		fragmentshader ? fragmentshader : fragmentshader_default,
-		geometryshader ? geometryshader : NULL,
-		tessellation_controlshader ? tessellation_controlshader : NULL,
-		tessellation_evaluationshader ? tessellation_evaluationshader : NULL
+		geometryshader ? geometryshader : NULL
 	};
 	char** temp_typenames = NULL;
 
@@ -637,7 +602,7 @@ bool uniform_write(shaderblock_t* shader, const char* type, const char* name, co
 // Corrected shader_compile function.
 // The original had a few logical errors, incorrect checks, and was missing error handling for `calloc`.
 shaderblock_t *shader_compile(bool delete_shaders_on_link) {
-	shaderblock_t* shaderblock = (shaderblock_t*)calloc(sizeof(shaderblock_t), 1);
+	shaderblock_t* shaderblock = calloc(1, sizeof(shaderblock_t));
 	if (shaderblock == NULL) {
 		fprintf(stderr, ANSI_RED("Error: Failed to allocate memory for shaderblock.\n"));
 		return NULL;
@@ -650,7 +615,7 @@ shaderblock_t *shader_compile(bool delete_shaders_on_link) {
 	glShaderSource(shaderblock->vertexshader, 1, &vs_source, NULL);
 	glCompileShader(shaderblock->vertexshader);
 	shaderblock->compiled_[1] = shader_error(shaderblock, "VERTEX");
-	
+	if(shaderblock->compiled_[1]){shaderblock->vertex = strdup(vs_source);}
 
 	// Compile Fragment Shader.
 	shaderblock->fragmentshader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -658,6 +623,7 @@ shaderblock_t *shader_compile(bool delete_shaders_on_link) {
 	glShaderSource(shaderblock->fragmentshader, 1, &fs_source, NULL);
 	glCompileShader(shaderblock->fragmentshader);
 	shaderblock->compiled_[2] = shader_error(shaderblock, "FRAGMENT");
+	if(shaderblock->compiled_[2]){shaderblock->fragment = strdup(fs_source);}
 
 	// Compile Geometry Shader (optional).
 	if(geometryshader != NULL){
@@ -665,30 +631,11 @@ shaderblock_t *shader_compile(bool delete_shaders_on_link) {
 		glShaderSource(shaderblock->geometryshader, 1, (const char* const*)&geometryshader, NULL);
 		glCompileShader(shaderblock->geometryshader);
 		shaderblock->compiled_[3] = shader_error(shaderblock, "GEOMETRY");
+		if(shaderblock->compiled_[3]){shaderblock->geometry = strdup(geometryshader);}
 	}else{
 		shaderblock->geometryshader = 0;
 		shaderblock->compiled_[3] = false;
 	}
-
-	// if(tessellation_controlshader != NULL){
-	// 	shaderblock->tessellation_controlshader = glCreateShader(GL_TESS_CO);
-	// 	glShaderSource(shaderblock->geometryshader, 1, (const char* const*)&geometryshader, NULL);
-	// 	glCompileShader(shaderblock->geometryshader);
-	// 	shaderblock->compiled_[3] = shader_error(shaderblock, "GEOMETRY");
-	// }else{
-	// 	shaderblock->geometryshader = 0;
-	// 	shaderblock->compiled_[3] = false;
-	// }
-
-	// if(geometryshader != NULL){
-	// 	shaderblock->geometryshader = glCreateShader(GL_GEOMETRY_SHADER);
-	// 	glShaderSource(shaderblock->geometryshader, 1, (const char* const*)&geometryshader, NULL);
-	// 	glCompileShader(shaderblock->geometryshader);
-	// 	shaderblock->compiled_[3] = shader_error(shaderblock, "GEOMETRY");
-	// }else{
-	// 	shaderblock->geometryshader = 0;
-	// 	shaderblock->compiled_[3] = false;
-	// }
 	
 	// Link Program.
 	shaderblock->shaderProgram = glCreateProgram();
@@ -705,8 +652,6 @@ shaderblock_t *shader_compile(bool delete_shaders_on_link) {
 		glDeleteShader(shaderblock->vertexshader);
 		glDeleteShader(shaderblock->fragmentshader);
 		if(shaderblock->geometryshader != 0){glDeleteShader(shaderblock->geometryshader);}
-		if(shaderblock->tessellation_controlshader != 0){glDeleteShader(shaderblock->tessellation_controlshader);}
-		if(shaderblock->tessellation_evaluationshader != 0){glDeleteShader(shaderblock->tessellation_evaluationshader);}
 	}
 	
 	// The original code was using `shaderblock->compiled_` and `shaderblock->_compiled`.
@@ -716,54 +661,6 @@ shaderblock_t *shader_compile(bool delete_shaders_on_link) {
 	
 	return shaderblock;
 }
-
-
-
-/// @brief Add a _mesh to be drawn in the Window.
-/// @param win The Window the _mesh will be drawn in.
-/// @param _mesh The _mesh to be drawn.
-void win_draw(win_t *win, mesh_t *mesh){
-    if (win == NULL || mesh == NULL){return;}
-	// Allocate space for one buffer object
-	win->buffers = malloc(sizeof(bufferobj_t));
-	win->buffer_len = 1; // Track the buffer count
-	win->buffers = realloc(win->buffers, (win->buffer_len + 1)* sizeof(bufferobj_t));
-	bufferobj_t *temp_ptr = &win->buffers[win->buffer_len];
-	win->buffer_len++;
-	memset(temp_ptr, 0, sizeof(bufferobj_t)); // Initialize buffer memory
-    shaderblock_handle(&win->shaders[win->shaders_curr], true, true);
-    BUFFEROBJECT_HANDLE(temp_ptr, mesh->mesh_data, mesh->data_len, mesh->vertex_index, mesh->index_len, GL_STATIC_DRAW, 10);
-    mesh_attrlink(temp_ptr, win->layout_offset, win->layout_offset+1, win->layout_offset+2, mesh);
-    GLUseProgram(win->shaders[win->shaders_curr].shaderProgram);
-    draw_debug_trace(__FILE__, __LINE__);
-	GLCall(glBindVertexArray(temp_ptr->VAO));
-    GLCall(glDrawElements(GL_TRIANGLES, mesh->data_len, GL_UNSIGNED_INT, (mesh->vertex_index == NULL? 0: mesh->mesh_data)));
-}
-
-// Corrected winimage_append function.
-// The original code used `glGenTexturesEXT`, which is not standard, and had other
-// incorrect function calls and logic for texture management.
-// void winimage_append(win_t* win, const char* filepath, const argb_t* border_color){
-// 	if (win == NULL || filepath == NULL) return;
-
-// 	// Use a simpler approach to add a new texture
-// 	win->textures = (image_t*)realloc(win->textures, sizeof(image_t) * (win->textures_len + 1));
-// 	if (win->textures == NULL) {
-// 		fprintf(stderr, "Error: Failed to reallocate memory for textures.\n");
-// 		return;
-// 	}
-	
-// 	image_t* new_image = &win->textures[win->textures_len];
-
-// 	// Load the image with STB
-// 	stbi_set_flip_vertically_on_load(true);
-// 	new_image->img = stbi_load(filepath, &new_image->width, &new_image->height, &new_image->color_channels, 0);
-// 	if (new_image->img == NULL) {
-// 		fprintf(stderr, "Error: Failed to load image at '%s'.\n", filepath);
-// 		return;
-// 	}
-
-// 	// Generate and bind the new texture
 	
 	
 // 	win->textures_len++;
@@ -771,7 +668,7 @@ void win_draw(win_t *win, mesh_t *mesh){
 
 // Fixed win_flood function.
 // The original had no issues, but some minor formatting improvements were made for clarity.
-void win_flood(win_t* win, const argb_t c) {
+void win_flood(win_t* win, const argb_t c){
 	if (win == NULL || win->g_window == NULL) return;
 	
 	glViewport(0, 0, win->w, win->h);
@@ -891,7 +788,7 @@ void shaderblock_handle(shaderblock_t *sb, bool clean, bool do_uniforms){
 /// @return A fully generated texture.
 bufferobj_t *bufferobj_gen(mesh_t *mesh, const GLenum draw_format, const int pos_layout, int col_layout, int tex_layout){
 	bufferobj_t *out = malloc(sizeof(bufferobj_t));
-	bufferobject_handle(out, mesh->mesh_data, mesh->data_len, mesh->vertex_index, mesh->index_len, draw_format, 9);
+	bufferobject_handle(out, mesh->vertex_data, mesh->data_len, mesh->index_data, mesh->index_len, draw_format, 9);
 	mesh_attrlink(out, pos_layout, col_layout, tex_layout, mesh);
 	return out;
 }
@@ -907,6 +804,7 @@ void bufferobject_handle(bufferobj_t *buffer, GLfloat *vertices, size_t v_len, G
 			if (glIsVertexArray(buffer->VAO) == GL_FALSE){GLCall(glGenVertexArrays(1, &buffer->VAO));}	
 			buffer->buffer_[0] = true;
 			//Generate VBO.
+			GLCall(glBindVertexArray(buffer->VAO)); // Begin recording state.
 			if(glIsBuffer(buffer->VBO) == GL_FALSE){
 				GLCall(glGenBuffer(&buffer->VBO));
 				buffer->buffer_[1] = false;
@@ -915,7 +813,6 @@ void bufferobject_handle(bufferobj_t *buffer, GLfloat *vertices, size_t v_len, G
 				GLCall(glGenBuffer(&buffer->EBO));
 				buffer->buffer_[2] = false;
 			}
-			GLCall(glBindVertexArray(buffer->VAO)); // Begin recording state.
 		} 
 		/*VBO not set-up*/
 		if(buffer->buffer_[1] == false && vertices != NULL){	
@@ -932,6 +829,4 @@ void bufferobject_handle(bufferobj_t *buffer, GLfloat *vertices, size_t v_len, G
 		success = buffer->buffer_[0] == true && buffer->buffer_[1] == true && buffer->buffer_[2] == true;
 	}while (counter < max_tries && success == false);
 	GLCall(glBindVertexArray(0));
-	buffer->vertex_num = v_len;
-	buffer->element_num = index_len;
 }

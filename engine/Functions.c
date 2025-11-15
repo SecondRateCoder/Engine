@@ -1,4 +1,4 @@
-#include "./Public.h"
+#include "../Public.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
@@ -95,16 +95,16 @@ void mesh_attrlink(bufferobj_t *buffer, const int pos_layout,  const int col_lay
     GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->EBO));
     // draw_debug_trace(__FILE__, __LINE__);
 
-    GLCall(glBufferData(GL_ARRAY_BUFFER, _mesh->data_len, _mesh->mesh_data, GL_STATIC_DRAW));
-    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, _mesh->index_len, _mesh->vertex_index, GL_STATIC_DRAW));
+    GLCall(glBufferData(GL_ARRAY_BUFFER, _mesh->data_len, _mesh->vertex_data, GL_STATIC_DRAW));
+    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, _mesh->index_len, _mesh->index_data, GL_STATIC_DRAW));
     // draw_debug_trace(__FILE__, __LINE__);
 
     size_t pos_offset = 0;
     size_t color_offset = sizeof(GLfloat) * _mesh->vertex_stride;
     size_t tex_offset = color_offset + sizeof(GLfloat) * _mesh->color_stride;
-    mesh->pos_layoutindex = pos_layout;
-    mesh->color_layoutindex = col_layout;
-    mesh->local_texcoordinates_layoutindex = tex_layout;
+    _mesh->pos_layoutindex = pos_layout;
+    _mesh->color_layoutindex = col_layout;
+    _mesh->local_texcoordinates_layoutindex = tex_layout;
 
     const size_t stride = sizeof(GLfloat) * (_mesh->vertex_stride + _mesh->color_stride + _mesh->dpi_stride);
     if(pos_layout != INT32_MIN){
@@ -136,8 +136,8 @@ void mesh_attrlinkf(bufferobj_t *buffer, mesh_t *_mesh, const size_t buffer_inde
     GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->EBO));
     draw_debug_trace(__FILE__, __LINE__);
 
-    GLCall(glBufferData(GL_ARRAY_BUFFER, _mesh->data_len, _mesh->mesh_data, GL_STATIC_DRAW));
-    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, _mesh->index_len, _mesh->vertex_index, GL_STATIC_DRAW));
+    GLCall(glBufferData(GL_ARRAY_BUFFER, _mesh->data_len, _mesh->vertex_data, GL_STATIC_DRAW));
+    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, _mesh->index_len, _mesh->index_data, GL_STATIC_DRAW));
     draw_debug_trace(__FILE__, __LINE__);
 
     size_t pos_offset = 0;
@@ -161,13 +161,13 @@ void mesh_attrlinkf(bufferobj_t *buffer, mesh_t *_mesh, const size_t buffer_inde
 }
 
 // void mesh_arttr_relink(const mesh_t *_mesh){
-//     GLCall(glVertexAttribPointer(_mesh->pos_layoutindex, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->vertex_stride, _mesh->mesh_data));
+//     GLCall(glVertexAttribPointer(_mesh->pos_layoutindex, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->vertex_stride, _mesh->vertex_data));
 //     GLCall(glEnableVertexAttribArray(_mesh->pos_layoutindex));
 //     // Handle color layout.
-//     GLCall(glVertexAttribPointer(_mesh->color_layoutindex, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->color_stride, &_mesh->mesh_data[_mesh->vertex_stride-1]));
+//     GLCall(glVertexAttribPointer(_mesh->color_layoutindex, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->color_stride, &_mesh->vertex_data[_mesh->vertex_stride-1]));
 //     GLCall(glEnableVertexAttribArray(_mesh->color_layoutindex));
 //     // Handle texture coord layout.
-//     GLCall(glVertexAttribPointer(_mesh->local_texcoordinates_layoutindex, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->dpi_stride, &_mesh->mesh_data[(_mesh->vertex_stride + _mesh->color_stride) - 2]));
+//     GLCall(glVertexAttribPointer(_mesh->local_texcoordinates_layoutindex, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->dpi_stride, &_mesh->vertex_data[(_mesh->vertex_stride + _mesh->color_stride) - 2]));
 // 	GLCall(glEnableVertexAttribArray(_mesh->local_texcoordinates_layoutindex));
 // }
 
@@ -177,58 +177,11 @@ void mesh_bindtexture(mesh_t *m, image_t *texture){
     //Handle texture.
     if(memsize(texture->img) == 0){return;}
     if(glIsTexture(texture->ID) == GL_FALSE){
-        GLCall(glGenTextures(1, &texture->ID));
-        if(glIsTexture(texture->ID) == GL_TRUE){
-            texture->unit = texture_num++;
-            GLCall(glActiveTexture(GL_TEXTURE0 + texture->unit));
-            GLCall(glBindTexture(texture->format->target, texture->ID));
-        }
-    }
-    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
-    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
-	GLCall(glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, texture->border));
-    
-    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
-    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-	
-    const texformat_t *temp = texture->format;
-    switch(temp->target){
-        case GL_TEXTURE_1D:
-        case GL_TEXTURE_1D_ARRAY:
-            GLCall(glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
-            GLCall(glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
-            GLCall(glTexParameterfv(GL_TEXTURE_1D, GL_TEXTURE_BORDER_COLOR, texture->border));
-            
-            GLCall(glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
-            GLCall(glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-            GLCall(glTexImage1D(GL_TEXTURE_1D, temp->level, temp->internalFormat, texture->width, 0, temp->pixel_format, temp->pixel_type, texture->img));
-            GLCall(glGenerateMipmap(GL_TEXTURE_1D));
-            break;
-        case GL_TEXTURE_2D:
-        case GL_TEXTURE_2D_ARRAY:
-            GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
-            GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
-            GLCall(glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, texture->border));
-            
-            GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
-            GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-            GLCall(glTexImage2D(GL_TEXTURE_2D, temp->level, temp->internalFormat, texture->width, texture->height, 0, temp->pixel_format, temp->pixel_type, texture->img));
-            GLCall(glGenerateMipmap(GL_TEXTURE_2D));
-            break;
-        case GL_TEXTURE_3D:
-            GLCall(glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
-            GLCall(glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
-            GLCall(glTexParameterfv(GL_TEXTURE_3D, GL_TEXTURE_BORDER_COLOR, texture->border));
-            
-            GLCall(glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
-            GLCall(glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-            GLCall(glTexImage3D(GL_TEXTURE_3D, temp->level, temp->internalFormat, texture->width, texture->height, temp->depth, 0, temp->pixel_format, temp->pixel_type, texture->img));
-            GLCall(glGenerateMipmap(GL_TEXTURE_3D));
-            break;
-        default:
-            GLCall(glDeleteTextures(1, &texture->ID));
-            texture->ID=0;
-            return;
+        image_t *out = image_gen(texture->color_channels, texture->path, texture->border, texture->format);
+        free(texture->path);
+        free(texture->img);
+        free(texture);
+        texture = out;
     }
     m->texture = texture;
     return;
@@ -343,6 +296,88 @@ void draw_debug_trace(const char* file, int line) {
     }
 }
 
+mesh_t *mesh_gen(GLfloat *vertices, GLuint *indices, size_t len[2], uint8_t strides[4], uint32_t layout_indices[3], GLenum format, image_t *texture){
+    mesh_t *out = calloc(1, sizeof(mesh_t));
+    *out = (mesh_t){
+        .vertex_data = vertices,
+        .data_len = len[0],
+        .index_data = indices,
+        .index_len = len[1],
+        .texture = texture,
+        strides[0],
+        strides[1],
+        strides[2],
+        strides[3]
+    };
+    bufferobj_t *buffer = bufferobj_gen(out, GL_STATIC_DRAW, layout_indices[0], layout_indices[1], layout_indices[2]);
+    bufferobject_handle(buffer, vertices, len[0], indices, len[1], format, 10);
+    out->buffer = buffer;
+    return out;
+}
+
+image_t *image_gen(uint8_t color_channels, char *image_path, float border[4], texformat_t format){
+    image_t *out = calloc(1, sizeof(image_t));
+    *out = (image_t){
+        .img = stbi_load(image_path, &out->width, &out->height, &out->color_channels, color_channels),
+        .format = format,
+        .path = image_path,
+        .border[0] = border[0],
+        .border[1] = border[1],
+        .border[2] = border[2],
+        .border[3] = border[3],
+    };
+    GLCall(glGenTextures(1, &(out->ID)));
+    if(glIsTexture(out->ID) == GL_TRUE){
+        out->unit = texture_num++;
+        GLCall(glActiveTexture(GL_TEXTURE0 + out->unit));
+        GLCall(glBindTexture(format.target, out->ID));
+    }
+    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
+    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
+	GLCall(glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, out->border));
+    
+    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
+    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+
+    switch(out->format.target){
+        case GL_TEXTURE_1D:
+        case GL_TEXTURE_1D_ARRAY:
+            GLCall(glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
+            GLCall(glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
+            GLCall(glTexParameterfv(GL_TEXTURE_1D, GL_TEXTURE_BORDER_COLOR, out->border));
+            
+            GLCall(glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
+            GLCall(glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+            GLCall(glTexImage1D(GL_TEXTURE_1D, out->format.level, out->format.internalFormat, out->width, 0, out->format.pixel_format, out->format.pixel_type, out->img));
+            GLCall(glGenerateMipmap(GL_TEXTURE_1D));
+            break;
+        case GL_TEXTURE_2D:
+        case GL_TEXTURE_2D_ARRAY:
+            GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
+            GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
+            GLCall(glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, out->border));
+            
+            GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
+            GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+            GLCall(glTexImage2D(GL_TEXTURE_2D, out->format.level, out->format.internalFormat, out->width, out->height, 0, out->format.pixel_format, out->format.pixel_type, out->img));
+            GLCall(glGenerateMipmap(GL_TEXTURE_2D));
+            break;
+        case GL_TEXTURE_3D:
+            GLCall(glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
+            GLCall(glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
+            GLCall(glTexParameterfv(GL_TEXTURE_3D, GL_TEXTURE_BORDER_COLOR, out->border));
+            
+            GLCall(glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
+            GLCall(glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+            GLCall(glTexImage3D(GL_TEXTURE_3D, out->format.level, out->format.internalFormat, out->width, out->height, out->format.depth, 0, out->format.pixel_format, out->format.pixel_type, out->img));
+            GLCall(glGenerateMipmap(GL_TEXTURE_3D));
+            break;
+        default:
+            GLCall(glDeleteTextures(1, &out->ID));
+            out->ID=0;
+            return out;
+    }
+}
 
 //! Use later
 // const size_t cwd_resource_paths_len = 1;
@@ -395,8 +430,6 @@ const unsigned int settings_len = 26;
 char* vertexshader = NULL,
 	* fragmentshader = NULL,
 	* geometryshader = NULL,
-	*tessellation_controlshader = NULL,
-	*tessellation_evaluationshader = NULL,
 	** shader_typenames = NULL
 	/**computeshader*/
 ;
@@ -415,3 +448,4 @@ void GLAPIENTRY debug_callback(GLenum source, GLenum type, GLuint id,
             "\tuserParam: %s\n" )
         , message, source, type, id, severity, length, message, userParam);
 }
+
