@@ -18,34 +18,35 @@ uint8_t unit =0;
 void poll_draw(void *self, size_t polls, uint32_t pollcycles){
     win_t *win = (win_t *)self;
     
-    mat4 out, view, proj_screen;
-    glm_mat4_identity(out);
-    glm_mat4_identity(view);
-    glm_mat4_identity(proj_screen);
+    // mat4 out, view, proj_screen;
+    // glm_mat4_identity(out);
+    // glm_mat4_identity(view);
+    // glm_mat4_identity(proj_screen);
     
-    // CORRECTED: The variable 'g' was undeclared.
-    // Declaring as a static float makes it persist between calls, creating an animation.
-    float g = (polls* 10)/(360* 1.00000005f);
-    glm_translate(view, (vec3){0.0f, 0.0f, -5.0f}); // Adjusted translation for better view
-    glm_perspective(glm_rad(45.0f), (float)win->w / (float)win->h, 0.1f, 100.0f, proj_screen);
-    glm_mat4_mul(proj_screen, view, out);
-    uint32_t cc =0;
-    do{
-        glm_rotate(out, g, (vec3){0.5f, .75f, 0.25f}); // Rotate on X and Y axis
-        ++cc;
-    }while(cc < pollcycles);
+    // // CORRECTED: The variable 'g' was undeclared.
+    // // Declaring as a static float makes it persist between calls, creating an animation.
+    // float g = (360* 1.05f)/(polls* 10);
+    // glm_translate(view, (vec3){0.0f, 0.0f, -5.0f}); // Adjusted translation for better view
+    // glm_perspective(glm_rad(45.0f), (float)win->w / (float)win->h, 0.1f, 100.0f, proj_screen);
+    // glm_mat4_mul(proj_screen, view, out);
+    // uint32_t cc_ =0, cc = 0;
+    // do{
+    //     do{
+    //         glm_rotate(out, g, (vec3){0.5f, .75f, 0.25f}); // Rotate on X and Y axis
+    //         ++cc_;
+    //     }while(cc_ < polls);
+    //     ++cc;
+    // }while(cc < pollcycles);
+    // printf(
+    //     ANSI_YELLOW("Offset: ")
+    //     ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", \n")
+    //     ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", \n")
+    //     ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", \n")
+    //     ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", \n")
+    // , out);
     // GLuint tex0_uni = glGetUniformLocation(win->shaders->shaderProgram, "tex0");
     // GLUseProgram(win->shaders[win->shaders_curr].shaderProgram);
     // glUniform1i(tex0_uni, 0);
-    const vec3 offs_temp = {-1.5f, sin(polls), -0.5f};
-    uniform_write(wscene_curr(win).shaders + wscene_curr(win).shader_curr, "vec3", "offs", NULL, true, &offs_temp, 3);
-    uniform_write(wscene_curr(win).shaders + wscene_curr(win).shader_curr, "mat4", "matrix", NULL, true, out, 1);
-
-    // Note: Passing strings like "mat4\0" is redundant. "mat4" is sufficient.
-    // uniform_write(win->shaders, "mat4", "matrices", "\0", true, out, 9);
-    // uniform_write(win->shaders, "inputvectors_bounds", "bounds", "start", true, 0, 1);
-    // const int _100 = 100;
-    // uniform_write(win->shaders, "inputvectors_bounds", "bounds", "end", true, &_100, 1);
     
     return;
 }
@@ -100,22 +101,22 @@ void test_win_init(){
     buffer->buffer_[2] = false;
 
     mesh_t *mesh = calloc(1, sizeof(mesh_t));
-    mesh->vertex_data = malloc(sizeof(GLfloat)* 48);
+    mesh->vertex_data = calloc(48, sizeof(GLfloat));
     memcpy(mesh->vertex_data, vertdata, 48* sizeof(GLfloat));
-    mesh->index_data = malloc(sizeof(GLuint)* 18);
+    mesh->index_data = calloc(18, sizeof(GLuint));
     memcpy(mesh->index_data, indexdata, 18* sizeof(GLuint));
 
     mesh->data_len = 48;
     mesh->index_len = 18;
     mesh->vertex_stride = 3;
     mesh->color_stride = 3;
-    mesh->dpi_stride = 2;
+    mesh->uv_stride = 2;
     mesh->pos_layoutindex = 0;
     mesh->color_layoutindex = 1;
     mesh->local_texcoordinates_layoutindex = 2;
     bufferobject_handle(buffer, mesh->vertex_data, mesh->data_len, mesh->index_data, mesh->index_len, GL_STATIC_DRAW, 3);
-    mesh_attrlink(buffer, 0, 1, 2, mesh);
-    mesh->texture = malloc(sizeof(image_t));
+    mesh_attrlink(buffer, mesh);
+    mesh->texture = calloc(1, sizeof(image_t));
     GLCall(glGenTextures(1, &(mesh->texture[0].ID)));
     mesh->texture[0].unit = 0;
     GLCall(glActiveTexture(GL_TEXTURE0 + mesh->texture[0].unit));
@@ -126,7 +127,7 @@ void test_win_init(){
     uniform_write(shader, "float", "scale", NULL, false, &_temp, 1);
     // GLCall(glGenTextures())
     uniform_write(shader, "sampler2D", "tex0", &_temp___, false, &mesh->texture[0].unit, 1);
-    const vec3 _temp_ = {0, -2, -1};
+    const vec3 _temp_ = {0, 0, -11.4};
     uniform_write(shader, "vec3", "offs", NULL, true, &_temp_, 3);
 
     // Your rendering loop here...
@@ -176,15 +177,14 @@ void enableANSI() {
 #endif
 
 int main(){
-    cwd_init();
 #ifdef _WIN32
     enableANSI();
 #endif
-    char *temp = strdup(cwd);
-    temp = realloc(temp, strlen(cwd)+ strlen("\\Resources\\Textures\\no_texture.png"));
-    strncat(temp, "\\Resources\\Textures\\no_texture.png", strlen("\\Resources\\Textures\\no_texture.png"));
-    
+    cwd_init();
     win_t *mainw = win_init("MainWindow", NULL, poll_draw, NULL, 1000, 800);
+    // glViewport(0, 0, 1000, 800);
+    // glEnable(GL_SCISSOR_TEST);
+	// glScissor(0, 0, 1000, 800);
     // mesh = calloc(sizeof(mesh), 1);
     // mesh->vertex_data = malloc(sizeof(GLfloat)* 48);
     // memcpy(mesh->vertex_data, vertex_data, 48* sizeof(GLfloat));
@@ -196,7 +196,7 @@ int main(){
     // mesh->index_len = 18;
     // mesh->vertex_stride = 3;
     // mesh->color_stride = 3;
-    // mesh->dpi_stride = 2;
+    // mesh->uv_stride = 2;
     // mesh->pos_layoutindex = 0;
     // mesh->color_layoutindex = 1;
     // mesh->local_texcoordinates_layoutindex = 2;
@@ -231,16 +231,11 @@ int main(){
     // mainw->buffer_len = 1;
     // mesh->texture = malloc(sizeof(image_t));
 
-    const float _temp = 0.5f;
-    const GLenum _temp_ = GL_TEXTURE_2D;
-    uniform_write(wscene_curr(mainw).shaders, "float", "scale", NULL, false, &_temp, 1);
-    // GLCall(glGenTextures())
-    uniform_write(wscene_curr(mainw).shaders, "sampler2D", "tex0", &_temp_, false, &wscene_curr(mainw).meshes->texture[0].unit, 1);
-    vec3 offs_temp = {-1.5f, -2.0f, -0.5f};
-    uniform_write(wscene_curr(mainw).shaders, "vec3", "offs", NULL, true, &offs_temp, 3);
-
     // mainw->vert_count = 8;
     glEnable(GL_DEPTH);
+    //!NOT GOOD MATE
+    uniform_write(mainw->scenes->shaders, "vec3", "offs", NULL, true, (float[3]){-5, 0, 0}, 3);
+    uniform_write(mainw->scenes->shaders, "float", "scale", NULL, true, (float[1]){0}, 1);
     win_poll(mainw);
     if(mainw->g_window != NULL){win_kill(mainw);}
     

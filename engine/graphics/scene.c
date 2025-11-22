@@ -1,28 +1,174 @@
 #include "../graphics/graphics.h"
 
-/*
-scene_t decoded:
-    shader header:
-        NULL-terminated string
-    shaders:
-        Pure shader text, given with the metadata:
-            [Total number of shader script characters(size_t[2])]
-        Expects shader text in proper format
-*/
+const uint8_t MAX_SCENE_PROC = 1;
 
-scene_t *scene_gen(char *name, mesh_t *meshes, shaderblock_t *shaders, size_t len[2]){
-	scene_t *out = malloc(sizeof(scene_t));
+/// @brief Generater a new scene.
+/// @param name The name of the scene.
+/// @param meshes The meshes to use in the scene.
+/// @param shaders The shaders to use in the scene.
+/// @param len Array of lengths, [0]: Number of meshes, [1]: Number of shaders
+/// @return The generated scenes.
+scene_t *scene_gen(GLFWwindow *parent, char *name, mesh_t *meshes, shaderblock_t *shaders, cam_t *cameras, size_t len[3]){
+	scene_t *out = calloc(1, sizeof(scene_t));
 	*out = (scene_t){
 		.header.name = name,
 		.meshes = meshes,
-		.meshes_num = len[0],
+		.mesh_num = len[0],
 		.shaders = shaders,
 		.shader_num = len[1],
-		.shader_curr = len[1] > 1? 0: -1
+		.shader_curr  = 0,
+        .loaded_cams = calloc(1, sizeof(size_t *)),
+        .num_loadedcams = 1,
+        .input_handles = NULL,
+        .num_inhandles = 0,
+        .proc_buffers[0] = (sceneproc_buffer){
+			.buffer = calloc(25, sizeof(GLenum) + sizeof(uint32_t)),
+            .buffer_size = 25, .buffer_type = sizeof(GLenum) + sizeof(uint32_t), // {KEY, POLLS}
+            .last_poll  =0, .last_pollcycle = 0,
+            .process = SCENEPROC_INPUTHANDLE,
+            .counter = 0
+        },
+        .parent = parent
 	};
+	if(cameras == NULL){cam_gen(out, (vec3[]){0, 0, 0, 0, 0, 0, 1, 0}, (GLint[]){90, 90, 1, 10}, (GLfloat[]){0.1, 10, 9}, NULL);
+	}else{
+		out->cameras = cameras;
+		out->cam_num = len[2];
+	}
 	return out;
 }
 
+void cam_toggle(size_t index, scene_t *scene){
+	for(size_t cc =0; cc < scene->num_loadedcams; ++cc){
+		if(index == scene->loaded_cams[cc]){
+			// Move all above down, then realloc, maybe or just inc/dec size marker.
+			memcpy(scene->loaded_cams + cc, scene->loaded_cams + cc + 1, scene->num_loadedcams - cc - 1);
+			scene->num_loadedcams--;
+			return;
+		}
+	}
+	//Is not a loaded camera.
+	if(index > scene->cam_num){return;}
+	scene->loaded_cams = realloc(scene->loaded_cams, (scene->num_loadedcams + 1) * sizeof(size_t *));
+	scene->loaded_cams[scene->num_loadedcams] = index;
+	scene->num_loadedcams++;
+	for(size_t cc =0; cc < scene->cameras[index].num_inputs; ++cc){
+		scene_inputh_reg(scene, scene->cameras[index].inputs[cc].key, scene->cameras[index].inputs[cc].target, scene->cameras[index].inputs[cc].num_handles, scene->cameras[index].inputs[cc].handles, false);
+	}
+}
+
+uint8_t scene_inputh_unreg(scene_t *scene, GLenum key, GLenum target, INPUTH_handle *handles, uint8_t num_handles){
+	for(size_t cc =0; cc < scene->num_inhandles - 1; ++cc){
+		for(uint8_t cc_ = 0; cc_ < scene->input_handles[cc + 1].num_handles; ++cc_){
+			// Its acc js too complex to move stuff around n shit, so js reassign them to a dummy function.
+			// But I want to clip the funk of appending args to the stack etc.
+			//Ill keep the complexity to keep mem usage down and reduce unnecessary overhead.
+			for(uint8_t cc__ = 0; cc__ < num_handles; ++cc__){
+				if(scene->input_handles[cc + 1].key == key && scene->input_handles[cc + 1].target == target){
+					if(scene->input_handles[cc + 1].handles[cc_] == handles[cc__]){
+						// Move down.
+						memcpy(scene->input_handles[cc + 1].handles + cc__, scene->input_handles[cc + 1].handles + cc__ + 1, sizeof(INPUTH_handle) * (scene->input_handles[cc + 1].num_handles - cc__ - 1));
+						scene->input_handles[cc + 1].num_handles--;
+					}
+				}
+			}
+			if(scene->input_handles[cc + 1].num_handles){
+				memcpy(scene->input_handles + cc + 1, scene->input_handles + cc + 2, sizeof(INPUT_Handle) * (scene->num_inhandles - cc));
+				scene->num_inhandles--;
+			}
+		}
+		if(cc + 1== num_handles){return 0;}
+	}
+	return SCENEPROC_ERRORNOREF;
+}
+
+/// @brief Register a number of handles to a single key and it's ppress type.
+/// @param scene The scene to have the input's registered to.
+/// @param key The key for the scenes.
+/// @param target The target pressing type.
+/// @param num_handles The number of in handles.
+/// @param handles The handles to be registered.
+/// @param append If there is already a element with the input's should this function append it's own elements.
+/// @return An error code, if not 0 check @related SCENEPROC_t
+uint8_t scene_inputh_reg(scene_t *scene, GLenum key, GLenum target, size_t num_handles, INPUTH_handle *handles, bool append){
+    for(size_t cc = 0; cc < scene->num_inhandles; ++cc){
+        if(scene->input_handles[cc].key == key && scene->input_handles[cc].target == target){
+			if(append){
+				scene->input_handles[cc].handles = realloc(scene->input_handles[cc].handles, (num_handles + scene->input_handles[cc].num_handles) * sizeof(INPUTH_handle));
+				memcpy(scene->input_handles[cc].handles + scene->input_handles[cc].num_handles, handles, num_handles * sizeof(INPUTH_handle));
+				scene->input_handles[cc].num_handles++;
+				return 0;
+			}else{return (uint8_t)SCENEPROC_ERRORDUPLICATE;}
+		}
+    }
+    scene->input_handles = realloc(scene->input_handles + 1, scene->num_inhandles * sizeof(INPUT_Handle));
+    scene->input_handles[scene->num_inhandles] = (inputh_t){
+        .handles = handles,
+        .key = key,
+        .target = target
+    };
+    scene->num_inhandles++;
+    return 0;
+}
+
+/// @brief Process one of a single scene processes each frame.
+/// @param scene The scene to have it's processes processed.
+/// @param polls The polls.
+/// @param poll_cycles Number of "polls" overflows.
+void scene_poll(scene_t *scene, size_t polls, size_t pollcycles){
+	scene_draw(scene);
+    if(polls%SCENEPROC_INPUTHANDLE == 0){sceneproc_inputhandle(scene, polls);}
+    return;
+}
+
+void sceneproc_inputhandle(scene_t *scene, size_t polls){
+    for(size_t cc =0; cc < scene->num_inhandles; ++cc){
+        if(glfwGetKey(scene->parent, scene->input_handles[cc].key) == scene->input_handles[cc].target){
+			((size_t */*Size of an input entry*/)scene->proc_buffers->buffer)[scene->proc_buffers[0].counter] = (/*Move to upper 16 bits*/scene->input_handles[cc].key << 16) + (uint32_t)polls;
+			scene->proc_buffers[0].counter += scene->proc_buffers[0].buffer_type;
+			if(scene->proc_buffers[0].counter >= scene->proc_buffers[0].buffer_size){scene->proc_buffers[0].counter = 0;}
+            for(uint8_t cc_ = 0; cc_ < scene->input_handles[cc].num_handles; ++cc_){scene->input_handles[cc].handles[cc_](scene);}
+        }
+    }
+}
+
+/// @brief Draw a scene for one frame.
+/// @param scene The scene to be drawn.
+void scene_draw(scene_t *scene){
+    for(size_t cc = 0; cc < scene->mesh_num; ++cc){
+        GLCall(GLUseProgram(scene->shaders[scene->shader_curr].shaderProgram));
+        GLCall(glBindVertexArray(scene->meshes[cc].buffer->VAO));
+        GLCall(glBindBuffer(GL_ARRAY_BUFFER, scene->meshes[cc].buffer->VBO));
+
+        if(scene->meshes[cc].texture){
+            GLCall(glActiveTexture(GL_TEXTURE0 + scene->meshes[cc].texture->unit));
+            GLCall(glBindTexture(scene->meshes[cc].texture->format.target, scene->meshes[cc].texture->ID));
+            GLCall(glUniform1i(glGetUniformLocation(scene->shaders[scene->shader_curr].shaderProgram, "tex0"), scene->meshes[cc].texture->unit));
+        }
+
+        //! For now handle 1 Camera.
+        GLCall(glUniformMatrix4fv(glGetUniformLocation(scene->shaders[scene->shader_curr].shaderProgram, "matrix"), 1, true, cam_mat4(scene->cameras + *scene->loaded_cams)));
+        GLCall(glUniform3f(glGetUniformLocation(scene->shaders[scene->shader_curr].shaderProgram, "offs"), (scene->cameras + *scene->loaded_cams)->pos[0], (scene->cameras + *scene->loaded_cams)->pos[1], (scene->cameras + *scene->loaded_cams)->pos[2]));
+
+#ifdef _DEBUG_ // Full debug
+        printf(ANSI_RED("FULL DEBUG:"));
+        DEBUG_BUFFER_STATE(GL_ARRAY_BUFFER, "VBO");
+        DEBUG_BUFFER_STATE(GL_ELEMENT_ARRAY_BUFFER, "EBO");
+        draw_debug_trace(__FILE__, __LINE__);
+        debug_vert_attr(scene->meshes[cc].pos_layoutindex);
+        debug_vert_attr(scene->meshes[cc].color_layoutindex);
+        debug_vert_attr(scene->meshes[cc].local_texcoordinates_layoutindex);
+#endif
+
+        // GLCall(glDrawElements(scene->meshes[cc].buffer->format, scene->meshes[cc].index_len, GL_UNSIGNED_INT, 0));
+        GLCall(glDrawArrays(GL_TRIANGLES, 0, scene->meshes[cc].data_len));
+    }
+    return;
+}
+
+/// @brief Load a scene from a file.
+/// @param path The path to said file.
+/// @return The loaded scene.
 scene_t *scene_load(const char *path){
     FILE *file = fopen(path, "rb");
     if(file == NULL){printf("Invalid scene load attempt:\n\tReason:\n\t\tInvalid path: %s", path);}else{
@@ -54,14 +200,13 @@ scene_t *scene_load(const char *path){
         if(counter != 0){printf("Invalid scene load attempt:\n\tReason:\n\t\tInvalid file/file format: %s", path);}else{
             // Load mesh number
             fread(&counter, sizeof(size_t), 1, file);
-            out->meshes_num = counter;
+            out->mesh_num = counter;
             out->meshes = calloc(counter, sizeof(mesh_t));
             for(size_t cc =0; cc < counter; ++cc){
                 // Strides
-                fread(&out->meshes[cc].align_stride, sizeof(uint8_t), 1, file);
                 fread(&out->meshes[cc].vertex_stride, sizeof(uint8_t), 1, file);
                 fread(&out->meshes[cc].color_stride, sizeof(uint8_t), 1, file);
-                fread(&out->meshes[cc].dpi_stride, sizeof(uint8_t), 1, file);
+                fread(&out->meshes[cc].uv_stride, sizeof(uint8_t), 1, file);
     
                 // Mesh data length
                 fread(&counter, sizeof(size_t), 1, file);
@@ -93,15 +238,11 @@ scene_t *scene_load(const char *path){
     return NULL;
 }
 
-void scene_draw(scene_t *scene){
-    for(size_t cc =0; cc < scene->meshes_num; ++cc){
-        glBindVertexArray(scene->meshes[cc].buffer->VAO);
-        glUseProgram(scene->shaders[scene->shader_curr].shaderProgram);
-        glDrawElements(scene->meshes[cc].buffer->format, scene->meshes[cc].index_len, GL_UNSIGNED_INT, scene->meshes[cc].index_data);
-    }
-    return;
-}
 
+/// @brief Save a scene into a single file.
+/// @param scene The scene to be saved.
+/// @param target_file The target file or path to be saved to.
+/// @return Whether the saving succeeded.
 bool scene_save(scene_t *scene, char *target_file){
     FILE *file = fopen(target_file, "wb");
     //Write NULL-terminated header name.
@@ -130,12 +271,11 @@ bool scene_save(scene_t *scene, char *target_file){
         }
         // 8-byte 0 digits to split between shader and next segment
         fwrite(&_null, sizeof(size_t), 1, file);
-        fwrite(&scene->meshes_num, sizeof(size_t), 1, file);
-        for(size_t cc = 0; cc < scene->meshes_num; ++cc){
-            fwrite(&scene->meshes[cc].align_stride, sizeof(uint8_t), 1, file);
+        fwrite(&scene->mesh_num, sizeof(size_t), 1, file);
+        for(size_t cc = 0; cc < scene->mesh_num; ++cc){
             fwrite(&scene->meshes[cc].vertex_stride, sizeof(uint8_t), 1, file);
             fwrite(&scene->meshes[cc].color_stride, sizeof(uint8_t), 1, file);
-            fwrite(&scene->meshes[cc].dpi_stride, sizeof(uint8_t), 1, file);
+            fwrite(&scene->meshes[cc].uv_stride, sizeof(uint8_t), 1, file);
 
             // fwrite(&scene->meshes[cc].mesh_num, sizeof(size_t), 1, file);
             // if(scene->meshes[cc].mesh_num != 0){fwrite(scene->meshes[cc].vertex_lens, sizeof(size_t), scene->meshes[cc].mesh_num, file);}
@@ -162,6 +302,9 @@ bool scene_save(scene_t *scene, char *target_file){
     return false;
 }
 
+/// @brief Destroy a scene.
+/// @param scene The scene o be destroyed.
+/// @param save Should the scene be saved?
 void scene_kill(scene_t *scene, bool save){
     if(save){
         char *temp = calloc(strlen(cwd) + strlen(scene->header.name) + 28, sizeof(char));
@@ -185,7 +328,7 @@ void scene_kill(scene_t *scene, bool save){
         }
         free(scene->shaders + cc);
     }
-	for(size_t cc =0; cc < scene->meshes_num; ++cc){
+	for(size_t cc =0; cc < scene->mesh_num; ++cc){
 		free(scene->meshes[cc].vertex_data);
 		free(scene->meshes[cc].index_data);
 		free(scene->meshes[cc].texture->img);
@@ -197,10 +340,14 @@ void scene_kill(scene_t *scene, bool save){
 	}
 }
 
+/// @brief Complete a specific function on a scene's buffers.
+/// @param scene The scene containing the @ref bufferobj_t properties to be processed.
+/// @param option The function to be ran.
+/// @return The returns from the values.
 void **scene_bufferdo(scene_t *scene, const BUFFER_OPTIONS option){
 	void **out = NULL;
 	size_t len = 0;
-	for(size_t cc =0; cc < scene->meshes_num; ++cc){
+	for(size_t cc =0; cc < scene->mesh_num; ++cc){
 		switch(option){
 			case BUFFER_OPTIONS_COLLECT_VAO:
 			case BUFFER_OPTIONS_COLLECT_EBO_MULTIPLE:

@@ -3,8 +3,8 @@
 #define vs
 
 layout(location = 0) in vec3 aPos;
-layout(location = 1) in vec3 aColor;
 layout(location = 2) in vec2 aTex;
+layout(location = 1) in vec3 aColor;
 
 out vec3 color;
 out vec2 tex_coord;
@@ -13,12 +13,10 @@ uniform mat4 matrix;
 uniform float scale;
 uniform vec3 offs;
 
+
 void main(){
-    vec4 _temp = vec4(aPos.x + (aPos.x* scale), aPos.y + (aPos.y* scale), aPos.z + (aPos.z* scale), 1.0)* matrix;
-    _temp.x = offs.x;
-    _temp.y = offs.y;
-    _temp.z = offs.z;
-    gl_Position = _temp;
+    vec3 out_ = offs + (aPos * (1 + scale));
+    gl_Position = matrix * vec4(out_, 1.0f);
     color = aColor;
     tex_coord = aTex;
 }
@@ -35,7 +33,8 @@ in vec2 tex_coord;
 uniform sampler2D tex0;
 
 void main(){
-    FragColor = mix(vec4(color, 1.0f), texture(tex0, tex_coord), 0.5f);
+    // FragColor = mix(texture(tex0, tex_coord), vec4(color, 1.0f), 0.7f); // visualize UVs
+    FragColor = mix(vec4(0.0f, 0.0f, 0.0f, 1.0f), vec4(color, 1.0f), 0.5f);
 }
 
 #define shaderend

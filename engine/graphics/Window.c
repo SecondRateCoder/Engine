@@ -1,7 +1,8 @@
 #include "../graphics/graphics.h"
 
-
-
+/// @brief My handle for handling glfw errors.
+/// @param error_code The error code for the error.
+/// @param msg The msg that should be used.
 void handle_glfw_error_default(int error_code, const char *msg){fprintf(stderr, ANSI_RED("GLFW Error: %d\n\t%s"), error_code, msg);}
 
 /// @brief Initialise an Un-Resizable GLFW Window.
@@ -26,54 +27,19 @@ win_t* win_init(char* name, GLFWerrorfun error_handle, poll_do poll_do_, poll_ki
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
 	glfwWindowHint(GLFW_VISIBLE, GL_TRUE);
 	//malloc on heap.
 	win_t *win = calloc(1, sizeof(win_t));
-	image_t *temp1 = image_gen(4, NULL, (float[4]){1, 0.5, 0.2, 1}, 
-						(texformat_t){
-							.target = GL_TEXTURE_2D,
-							.pixel_format = GL_RGBA,
-							.pixel_type = GL_UNSIGNED_BYTE,
-							.level = 0,
-							.internalFormat = GL_RGBA,
-							.depth = 0,
-						}
-					);
-	mesh_t *temp2 = mesh_gen(
-				(GLfloat[]){
-					// Position coords                      // Color data           // Texture coords
-					-0.5f,   (-0.5f * sqrt3) / 3,    0,      8.0f, 0.3f, 0.2f,    0.0f, 5.0f,
-					0.5f,    (-0.5f * sqrt3) / 3,    0,      8.0f, 0.3f, 0.2f,    5.0f, 0.0f,
-					-0.5f,   (-0.5f * sqrt3 * 2) / 3,0,      8.0f, 0.3f, 0.2f,    0.0f, 0.0f,
-					-0.5f/2, (0.5f * sqrt3) / 6,     0,      8.0f, 0.3f, 0.2f,    2.5f, 5.0f,
-					0.5f/2,  (0.5f * sqrt3) / 6,     0,      8.0f, 0.3f, 0.2f,    2.5f, 5.0f,
-					0.0f,    (0.5f * sqrt3) / 3,     0,      8.0f, 0.3f, 0.2f,    2.5f, 10.0f // Example texture coords
-				},
-				(GLuint[]){
-					0, 1, 2,
-					0, 2, 3,
-					0, 1, 4,
-					1, 2, 4,
-					2, 3, 4,
-					3, 0, 4
-				},
-				(size_t[2]){48, 18}, (uint8_t[4]){0, 8, 3, 2}, (uint32_t[3]){0, 0, 0}, 
-				GL_TRIANGLES,
-				temp1
-			);
-	scene_t *temp3 = scene_gen("New scene", 
-			temp2,
-			shaderblock_gen(true, true),
-			(size_t[2]){0, 0}
-		);
 	*win = (win_t){
 		.g_window =glfwCreateWindow(w, h, name, NULL, NULL),
 		.w = w,
 		.h = h,
 		.polld = poll_do_,
 		.pollk = poll_kill_,
-		.scenes = temp3,
+		.scenes = NULL,
 	};
+	// gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	//Handle errors.
 	if(win->g_window == NULL){
 		//If nothing was created, free the window and it's attributes.
@@ -87,6 +53,50 @@ win_t* win_init(char* name, GLFWerrorfun error_handle, poll_do poll_do_, poll_ki
 		glfwMakeContextCurrent(win->g_window);
 		gladLoadGL();
 	}
+	shaderblock_t *temp0 = shaderblock_gen(true, true, true, NULL);
+	image_t *temp_image = NULL;
+	temp_image = image_gen(4, "C:\\Users\\olusa\\OneDrive\\Documents\\GitHub\\Engine\\Resources\\Textures\\no_texture.png", (float[]){0, 0, 0, 0}, (texformat_t){
+		.target = GL_TEXTURE_2D,
+		.pixel_format = GL_RGBA,
+		.pixel_type = GL_UNSIGNED_BYTE,
+		.level = 0,
+		.internalFormat = GL_RGBA8,
+		.depth = 0
+	});
+	mesh_t *temp2 = mesh_gen(
+		(GLfloat[]){
+			// Position coords                      // Color data           // Texture coords
+			-0.5f,   (-0.5f * sqrt3) / 3,    0,      8.0f, 0.3f, 0.2f,    0.0f, 5.0f,
+			0.5f,    (-0.5f * sqrt3) / 3,    0,      8.0f, 0.3f, 0.2f,    5.0f, 0.0f,
+			-0.5f,   (-0.5f * sqrt3 * 2) / 3,0,      8.0f, 0.3f, 0.2f,    0.0f, 0.0f,
+			-0.5f/2, (0.5f * sqrt3) / 6,     0,      8.0f, 0.3f, 0.2f,    2.5f, 5.0f,
+			0.5f/2,  (0.5f * sqrt3) / 6,     0,      8.0f, 0.3f, 0.2f,    2.5f, 5.0f,
+			0.0f,    (0.5f * sqrt3) / 3,     0,      8.0f, 0.3f, 0.2f,    2.5f, 10.0f // Example texture coords
+		},
+		(GLuint[]){
+			0, 1, 2,
+			0, 2, 3,
+			0, 1, 4,
+			1, 2, 4,
+			2, 3, 4,
+			3, 0, 4
+		},
+		(size_t[2]){48, 18}, (uint8_t[4]){8, 3, 2}, (uint32_t[3]){0, 1, 2}, (uint8_t[3]){0, 3, 6},
+		GL_TRIANGLES,
+		temp_image
+	);
+	scene_t *temp3 = scene_gen(
+		win->g_window, 
+		"New scene", 
+		temp2,
+		temp0,
+		NULL,
+		(size_t[2]){1, 0, 0}
+	);
+	win->scenes = temp3;
+	win->loaded_scenes = malloc(sizeof(void *));
+	*win->loaded_scenes = 0;
+	win->num_loaded = 1;
 	return win;
 }
 
@@ -153,17 +163,19 @@ void win_poll(win_t *win){
 		//Ensure that win's Shader's are Handled.
 		//Explicitly define the Shader to be Used.
 		GLUseProgram(wscene_curr(win).shaders->shaderProgram);
+		size_t cc_ = 0;
 		if(win->polld != NULL){
 			win->polld(win, cc, cycles);
 			// ipoll_t *poll_t = (ipoll_t *){win, cc};
 			// pthread_create(&win->poll_thread, thread_attr, win->polld, (void *)poll_t);
 			// pthread_join(win->poll_thread, NULL);
 		}
+		for(size_t cc2 = 0; cc2 < win->num_loaded; ++cc2, cc_ = win->loaded_scenes[cc]){scene_draw(win->scenes + cc_);}
 		//Bind win's VAO for Drawing.
 		// printf(ANSI_YELLOW("Current VAO: %u"), glad_glIsVertexArray(win->buffers[win->buffer_curr].VAO));
 		glfwSwapBuffers(win->g_window);
 
-		printf(ANSI_YELLOW("%d"), glGetError());
+		// printf(ANSI_YELLOW("Log: %d"), glGetError());
 		glfwPollEvents();
 		if(cc > MAX_POLLS){
 			cc = 0;

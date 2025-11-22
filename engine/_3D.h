@@ -3,22 +3,25 @@
 // #include "../engine/Public.h"
 #include "../graphics/graphics.h"
 
-#ifndef _3D_H
-#define _3D_H
-
 typedef struct tex_format{
+	/// @brief The Dimensions or shape of the Texture Image.
 	GLenum target,
+		/// @brief The format used to store pixel data
 		pixel_format,
+		/// @brief The type used for each pixel's channels
 		pixel_type
 	;
+	/// @brief  @brief Mip-map level.
 	GLint level,
+	/// @brief The format & type used to store Pixels GPU-side.
 		internalFormat,
+	/// @brief For 3D textures or array layers
 		depth;
 }tex_format;
 #define texformat_t tex_format
 
-typedef struct texture_image {
-	GLuint width, height, color_channels;
+typedef struct texture_image{
+	GLint width, height, color_channels;
 	char *path;
 	GLuint ID;
 	uint8_t unit;
@@ -50,7 +53,7 @@ typedef enum BUFFER_OPTIONS{
 	BUFFER_OPTIONS_COLLECT_EBO_MULTIPLE = 8,
 }BUFFER_OPTIONS;
 
-typedef struct buffer_object {
+typedef struct buffer_object{
 	/*
 	[0]: Is VAO set-up?
 	[1]: Is VBO set-up?
@@ -91,15 +94,20 @@ typedef struct _mesh{
     size_t index_len;
     
     image_t *texture;
+
+	/// @brief The offset for the position elements in vertex_data.
+	uint8_t pos_offset,
+	/// @brief The offset for the color elements in vertex_data.
+			color_offset,
+	/// @brief The offset for the UV elements in vertex_data.
+			uv_offset;
     
-    /// @brief The number of @ref GLfloat values between each vertex, color or texture co-ord.
-    uint8_t align_stride;
     /// @brief The number of @ref GLfloat values that make up a Vertex in a _mesh's vertex_data. Hence "stride"
     uint8_t vertex_stride;
     /// @brief The number of @ref GLfloat values that make up a Vertex's Color vertex_data in a _mesh's vertex_data.
     uint8_t color_stride;
     /// @brief The number of @ref GLfloat values that make up a Vertex's Texture per-pixel stride in a _mesh's vertex_data.
-    uint8_t dpi_stride;
+    uint8_t uv_stride;
     /// @brief The Layout index in a shader corresponding to this _mesh's Position vertex data.
     uint32_t pos_layoutindex, 
     /// @brief The Layout index in a shader corresponding to this _mesh's vertex Color data.
@@ -116,4 +124,17 @@ typedef struct Color4 {
 	float a, r, g, b;
 } Color4;
 #define argb_t Color4
-#endif
+
+typedef struct cam_type{
+	vec3 pos,
+		 rot,
+		 up;
+	GLint width,
+		  height,
+		  speed,
+		  sensitivity;
+	float FOV, near, far;
+	size_t num_inputs;
+	INPUT_Handle *inputs;
+}cam_type;
+#define cam_t cam_type

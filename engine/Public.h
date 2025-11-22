@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef _PUBLIC_H
-#define _PUBLIC_H
-
 #include "../include/stb/stb_image.h"
 
 // 1. Standard C
@@ -42,13 +39,30 @@
 		x;
 #endif
 
+#ifdef _DEBUG_
+#define DEBUG_BUFFER_STATE(target, label) do { \
+    GLint size, usage, mapped, flags, length, offset; \
+    glGetBufferParameteriv(target, GL_BUFFER_SIZE, &size); \
+    glGetBufferParameteriv(target, GL_BUFFER_USAGE, &usage); \
+    glGetBufferParameteriv(target, GL_BUFFER_MAPPED, &mapped); \
+    glGetBufferParameteriv(target, GL_BUFFER_ACCESS_FLAGS, &flags); \
+    glGetBufferParameteriv(target, GL_BUFFER_MAP_LENGTH, &length); \
+    glGetBufferParameteriv(target, GL_BUFFER_MAP_OFFSET, &offset); \
+    printf(ANSI_YELLOW("\n%s Params:\n\tSize: %d\n\tUsage: %s\n\tMapped? %s\n\tAccess flags: %d\n\tLength: %d\n\tMap offset: %d\n"), \
+        label, size, \
+        (usage == GL_STATIC_DRAW ? "Static draw" : usage == GL_DYNAMIC_DRAW ? "Dynamic draw" : usage == GL_STREAM_DRAW ? "Stream draw" : "Unknown"), \
+        (mapped ? "TRUE" : "FALSE"), flags, length, offset); \
+} while(0)
+#endif
+
 // 3. Utility macros
 #define IS_NUM(c)    ( ((int)(c) >= '0') && ((int)(c) <= '9') )
 #define IS_EVEN(x)   ( ((x) % 2) == 0 )
 #define INT_SIMP(x)  ( ((x) < 0) ? -1 : 1 )
 #define IS_SPACE(c)  ( (c) == ' ' )
 #define glDeleteBuffer(BUFFER) glDeleteBuffers(1, &BUFFER)
-#define glGenBuffer(BUFFER) glGenBuffers(1, BUFFER)
+#define glGenTexture(BUFFER) glGenTextures(1, &BUFFER)
+#define glGenBuffer(BUFFER) glGenBuffers(1, &BUFFER)
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
 #define ANSI_COLOR_YELLOW  "\x1b[33m"
@@ -62,6 +76,10 @@
 #define ANSI_BLUE(TEXT) "\n" ANSI_COLOR_BLUE TEXT ANSI_COLOR_RESET
 #define ANSI_MAGENTA(TEXT) "\n" ANSI_COLOR_MAGENTA TEXT ANSI_COLOR_RESET
 #define ANSI_CYAN(TEXT) "\n" ANSI_COLOR_CYAN  TEXT ANSI_COLOR_RESET
+#define BIT_MASK(len) ((1U << (len)) - 1U)
+#define BIT_RANGE(offset, len) (BIT_MASK(len) << (offset))
+#define BIT(x) (1U << (x))
+
 
 
 // 4. String utils
@@ -90,11 +108,16 @@ bool uint128_t_comp (const uint128_t a, const uint128_t b);
 #include "../_3D.h"                 // uses mesh_t, image_t, bufferobj_t
 
 // 10. Mesh helpers
-void mesh_attrlink(bufferobj_t *buffer, const int pos_layout,  const int col_layout,  const int tex_layout, mesh_t *_mesh);
+void mesh_attrlink(bufferobj_t *buffer, mesh_t *_mesh);
 void mesh_bindtexture(mesh_t *m, image_t *texture);
 void CheckGLError(const char* file, int line, const char* call);
 void draw_debug_trace(const char* file, int line);
+void debug_vert_attr(uint32_t index);
 void _GLUseprogram(GLuint prog);
+
+void cam_gen(scene_t *scene, vec3 args0[3], GLint args1[4], float args2[3], INPUT_Handle *input);
+void *cam_input_default(void *cam_);
+mat4 *cam_mat4(cam_t *cam);
 
 extern char *cwd;
 extern size_t cwd_len;
@@ -127,5 +150,15 @@ void GLAPIENTRY debug_callback(
 	const GLchar *message, const void *userParam
 );
 
-#endif // _PUBLIC_H
-
+typedef void *(*INPUTH_handle)(scene_t *scene);
+typedef struct INPUT_Handle{
+	GLenum key, target;
+	uint8_t num_handles;
+	INPUTH_handle *handles;
+}INPUT_Handle;
+#define inputh_t INPUT_Handle
+typedef struct INPUT_Buffer_entry{
+	GLenum key;
+	uint32_t poll;
+}INPUT_Buffer_entry;
+const uint8_t MAX_SCENE_PROC;
