@@ -124,6 +124,16 @@ void debug_vert_attr(uint32_t index){
 /// @param texture_layout The layout index to apply a reference to the model's texture co-ordinate data.
 /// @param _mesh The _mesh to be appended.
 void mesh_attrlink(bufferobj_t *buffer, mesh_t *_mesh){
+	// glVertexAttribPointer:
+	//		Params:
+	//			[0]: The layout in shaders,
+	//			[1]: The number of values,
+	//			[2]: The type of values,
+	//			[3]: Normalised?
+	//			[4]: The stride between each of that vertex(section) in your array of values.
+	//			[5]: The offset from where the data begins in the buffer.
+	// Mesh vertex data should be in the format: {Pos, Color, Tex, ...}
+	// glVertexAttribPointer(_mesh.local_texcoordinates_layoutindex, _mesh->uv_stride, GL_FLOAT, GL_FALSE, _mesh->vertex_stride - (_mesh->color_stride + _mesh->uv_stride) + _mesh->color_stride, (void *)(_mesh.uv_offset * sizeof(GLfloat));
     //Generate new buffers for _mesh.
     if(glIsVertexArray(buffer->VAO) == GL_FALSE){GLCall(glGenBuffer(buffer->VAO))}
     GLCall(glBindVertexArray(buffer->VAO));
@@ -131,28 +141,24 @@ void mesh_attrlink(bufferobj_t *buffer, mesh_t *_mesh){
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, buffer->VBO));
     GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->EBO));
     
-    // draw_debug_trace(__FILE__, __LINE__);
-
-    // GLCall(glBufferData(GL_ARRAY_BUFFER, _mesh->data_len, _mesh->vertex_data, GL_STATIC_DRAW));
-    // GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, _mesh->index_len, _mesh->index_data, GL_STATIC_DRAW));
     draw_debug_trace(__FILE__, __LINE__);
 
     GLint enabled = 0, size = 0, type = 0, normalized = 0, stride_ = 0;
     GLvoid* pointer = NULL;
     if(_mesh->pos_layoutindex != INT32_MIN){
-        GLCall(glVertexAttribPointer(_mesh->pos_layoutindex, (_mesh->vertex_stride - (_mesh->color_stride + _mesh->uv_stride)), GL_FLOAT, GL_FALSE, _mesh->vertex_stride * sizeof(GLfloat), (void *)(_mesh->pos_offset * sizeof(GLfloat))));
+        GLCall(glVertexAttribPointer(_mesh.pos_layoutindex, (_mesh->vertex_stride - (_mesh->color_stride + _mesh->uv_stride)) * sizeof(GLfloat), GL_FLOAT, GL_FALSE, _mesh->color_stride + _mesh->uv_stride, (void *)(_mesh.pos_offset * sizeof(GLfloat)));
         GLCall(glEnableVertexAttribArray(_mesh->pos_layoutindex));
         debug_vert_attr(_mesh->pos_layoutindex);
     }
 
     if(_mesh->color_layoutindex != INT32_MIN){
-        GLCall(glVertexAttribPointer(_mesh->color_layoutindex, _mesh->color_stride, GL_FLOAT, GL_FALSE, _mesh->vertex_stride * sizeof(GLfloat), (void *)(_mesh->color_offset * sizeof(GLfloat))));
+        GLCall(glVertexAttribPointer(_mesh.color_layoutindex, _mesh->color_stride, GL_FLOAT, GL_FALSE, (_mesh->vertex_stride - (_mesh->color_stride + _mesh->uv_stride) + _mesh->uv_stride) * sizeof(GLfloat), (void *)(_mesh.color_offset * sizeof(GLfloat)));
         GLCall(glEnableVertexAttribArray(_mesh->color_layoutindex));
         debug_vert_attr(_mesh->color_layoutindex);
     }
 
     if(_mesh->local_texcoordinates_layoutindex != INT32_MIN){
-        GLCall(glVertexAttribPointer(_mesh->local_texcoordinates_layoutindex, _mesh->uv_stride, GL_FLOAT, GL_FALSE, _mesh->vertex_stride * sizeof(GLfloat), (void *)(_mesh->uv_offset * sizeof(GLfloat))));
+        GLCall(glVertexAttribPointer(_mesh.local_texcoordinates_layoutindex, _mesh->uv_stride, GL_FLOAT, GL_FALSE, _mesh->vertex_stride - (_mesh->color_stride + _mesh->uv_stride) + _mesh->color_stride, (void *)(_mesh.uv_offset * sizeof(GLfloat)));
         GLCall(glEnableVertexAttribArray(_mesh->local_texcoordinates_layoutindex));
         debug_vert_attr(_mesh->local_texcoordinates_layoutindex);
     }
@@ -162,19 +168,7 @@ void mesh_attrlink(bufferobj_t *buffer, mesh_t *_mesh){
     GLCall(glBindVertexArray(0));
 }
 
-// void mesh_arttr_relink(const mesh_t *_mesh){
-//     GLCall(glVertexAttribPointer(_mesh->pos_layoutindex, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->vertex_stride, _mesh->vertex_data));
-//     GLCall(glEnableVertexAttribArray(_mesh->pos_layoutindex));
-//     // Handle color layout.
-//     GLCall(glVertexAttribPointer(_mesh->color_layoutindex, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->color_stride, &_mesh->vertex_data[_mesh->vertex_stride-1]));
-//     GLCall(glEnableVertexAttribArray(_mesh->color_layoutindex));
-//     // Handle texture coord layout.
-//     GLCall(glVertexAttribPointer(_mesh->local_texcoordinates_layoutindex, _mesh->data_len, GL_FLOAT, GL_FALSE, _mesh->uv_stride, &_mesh->vertex_data[(_mesh->vertex_stride + _mesh->color_stride) - 2]));
-// 	GLCall(glEnableVertexAttribArray(_mesh->local_texcoordinates_layoutindex));
-// }
-
 size_t texture_num = 0;
-
 /// @brief Bind a texture to a mesh.
 /// @param m The mesh to recieve the texture.
 /// @param texture The texture to be used.
