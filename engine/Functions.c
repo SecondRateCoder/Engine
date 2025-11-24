@@ -1,7 +1,4 @@
 #include "../Public.h"
-#include <stdbool.h>
-#include <stdlib.h>
-#include <string.h>
 
 /// @brief Convert a full string with the input flags.
 /// @param str The input string.
@@ -400,10 +397,7 @@ image_t *image_gen(uint8_t color_channels, char *image_path, float border[4], te
 
 }
 
-void *cam_input_default(void *cam_){
-    cam_t *cam = cam_;
-    return NULL;
-}
+void *cam_input_default(void *cam_){return NULL;}
 
 /// @brief Generate a cam_t object as a child of a scene_t.
 /// @param scene The scene to be used.
@@ -411,7 +405,7 @@ void *cam_input_default(void *cam_){
 /// @param args1 The GLint args. [0]: width, [1]: height, [2]: speed, [3]: sensitivity,
 /// @param args2 The float args. [0]: near plane; length from Camera, [1]: far plane; length from Camera, [2]: FOV; clipping range of Camera.
 /// @param input 
-void cam_gen(scene_t *scene, vec3 args0[3], GLint args1[4], float args2[3], INPUT_Handle *input, bool activate){
+void cam_gen(scene_t *scene, vec3 args0[3], GLint args1[4], float args2[3], bool activate){
     scene->cameras = realloc(scene->cameras, scene->cam_num * sizeof(cam_t));
     scene->cameras[scene->cam_num] = (cam_t){
         .pos[0] = args0[0][0], .pos[1] = args0[0][1], .pos[2] = args0[0][2],
@@ -423,8 +417,7 @@ void cam_gen(scene_t *scene, vec3 args0[3], GLint args1[4], float args2[3], INPU
         .sensitivity = args1[3],
         .near = args2[0],
         .far = args2[1],
-        .FOV = args2[2],
-        .inputs = (input == NULL? cam_input_default: input)
+        .FOV = args2[2]
     };
     scene->cam_num++;
     if(activate){cam_toggle(scene->cam_num - 1, scene);}

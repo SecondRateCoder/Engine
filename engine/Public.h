@@ -1,5 +1,6 @@
 #pragma once
 
+#define STB_IMAGE_IMPLEMENTATION
 #include "../include/stb/stb_image.h"
 
 // 1. Standard C
@@ -104,8 +105,9 @@ bool uint128_t_comp (const uint128_t a, const uint128_t b);
 #include <cglm/cglm.h>
 
 // 8. Engine headers
-#include "../graphics/graphics.h"   // defines image_t, bufferobj_t
-#include "../_3D.h"                 // uses mesh_t, image_t, bufferobj_t
+#include "../engine/defaults/defaults.h"
+#include "../graphics/graphics.h"
+#include "../_3D.h"
 
 // 10. Mesh helpers
 void mesh_attrlink(bufferobj_t *buffer, mesh_t *_mesh);
@@ -115,7 +117,7 @@ void draw_debug_trace(const char* file, int line);
 void debug_vert_attr(uint32_t index);
 void _GLUseprogram(GLuint prog);
 
-void cam_gen(scene_t *scene, vec3 args0[3], GLint args1[4], float args2[3], INPUT_Handle *input);
+void cam_gen(scene_t *scene, vec3 args0[3], GLint args1[4], float args2[3], bool activate);
 void *cam_input_default(void *cam_);
 mat4 *cam_mat4(cam_t *cam);
 
@@ -150,11 +152,11 @@ void GLAPIENTRY debug_callback(
 	const GLchar *message, const void *userParam
 );
 
-typedef void *(*INPUTH_handle)(scene_t *scene);
+typedef void *(*INPUTH_handlef)(scene_t *scene, GLenum key, GLenum press);
 typedef struct INPUT_Handle{
 	GLenum key, target;
 	uint8_t num_handles;
-	INPUTH_handle *handles;
+	INPUTH_handlef *handles;
 }INPUT_Handle;
 #define inputh_t INPUT_Handle
 typedef struct INPUT_Buffer_entry{

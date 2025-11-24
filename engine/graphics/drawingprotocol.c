@@ -1,5 +1,4 @@
 #include "../Public.h"
-#include <string.h>
 
 #define GL_GLEXT_PROTOTYPES
 

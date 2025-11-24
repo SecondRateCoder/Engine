@@ -1,4 +1,4 @@
-#include "../graphics/graphics.h"
+#include "../engine/Public.h"
 
 /// @brief My handle for handling glfw errors.
 /// @param error_code The error code for the error.
@@ -170,7 +170,7 @@ void win_poll(win_t *win){
 			// pthread_create(&win->poll_thread, thread_attr, win->polld, (void *)poll_t);
 			// pthread_join(win->poll_thread, NULL);
 		}
-		for(size_t cc2 = 0; cc2 < win->num_loaded; ++cc2, cc_ = win->loaded_scenes[cc]){scene_draw(win->scenes + cc_);}
+		for(size_t cc2 = 0; cc2 < win->num_loaded; ++cc2, cc_ = win->loaded_scenes[cc]){scene_poll(win->scenes + cc_, cc, cycles);}
 		//Bind win's VAO for Drawing.
 		// printf(ANSI_YELLOW("Current VAO: %u"), glad_glIsVertexArray(win->buffers[win->buffer_curr].VAO));
 		glfwSwapBuffers(win->g_window);

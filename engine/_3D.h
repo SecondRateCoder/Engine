@@ -1,7 +1,6 @@
 #pragma once
 
-// #include "../engine/Public.h"
-#include "../graphics/graphics.h"
+#include "../engine/Public.h"
 
 typedef struct tex_format{
 	/// @brief The Dimensions or shape of the Texture Image.
@@ -134,7 +133,5 @@ typedef struct cam_type{
 		  speed,
 		  sensitivity;
 	float FOV, near, far;
-	size_t num_inputs;
-	INPUT_Handle *inputs;
 }cam_type;
 #define cam_t cam_type

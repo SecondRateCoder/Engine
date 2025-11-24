@@ -518,6 +518,8 @@ extern "C" {
 
 #define GLFW_KEY_LAST               GLFW_KEY_MENU
 
+#define GLFW_KEY_MOUSE_MOVE         349
+
 /*! @} */
 
 /*! @defgroup mods Modifier key flags

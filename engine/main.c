@@ -1,12 +1,4 @@
 #include "../engine/Public.h"
-// #include "../engine/_3D.h"
-
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <math.h>
-
-#include "./graphics/graphics.h"
 
 const float sqrt3 =  1.7320508075688772935274463415059f;
 uint8_t unit =0;
@@ -233,6 +225,12 @@ int main(){
 
     // mainw->vert_count = 8;
     glEnable(GL_DEPTH);
+    scene_inputh_regm(
+        mainw->scenes + *mainw->loaded_scenes, 
+        (GLenum[7]){GLFW_KEY_PAGE_UP, GLFW_KEY_PAGE_DOWN, GLFW_KEY_UP, GLFW_KEY_DOWN, GLFW_KEY_LEFT, GLFW_KEY_RIGHT, GLFW_KEY_MOUSE_MOVE},
+        (GLenum[7]){GLFW_PRESS, GLFW_PRESS, GLFW_PRESS, GLFW_PRESS, GLFW_PRESS, GLFW_PRESS, GLFW_PRESS},
+        7, INPUTH_CAMHandle_0, true
+    );
     //!NOT GOOD MATE
     uniform_write(mainw->scenes->shaders, "vec3", "offs", NULL, true, (float[3]){-5, 0, 0}, 3);
     uniform_write(mainw->scenes->shaders, "float", "scale", NULL, true, (float[1]){0}, 1);

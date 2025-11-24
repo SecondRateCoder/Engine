@@ -1,12 +1,7 @@
 #pragma once
 
-#include "../Public.h"
-#include "../_3D.h"
-// #include "../_3D.h"
-// #include "./window/window.h"
-// #include <stdint.h>
-#include <string.h>
-// #include <stdbool.h>
+#include "../engine/_3D.h"
+#include "../engine/Public.h"
 
 #define SHADERBLOCK_HANDLE(SB_, CLEAN_, DO_UNIFORMS_)	\
 	shaderblock_t *SB = SB_;	\
@@ -55,9 +50,6 @@ typedef struct ComputeShaderBlock {
 }ComputeShaderBlock;
 #define shaderblock_t ComputeShaderBlock
 
-// #include <excpt.h> // This is a Windows-specific header and may not be portable.
-
-
 // // A Function Pointer for doing custom functions with the Polling of the Window.
 // // The `poll_do` function signature should be `void (*poll_do)(struct window *, size_t);`
 // // to ensure the `window` struct is a known type within the typedef.
@@ -72,8 +64,8 @@ typedef struct scene_header{
 }scene_header;
 typedef enum SCENEPROC_t{
 	/// @brief Buffer stores (GLenum, (size_t)polls)
-	SCENEPROC_ERRORDUPLICATE = 0x0,
-	SCENEPROC_ERRORNOREF = 0x1,
+	SCENEPROC_ERRORDUPLICATE = 0x1,
+	SCENEPROC_ERRORNOREF = 0x2,
 	SCENEPROC_INPUTHANDLE = 0x10,
 }SCENEPROC_t;
 typedef struct sceneproc_buffer{
@@ -208,9 +200,10 @@ bool scene_save(scene_t *scene, char *target_file);
 void scene_kill(scene_t *scene, bool save);
 void **scene_bufferdo(scene_t *scene, const BUFFER_OPTIONS option);
 scene_t *scene_gen(GLFWwindow *parent, char *name, mesh_t *meshes, shaderblock_t *shaders, cam_t *cameras, size_t len[3]);
-uint8_t scene_inputh_reg(scene_t *scene, GLenum key, GLenum target, INPUTH_handle handle);
+uint8_t *scene_inputh_regm(scene_t *scene, GLenum *keys, GLenum *targets, uint8_t len, INPUTH_handlef handle, bool append);
+uint8_t scene_inputh_regh(scene_t *scene, GLenum key, GLenum target, size_t num_handles, INPUTH_handlef *handles, bool append);
 void cam_toggle(size_t index, scene_t *scene);
-void sceneproc_inputhandle(scene_t *scene);
-void scene_poll(scene_t *scene, size_t polls);
+void sceneproc_inputhandle(scene_t *scene, size_t polls);
+void scene_poll(scene_t *scene, size_t polls, size_t pollcycles);
 
 void debug_vert_attr(uint32_t index);

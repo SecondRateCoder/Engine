@@ -1,4 +1,4 @@
-#include "../graphics/graphics.h"
+#include "../engine/Public.h"
 
 const uint8_t MAX_SCENE_PROC = 1;
 
@@ -9,8 +9,8 @@ const uint8_t MAX_SCENE_PROC = 1;
 /// @param len Array of lengths, [0]: Number of meshes, [1]: Number of shaders
 /// @return The generated scenes.
 scene_t *scene_gen(GLFWwindow *parent, char *name, mesh_t *meshes, shaderblock_t *shaders, cam_t *cameras, size_t len[3]){
-	scene_t *out = calloc(1, sizeof(scene_t));
-	*out = (scene_t){
+	scene_t *out_scene = calloc(1, sizeof(scene_t));
+	(*out_scene) = (scene_t){
 		.header.name = name,
 		.meshes = meshes,
 		.mesh_num = len[0],
@@ -30,14 +30,17 @@ scene_t *scene_gen(GLFWwindow *parent, char *name, mesh_t *meshes, shaderblock_t
         },
         .parent = parent
 	};
-	if(cameras == NULL){cam_gen(out, (vec3[]){0, 0, 0, 0, 0, 0, 1, 0}, (GLint[]){90, 90, 1, 10}, (GLfloat[]){0.1, 10, 9}, NULL);
+	if(cameras == NULL){cam_gen(out_scene, (vec3[]){0, 0, 0, 0, 0, 0, 1, 0}, (GLint[]){90, 90, 1, 10}, (GLfloat[]){0.1, 10, 9}, true);
 	}else{
-		out->cameras = cameras;
-		out->cam_num = len[2];
+		out_scene->cameras = cameras;
+		outout_scene->cam_num = len[2];
 	}
-	return out;
+	return out_scene;
 }
 
+/// @brief Toggle a cam from whether it should be processed or not.
+/// @param index The index (in loaded_cams or in cams list.).
+/// @param scene The scene containing the Camera.
 void cam_toggle(size_t index, scene_t *scene){
 	for(size_t cc =0; cc < scene->num_loadedcams; ++cc){
 		if(index == scene->loaded_cams[cc]){
@@ -52,50 +55,57 @@ void cam_toggle(size_t index, scene_t *scene){
 	scene->loaded_cams = realloc(scene->loaded_cams, (scene->num_loadedcams + 1) * sizeof(size_t *));
 	scene->loaded_cams[scene->num_loadedcams] = index;
 	scene->num_loadedcams++;
-	for(size_t cc =0; cc < scene->cameras[index].num_inputs; ++cc){
-		scene_inputh_reg(scene, scene->cameras[index].inputs[cc].key, scene->cameras[index].inputs[cc].target, scene->cameras[index].inputs[cc].num_handles, scene->cameras[index].inputs[cc].handles, false);
-	}
 }
 
-uint8_t scene_inputh_unreg(scene_t *scene, GLenum key, GLenum target, INPUTH_handle *handles, uint8_t num_handles){
+/// @brief Un-register a handle from with a specific key, target combo.
+/// @param scene The scene containing the input.
+/// @param key The key.
+/// @param target The target.
+/// @param handle The handle.
+/// @return Success code.
+uint8_t scene_inputh_unreg(scene_t *scene, GLenum key, GLenum target, INPUTH_handlef handle){
 	for(size_t cc =0; cc < scene->num_inhandles - 1; ++cc){
-		for(uint8_t cc_ = 0; cc_ < scene->input_handles[cc + 1].num_handles; ++cc_){
-			// Its acc js too complex to move stuff around n shit, so js reassign them to a dummy function.
-			// But I want to clip the funk of appending args to the stack etc.
-			//Ill keep the complexity to keep mem usage down and reduce unnecessary overhead.
-			for(uint8_t cc__ = 0; cc__ < num_handles; ++cc__){
-				if(scene->input_handles[cc + 1].key == key && scene->input_handles[cc + 1].target == target){
-					if(scene->input_handles[cc + 1].handles[cc_] == handles[cc__]){
-						// Move down.
-						memcpy(scene->input_handles[cc + 1].handles + cc__, scene->input_handles[cc + 1].handles + cc__ + 1, sizeof(INPUTH_handle) * (scene->input_handles[cc + 1].num_handles - cc__ - 1));
-						scene->input_handles[cc + 1].num_handles--;
-					}
-				}
-			}
-			if(scene->input_handles[cc + 1].num_handles){
-				memcpy(scene->input_handles + cc + 1, scene->input_handles + cc + 2, sizeof(INPUT_Handle) * (scene->num_inhandles - cc));
-				scene->num_inhandles--;
-			}
-		}
-		if(cc + 1== num_handles){return 0;}
+		if(scene->input_handles[cc].key == key && scene->input_handles[cc].target == target){
+            for(uint8_t cc_ = 0; cc_ < scene->input_handles[cc].num_handles; ++cc_){
+                if(scene->input_handles[cc].handles[cc_] == handle){
+                    memcpy(scene->input_handles[cc].handles + cc_, scene->input_handles[cc].handles + cc_ + 1, scene->input_handles[cc].num_handles - cc_ - 1);
+                    scene->input_handles[cc].num_handles--;
+                    return 0;
+                }
+            }
+        }
 	}
 	return SCENEPROC_ERRORNOREF;
 }
 
-/// @brief Register a number of handles to a single key and it's ppress type.
+/// @brief Registr a signle handle to multiple key/target combos.
+/// @param scene The scene to have the inputs registered.
+/// @param keys The key, must be @ref len length.
+/// @param targets The target, must be @ref len length.
+/// @param len The length of both @ref keys and @ref targets.
+/// @param handle The handle to be attached.
+/// @param append If there is already an element with the input's key/target combo this function append the handle function.
+/// @return All the outputs for all elements.
+uint8_t *scene_inputh_regm(scene_t *scene, GLenum *keys, GLenum *targets, uint8_t len, INPUTH_handlef handle, bool append){
+    uint8_t *out = calloc(len, sizeof(uint8_t));
+    for(uint8_t cc = 0; cc < len; ++cc){out[cc] = scene_inputh_regh(scene, keys[cc], targets[cc], &handle, 1, append);}
+    return out;
+}
+
+/// @brief Register a number of handles to a single key and it's press type.
 /// @param scene The scene to have the input's registered to.
 /// @param key The key for the scenes.
 /// @param target The target pressing type.
 /// @param num_handles The number of in handles.
 /// @param handles The handles to be registered.
-/// @param append If there is already a element with the input's should this function append it's own elements.
+/// @param append If there is already an element with the input's key/target combo this function append the handle function.
 /// @return An error code, if not 0 check @related SCENEPROC_t
-uint8_t scene_inputh_reg(scene_t *scene, GLenum key, GLenum target, size_t num_handles, INPUTH_handle *handles, bool append){
+uint8_t scene_inputh_regh(scene_t *scene, GLenum key, GLenum target, size_t num_handles, INPUTH_handlef *handles, bool append){
     for(size_t cc = 0; cc < scene->num_inhandles; ++cc){
         if(scene->input_handles[cc].key == key && scene->input_handles[cc].target == target){
 			if(append){
-				scene->input_handles[cc].handles = realloc(scene->input_handles[cc].handles, (num_handles + scene->input_handles[cc].num_handles) * sizeof(INPUTH_handle));
-				memcpy(scene->input_handles[cc].handles + scene->input_handles[cc].num_handles, handles, num_handles * sizeof(INPUTH_handle));
+				scene->input_handles[cc].handles = realloc(scene->input_handles[cc].handles, (num_handles + scene->input_handles[cc].num_handles) * sizeof(INPUTH_handlef));
+				memcpy(scene->input_handles[cc].handles + scene->input_handles[cc].num_handles, handles, num_handles * sizeof(INPUTH_handlef));
 				scene->input_handles[cc].num_handles++;
 				return 0;
 			}else{return (uint8_t)SCENEPROC_ERRORDUPLICATE;}
@@ -121,13 +131,20 @@ void scene_poll(scene_t *scene, size_t polls, size_t pollcycles){
     return;
 }
 
+/// @brief Process ALL input handles in a scene as well as add an entry to the INPUT buffer..
+/// @param scene The scene to have it's inputs processed.
+/// @param polls The polls.
 void sceneproc_inputhandle(scene_t *scene, size_t polls){
     for(size_t cc =0; cc < scene->num_inhandles; ++cc){
-        if(glfwGetKey(scene->parent, scene->input_handles[cc].key) == scene->input_handles[cc].target){
-			((size_t */*Size of an input entry*/)scene->proc_buffers->buffer)[scene->proc_buffers[0].counter] = (/*Move to upper 16 bits*/scene->input_handles[cc].key << 16) + (uint32_t)polls;
-			scene->proc_buffers[0].counter += scene->proc_buffers[0].buffer_type;
-			if(scene->proc_buffers[0].counter >= scene->proc_buffers[0].buffer_size){scene->proc_buffers[0].counter = 0;}
-            for(uint8_t cc_ = 0; cc_ < scene->input_handles[cc].num_handles; ++cc_){scene->input_handles[cc].handles[cc_](scene);}
+        if(scene->input_handles[cc].key == GLFW_KEY_MOUSE_MOVE){
+            for(uint8_t cc_ = 0; cc_ < scene->input_handles[cc].num_handles; ++cc_){scene->input_handles[cc].handles[cc_](scene, scene->input_handles[cc].key, scene->input_handles[cc].target);}
+        }else{
+            if(glfwGetKey(scene->parent, scene->input_handles[cc].key) == scene->input_handles[cc].target){
+                ((size_t */*Size of an input entry*/)scene->proc_buffers->buffer)[scene->proc_buffers[0].counter] = (/*Move to upper 16 bits*/scene->input_handles[cc].key << 32) + (uint32_t)polls;
+                scene->proc_buffers[0].counter += scene->proc_buffers[0].buffer_type;
+                if(scene->proc_buffers[0].counter >= scene->proc_buffers[0].buffer_size){scene->proc_buffers[0].counter = 0;}
+                for(uint8_t cc_ = 0; cc_ < scene->input_handles[cc].num_handles; ++cc_){scene->input_handles[cc].handles[cc_](scene, scene->input_handles[cc].key, scene->input_handles[cc].target);}
+            }
         }
     }
 }
@@ -147,7 +164,7 @@ void scene_draw(scene_t *scene){
         }
 
         //! For now handle 1 Camera.
-        GLCall(glUniformMatrix4fv(glGetUniformLocation(scene->shaders[scene->shader_curr].shaderProgram, "matrix"), 1, true, cam_mat4(scene->cameras + *scene->loaded_cams)));
+        GLCall(glUniformMatrix4fv(glGetUniformLocation(scene->shaders[scene->shader_curr].shaderProgram, "matrix"), 1, true, *(cam_mat4(scene->cameras + *scene->loaded_cams))));
         GLCall(glUniform3f(glGetUniformLocation(scene->shaders[scene->shader_curr].shaderProgram, "offs"), (scene->cameras + *scene->loaded_cams)->pos[0], (scene->cameras + *scene->loaded_cams)->pos[1], (scene->cameras + *scene->loaded_cams)->pos[2]));
 
 #ifdef _DEBUG_ // Full debug
