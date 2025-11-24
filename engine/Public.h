@@ -1,7 +1,6 @@
 #pragma once
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "../include/stb/stb_image.h"
+#include "../engine/Libraries/include/stb/stb_image.h"
 
 // 1. Standard C
 #include <stdbool.h>
@@ -10,6 +9,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
 #include <math.h>
 
 // 2. Cross-platform memsize
@@ -151,16 +151,3 @@ void GLAPIENTRY debug_callback(
 	GLenum severity, GLsizei length,
 	const GLchar *message, const void *userParam
 );
-
-typedef void *(*INPUTH_handlef)(scene_t *scene, GLenum key, GLenum press);
-typedef struct INPUT_Handle{
-	GLenum key, target;
-	uint8_t num_handles;
-	INPUTH_handlef *handles;
-}INPUT_Handle;
-#define inputh_t INPUT_Handle
-typedef struct INPUT_Buffer_entry{
-	GLenum key;
-	uint32_t poll;
-}INPUT_Buffer_entry;
-const uint8_t MAX_SCENE_PROC;

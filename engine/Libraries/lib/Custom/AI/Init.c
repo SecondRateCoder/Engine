@@ -1,5 +1,0 @@
-
-
-void ai_init(){
-    
-}

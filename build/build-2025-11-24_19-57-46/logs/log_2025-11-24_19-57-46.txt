@@ -4,132 +4,96 @@ Output: 	C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\Libraries\\inc
 Output: 	C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\
 Output: 	C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\graphics\\
 Searching for .c files in 'C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\'...
-Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-23_16-46-34\\\objects\Functions.o ...
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-24_19-57-46\\\objects\Functions.o ...
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\Libraries\\include
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\graphics\\
-Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\ -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\ -O1 -Wextra -std=c99 -Wall -pedantic -g -fdiagnostics-color=always -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\objects\Functions.o
-FAILED: Failed to compile C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c. GCC Exit Code: 1
-In file included from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:108[m[K,
-                 from [01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:1[m[K:
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/defaults/defaults.h:3:25:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[Kscene_t[m[K'
-    3 | void INPUTH_CAMHandle_0([01;31m[Kscene_t[m[K *scene, GLenum key, GLenum press);
-      |                         [01;31m[K^~~~~~~[m[K
-In file included from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:4[m[K,
-                 from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:109[m[K:
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/_3D.h:138:9:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUT_Handle[m[K'
-  138 |         [01;31m[KINPUT_Handle[m[K *inputs;
-      |         [01;31m[K^~~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:102:9:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[Kinputh_t[m[K'; did you mean '[01m[Kint8_t[m[K'?
-  102 |         [01;31m[Kinputh_t[m[K *input_handles;
-      |         [01;31m[K^~~~~~~~[m[K
-      |         [32m[Kint8_t[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:211:88:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUTH_handle[m[K'
-  211 | uint8_t *scene_inputh_regm(scene_t *scene, GLenum *keys, GLenum *targets, uint8_t len, [01;31m[KINPUTH_handle[m[K handle, bool append);
-      |                                                                                        [01;31m[K^~~~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:212:90:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUTH_handle[m[K'
-  212 | uint8_t scene_inputh_regh(scene_t *scene, GLenum key, GLenum target, size_t num_handles, [01;31m[KINPUTH_handle[m[K *handles, bool append);
-      |                                                                                          [01;31m[K^~~~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:120:77:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUT_Handle[m[K'
-  120 | void cam_gen(scene_t *scene, vec3 args0[3], GLint args1[4], float args2[3], [01;31m[KINPUT_Handle[m[K *input, bool activate);
-      |                                                                             [01;31m[K^~~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:[m[K In function '[01m[Kmesh_attrlink[m[K':
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:142:31:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: '[01m[Kuint32_t[m[K' {aka [m[K'[01m[Kunsigned int[m[K'} and '[01m[Kint[m[K' [[01;35m[K-Wsign-compare[m[K]
-  142 |     if(_mesh->pos_layoutindex [01;35m[K!=[m[K INT32_MIN){
-      |                               [01;35m[K^~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:148:33:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: '[01m[Kuint32_t[m[K' {aka [m[K'[01m[Kunsigned int[m[K'} and '[01m[Kint[m[K' [[01;35m[K-Wsign-compare[m[K]
-  148 |     if(_mesh->color_layoutindex [01;35m[K!=[m[K INT32_MIN){
-      |                                 [01;35m[K^~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:154:48:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: '[01m[Kuint32_t[m[K' {aka [m[K'[01m[Kunsigned int[m[K'} and '[01m[Kint[m[K' [[01;35m[K-Wsign-compare[m[K]
-  154 |     if(_mesh->local_texcoordinates_layoutindex [01;35m[K!=[m[K INT32_MIN){
-      |                                                [01;35m[K^~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:141:13:[m[K [01;35m[Kwarning: [m[Kunused variable '[01m[Kpointer[m[K' [[01;35m[K-Wunused-variable[m[K]
-  141 |     GLvoid* [01;35m[Kpointer[m[K = NULL;
-      |             [01;35m[K^~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:140:60:[m[K [01;35m[Kwarning: [m[Kunused variable '[01m[Kstride_[m[K' [[01;35m[K-Wunused-variable[m[K]
-  140 |     GLint enabled = 0, size = 0, type = 0, normalized = 0, [01;35m[Kstride_[m[K = 0;
-      |                                                            [01;35m[K^~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:140:44:[m[K [01;35m[Kwarning: [m[Kunused variable '[01m[Knormalized[m[K' [[01;35m[K-Wunused-variable[m[K]
-  140 |     GLint enabled = 0, size = 0, type = 0, [01;35m[Knormalized[m[K = 0, stride_ = 0;
-      |                                            [01;35m[K^~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:140:34:[m[K [01;35m[Kwarning: [m[Kunused variable '[01m[Ktype[m[K' [[01;35m[K-Wunused-variable[m[K]
-  140 |     GLint enabled = 0, size = 0, [01;35m[Ktype[m[K = 0, normalized = 0, stride_ = 0;
-      |                                  [01;35m[K^~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:140:24:[m[K [01;35m[Kwarning: [m[Kunused variable '[01m[Ksize[m[K' [[01;35m[K-Wunused-variable[m[K]
-  140 |     GLint enabled = 0, [01;35m[Ksize[m[K = 0, type = 0, normalized = 0, stride_ = 0;
-      |                        [01;35m[K^~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:140:11:[m[K [01;35m[Kwarning: [m[Kunused variable '[01m[Kenabled[m[K' [[01;35m[K-Wunused-variable[m[K]
-  140 |     GLint [01;35m[Kenabled[m[K = 0, size = 0, type = 0, normalized = 0, stride_ = 0;
-      |           [01;35m[K^~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:[m[K In function '[01m[K_GLUseprogram[m[K':
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:263:21:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: '[01m[KGLint[m[K' {aka [m[K'[01m[Kint[m[K'} and '[01m[KGLuint[m[K' {aka [m[K'[01m[Kunsigned int[m[K'} [[01;35m[K-Wsign-compare[m[K]
-  263 |         if (current [01;35m[K!=[m[K prog || current == 0){
-      |                     [01;35m[K^~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:[m[K In function '[01m[Kmesh_gen[m[K':
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:323:136:[m[K [01;35m[Kwarning: [m[Kunused parameter '[01m[Kformat[m[K' [[01;35m[K-Wunused-parameter[m[K]
-  323 | mesh_t *mesh_gen(GLfloat *vertices, GLuint *indices, size_t len[2], uint8_t strides[3], uint32_t layout[3], uint8_t offsets[3], [01;35m[KGLenum format[m[K, image_t *texture){
-      |                                                                                                                                 [01;35m[K~~~~~~~^~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:[m[K In function '[01m[Kcam_input_default[m[K':
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:404:12:[m[K [01;35m[Kwarning: [m[Kunused variable '[01m[Kcam[m[K' [[01;35m[K-Wunused-variable[m[K]
-  404 |     cam_t *[01;35m[Kcam[m[K = cam_;
-      |            [01;35m[K^~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:[m[K In function '[01m[Kcam_gen[m[K':
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:427:52:[m[K [01;31m[Kerror: [m[Kpointer type mismatch in conditional expression [[01;31m[K-Wincompatible-pointer-types[m[K]
-  427 |         .inputs = (input == NULL? cam_input_default[01;31m[K:[m[K input)
-      |                                                    [01;31m[K^[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:427:35:[m[K [01;36m[Knote: [m[Kfirst expression has type '[01m[Kvoid * (*)(void *)[m[K'
-  427 |         .inputs = (input == NULL? [01;36m[Kcam_input_default[m[K: input)
-      |                                   [01;36m[K^~~~~~~~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:427:54:[m[K [01;36m[Knote: [m[Ksecond expression has type '[01m[KINPUT_Handle *[m[K'
-  427 |         .inputs = (input == NULL? cam_input_default: [01;36m[Kinput[m[K)
-      |                                                      [01;36m[K^~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:[m[K At top level:
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:463:27:[m[K [01;35m[Kwarning: [m[Kinitializer-string for array of '[01m[Kchar[m[K' truncates NUL terminator but destination lacks '[01m[Knonstring[m[K' attribute (11 chars into 10 available) [[01;35m[K-Wunterminated-string-initialization[m[K]
-  463 | const char vs_start[10] = [01;35m[K"#define vs"[m[K,
-      |                           [01;35m[K^~~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:464:24:[m[K [01;35m[Kwarning: [m[Kinitializer-string for array of '[01m[Kchar[m[K' truncates NUL terminator but destination lacks '[01m[Knonstring[m[K' attribute (11 chars into 10 available) [[01;35m[K-Wunterminated-string-initialization[m[K]
-  464 |         fs_start[10] = [01;35m[K"#define fs"[m[K,
-      |                        [01;35m[K^~~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:465:24:[m[K [01;35m[Kwarning: [m[Kinitializer-string for array of '[01m[Kchar[m[K' truncates NUL terminator but destination lacks '[01m[Knonstring[m[K' attribute (11 chars into 10 available) [[01;35m[K-Wunterminated-string-initialization[m[K]
-  465 |         gs_start[10] = [01;35m[K"#define gs"[m[K,
-      |                        [01;35m[K^~~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:466:24:[m[K [01;35m[Kwarning: [m[Kinitializer-string for array of '[01m[Kchar[m[K' truncates NUL terminator but destination lacks '[01m[Knonstring[m[K' attribute (11 chars into 10 available) [[01;35m[K-Wunterminated-string-initialization[m[K]
-  466 |         tcs_start[10]= [01;35m[K"#define tc"[m[K,
-      |                        [01;35m[K^~~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:467:24:[m[K [01;35m[Kwarning: [m[Kinitializer-string for array of '[01m[Kchar[m[K' truncates NUL terminator but destination lacks '[01m[Knonstring[m[K' attribute (11 chars into 10 available) [[01;35m[K-Wunterminated-string-initialization[m[K]
-  467 |         tes_start[10]= [01;35m[K"#define te"[m[K,
-      |                        [01;35m[K^~~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:468:23:[m[K [01;35m[Kwarning: [m[Kinitializer-string for array of '[01m[Kchar[m[K' truncates NUL terminator but destination lacks '[01m[Knonstring[m[K' attribute (11 chars into 10 available) [[01;35m[K-Wunterminated-string-initialization[m[K]
-  468 |         cs_start[10]= [01;35m[K"#define cs"[m[K,
-      |                       [01;35m[K^~~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:[m[K In function '[01m[Kdebug_callback[m[K':
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:76:27:[m[K [01;35m[Kwarning: [m[Kformat '[01m[K[01;32m[K%s[m[K[m[K' expects argument of type '[01m[K[01;32m[Kchar *[m[K[m[K', but argument 4 has type '[01m[K[01;34m[KGLenum[m[K' {aka [m[K'[01m[K[01;34m[Kunsigned int[m[K'}[m[K [[01;35m[K-Wformat=[m[K]
-   76 | #define ANSI_YELLOW(TEXT) [01;32m[K"[m[K[01;32m[K\[m[K[01;32m[Kn[m[K[01;32m[K"[m[K ANSI_COLOR_YELLOW TEXT ANSI_COLOR_RESET
-      |                           [01;32m[K^[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:503:21:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KANSI_YELLOW[m[K'
-  503 |     fprintf(stderr, [01;36m[KANSI_YELLOW[m[K(
-      |                     [01;36m[K^~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:76:27:[m[K [01;35m[Kwarning: [m[Kformat '[01m[K[01;32m[K%zu[m[K[m[K' expects argument of type '[01m[K[01;32m[Ksize_t[m[K[m[K', but argument 8 has type '[01m[K[01;34m[KGLsizei[m[K' {aka [m[K'[01m[K[01;34m[Kint[m[K'}[m[K [[01;35m[K-Wformat=[m[K]
-   76 | #define ANSI_YELLOW(TEXT) [01;32m[K"[m[K[01;32m[K\[m[K[01;32m[Kn[m[K[01;32m[K"[m[K ANSI_COLOR_YELLOW TEXT ANSI_COLOR_RESET
-      |                           [01;32m[K^[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:503:21:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KANSI_YELLOW[m[K'
-  503 |     fprintf(stderr, [01;36m[KANSI_YELLOW[m[K(
-      |                     [01;36m[K^~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:76:27:[m[K [01;35m[Kwarning: [m[Ktoo many arguments for format [[01;35m[K-Wformat-extra-args[m[K]
-   76 | #define ANSI_YELLOW(TEXT) [01;35m[K"\n"[m[K ANSI_COLOR_YELLOW TEXT ANSI_COLOR_RESET
-      |                           [01;35m[K^~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:503:21:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KANSI_YELLOW[m[K'
-  503 |     fprintf(stderr, [01;36m[KANSI_YELLOW[m[K(
-      |                     [01;36m[K^~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:[m[K In function '[01m[Kcam_mat4[m[K':
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:443:1:[m[K [01;35m[Kwarning: [m[Kcontrol reaches end of non-void function [[01;35m[K-Wreturn-type[m[K]
-  443 | [01;35m[K}[m[K
-      | [01;35m[K^[m[K
-Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\glad.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-23_16-46-34\\\objects\glad.o ...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\ -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\ -O1 -Wextra -std=c99 -Wall -pedantic -g -fdiagnostics-color=always -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\Functions.o
+Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:[m[K In function '[01m[Kmesh_attrlink[m[K':
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:145:31:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: '[01m[Kuint32_t[m[K' {aka [m[K'[01m[Kunsigned int[m[K'} and '[01m[Kint[m[K' [[01;35m[K-Wsign-compare[m[K]
+Output: 	  145 |     if(_mesh->pos_layoutindex [01;35m[K!=[m[K INT32_MIN){
+Output: 	      |                               [01;35m[K^~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:151:33:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: '[01m[Kuint32_t[m[K' {aka [m[K'[01m[Kunsigned int[m[K'} and '[01m[Kint[m[K' [[01;35m[K-Wsign-compare[m[K]
+Output: 	  151 |     if(_mesh->color_layoutindex [01;35m[K!=[m[K INT32_MIN){
+Output: 	      |                                 [01;35m[K^~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:157:48:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: '[01m[Kuint32_t[m[K' {aka [m[K'[01m[Kunsigned int[m[K'} and '[01m[Kint[m[K' [[01;35m[K-Wsign-compare[m[K]
+Output: 	  157 |     if(_mesh->local_texcoordinates_layoutindex [01;35m[K!=[m[K INT32_MIN){
+Output: 	      |                                                [01;35m[K^~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:144:13:[m[K [01;35m[Kwarning: [m[Kunused variable '[01m[Kpointer[m[K' [[01;35m[K-Wunused-variable[m[K]
+Output: 	  144 |     GLvoid* [01;35m[Kpointer[m[K = NULL;
+Output: 	      |             [01;35m[K^~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:143:60:[m[K [01;35m[Kwarning: [m[Kunused variable '[01m[Kstride_[m[K' [[01;35m[K-Wunused-variable[m[K]
+Output: 	  143 |     GLint enabled = 0, size = 0, type = 0, normalized = 0, [01;35m[Kstride_[m[K = 0;
+Output: 	      |                                                            [01;35m[K^~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:143:44:[m[K [01;35m[Kwarning: [m[Kunused variable '[01m[Knormalized[m[K' [[01;35m[K-Wunused-variable[m[K]
+Output: 	  143 |     GLint enabled = 0, size = 0, type = 0, [01;35m[Knormalized[m[K = 0, stride_ = 0;
+Output: 	      |                                            [01;35m[K^~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:143:34:[m[K [01;35m[Kwarning: [m[Kunused variable '[01m[Ktype[m[K' [[01;35m[K-Wunused-variable[m[K]
+Output: 	  143 |     GLint enabled = 0, size = 0, [01;35m[Ktype[m[K = 0, normalized = 0, stride_ = 0;
+Output: 	      |                                  [01;35m[K^~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:143:24:[m[K [01;35m[Kwarning: [m[Kunused variable '[01m[Ksize[m[K' [[01;35m[K-Wunused-variable[m[K]
+Output: 	  143 |     GLint enabled = 0, [01;35m[Ksize[m[K = 0, type = 0, normalized = 0, stride_ = 0;
+Output: 	      |                        [01;35m[K^~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:143:11:[m[K [01;35m[Kwarning: [m[Kunused variable '[01m[Kenabled[m[K' [[01;35m[K-Wunused-variable[m[K]
+Output: 	  143 |     GLint [01;35m[Kenabled[m[K = 0, size = 0, type = 0, normalized = 0, stride_ = 0;
+Output: 	      |           [01;35m[K^~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:[m[K In function '[01m[K_GLUseprogram[m[K':
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:254:21:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: '[01m[KGLint[m[K' {aka [m[K'[01m[Kint[m[K'} and '[01m[KGLuint[m[K' {aka [m[K'[01m[Kunsigned int[m[K'} [[01;35m[K-Wsign-compare[m[K]
+Output: 	  254 |         if (current [01;35m[K!=[m[K prog || current == 0){
+Output: 	      |                     [01;35m[K^~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:[m[K In function '[01m[Kmesh_gen[m[K':
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:314:136:[m[K [01;35m[Kwarning: [m[Kunused parameter '[01m[Kformat[m[K' [[01;35m[K-Wunused-parameter[m[K]
+Output: 	  314 | mesh_t *mesh_gen(GLfloat *vertices, GLuint *indices, size_t len[2], uint8_t strides[3], uint32_t layout[3], uint8_t offsets[3], [01;35m[KGLenum format[m[K, image_t *texture){
+Output: 	      |                                                                                                                                 [01;35m[K~~~~~~~^~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:[m[K In function '[01m[Kcam_input_default[m[K':
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:394:31:[m[K [01;35m[Kwarning: [m[Kunused parameter '[01m[Kcam_[m[K' [[01;35m[K-Wunused-parameter[m[K]
+Output: 	  394 | void *cam_input_default([01;35m[Kvoid *cam_[m[K){return NULL;}
+Output: 	      |                         [01;35m[K~~~~~~^~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:[m[K At top level:
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:451:27:[m[K [01;35m[Kwarning: [m[Kinitializer-string for array of '[01m[Kchar[m[K' truncates NUL terminator but destination lacks '[01m[Knonstring[m[K' attribute (11 chars into 10 available) [[01;35m[K-Wunterminated-string-initialization[m[K]
+Output: 	  451 | const char vs_start[10] = [01;35m[K"#define vs"[m[K,
+Output: 	      |                           [01;35m[K^~~~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:452:24:[m[K [01;35m[Kwarning: [m[Kinitializer-string for array of '[01m[Kchar[m[K' truncates NUL terminator but destination lacks '[01m[Knonstring[m[K' attribute (11 chars into 10 available) [[01;35m[K-Wunterminated-string-initialization[m[K]
+Output: 	  452 |         fs_start[10] = [01;35m[K"#define fs"[m[K,
+Output: 	      |                        [01;35m[K^~~~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:453:24:[m[K [01;35m[Kwarning: [m[Kinitializer-string for array of '[01m[Kchar[m[K' truncates NUL terminator but destination lacks '[01m[Knonstring[m[K' attribute (11 chars into 10 available) [[01;35m[K-Wunterminated-string-initialization[m[K]
+Output: 	  453 |         gs_start[10] = [01;35m[K"#define gs"[m[K,
+Output: 	      |                        [01;35m[K^~~~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:454:24:[m[K [01;35m[Kwarning: [m[Kinitializer-string for array of '[01m[Kchar[m[K' truncates NUL terminator but destination lacks '[01m[Knonstring[m[K' attribute (11 chars into 10 available) [[01;35m[K-Wunterminated-string-initialization[m[K]
+Output: 	  454 |         tcs_start[10]= [01;35m[K"#define tc"[m[K,
+Output: 	      |                        [01;35m[K^~~~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:455:24:[m[K [01;35m[Kwarning: [m[Kinitializer-string for array of '[01m[Kchar[m[K' truncates NUL terminator but destination lacks '[01m[Knonstring[m[K' attribute (11 chars into 10 available) [[01;35m[K-Wunterminated-string-initialization[m[K]
+Output: 	  455 |         tes_start[10]= [01;35m[K"#define te"[m[K,
+Output: 	      |                        [01;35m[K^~~~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:456:23:[m[K [01;35m[Kwarning: [m[Kinitializer-string for array of '[01m[Kchar[m[K' truncates NUL terminator but destination lacks '[01m[Knonstring[m[K' attribute (11 chars into 10 available) [[01;35m[K-Wunterminated-string-initialization[m[K]
+Output: 	  456 |         cs_start[10]= [01;35m[K"#define cs"[m[K,
+Output: 	      |                       [01;35m[K^~~~~~~~~~~~[m[K
+Output: 	In file included from [01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:1[m[K:
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:[m[K In function '[01m[Kdebug_callback[m[K':
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:76:27:[m[K [01;35m[Kwarning: [m[Kformat '[01m[K[01;32m[K%s[m[K[m[K' expects argument of type '[01m[K[01;32m[Kchar *[m[K[m[K', but argument 4 has type '[01m[K[01;34m[KGLenum[m[K' {aka [m[K'[01m[K[01;34m[Kunsigned int[m[K'}[m[K [[01;35m[K-Wformat=[m[K]
+Output: 	   76 | #define ANSI_YELLOW(TEXT) [01;32m[K"[m[K[01;32m[K\[m[K[01;32m[Kn[m[K[01;32m[K"[m[K ANSI_COLOR_YELLOW TEXT ANSI_COLOR_RESET
+Output: 	      |                           [01;32m[K^[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:491:21:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KANSI_YELLOW[m[K'
+Output: 	  491 |     fprintf(stderr, [01;36m[KANSI_YELLOW[m[K(
+Output: 	      |                     [01;36m[K^~~~~~~~~~~[m[K
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:76:27:[m[K [01;35m[Kwarning: [m[Kformat '[01m[K[01;32m[K%zu[m[K[m[K' expects argument of type '[01m[K[01;32m[Ksize_t[m[K[m[K', but argument 8 has type '[01m[K[01;34m[KGLsizei[m[K' {aka [m[K'[01m[K[01;34m[Kint[m[K'}[m[K [[01;35m[K-Wformat=[m[K]
+Output: 	   76 | #define ANSI_YELLOW(TEXT) [01;32m[K"[m[K[01;32m[K\[m[K[01;32m[Kn[m[K[01;32m[K"[m[K ANSI_COLOR_YELLOW TEXT ANSI_COLOR_RESET
+Output: 	      |                           [01;32m[K^[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:491:21:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KANSI_YELLOW[m[K'
+Output: 	  491 |     fprintf(stderr, [01;36m[KANSI_YELLOW[m[K(
+Output: 	      |                     [01;36m[K^~~~~~~~~~~[m[K
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:76:27:[m[K [01;35m[Kwarning: [m[Ktoo many arguments for format [[01;35m[K-Wformat-extra-args[m[K]
+Output: 	   76 | #define ANSI_YELLOW(TEXT) [01;35m[K"\n"[m[K ANSI_COLOR_YELLOW TEXT ANSI_COLOR_RESET
+Output: 	      |                           [01;35m[K^~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Functions.c:491:21:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KANSI_YELLOW[m[K'
+Output: 	  491 |     fprintf(stderr, [01;36m[KANSI_YELLOW[m[K(
+Output: 	      |                     [01;36m[K^~~~~~~~~~~[m[K
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\glad.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-24_19-57-46\\\objects\glad.o ...
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\Libraries\\include
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\graphics\\
-Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\glad.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\ -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\ -O1 -Wextra -std=c99 -Wall -pedantic -g -fdiagnostics-color=always -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\objects\glad.o
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\glad.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\ -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\ -O1 -Wextra -std=c99 -Wall -pedantic -g -fdiagnostics-color=always -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\glad.o
 Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\glad.c
 Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\glad.c:[m[K In function '[01m[Kget_proc[m[K':
 Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\glad.c:141:26:[m[K [01;35m[Kwarning: [m[KISO C forbids conversion of function pointer to object pointer type [[01;35m[K-Wpedantic[m[K]
@@ -1282,562 +1246,407 @@ Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\glad.c:
 Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\glad.c:1122:23:[m[K [01;35m[Kwarning: [m[KISO C forbids conversion of object pointer to function pointer type [[01;35m[K-Wpedantic[m[K]
 Output: 	 1122 |         glGetString = [01;35m[K([m[KPFNGLGETSTRINGPROC)load("glGetString");
 Output: 	      |                       [01;35m[K^[m[K
-Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-23_16-46-34\\\objects\main.o ...
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-24_19-57-46\\\objects\main.o ...
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\Libraries\\include
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\graphics\\
-Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\ -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\ -O1 -Wextra -std=c99 -Wall -pedantic -g -fdiagnostics-color=always -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\objects\main.o
-FAILED: Failed to compile C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c. GCC Exit Code: 1
-In file included from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:108[m[K,
-                 from [01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:1[m[K:
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/defaults/defaults.h:3:25:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[Kscene_t[m[K'
-    3 | void INPUTH_CAMHandle_0([01;31m[Kscene_t[m[K *scene, GLenum key, GLenum press);
-      |                         [01;31m[K^~~~~~~[m[K
-In file included from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:4[m[K,
-                 from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:109[m[K:
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/_3D.h:138:9:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUT_Handle[m[K'
-  138 |         [01;31m[KINPUT_Handle[m[K *inputs;
-      |         [01;31m[K^~~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:102:9:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[Kinputh_t[m[K'; did you mean '[01m[Kint8_t[m[K'?
-  102 |         [01;31m[Kinputh_t[m[K *input_handles;
-      |         [01;31m[K^~~~~~~~[m[K
-      |         [32m[Kint8_t[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:211:88:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUTH_handle[m[K'
-  211 | uint8_t *scene_inputh_regm(scene_t *scene, GLenum *keys, GLenum *targets, uint8_t len, [01;31m[KINPUTH_handle[m[K handle, bool append);
-      |                                                                                        [01;31m[K^~~~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:212:90:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUTH_handle[m[K'
-  212 | uint8_t scene_inputh_regh(scene_t *scene, GLenum key, GLenum target, size_t num_handles, [01;31m[KINPUTH_handle[m[K *handles, bool append);
-      |                                                                                          [01;31m[K^~~~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:120:77:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUT_Handle[m[K'
-  120 | void cam_gen(scene_t *scene, vec3 args0[3], GLint args1[4], float args2[3], [01;31m[KINPUT_Handle[m[K *input, bool activate);
-      |                                                                             [01;31m[K^~~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:[m[K In function '[01m[Kpoll_draw[m[K':
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:19:12:[m[K [01;35m[Kwarning: [m[Kunused variable '[01m[Kwin[m[K' [[01;35m[K-Wunused-variable[m[K]
-   19 |     win_t *[01;35m[Kwin[m[K = (win_t *)self;
-      |            [01;35m[K^~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:18:35:[m[K [01;35m[Kwarning: [m[Kunused parameter '[01m[Kpolls[m[K' [[01;35m[K-Wunused-parameter[m[K]
-   18 | void poll_draw(void *self, [01;35m[Ksize_t polls[m[K, uint32_t pollcycles){
-      |                            [01;35m[K~~~~~~~^~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:18:51:[m[K [01;35m[Kwarning: [m[Kunused parameter '[01m[Kpollcycles[m[K' [[01;35m[K-Wunused-parameter[m[K]
-   18 | void poll_draw(void *self, size_t polls, [01;35m[Kuint32_t pollcycles[m[K){
-      |                                          [01;35m[K~~~~~~~~~^~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:[m[K In function '[01m[Ktest_win_init[m[K':
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/_3D.h:83:21:[m[K [01;35m[Kwarning: [m[K'[01m[Kcalloc[m[K' sizes specified with '[01m[Ksizeof[m[K' in the earlier argument and not in the later argument [[01;35m[K-Wcalloc-transposed-args[m[K]
-   83 | #define bufferobj_t [01;35m[Kbuffer_object[m[K
-      |                     [01;35m[K^~~~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:96:41:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[Kbufferobj_t[m[K'
-   96 |     bufferobj_t *buffer = calloc(sizeof([01;36m[Kbufferobj_t[m[K), 1);
-      |                                         [01;36m[K^~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/_3D.h:83:21:[m[K [01;36m[Knote: [m[Kearlier argument should specify number of elements, later size of each element
-   83 | #define bufferobj_t [01;36m[Kbuffer_object[m[K
-      |                     [01;36m[K^~~~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:96:41:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[Kbufferobj_t[m[K'
-   96 |     bufferobj_t *buffer = calloc(sizeof([01;36m[Kbufferobj_t[m[K), 1);
-      |                                         [01;36m[K^~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:127:58:[m[K [01;35m[Kwarning: [m[Kpassing argument 6 of '[01m[Kuniform_write[m[K' discards '[01m[Kconst[m[K' qualifier from pointer target type [[01;35m[K-Wdiscarded-qualifiers[m[K]
-  127 |     uniform_write(shader, "float", "scale", NULL, false, [01;35m[K&_temp[m[K, 1);
-      |                                                          [01;35m[K^~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:193:130:[m[K [01;36m[Knote: [m[Kexpected '[01m[K[01;32m[Kvoid *[m[K[m[K' but argument is of type '[01m[K[01;34m[Kconst float *[m[K[m[K'
-  193 | bool uniform_write(shaderblock_t* shader, const char* type, const char* name, const void* property_, const bool transpose, [01;32m[Kv[m[K[01;32m[Ko[m[K[01;32m[Ki[m[K[01;32m[Kd[m[K[01;32m[K*[m[K[01;32m[K [m[K[01;32m[Kv[m[K[01;32m[Ka[m[K[01;32m[Kl[m[K[01;32m[Ku[m[K[01;32m[Ke[m[K, const size_t num_elements);
-      |                                                                                                                            [01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K^[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:131:55:[m[K [01;35m[Kwarning: [m[Kpassing argument 6 of '[01m[Kuniform_write[m[K' discards '[01m[Kconst[m[K' qualifier from pointer target type [[01;35m[K-Wdiscarded-array-qualifiers[m[K]
-  131 |     uniform_write(shader, "vec3", "offs", NULL, true, [01;35m[K&_temp_[m[K, 3);
-      |                                                       [01;35m[K^~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:193:130:[m[K [01;36m[Knote: [m[Kexpected '[01m[K[01;32m[Kvoid *[m[K[m[K' but argument is of type '[01m[K[01;34m[Kconst float (*)[3][m[K' {aka [m[K'[01m[K[01;34m[Kfloat (*)[3][m[K'}[m[K
-  193 | bool uniform_write(shaderblock_t* shader, const char* type, const char* name, const void* property_, const bool transpose, [01;32m[Kv[m[K[01;32m[Ko[m[K[01;32m[Ki[m[K[01;32m[Kd[m[K[01;32m[K*[m[K[01;32m[K [m[K[01;32m[Kv[m[K[01;32m[Ka[m[K[01;32m[Kl[m[K[01;32m[Ku[m[K[01;32m[Ke[m[K, const size_t num_elements);
-      |                                                                                                                            [01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K^[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:[m[K In function '[01m[Kmain[m[K':
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:112:27:[m[K [01;35m[Kwarning: [m[KISO C forbids casting nonscalar to the same type [[01;35m[K-Wpedantic[m[K]
-  112 | #define wscene_curr(WIN) ([01;35m[K([m[Kscene_t)WIN->scenes[*WIN->loaded_scenes])
-      |                           [01;35m[K^[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:228:22:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[Kwscene_curr[m[K'
-  228 |     mesh_bindtexture([01;36m[Kwscene_curr[m[K(mainw).meshes, wscene_curr(mainw).meshes->texture);
-      |                      [01;36m[K^~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:112:27:[m[K [01;35m[Kwarning: [m[KISO C forbids casting nonscalar to the same type [[01;35m[K-Wpedantic[m[K]
-  112 | #define wscene_curr(WIN) ([01;35m[K([m[Kscene_t)WIN->scenes[*WIN->loaded_scenes])
-      |                           [01;35m[K^[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:228:49:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[Kwscene_curr[m[K'
-  228 |     mesh_bindtexture(wscene_curr(mainw).meshes, [01;36m[Kwscene_curr[m[K(mainw).meshes->texture);
-      |                                                 [01;36m[K^~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:236:5:[m[K [01;31m[Kerror: [m[Kimplicit declaration of function '[01m[Kscene_inputh_regm[m[K' [[01;31m[K-Wimplicit-function-declaration[m[K]
-  236 |     [01;31m[Kscene_inputh_regm[m[K(
-      |     [01;31m[K^~~~~~~~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:240:12:[m[K [01;31m[Kerror: [m[K'[01m[KINPUTH_CAMHandle_0[m[K' undeclared (first use in this function); did you mean '[01m[KINPUTH_handle[m[K'?
-  240 |         7, [01;31m[KINPUTH_CAMHandle_0[m[K, true
-      |            [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
-      |            [32m[KINPUTH_handle[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:240:12:[m[K [01;36m[Knote: [m[Keach undeclared identifier is reported only once for each function it appears in
-Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-23_16-46-34\\\objects\defaults.o ...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\ -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\ -O1 -Wextra -std=c99 -Wall -pedantic -g -fdiagnostics-color=always -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\main.o
+Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:[m[K In function '[01m[Kpoll_draw[m[K':
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:11:12:[m[K [01;35m[Kwarning: [m[Kunused variable '[01m[Kwin[m[K' [[01;35m[K-Wunused-variable[m[K]
+Output: 	   11 |     win_t *[01;35m[Kwin[m[K = (win_t *)self;
+Output: 	      |            [01;35m[K^~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:10:35:[m[K [01;35m[Kwarning: [m[Kunused parameter '[01m[Kpolls[m[K' [[01;35m[K-Wunused-parameter[m[K]
+Output: 	   10 | void poll_draw(void *self, [01;35m[Ksize_t polls[m[K, uint32_t pollcycles){
+Output: 	      |                            [01;35m[K~~~~~~~^~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:10:51:[m[K [01;35m[Kwarning: [m[Kunused parameter '[01m[Kpollcycles[m[K' [[01;35m[K-Wunused-parameter[m[K]
+Output: 	   10 | void poll_draw(void *self, size_t polls, [01;35m[Kuint32_t pollcycles[m[K){
+Output: 	      |                                          [01;35m[K~~~~~~~~~^~~~~~~~~~[m[K
+Output: 	In file included from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:3[m[K,
+Output: 	                 from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/defaults/defaults.h:2[m[K,
+Output: 	                 from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:108[m[K,
+Output: 	                 from [01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:1[m[K:
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:[m[K In function '[01m[Ktest_win_init[m[K':
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/_3D.h:82:21:[m[K [01;35m[Kwarning: [m[K'[01m[Kcalloc[m[K' sizes specified with '[01m[Ksizeof[m[K' in the earlier argument and not in the later argument [[01;35m[K-Wcalloc-transposed-args[m[K]
+Output: 	   82 | #define bufferobj_t [01;35m[Kbuffer_object[m[K
+Output: 	      |                     [01;35m[K^~~~~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:88:41:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[Kbufferobj_t[m[K'
+Output: 	   88 |     bufferobj_t *buffer = calloc(sizeof([01;36m[Kbufferobj_t[m[K), 1);
+Output: 	      |                                         [01;36m[K^~~~~~~~~~~[m[K
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/_3D.h:82:21:[m[K [01;36m[Knote: [m[Kearlier argument should specify number of elements, later size of each element
+Output: 	   82 | #define bufferobj_t [01;36m[Kbuffer_object[m[K
+Output: 	      |                     [01;36m[K^~~~~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:88:41:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[Kbufferobj_t[m[K'
+Output: 	   88 |     bufferobj_t *buffer = calloc(sizeof([01;36m[Kbufferobj_t[m[K), 1);
+Output: 	      |                                         [01;36m[K^~~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:119:58:[m[K [01;35m[Kwarning: [m[Kpassing argument 6 of '[01m[Kuniform_write[m[K' discards '[01m[Kconst[m[K' qualifier from pointer target type [[01;35m[K-Wdiscarded-qualifiers[m[K]
+Output: 	  119 |     uniform_write(shader, "float", "scale", NULL, false, [01;35m[K&_temp[m[K, 1);
+Output: 	      |                                                          [01;35m[K^~~~~~[m[K
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:188:130:[m[K [01;36m[Knote: [m[Kexpected '[01m[K[01;32m[Kvoid *[m[K[m[K' but argument is of type '[01m[K[01;34m[Kconst float *[m[K[m[K'
+Output: 	  188 | bool uniform_write(shaderblock_t* shader, const char* type, const char* name, const void* property_, const bool transpose, [01;32m[Kv[m[K[01;32m[Ko[m[K[01;32m[Ki[m[K[01;32m[Kd[m[K[01;32m[K*[m[K[01;32m[K [m[K[01;32m[Kv[m[K[01;32m[Ka[m[K[01;32m[Kl[m[K[01;32m[Ku[m[K[01;32m[Ke[m[K, const size_t num_elements);
+Output: 	      |                                                                                                                            [01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K^[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:123:55:[m[K [01;35m[Kwarning: [m[Kpassing argument 6 of '[01m[Kuniform_write[m[K' discards '[01m[Kconst[m[K' qualifier from pointer target type [[01;35m[K-Wdiscarded-array-qualifiers[m[K]
+Output: 	  123 |     uniform_write(shader, "vec3", "offs", NULL, true, [01;35m[K&_temp_[m[K, 3);
+Output: 	      |                                                       [01;35m[K^~~~~~~[m[K
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:188:130:[m[K [01;36m[Knote: [m[Kexpected '[01m[K[01;32m[Kvoid *[m[K[m[K' but argument is of type '[01m[K[01;34m[Kconst float (*)[3][m[K' {aka [m[K'[01m[K[01;34m[Kfloat (*)[3][m[K'}[m[K
+Output: 	  188 | bool uniform_write(shaderblock_t* shader, const char* type, const char* name, const void* property_, const bool transpose, [01;32m[Kv[m[K[01;32m[Ko[m[K[01;32m[Ki[m[K[01;32m[Kd[m[K[01;32m[K*[m[K[01;32m[K [m[K[01;32m[Kv[m[K[01;32m[Ka[m[K[01;32m[Kl[m[K[01;32m[Ku[m[K[01;32m[Ke[m[K, const size_t num_elements);
+Output: 	      |                                                                                                                            [01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K^[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:[m[K In function '[01m[Kmain[m[K':
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:107:27:[m[K [01;35m[Kwarning: [m[KISO C forbids casting nonscalar to the same type [[01;35m[K-Wpedantic[m[K]
+Output: 	  107 | #define wscene_curr(WIN) ([01;35m[K([m[Kscene_t)WIN->scenes[*WIN->loaded_scenes])
+Output: 	      |                           [01;35m[K^[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:220:22:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[Kwscene_curr[m[K'
+Output: 	  220 |     mesh_bindtexture([01;36m[Kwscene_curr[m[K(mainw).meshes, wscene_curr(mainw).meshes->texture);
+Output: 	      |                      [01;36m[K^~~~~~~~~~~[m[K
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:107:27:[m[K [01;35m[Kwarning: [m[KISO C forbids casting nonscalar to the same type [[01;35m[K-Wpedantic[m[K]
+Output: 	  107 | #define wscene_curr(WIN) ([01;35m[K([m[Kscene_t)WIN->scenes[*WIN->loaded_scenes])
+Output: 	      |                           [01;35m[K^[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\main.c:220:49:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[Kwscene_curr[m[K'
+Output: 	  220 |     mesh_bindtexture(wscene_curr(mainw).meshes, [01;36m[Kwscene_curr[m[K(mainw).meshes->texture);
+Output: 	      |                                                 [01;36m[K^~~~~~~~~~~[m[K
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\stb.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-24_19-57-46\\\objects\stb.o ...
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\Libraries\\include
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\graphics\\
-Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\ -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\ -O1 -Wextra -std=c99 -Wall -pedantic -g -fdiagnostics-color=always -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\objects\defaults.o
-FAILED: Failed to compile C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c. GCC Exit Code: 1
-In file included from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:108[m[K,
-                 from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/defaults/defaults.h:1[m[K,
-                 from [01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:1[m[K:
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/defaults/defaults.h:3:25:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[Kscene_t[m[K'
-    3 | void INPUTH_CAMHandle_0([01;31m[Kscene_t[m[K *scene, GLenum key, GLenum press);
-      |                         [01;31m[K^~~~~~~[m[K
-In file included from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:4[m[K,
-                 from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:109[m[K:
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/_3D.h:138:9:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUT_Handle[m[K'
-  138 |         [01;31m[KINPUT_Handle[m[K *inputs;
-      |         [01;31m[K^~~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:102:9:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[Kinputh_t[m[K'; did you mean '[01m[Kint8_t[m[K'?
-  102 |         [01;31m[Kinputh_t[m[K *input_handles;
-      |         [01;31m[K^~~~~~~~[m[K
-      |         [32m[Kint8_t[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:211:88:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUTH_handle[m[K'
-  211 | uint8_t *scene_inputh_regm(scene_t *scene, GLenum *keys, GLenum *targets, uint8_t len, [01;31m[KINPUTH_handle[m[K handle, bool append);
-      |                                                                                        [01;31m[K^~~~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:212:90:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUTH_handle[m[K'
-  212 | uint8_t scene_inputh_regh(scene_t *scene, GLenum key, GLenum target, size_t num_handles, [01;31m[KINPUTH_handle[m[K *handles, bool append);
-      |                                                                                          [01;31m[K^~~~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:120:77:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUT_Handle[m[K'
-  120 | void cam_gen(scene_t *scene, vec3 args0[3], GLint args1[4], float args2[3], [01;31m[KINPUT_Handle[m[K *input, bool activate);
-      |                                                                             [01;31m[K^~~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:[m[K In function '[01m[KINPUTH_CAMHandle_0[m[K':
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:5:37:[m[K [01;35m[Kwarning: [m[Kpassing argument 2 of '[01m[KglfwGetCursorPos[m[K' discards '[01m[Kvolatile[m[K' qualifier from pointer target type [[01;35m[K-Wdiscarded-qualifiers[m[K]
-    5 |     glfwGetCursorPos(scene->parent, [01;35m[K&mousePos[0][m[K, &mousePos[1]);
-      |                                     [01;35m[K^~~~~~~~~~~~[m[K
-In file included from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:101[m[K:
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Libraries/include/glfw3.h:4970:59:[m[K [01;36m[Knote: [m[Kexpected '[01m[K[01;32m[Kdouble *[m[K[m[K' but argument is of type '[01m[K[01;34m[Kvolatile double *[m[K[m[K'
- 4970 | GLFWAPI void glfwGetCursorPos(GLFWwindow* window, [01;32m[Kd[m[K[01;32m[Ko[m[K[01;32m[Ku[m[K[01;32m[Kb[m[K[01;32m[Kl[m[K[01;32m[Ke[m[K[01;32m[K*[m[K[01;32m[K [m[K[01;32m[Kx[m[K[01;32m[Kp[m[K[01;32m[Ko[m[K[01;32m[Ks[m[K, double* ypos);
-      |                                                   [01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K^[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:5:51:[m[K [01;35m[Kwarning: [m[Kpassing argument 3 of '[01m[KglfwGetCursorPos[m[K' discards '[01m[Kvolatile[m[K' qualifier from pointer target type [[01;35m[K-Wdiscarded-qualifiers[m[K]
-    5 |     glfwGetCursorPos(scene->parent, &mousePos[0], [01;35m[K&mousePos[1][m[K);
-      |                                                   [01;35m[K^~~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Libraries/include/glfw3.h:4970:73:[m[K [01;36m[Knote: [m[Kexpected '[01m[K[01;32m[Kdouble *[m[K[m[K' but argument is of type '[01m[K[01;34m[Kvolatile double *[m[K[m[K'
- 4970 | GLFWAPI void glfwGetCursorPos(GLFWwindow* window, double* xpos, [01;32m[Kd[m[K[01;32m[Ko[m[K[01;32m[Ku[m[K[01;32m[Kb[m[K[01;32m[Kl[m[K[01;32m[Ke[m[K[01;32m[K*[m[K[01;32m[K [m[K[01;32m[Ky[m[K[01;32m[Kp[m[K[01;32m[Ko[m[K[01;32m[Ks[m[K);
-      |                                                                 [01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K^[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:10:13:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-   10 |             [01;35m[Kvec3[m[K temp = {scene->cameras[*scene->loaded_cams].up[0], scene->cameras[*scene->loaded_cams].up[1], scene->cameras[*scene->loaded_cams].up[2]};
-      |             [01;35m[K^~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:15:13:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-   15 |             [01;35m[Kvec3[m[K temp = {scene->cameras[*scene->loaded_cams].up[0], scene->cameras[*scene->loaded_cams].up[1], scene->cameras[*scene->loaded_cams].up[2]};
-      |             [01;35m[K^~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:15:18:[m[K [01;31m[Kerror: [m[Kredefinition of '[01m[Ktemp[m[K'
-   15 |             vec3 [01;31m[Ktemp[m[K = {scene->cameras[*scene->loaded_cams].up[0], scene->cameras[*scene->loaded_cams].up[1], scene->cameras[*scene->loaded_cams].up[2]};
-      |                  [01;31m[K^~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:10:18:[m[K [01;36m[Knote: [m[Kprevious definition of '[01m[Ktemp[m[K' with type '[01m[Kvec3[m[K' {aka [m[K'[01m[Kfloat[3][m[K'}
-   10 |             vec3 [01;36m[Ktemp[m[K = {scene->cameras[*scene->loaded_cams].up[0], scene->cameras[*scene->loaded_cams].up[1], scene->cameras[*scene->loaded_cams].up[2]};
-      |                  [01;36m[K^~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:20:13:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-   20 |             [01;35m[Kvec3[m[K temp = {scene->cameras[*scene->loaded_cams].up[0], scene->cameras[*scene->loaded_cams].up[1], scene->cameras[*scene->loaded_cams].up[2]};
-      |             [01;35m[K^~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:20:18:[m[K [01;31m[Kerror: [m[Kredefinition of '[01m[Ktemp[m[K'
-   20 |             vec3 [01;31m[Ktemp[m[K = {scene->cameras[*scene->loaded_cams].up[0], scene->cameras[*scene->loaded_cams].up[1], scene->cameras[*scene->loaded_cams].up[2]};
-      |                  [01;31m[K^~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:15:18:[m[K [01;36m[Knote: [m[Kprevious definition of '[01m[Ktemp[m[K' with type '[01m[Kvec3[m[K' {aka [m[K'[01m[Kfloat[3][m[K'}
-   15 |             vec3 [01;36m[Ktemp[m[K = {scene->cameras[*scene->loaded_cams].up[0], scene->cameras[*scene->loaded_cams].up[1], scene->cameras[*scene->loaded_cams].up[2]};
-      |                  [01;36m[K^~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:25:13:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-   25 |             [01;35m[Kvec3[m[K temp = {scene->cameras[*scene->loaded_cams].up[0], scene->cameras[*scene->loaded_cams].up[1], scene->cameras[*scene->loaded_cams].up[2]};
-      |             [01;35m[K^~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:25:18:[m[K [01;31m[Kerror: [m[Kredefinition of '[01m[Ktemp[m[K'
-   25 |             vec3 [01;31m[Ktemp[m[K = {scene->cameras[*scene->loaded_cams].up[0], scene->cameras[*scene->loaded_cams].up[1], scene->cameras[*scene->loaded_cams].up[2]};
-      |                  [01;31m[K^~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:20:18:[m[K [01;36m[Knote: [m[Kprevious definition of '[01m[Ktemp[m[K' with type '[01m[Kvec3[m[K' {aka [m[K'[01m[Kfloat[3][m[K'}
-   20 |             vec3 [01;36m[Ktemp[m[K = {scene->cameras[*scene->loaded_cams].up[0], scene->cameras[*scene->loaded_cams].up[1], scene->cameras[*scene->loaded_cams].up[2]};
-      |                  [01;36m[K^~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:30:13:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-   30 |             [01;35m[Kvec3[m[K temp = {scene->cameras[*scene->loaded_cams].up[0], scene->cameras[*scene->loaded_cams].up[1], scene->cameras[*scene->loaded_cams].up[2]};
-      |             [01;35m[K^~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:30:18:[m[K [01;31m[Kerror: [m[Kredefinition of '[01m[Ktemp[m[K'
-   30 |             vec3 [01;31m[Ktemp[m[K = {scene->cameras[*scene->loaded_cams].up[0], scene->cameras[*scene->loaded_cams].up[1], scene->cameras[*scene->loaded_cams].up[2]};
-      |                  [01;31m[K^~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:25:18:[m[K [01;36m[Knote: [m[Kprevious definition of '[01m[Ktemp[m[K' with type '[01m[Kvec3[m[K' {aka [m[K'[01m[Kfloat[3][m[K'}
-   25 |             vec3 [01;36m[Ktemp[m[K = {scene->cameras[*scene->loaded_cams].up[0], scene->cameras[*scene->loaded_cams].up[1], scene->cameras[*scene->loaded_cams].up[2]};
-      |                  [01;36m[K^~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:35:13:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-   35 |             [01;35m[Kvec3[m[K temp = {scene->cameras[*scene->loaded_cams].up[0], scene->cameras[*scene->loaded_cams].up[1], scene->cameras[*scene->loaded_cams].up[2]};
-      |             [01;35m[K^~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:35:18:[m[K [01;31m[Kerror: [m[Kredefinition of '[01m[Ktemp[m[K'
-   35 |             vec3 [01;31m[Ktemp[m[K = {scene->cameras[*scene->loaded_cams].up[0], scene->cameras[*scene->loaded_cams].up[1], scene->cameras[*scene->loaded_cams].up[2]};
-      |                  [01;31m[K^~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:30:18:[m[K [01;36m[Knote: [m[Kprevious definition of '[01m[Ktemp[m[K' with type '[01m[Kvec3[m[K' {aka [m[K'[01m[Kfloat[3][m[K'}
-   30 |             vec3 [01;36m[Ktemp[m[K = {scene->cameras[*scene->loaded_cams].up[0], scene->cameras[*scene->loaded_cams].up[1], scene->cameras[*scene->loaded_cams].up[2]};
-      |                  [01;36m[K^~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:3:60:[m[K [01;35m[Kwarning: [m[Kunused parameter '[01m[Kpress[m[K' [[01;35m[K-Wunused-parameter[m[K]
-    3 | void INPUTH_CAMHandle_0(scene_t *scene, GLenum key, [01;35m[KGLenum press[m[K){
-      |                                                     [01;35m[K~~~~~~~^~~~~[m[K
-Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-23_16-46-34\\\objects\drawingprotocol.o ...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\stb.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\ -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\ -O1 -Wextra -std=c99 -Wall -pedantic -g -fdiagnostics-color=always -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\stb.o
+Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\stb.c
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-24_19-57-46\\\objects\defaults.o ...
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\Libraries\\include
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\graphics\\
-Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\ -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\ -O1 -Wextra -std=c99 -Wall -pedantic -g -fdiagnostics-color=always -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\objects\drawingprotocol.o
-FAILED: Failed to compile C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c. GCC Exit Code: 1
-In file included from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:108[m[K,
-                 from [01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:1[m[K:
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/defaults/defaults.h:3:25:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[Kscene_t[m[K'
-    3 | void INPUTH_CAMHandle_0([01;31m[Kscene_t[m[K *scene, GLenum key, GLenum press);
-      |                         [01;31m[K^~~~~~~[m[K
-In file included from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:4[m[K,
-                 from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:109[m[K:
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/_3D.h:138:9:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUT_Handle[m[K'
-  138 |         [01;31m[KINPUT_Handle[m[K *inputs;
-      |         [01;31m[K^~~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:102:9:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[Kinputh_t[m[K'; did you mean '[01m[Kint8_t[m[K'?
-  102 |         [01;31m[Kinputh_t[m[K *input_handles;
-      |         [01;31m[K^~~~~~~~[m[K
-      |         [32m[Kint8_t[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:211:88:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUTH_handle[m[K'
-  211 | uint8_t *scene_inputh_regm(scene_t *scene, GLenum *keys, GLenum *targets, uint8_t len, [01;31m[KINPUTH_handle[m[K handle, bool append);
-      |                                                                                        [01;31m[K^~~~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:212:90:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUTH_handle[m[K'
-  212 | uint8_t scene_inputh_regh(scene_t *scene, GLenum key, GLenum target, size_t num_handles, [01;31m[KINPUTH_handle[m[K *handles, bool append);
-      |                                                                                          [01;31m[K^~~~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:120:77:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUT_Handle[m[K'
-  120 | void cam_gen(scene_t *scene, vec3 args0[3], GLint args1[4], float args2[3], [01;31m[KINPUT_Handle[m[K *input, bool activate);
-      |                                                                             [01;31m[K^~~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:[m[K In function '[01m[Kshader_pull[m[K':
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:235:66:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: '[01m[Kint[m[K' and '[01m[Kuint32_t[m[K' {aka [m[K'[01m[Kunsigned int[m[K'} [[01;35m[K-Wsign-compare[m[K]
-  235 |                                                         if(vs_cc [01;35m[K==[m[K decoded.vsindex){
-      |                                                                  [01;35m[K^~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:249:66:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: '[01m[Kint[m[K' and '[01m[Kuint32_t[m[K' {aka [m[K'[01m[Kunsigned int[m[K'} [[01;35m[K-Wsign-compare[m[K]
-  249 |                                                         if(fs_cc [01;35m[K==[m[K decoded.fsindex){
-      |                                                                  [01;35m[K^~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:262:66:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: '[01m[Kint[m[K' and '[01m[Kuint32_t[m[K' {aka [m[K'[01m[Kunsigned int[m[K'} [[01;35m[K-Wsign-compare[m[K]
-  262 |                                                         if(gs_cc [01;35m[K==[m[K decoded.gsindex){
-      |                                                                  [01;35m[K^~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:[m[K In function '[01m[Kuniform_init[m[K':
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:32:16:[m[K [01;35m[Kwarning: [m[K'[01m[Kcalloc[m[K' sizes specified with '[01m[Ksizeof[m[K' in the earlier argument and not in the later argument [[01;35m[K-Wcalloc-transposed-args[m[K]
-   32 | #define arrk_t [01;35m[Karrkey[m[K
-      |                [01;35m[K^~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:311:42:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[Karrk_t[m[K'
-  311 |         arrk_t *uniforms = calloc(sizeof([01;36m[Karrk_t[m[K), 1);
-      |                                          [01;36m[K^~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:32:16:[m[K [01;36m[Knote: [m[Kearlier argument should specify number of elements, later size of each element
-   32 | #define arrk_t [01;36m[Karrkey[m[K
-      |                [01;36m[K^~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:311:42:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[Karrk_t[m[K'
-  311 |         arrk_t *uniforms = calloc(sizeof([01;36m[Karrk_t[m[K), 1);
-      |                                          [01;36m[K^~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:74:24:[m[K [01;35m[Kwarning: [m[Kformat '[01m[K[01;32m[K%d[m[K[m[K' expects argument of type '[01m[K[01;32m[Kint[m[K[m[K', but argument 4 has type '[01m[K[01;34m[Ksize_t[m[K' {aka [m[K'[01m[K[01;34m[Klong long unsigned int[m[K'}[m[K [[01;35m[K-Wformat=[m[K]
-   74 | #define ANSI_RED(TEXT) [01;32m[K"[m[K[01;32m[K\[m[K[01;32m[Kn[m[K[01;32m[K"[m[K ANSI_COLOR_RED TEXT ANSI_COLOR_RESET
-      |                        [01;32m[K^[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:342:56:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KANSI_RED[m[K'
-  342 |                                                 printf([01;36m[KANSI_RED[m[K("Uh-oh!, I couldn't access the uniform %s of type %s and at the index: %d"), uniforms[uniform_len].name, uniforms[uniform_len].type, char_cc);
-      |                                                        [01;36m[K^~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:75:26:[m[K [01;35m[Kwarning: [m[Kformat '[01m[K[01;32m[K%d[m[K[m[K' expects argument of type '[01m[K[01;32m[Kint[m[K[m[K', but argument 5 has type '[01m[K[01;34m[Ksize_t[m[K' {aka [m[K'[01m[K[01;34m[Klong long unsigned int[m[K'}[m[K [[01;35m[K-Wformat=[m[K]
-   75 | #define ANSI_GREEN(TEXT) [01;32m[K"[m[K[01;32m[K\[m[K[01;32m[Kn[m[K[01;32m[K"[m[K ANSI_COLOR_GREEN TEXT ANSI_COLOR_RESET
-      |                          [01;32m[K^[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:343:54:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KANSI_GREEN[m[K'
-  343 |                                         }else{printf([01;36m[KANSI_GREEN[m[K("Found uniform %s of type %s with Shader location: %d and at the index: %d"), uniforms[uniform_len].name, uniforms[uniform_len].type, uniforms[uniform_len].Location, char_cc + counter);}
-      |                                                      [01;36m[K^~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:301:16:[m[K [01;35m[Kwarning: [m[Kunused variable '[01m[Ktypenames_len[m[K' [[01;35m[K-Wunused-variable[m[K]
-  301 |         size_t [01;35m[Ktypenames_len[m[K = 0;
-      |                [01;35m[K^~~~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:299:16:[m[K [01;35m[Kwarning: [m[Kunused variable '[01m[Ktemp_typenames[m[K' [[01;35m[K-Wunused-variable[m[K]
-  299 |         char** [01;35m[Ktemp_typenames[m[K = NULL;
-      |                [01;35m[K^~~~~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:[m[K In function '[01m[Kuniform_write[m[K':
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:427:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-  427 |                                         [01;35m[KGLfloat[m[K tempf = *((GLfloat*)value);
-      |                                         [01;35m[K^~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:431:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-  431 |                                         [01;35m[KGLfloat[m[K *tempf2 = (GLfloat*)value;
-      |                                         [01;35m[K^~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:438:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-  438 |                                         [01;35m[KGLfloat[m[K *tempf3 = (GLfloat*)value;
-      |                                         [01;35m[K^~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:446:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-  446 |                                         [01;35m[KGLfloat[m[K *tempf4 = (GLfloat*)value;
-      |                                         [01;35m[K^~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:455:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-  455 |                                         [01;35m[KGLint[m[K *tempi2 = (GLint*)value;
-      |                                         [01;35m[K^~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:462:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-  462 |                                         [01;35m[KGLint[m[K *tempi3 = (GLint*)value;
-      |                                         [01;35m[K^~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:470:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-  470 |                                         [01;35m[KGLint[m[K *tempi4 = (GLint*)value;
-      |                                         [01;35m[K^~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:479:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-  479 |                                         [01;35m[KGLuint[m[K *tempui2 = (GLuint*)value;
-      |                                         [01;35m[K^~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:485:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-  485 |                                         [01;35m[KGLuint[m[K *tempui3 = (GLuint*)value;
-      |                                         [01;35m[K^~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:492:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-  492 |                                         [01;35m[KGLuint[m[K *tempui4 = (GLuint*)value;
-      |                                         [01;35m[K^~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:500:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-  500 |                                         [01;35m[KGLint[m[K *tempb2 = (GLint *)value;
-      |                                         [01;35m[K^~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:506:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-  506 |                                         [01;35m[KGLint[m[K *tempb3 = (GLint *)value;
-      |                                         [01;35m[K^~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:513:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-  513 |                                         [01;35m[KGLint[m[K *tempb4 = (GLint *)value;
-      |                                         [01;35m[K^~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:559:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-  559 |                                         [01;35m[Kconst[m[K GLenum property_enum = *((GLenum *)property_);
-      |                                         [01;35m[K^~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:574:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-  574 |                                         [01;35m[Kconst[m[K char *property = property_;
-      |                                         [01;35m[K^~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:[m[K In function '[01m[Kwin_flood[m[K':
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:670:41:[m[K [01;35m[Kwarning: [m[Kunused parameter '[01m[Kc[m[K' [[01;35m[K-Wunused-parameter[m[K]
-  670 | void win_flood(win_t* win, [01;35m[Kconst argb_t c[m[K){
-      |                            [01;35m[K~~~~~~~~~~~~~^[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:[m[K In function '[01m[Kbuffer_bufferdo[m[K':
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:712:25:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-  712 |                         [01;35m[KGLuint[m[K *out = (GLuint*)malloc(sizeof(GLuint) * len);
-      |                         [01;35m[K^~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:721:25:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-  721 |                         [01;35m[KGLuint[m[K *out_vbo = (GLuint*)malloc(sizeof(GLuint) * len);
-      |                         [01;35m[K^~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:730:25:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
-  730 |                         [01;35m[KGLuint[m[K *out_ebo = (GLuint*)malloc(sizeof(GLuint) * len);
-      |                         [01;35m[K^~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:[m[K In function '[01m[Kuniform_write[m[K':
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:37:17:[m[K [01;35m[Kwarning: [m[Kthis statement may fall through [[01;35m[K-Wimplicit-fallthrough=[m[K]
-   37 |                 [01;35m[KCheckGLError(__FILE__, __LINE__, #x)[m[K;
-      |                 [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:480:41:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KGLCall[m[K'
-  480 |                                         [01;36m[KGLCall[m[K(glUniform2ui(location,
-      |                                         [01;36m[K^~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:484:33:[m[K [01;36m[Knote: [m[Khere
-  484 |                                 [01;36m[Kcase[m[K 11: // unsigned int vec3
-      |                                 [01;36m[K^~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:37:17:[m[K [01;35m[Kwarning: [m[Kthis statement may fall through [[01;35m[K-Wimplicit-fallthrough=[m[K]
-   37 |                 [01;35m[KCheckGLError(__FILE__, __LINE__, #x)[m[K;
-      |                 [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:486:41:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KGLCall[m[K'
-  486 |                                         [01;36m[KGLCall[m[K(glUniform3ui(location,
-      |                                         [01;36m[K^~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:491:33:[m[K [01;36m[Knote: [m[Khere
-  491 |                                 [01;36m[Kcase[m[K 12: // unsigned int vec4
-      |                                 [01;36m[K^~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:37:17:[m[K [01;35m[Kwarning: [m[Kthis statement may fall through [[01;35m[K-Wimplicit-fallthrough=[m[K]
-   37 |                 [01;35m[KCheckGLError(__FILE__, __LINE__, #x)[m[K;
-      |                 [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:493:41:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KGLCall[m[K'
-  493 |                                         [01;36m[KGLCall[m[K(glUniform4ui(location,
-      |                                         [01;36m[K^~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:499:33:[m[K [01;36m[Knote: [m[Khere
-  499 |                                 [01;36m[Kcase[m[K 13: // Boolean vec2
-      |                                 [01;36m[K^~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:37:17:[m[K [01;35m[Kwarning: [m[Kthis statement may fall through [[01;35m[K-Wimplicit-fallthrough=[m[K]
-   37 |                 [01;35m[KCheckGLError(__FILE__, __LINE__, #x)[m[K;
-      |                 [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:501:41:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KGLCall[m[K'
-  501 |                                         [01;36m[KGLCall[m[K(glUniform2i(location,
-      |                                         [01;36m[K^~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:505:33:[m[K [01;36m[Knote: [m[Khere
-  505 |                                 [01;36m[Kcase[m[K 14: // Boolean vec3
-      |                                 [01;36m[K^~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:37:17:[m[K [01;35m[Kwarning: [m[Kthis statement may fall through [[01;35m[K-Wimplicit-fallthrough=[m[K]
-   37 |                 [01;35m[KCheckGLError(__FILE__, __LINE__, #x)[m[K;
-      |                 [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:507:41:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KGLCall[m[K'
-  507 |                                         [01;36m[KGLCall[m[K(glUniform3i(location,
-      |                                         [01;36m[K^~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:512:33:[m[K [01;36m[Knote: [m[Khere
-  512 |                                 [01;36m[Kcase[m[K 15: // Boolean vec4
-      |                                 [01;36m[K^~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:37:17:[m[K [01;35m[Kwarning: [m[Kthis statement may fall through [[01;35m[K-Wimplicit-fallthrough=[m[K]
-   37 |                 [01;35m[KCheckGLError(__FILE__, __LINE__, #x)[m[K;
-      |                 [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:514:41:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KGLCall[m[K'
-  514 |                                         [01;36m[KGLCall[m[K(glUniform4i(location,
-      |                                         [01;36m[K^~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:520:33:[m[K [01;36m[Knote: [m[Khere
-  520 |                                 [01;36m[Kcase[m[K 16: // mat2
-      |                                 [01;36m[K^~~~[m[K
-Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-23_16-46-34\\\objects\scene.o ...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\ -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\ -O1 -Wextra -std=c99 -Wall -pedantic -g -fdiagnostics-color=always -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\defaults.o
+Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:[m[K In function '[01m[KINPUTH_CAMHandle_0[m[K':
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:6:37:[m[K [01;35m[Kwarning: [m[Kpassing argument 2 of '[01m[KglfwGetCursorPos[m[K' discards '[01m[Kvolatile[m[K' qualifier from pointer target type [[01;35m[K-Wdiscarded-qualifiers[m[K]
+Output: 	    6 |     glfwGetCursorPos(scene->parent, [01;35m[K&mousePos[0][m[K, &mousePos[1]);
+Output: 	      |                                     [01;35m[K^~~~~~~~~~~~[m[K
+Output: 	In file included from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:101[m[K,
+Output: 	                 from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/defaults/defaults.h:1[m[K,
+Output: 	                 from [01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:1[m[K:
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Libraries/include/glfw3.h:4970:59:[m[K [01;36m[Knote: [m[Kexpected '[01m[K[01;32m[Kdouble *[m[K[m[K' but argument is of type '[01m[K[01;34m[Kvolatile double *[m[K[m[K'
+Output: 	 4970 | GLFWAPI void glfwGetCursorPos(GLFWwindow* window, [01;32m[Kd[m[K[01;32m[Ko[m[K[01;32m[Ku[m[K[01;32m[Kb[m[K[01;32m[Kl[m[K[01;32m[Ke[m[K[01;32m[K*[m[K[01;32m[K [m[K[01;32m[Kx[m[K[01;32m[Kp[m[K[01;32m[Ko[m[K[01;32m[Ks[m[K, double* ypos);
+Output: 	      |                                                   [01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K^[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:6:51:[m[K [01;35m[Kwarning: [m[Kpassing argument 3 of '[01m[KglfwGetCursorPos[m[K' discards '[01m[Kvolatile[m[K' qualifier from pointer target type [[01;35m[K-Wdiscarded-qualifiers[m[K]
+Output: 	    6 |     glfwGetCursorPos(scene->parent, &mousePos[0], [01;35m[K&mousePos[1][m[K);
+Output: 	      |                                                   [01;35m[K^~~~~~~~~~~~[m[K
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Libraries/include/glfw3.h:4970:73:[m[K [01;36m[Knote: [m[Kexpected '[01m[K[01;32m[Kdouble *[m[K[m[K' but argument is of type '[01m[K[01;34m[Kvolatile double *[m[K[m[K'
+Output: 	 4970 | GLFWAPI void glfwGetCursorPos(GLFWwindow* window, double* xpos, [01;32m[Kd[m[K[01;32m[Ko[m[K[01;32m[Ku[m[K[01;32m[Kb[m[K[01;32m[Kl[m[K[01;32m[Ke[m[K[01;32m[K*[m[K[01;32m[K [m[K[01;32m[Ky[m[K[01;32m[Kp[m[K[01;32m[Ko[m[K[01;32m[Ks[m[K);
+Output: 	      |                                                                 [01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K^[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:11:13:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	   11 |             [01;35m[Kvec3[m[K temp_pg_up = {scene->cameras[*scene->loaded_cams].up[0], scene->cameras[*scene->loaded_cams].up[1], scene->cameras[*scene->loaded_cams].up[2]};
+Output: 	      |             [01;35m[K^~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:16:13:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	   16 |             [01;35m[Kvec3[m[K temp_pg_dwn = {scene->cameras[*scene->loaded_cams].up[0], scene->cameras[*scene->loaded_cams].up[1], scene->cameras[*scene->loaded_cams].up[2]};
+Output: 	      |             [01;35m[K^~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:21:13:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	   21 |             [01;35m[Kvec3[m[K temp_up = {scene->cameras[*scene->loaded_cams].up[0], scene->cameras[*scene->loaded_cams].up[1], scene->cameras[*scene->loaded_cams].up[2]};
+Output: 	      |             [01;35m[K^~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:26:13:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	   26 |             [01;35m[Kvec3[m[K temp_dwn = {scene->cameras[*scene->loaded_cams].up[0], scene->cameras[*scene->loaded_cams].up[1], scene->cameras[*scene->loaded_cams].up[2]};
+Output: 	      |             [01;35m[K^~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:31:13:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	   31 |             [01;35m[Kvec3[m[K temp_lft = {scene->cameras[*scene->loaded_cams].up[0], scene->cameras[*scene->loaded_cams].up[1], scene->cameras[*scene->loaded_cams].up[2]};
+Output: 	      |             [01;35m[K^~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:36:13:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	   36 |             [01;35m[Kvec3[m[K temp_rgt = {scene->cameras[*scene->loaded_cams].up[0], scene->cameras[*scene->loaded_cams].up[1], scene->cameras[*scene->loaded_cams].up[2]};
+Output: 	      |             [01;35m[K^~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\defaults\defaults.c:3:58:[m[K [01;35m[Kwarning: [m[Kunused parameter '[01m[Kpress[m[K' [[01;35m[K-Wunused-parameter[m[K]
+Output: 	    3 | void INPUTH_CAMHandle_0(void *scene_, GLenum key, [01;35m[KGLenum press[m[K){
+Output: 	      |                                                   [01;35m[K~~~~~~~^~~~~[m[K
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-24_19-57-46\\\objects\drawingprotocol.o ...
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\Libraries\\include
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\graphics\\
-Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\ -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\ -O1 -Wextra -std=c99 -Wall -pedantic -g -fdiagnostics-color=always -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\objects\scene.o
-FAILED: Failed to compile C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c. GCC Exit Code: 1
-In file included from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:108[m[K,
-                 from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:3[m[K,
-                 from [01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:1[m[K:
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/defaults/defaults.h:3:25:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[Kscene_t[m[K'
-    3 | void INPUTH_CAMHandle_0([01;31m[Kscene_t[m[K *scene, GLenum key, GLenum press);
-      |                         [01;31m[K^~~~~~~[m[K
-In file included from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:110[m[K:
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/_3D.h:138:9:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUT_Handle[m[K'
-  138 |         [01;31m[KINPUT_Handle[m[K *inputs;
-      |         [01;31m[K^~~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:120:14:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[Kscene_t[m[K'
-  120 | void cam_gen([01;31m[Kscene_t[m[K *scene, vec3 args0[3], GLint args1[4], float args2[3], INPUT_Handle *input, bool activate);
-      |              [01;31m[K^~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:120:77:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUT_Handle[m[K'
-  120 | void cam_gen(scene_t *scene, vec3 args0[3], GLint args1[4], float args2[3], [01;31m[KINPUT_Handle[m[K *input, bool activate);
-      |                                                                             [01;31m[K^~~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:155:32:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[Kscene_t[m[K'
-  155 | typedef void *(*INPUTH_handle)([01;31m[Kscene_t[m[K *scene, GLenum key, GLenum press);
-      |                                [01;31m[K^~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:159:9:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUTH_handle[m[K'
-  159 |         [01;31m[KINPUTH_handle[m[K *handles;
-      |         [01;31m[K^~~~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:211:88:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUTH_handle[m[K'; did you mean '[01m[KINPUT_Handle[m[K'?
-  211 | uint8_t *scene_inputh_regm(scene_t *scene, GLenum *keys, GLenum *targets, uint8_t len, [01;31m[KINPUTH_handle[m[K handle, bool append);
-      |                                                                                        [01;31m[K^~~~~~~~~~~~~[m[K
-      |                                                                                        [32m[KINPUT_Handle[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:212:90:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUTH_handle[m[K'; did you mean '[01m[KINPUT_Handle[m[K'?
-  212 | uint8_t scene_inputh_regh(scene_t *scene, GLenum key, GLenum target, size_t num_handles, [01;31m[KINPUTH_handle[m[K *handles, bool append);
-      |                                                                                          [01;31m[K^~~~~~~~~~~~~[m[K
-      |                                                                                          [32m[KINPUT_Handle[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:[m[K In function '[01m[Kscene_gen[m[K':
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:13:14:[m[K [01;31m[Kerror: [m[Kassignment of read-only location '[01m[K*out[m[K'
-   13 |         *out [01;31m[K=[m[K (scene_t){
-      |              [01;31m[K^[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:33:29:[m[K [01;31m[Kerror: [m[Kimplicit declaration of function '[01m[Kcam_gen[m[K'; did you mean '[01m[Kcam_t[m[K'? [[01;31m[K-Wimplicit-function-declaration[m[K]
-   33 |         if(cameras == NULL){[01;31m[Kcam_gen[m[K(out, (vec3[]){0, 0, 0, 0, 0, 0, 1, 0}, (GLint[]){90, 90, 1, 10}, (GLfloat[]){0.1, 10, 9}, NULL, true);
-      |                             [01;31m[K^~~~~~~[m[K
-      |                             [32m[Kcam_t[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:33:42:[m[K [01;35m[Kwarning: [m[Kmissing braces around initializer [[01;35m[K-Wmissing-braces[m[K]
-   33 |         if(cameras == NULL){cam_gen(out, [01;35m[K([m[Kvec3[]){0, 0, 0, 0, 0, 0, 1, 0}, (GLint[]){90, 90, 1, 10}, (GLfloat[]){0.1, 10, 9}, NULL, true);
-      |                                          [01;35m[K^[m[K
-      |                                                   [32m[K{[m[K      [32m[K}[m[K [32m[K{[m[K      [32m[K}[m[K [32m[K{[m[K   [32m[K}[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:[m[K At top level:
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:66:71:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUTH_handle[m[K'; did you mean '[01m[KINPUT_Handle[m[K'?
-   66 | uint8_t scene_inputh_unreg(scene_t *scene, GLenum key, GLenum target, [01;31m[KINPUTH_handle[m[K handle){
-      |                                                                       [01;31m[K^~~~~~~~~~~~~[m[K
-      |                                                                       [32m[KINPUT_Handle[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:89:88:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUTH_handle[m[K'; did you mean '[01m[KINPUT_Handle[m[K'?
-   89 | uint8_t *scene_inputh_regm(scene_t *scene, GLenum *keys, GLenum *targets, uint8_t len, [01;31m[KINPUTH_handle[m[K handle, bool append){
-      |                                                                                        [01;31m[K^~~~~~~~~~~~~[m[K
-      |                                                                                        [32m[KINPUT_Handle[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:103:90:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUTH_handle[m[K'; did you mean '[01m[KINPUT_Handle[m[K'?
-  103 | uint8_t scene_inputh_regh(scene_t *scene, GLenum key, GLenum target, size_t num_handles, [01;31m[KINPUTH_handle[m[K *handles, bool append){
-      |                                                                                          [01;31m[K^~~~~~~~~~~~~[m[K
-      |                                                                                          [32m[KINPUT_Handle[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:[m[K In function '[01m[Kscene_poll[m[K':
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:128:54:[m[K [01;35m[Kwarning: [m[Kunused parameter '[01m[Kpollcycles[m[K' [[01;35m[K-Wunused-parameter[m[K]
-  128 | void scene_poll(scene_t *scene, size_t polls, [01;35m[Ksize_t pollcycles[m[K){
-      |                                               [01;35m[K~~~~~~~^~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:[m[K In function '[01m[Ksceneproc_inputhandle[m[K':
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:140:85:[m[K [01;31m[Kerror: [m[Kcalled object is not a function or function pointer
-  140 |             for(uint8_t cc_ = 0; cc_ < scene->input_handles[cc].num_handles; ++cc_){[01;31m[Kscene[m[K->input_handles[cc].handles[cc_](scene, scene->input_handles[cc].key, scene->input_handles[cc].target);}
-      |                                                                                     [01;31m[K^~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:142:72:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: '[01m[Kint[m[K' and '[01m[KGLenum[m[K' {aka [m[K'[01m[Kunsigned int[m[K'} [[01;35m[K-Wsign-compare[m[K]
-  142 |             if(glfwGetKey(scene->parent, scene->input_handles[cc].key) [01;35m[K==[m[K scene->input_handles[cc].target){
-      |                                                                        [01;35m[K^~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:143:172:[m[K [01;35m[Kwarning: [m[Kleft shift count >= width of type [[01;35m[K-Wshift-count-overflow[m[K]
-  143 |                 ((size_t */*Size of an input entry*/)scene->proc_buffers->buffer)[scene->proc_buffers[0].counter] = (/*Move to upper 16 bits*/scene->input_handles[cc].key [01;35m[K<<[m[K 32) + (uint32_t)polls;
-      |                                                                                                                                                                            [01;35m[K^~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:146:89:[m[K [01;31m[Kerror: [m[Kcalled object is not a function or function pointer
-  146 |                 for(uint8_t cc_ = 0; cc_ < scene->input_handles[cc].num_handles; ++cc_){[01;31m[Kscene[m[K->input_handles[cc].handles[cc_](scene, scene->input_handles[cc].key, scene->input_handles[cc].target);}
-      |                                                                                         [01;31m[K^~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:[m[K In function '[01m[Kscene_draw[m[K':
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:167:126:[m[K [01;31m[Kerror: [m[Kpassing argument 4 of '[01m[Kglad_glUniformMatrix4fv[m[K' from incompatible pointer type [[01;31m[K-Wincompatible-pointer-types[m[K]
-  167 |         GLCall(glUniformMatrix4fv(glGetUniformLocation(scene->shaders[scene->shader_curr].shaderProgram, "matrix"), 1, true, [01;34m[Kc[m[K[01;34m[Ka[m[K[01;34m[Km[m[K[01;34m[K_[m[K[01;34m[Km[m[K[01;34m[Ka[m[K[01;34m[Kt[m[K[01;34m[K4[m[K[01;34m[K([m[K[01;34m[Ks[m[K[01;34m[Kc[m[K[01;34m[Ke[m[K[01;34m[Kn[m[K[01;34m[Ke[m[K[01;34m[K-[m[K[01;34m[K>[m[K[01;34m[Kc[m[K[01;34m[Ka[m[K[01;34m[Km[m[K[01;34m[Ke[m[K[01;34m[Kr[m[K[01;34m[Ka[m[K[01;34m[Ks[m[K[01;34m[K [m[K[01;34m[K+[m[K[01;34m[K [m[K[01;34m[K*[m[K[01;34m[Ks[m[K[01;34m[Kc[m[K[01;34m[Ke[m[K[01;34m[Kn[m[K[01;34m[Ke[m[K[01;34m[K-[m[K[01;34m[K>[m[K[01;34m[Kl[m[K[01;34m[Ko[m[K[01;34m[Ka[m[K[01;34m[Kd[m[K[01;34m[Ke[m[K[01;34m[Kd[m[K[01;34m[K_[m[K[01;34m[Kc[m[K[01;34m[Ka[m[K[01;34m[Km[m[K[01;34m[Ks[m[K[01;34m[K)[m[K));
-      |                                                                                                                              [01;34m[K^[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K[01;34m[K~[m[K
-      |                                                                                                                              [01;34m[K|[m[K
-      |                                                                                                                              [01;34m[Kfloat (*)[4][4][m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:36:17:[m[K [01;36m[Knote: [m[Kin definition of macro '[01m[KGLCall[m[K'
-   36 |                 [01;36m[Kx[m[K; \
-      |                 [01;36m[K^[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:167:126:[m[K [01;36m[Knote: [m[Kexpected '[01m[K[01;32m[Kconst GLfloat *[m[K' {aka [m[K'[01m[K[01;32m[Kconst float *[m[K'}[m[K but argument is of type '[01m[K[01;34m[Kfloat (*)[4][4][m[K[m[K'
-  167 |         GLCall(glUniformMatrix4fv(glGetUniformLocation(scene->shaders[scene->shader_curr].shaderProgram, "matrix"), 1, true, [01;32m[Kc[m[K[01;32m[Ka[m[K[01;32m[Km[m[K[01;32m[K_[m[K[01;32m[Km[m[K[01;32m[Ka[m[K[01;32m[Kt[m[K[01;32m[K4[m[K[01;32m[K([m[K[01;32m[Ks[m[K[01;32m[Kc[m[K[01;32m[Ke[m[K[01;32m[Kn[m[K[01;32m[Ke[m[K[01;32m[K-[m[K[01;32m[K>[m[K[01;32m[Kc[m[K[01;32m[Ka[m[K[01;32m[Km[m[K[01;32m[Ke[m[K[01;32m[Kr[m[K[01;32m[Ka[m[K[01;32m[Ks[m[K[01;32m[K [m[K[01;32m[K+[m[K[01;32m[K [m[K[01;32m[K*[m[K[01;32m[Ks[m[K[01;32m[Kc[m[K[01;32m[Ke[m[K[01;32m[Kn[m[K[01;32m[Ke[m[K[01;32m[K-[m[K[01;32m[K>[m[K[01;32m[Kl[m[K[01;32m[Ko[m[K[01;32m[Ka[m[K[01;32m[Kd[m[K[01;32m[Ke[m[K[01;32m[Kd[m[K[01;32m[K_[m[K[01;32m[Kc[m[K[01;32m[Ka[m[K[01;32m[Km[m[K[01;32m[Ks[m[K[01;32m[K)[m[K));
-      |                                                                                                                              [01;32m[K^[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:36:17:[m[K [01;36m[Knote: [m[Kin definition of macro '[01m[KGLCall[m[K'
-   36 |                 [01;36m[Kx[m[K; \
-      |                 [01;36m[K^[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:[m[K In function '[01m[Kscene_load[m[K':
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:105:17:[m[K [01;35m[Kwarning: [m[K'[01m[Kcalloc[m[K' sizes specified with '[01m[Ksizeof[m[K' in the earlier argument and not in the later argument [[01;35m[K-Wcalloc-transposed-args[m[K]
-  105 | #define scene_t [01;35m[Kscene_type[m[K
-      |                 [01;35m[K^~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:193:38:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[Kscene_t[m[K'
-  193 |         scene_t *out = calloc(sizeof([01;36m[Kscene_t[m[K), 1);
-      |                                      [01;36m[K^~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:105:17:[m[K [01;36m[Knote: [m[Kearlier argument should specify number of elements, later size of each element
-  105 | #define scene_t [01;36m[Kscene_type[m[K
-      |                 [01;36m[K^~~~~~~~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:193:38:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[Kscene_t[m[K'
-  193 |         scene_t *out = calloc(sizeof([01;36m[Kscene_t[m[K), 1);
-      |                                      [01;36m[K^~~~~~~[m[K
-Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-23_16-46-34\\\objects\window.o ...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\ -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\ -O1 -Wextra -std=c99 -Wall -pedantic -g -fdiagnostics-color=always -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\drawingprotocol.o
+Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:[m[K In function '[01m[Kshader_pull[m[K':
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:234:66:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: '[01m[Kint[m[K' and '[01m[Kuint32_t[m[K' {aka [m[K'[01m[Kunsigned int[m[K'} [[01;35m[K-Wsign-compare[m[K]
+Output: 	  234 |                                                         if(vs_cc [01;35m[K==[m[K decoded.vsindex){
+Output: 	      |                                                                  [01;35m[K^~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:248:66:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: '[01m[Kint[m[K' and '[01m[Kuint32_t[m[K' {aka [m[K'[01m[Kunsigned int[m[K'} [[01;35m[K-Wsign-compare[m[K]
+Output: 	  248 |                                                         if(fs_cc [01;35m[K==[m[K decoded.fsindex){
+Output: 	      |                                                                  [01;35m[K^~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:261:66:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: '[01m[Kint[m[K' and '[01m[Kuint32_t[m[K' {aka [m[K'[01m[Kunsigned int[m[K'} [[01;35m[K-Wsign-compare[m[K]
+Output: 	  261 |                                                         if(gs_cc [01;35m[K==[m[K decoded.gsindex){
+Output: 	      |                                                                  [01;35m[K^~[m[K
+Output: 	In file included from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/defaults/defaults.h:2[m[K,
+Output: 	                 from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:108[m[K,
+Output: 	                 from [01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:1[m[K:
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:[m[K In function '[01m[Kuniform_init[m[K':
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:27:16:[m[K [01;35m[Kwarning: [m[K'[01m[Kcalloc[m[K' sizes specified with '[01m[Ksizeof[m[K' in the earlier argument and not in the later argument [[01;35m[K-Wcalloc-transposed-args[m[K]
+Output: 	   27 | #define arrk_t [01;35m[Karrkey[m[K
+Output: 	      |                [01;35m[K^~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:310:42:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[Karrk_t[m[K'
+Output: 	  310 |         arrk_t *uniforms = calloc(sizeof([01;36m[Karrk_t[m[K), 1);
+Output: 	      |                                          [01;36m[K^~~~~~[m[K
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:27:16:[m[K [01;36m[Knote: [m[Kearlier argument should specify number of elements, later size of each element
+Output: 	   27 | #define arrk_t [01;36m[Karrkey[m[K
+Output: 	      |                [01;36m[K^~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:310:42:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[Karrk_t[m[K'
+Output: 	  310 |         arrk_t *uniforms = calloc(sizeof([01;36m[Karrk_t[m[K), 1);
+Output: 	      |                                          [01;36m[K^~~~~~[m[K
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:74:24:[m[K [01;35m[Kwarning: [m[Kformat '[01m[K[01;32m[K%d[m[K[m[K' expects argument of type '[01m[K[01;32m[Kint[m[K[m[K', but argument 4 has type '[01m[K[01;34m[Ksize_t[m[K' {aka [m[K'[01m[K[01;34m[Klong long unsigned int[m[K'}[m[K [[01;35m[K-Wformat=[m[K]
+Output: 	   74 | #define ANSI_RED(TEXT) [01;32m[K"[m[K[01;32m[K\[m[K[01;32m[Kn[m[K[01;32m[K"[m[K ANSI_COLOR_RED TEXT ANSI_COLOR_RESET
+Output: 	      |                        [01;32m[K^[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:341:56:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KANSI_RED[m[K'
+Output: 	  341 |                                                 printf([01;36m[KANSI_RED[m[K("Uh-oh!, I couldn't access the uniform %s of type %s and at the index: %d"), uniforms[uniform_len].name, uniforms[uniform_len].type, char_cc);
+Output: 	      |                                                        [01;36m[K^~~~~~~~[m[K
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:75:26:[m[K [01;35m[Kwarning: [m[Kformat '[01m[K[01;32m[K%d[m[K[m[K' expects argument of type '[01m[K[01;32m[Kint[m[K[m[K', but argument 5 has type '[01m[K[01;34m[Ksize_t[m[K' {aka [m[K'[01m[K[01;34m[Klong long unsigned int[m[K'}[m[K [[01;35m[K-Wformat=[m[K]
+Output: 	   75 | #define ANSI_GREEN(TEXT) [01;32m[K"[m[K[01;32m[K\[m[K[01;32m[Kn[m[K[01;32m[K"[m[K ANSI_COLOR_GREEN TEXT ANSI_COLOR_RESET
+Output: 	      |                          [01;32m[K^[m[K[01;32m[K~[m[K[01;32m[K~[m[K[01;32m[K~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:342:54:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KANSI_GREEN[m[K'
+Output: 	  342 |                                         }else{printf([01;36m[KANSI_GREEN[m[K("Found uniform %s of type %s with Shader location: %d and at the index: %d"), uniforms[uniform_len].name, uniforms[uniform_len].type, uniforms[uniform_len].Location, char_cc + counter);}
+Output: 	      |                                                      [01;36m[K^~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:300:16:[m[K [01;35m[Kwarning: [m[Kunused variable '[01m[Ktypenames_len[m[K' [[01;35m[K-Wunused-variable[m[K]
+Output: 	  300 |         size_t [01;35m[Ktypenames_len[m[K = 0;
+Output: 	      |                [01;35m[K^~~~~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:298:16:[m[K [01;35m[Kwarning: [m[Kunused variable '[01m[Ktemp_typenames[m[K' [[01;35m[K-Wunused-variable[m[K]
+Output: 	  298 |         char** [01;35m[Ktemp_typenames[m[K = NULL;
+Output: 	      |                [01;35m[K^~~~~~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:[m[K In function '[01m[Kuniform_write[m[K':
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:426:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	  426 |                                         [01;35m[KGLfloat[m[K tempf = *((GLfloat*)value);
+Output: 	      |                                         [01;35m[K^~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:430:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	  430 |                                         [01;35m[KGLfloat[m[K *tempf2 = (GLfloat*)value;
+Output: 	      |                                         [01;35m[K^~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:437:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	  437 |                                         [01;35m[KGLfloat[m[K *tempf3 = (GLfloat*)value;
+Output: 	      |                                         [01;35m[K^~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:445:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	  445 |                                         [01;35m[KGLfloat[m[K *tempf4 = (GLfloat*)value;
+Output: 	      |                                         [01;35m[K^~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:454:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	  454 |                                         [01;35m[KGLint[m[K *tempi2 = (GLint*)value;
+Output: 	      |                                         [01;35m[K^~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:461:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	  461 |                                         [01;35m[KGLint[m[K *tempi3 = (GLint*)value;
+Output: 	      |                                         [01;35m[K^~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:469:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	  469 |                                         [01;35m[KGLint[m[K *tempi4 = (GLint*)value;
+Output: 	      |                                         [01;35m[K^~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:478:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	  478 |                                         [01;35m[KGLuint[m[K *tempui2 = (GLuint*)value;
+Output: 	      |                                         [01;35m[K^~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:484:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	  484 |                                         [01;35m[KGLuint[m[K *tempui3 = (GLuint*)value;
+Output: 	      |                                         [01;35m[K^~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:491:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	  491 |                                         [01;35m[KGLuint[m[K *tempui4 = (GLuint*)value;
+Output: 	      |                                         [01;35m[K^~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:499:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	  499 |                                         [01;35m[KGLint[m[K *tempb2 = (GLint *)value;
+Output: 	      |                                         [01;35m[K^~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:505:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	  505 |                                         [01;35m[KGLint[m[K *tempb3 = (GLint *)value;
+Output: 	      |                                         [01;35m[K^~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:512:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	  512 |                                         [01;35m[KGLint[m[K *tempb4 = (GLint *)value;
+Output: 	      |                                         [01;35m[K^~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:558:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	  558 |                                         [01;35m[Kconst[m[K GLenum property_enum = *((GLenum *)property_);
+Output: 	      |                                         [01;35m[K^~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:573:41:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	  573 |                                         [01;35m[Kconst[m[K char *property = property_;
+Output: 	      |                                         [01;35m[K^~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:[m[K In function '[01m[Kwin_flood[m[K':
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:669:41:[m[K [01;35m[Kwarning: [m[Kunused parameter '[01m[Kc[m[K' [[01;35m[K-Wunused-parameter[m[K]
+Output: 	  669 | void win_flood(win_t* win, [01;35m[Kconst argb_t c[m[K){
+Output: 	      |                            [01;35m[K~~~~~~~~~~~~~^[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:[m[K In function '[01m[Kbuffer_bufferdo[m[K':
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:711:25:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	  711 |                         [01;35m[KGLuint[m[K *out = (GLuint*)malloc(sizeof(GLuint) * len);
+Output: 	      |                         [01;35m[K^~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:720:25:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	  720 |                         [01;35m[KGLuint[m[K *out_vbo = (GLuint*)malloc(sizeof(GLuint) * len);
+Output: 	      |                         [01;35m[K^~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:729:25:[m[K [01;35m[Kwarning: [m[Ka label can only be part of a statement and a declaration is not a statement [[01;35m[K-Wfree-labels[m[K]
+Output: 	  729 |                         [01;35m[KGLuint[m[K *out_ebo = (GLuint*)malloc(sizeof(GLuint) * len);
+Output: 	      |                         [01;35m[K^~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:[m[K In function '[01m[Kuniform_write[m[K':
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:37:17:[m[K [01;35m[Kwarning: [m[Kthis statement may fall through [[01;35m[K-Wimplicit-fallthrough=[m[K]
+Output: 	   37 |                 [01;35m[KCheckGLError(__FILE__, __LINE__, #x)[m[K;
+Output: 	      |                 [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:479:41:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KGLCall[m[K'
+Output: 	  479 |                                         [01;36m[KGLCall[m[K(glUniform2ui(location,
+Output: 	      |                                         [01;36m[K^~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:483:33:[m[K [01;36m[Knote: [m[Khere
+Output: 	  483 |                                 [01;36m[Kcase[m[K 11: // unsigned int vec3
+Output: 	      |                                 [01;36m[K^~~~[m[K
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:37:17:[m[K [01;35m[Kwarning: [m[Kthis statement may fall through [[01;35m[K-Wimplicit-fallthrough=[m[K]
+Output: 	   37 |                 [01;35m[KCheckGLError(__FILE__, __LINE__, #x)[m[K;
+Output: 	      |                 [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:485:41:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KGLCall[m[K'
+Output: 	  485 |                                         [01;36m[KGLCall[m[K(glUniform3ui(location,
+Output: 	      |                                         [01;36m[K^~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:490:33:[m[K [01;36m[Knote: [m[Khere
+Output: 	  490 |                                 [01;36m[Kcase[m[K 12: // unsigned int vec4
+Output: 	      |                                 [01;36m[K^~~~[m[K
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:37:17:[m[K [01;35m[Kwarning: [m[Kthis statement may fall through [[01;35m[K-Wimplicit-fallthrough=[m[K]
+Output: 	   37 |                 [01;35m[KCheckGLError(__FILE__, __LINE__, #x)[m[K;
+Output: 	      |                 [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:492:41:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KGLCall[m[K'
+Output: 	  492 |                                         [01;36m[KGLCall[m[K(glUniform4ui(location,
+Output: 	      |                                         [01;36m[K^~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:498:33:[m[K [01;36m[Knote: [m[Khere
+Output: 	  498 |                                 [01;36m[Kcase[m[K 13: // Boolean vec2
+Output: 	      |                                 [01;36m[K^~~~[m[K
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:37:17:[m[K [01;35m[Kwarning: [m[Kthis statement may fall through [[01;35m[K-Wimplicit-fallthrough=[m[K]
+Output: 	   37 |                 [01;35m[KCheckGLError(__FILE__, __LINE__, #x)[m[K;
+Output: 	      |                 [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:500:41:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KGLCall[m[K'
+Output: 	  500 |                                         [01;36m[KGLCall[m[K(glUniform2i(location,
+Output: 	      |                                         [01;36m[K^~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:504:33:[m[K [01;36m[Knote: [m[Khere
+Output: 	  504 |                                 [01;36m[Kcase[m[K 14: // Boolean vec3
+Output: 	      |                                 [01;36m[K^~~~[m[K
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:37:17:[m[K [01;35m[Kwarning: [m[Kthis statement may fall through [[01;35m[K-Wimplicit-fallthrough=[m[K]
+Output: 	   37 |                 [01;35m[KCheckGLError(__FILE__, __LINE__, #x)[m[K;
+Output: 	      |                 [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:506:41:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KGLCall[m[K'
+Output: 	  506 |                                         [01;36m[KGLCall[m[K(glUniform3i(location,
+Output: 	      |                                         [01;36m[K^~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:511:33:[m[K [01;36m[Knote: [m[Khere
+Output: 	  511 |                                 [01;36m[Kcase[m[K 15: // Boolean vec4
+Output: 	      |                                 [01;36m[K^~~~[m[K
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:37:17:[m[K [01;35m[Kwarning: [m[Kthis statement may fall through [[01;35m[K-Wimplicit-fallthrough=[m[K]
+Output: 	   37 |                 [01;35m[KCheckGLError(__FILE__, __LINE__, #x)[m[K;
+Output: 	      |                 [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:513:41:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KGLCall[m[K'
+Output: 	  513 |                                         [01;36m[KGLCall[m[K(glUniform4i(location,
+Output: 	      |                                         [01;36m[K^~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:519:33:[m[K [01;36m[Knote: [m[Khere
+Output: 	  519 |                                 [01;36m[Kcase[m[K 16: // mat2
+Output: 	      |                                 [01;36m[K^~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:[m[K In function '[01m[Kshader_pull[m[K':
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:228:43:[m[K [01;35m[Kwarning: [m[K'[01m[Kend_pos[m[K' may be used uninitialized [[01;35m[K-Wmaybe-uninitialized[m[K]
+Output: 	  228 |                                         if[01;35m[K([m[Kend_pos > start_pos){
+Output: 	      |                                           [01;35m[K^[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:194:23:[m[K [01;36m[Knote: [m[K'[01m[Kend_pos[m[K' was declared here
+Output: 	  194 |     size_t start_pos, [01;36m[Kend_pos[m[K;
+Output: 	      |                       [01;36m[K^~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:[m[K In function '[01m[Kuniform_write[m[K':
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include/glad.h:1415:21:[m[K [01;35m[Kwarning: [m[K'[01m[Ktempb2[m[K' may be used uninitialized [[01;35m[K-Wmaybe-uninitialized[m[K]
+Output: 	 1415 | #define glUniform3i glad_glUniform3i
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:36:17:[m[K [01;36m[Knote: [m[Kin definition of macro '[01m[KGLCall[m[K'
+Output: 	   36 |                 [01;36m[Kx[m[K; \
+Output: 	      |                 [01;36m[K^[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:506:48:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[KglUniform3i[m[K'
+Output: 	  506 |                                         GLCall([01;36m[KglUniform3i[m[K(location,
+Output: 	      |                                                [01;36m[K^~~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\drawingprotocol.c:499:48:[m[K [01;36m[Knote: [m[K'[01m[Ktempb2[m[K' was declared here
+Output: 	  499 |                                         GLint *[01;36m[Ktempb2[m[K = (GLint *)value;
+Output: 	      |                                                [01;36m[K^~~~~~[m[K
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-24_19-57-46\\\objects\scene.o ...
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\Libraries\\include
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\graphics\\
-Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\ -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\ -O1 -Wextra -std=c99 -Wall -pedantic -g -fdiagnostics-color=always -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\objects\window.o
-FAILED: Failed to compile C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c. GCC Exit Code: 1
-In file included from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:108[m[K,
-                 from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:3[m[K,
-                 from [01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c:1[m[K:
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/defaults/defaults.h:3:25:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[Kscene_t[m[K'
-    3 | void INPUTH_CAMHandle_0([01;31m[Kscene_t[m[K *scene, GLenum key, GLenum press);
-      |                         [01;31m[K^~~~~~~[m[K
-In file included from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:110[m[K:
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/_3D.h:138:9:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUT_Handle[m[K'
-  138 |         [01;31m[KINPUT_Handle[m[K *inputs;
-      |         [01;31m[K^~~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:120:14:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[Kscene_t[m[K'
-  120 | void cam_gen([01;31m[Kscene_t[m[K *scene, vec3 args0[3], GLint args1[4], float args2[3], INPUT_Handle *input, bool activate);
-      |              [01;31m[K^~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:120:77:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUT_Handle[m[K'
-  120 | void cam_gen(scene_t *scene, vec3 args0[3], GLint args1[4], float args2[3], [01;31m[KINPUT_Handle[m[K *input, bool activate);
-      |                                                                             [01;31m[K^~~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:155:32:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[Kscene_t[m[K'
-  155 | typedef void *(*INPUTH_handle)([01;31m[Kscene_t[m[K *scene, GLenum key, GLenum press);
-      |                                [01;31m[K^~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:159:9:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUTH_handle[m[K'
-  159 |         [01;31m[KINPUTH_handle[m[K *handles;
-      |         [01;31m[K^~~~~~~~~~~~~[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:211:88:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUTH_handle[m[K'; did you mean '[01m[KINPUT_Handle[m[K'?
-  211 | uint8_t *scene_inputh_regm(scene_t *scene, GLenum *keys, GLenum *targets, uint8_t len, [01;31m[KINPUTH_handle[m[K handle, bool append);
-      |                                                                                        [01;31m[K^~~~~~~~~~~~~[m[K
-      |                                                                                        [32m[KINPUT_Handle[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:212:90:[m[K [01;31m[Kerror: [m[Kunknown type name '[01m[KINPUTH_handle[m[K'; did you mean '[01m[KINPUT_Handle[m[K'?
-  212 | uint8_t scene_inputh_regh(scene_t *scene, GLenum key, GLenum target, size_t num_handles, [01;31m[KINPUTH_handle[m[K *handles, bool append);
-      |                                                                                          [01;31m[K^~~~~~~~~~~~~[m[K
-      |                                                                                          [32m[KINPUT_Handle[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c:[m[K In function '[01m[Kwin_init[m[K':
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c:94:35:[m[K [01;35m[Kwarning: [m[Kexcess elements in array initializer
-   94 |                 (size_t[2]){1, 0, [01;35m[K0[m[K}
-      |                                   [01;35m[K^[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c:94:35:[m[K [01;36m[Knote: [m[K(near initialization for '[01m[K(anonymous)[m[K')
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c:[m[K In function '[01m[Kwin_poll[m[K':
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:112:27:[m[K [01;35m[Kwarning: [m[KISO C forbids casting nonscalar to the same type [[01;35m[K-Wpedantic[m[K]
-  112 | #define wscene_curr(WIN) ([01;35m[K([m[Kscene_t)WIN->scenes[*WIN->loaded_scenes])
-      |                           [01;35m[K^[m[K
-[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:31:42:[m[K [01;36m[Knote: [m[Kin definition of macro '[01m[KGLUseProgram[m[K'
-   31 | #define GLUseProgram(prog) _GLUseprogram([01;36m[Kprog[m[K);
-      |                                          [01;36m[K^~~~[m[K
-[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c:165:30:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[Kwscene_curr[m[K'
-  165 |                 GLUseProgram([01;36m[Kwscene_curr[m[K(win).shaders->shaderProgram);
-      |                              [01;36m[K^~~~~~~~~~~[m[K
-Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-23_16-46-34\\\objects\stb.o ...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\ -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\ -O1 -Wextra -std=c99 -Wall -pedantic -g -fdiagnostics-color=always -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\scene.o
+Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:[m[K In function '[01m[Kscene_gen[m[K':
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:33:42:[m[K [01;35m[Kwarning: [m[Kmissing braces around initializer [[01;35m[K-Wmissing-braces[m[K]
+Output: 	   33 |         if(cameras == NULL){cam_gen(out, [01;35m[K([m[Kvec3[]){0, 0, 0, 0, 0, 0, 1, 0}, (GLint[]){90, 90, 1, 10}, (GLfloat[]){0.1, 10, 9}, true);
+Output: 	      |                                          [01;35m[K^[m[K
+Output: 	      |                                                   [32m[K{[m[K      [32m[K}[m[K [32m[K{[m[K      [32m[K}[m[K [32m[K{[m[K   [32m[K}[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:[m[K In function '[01m[Kscene_poll[m[K':
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:128:54:[m[K [01;35m[Kwarning: [m[Kunused parameter '[01m[Kpollcycles[m[K' [[01;35m[K-Wunused-parameter[m[K]
+Output: 	  128 | void scene_poll(scene_t *scene, size_t polls, [01;35m[Ksize_t pollcycles[m[K){
+Output: 	      |                                               [01;35m[K~~~~~~~^~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:[m[K In function '[01m[Ksceneproc_inputhandle[m[K':
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:142:72:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: '[01m[Kint[m[K' and '[01m[KGLenum[m[K' {aka [m[K'[01m[Kunsigned int[m[K'} [[01;35m[K-Wsign-compare[m[K]
+Output: 	  142 |             if(glfwGetKey(scene->parent, scene->input_handles[cc].key) [01;35m[K==[m[K scene->input_handles[cc].target){
+Output: 	      |                                                                        [01;35m[K^~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:143:172:[m[K [01;35m[Kwarning: [m[Kleft shift count >= width of type [[01;35m[K-Wshift-count-overflow[m[K]
+Output: 	  143 |                 ((size_t */*Size of an input entry*/)scene->proc_buffers->buffer)[scene->proc_buffers[0].counter] = (/*Move to upper 16 bits*/scene->input_handles[cc].key [01;35m[K<<[m[K 32) + (uint32_t)polls;
+Output: 	      |                                                                                                                                                                            [01;35m[K^~[m[K
+Output: 	In file included from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/defaults/defaults.h:2[m[K,
+Output: 	                 from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:108[m[K,
+Output: 	                 from [01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:1[m[K:
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:[m[K In function '[01m[Kscene_load[m[K':
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:100:17:[m[K [01;35m[Kwarning: [m[K'[01m[Kcalloc[m[K' sizes specified with '[01m[Ksizeof[m[K' in the earlier argument and not in the later argument [[01;35m[K-Wcalloc-transposed-args[m[K]
+Output: 	  100 | #define scene_t [01;35m[Kscene_type[m[K
+Output: 	      |                 [01;35m[K^~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:194:38:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[Kscene_t[m[K'
+Output: 	  194 |         scene_t *out = calloc(sizeof([01;36m[Kscene_t[m[K), 1);
+Output: 	      |                                      [01;36m[K^~~~~~~[m[K
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:100:17:[m[K [01;36m[Knote: [m[Kearlier argument should specify number of elements, later size of each element
+Output: 	  100 | #define scene_t [01;36m[Kscene_type[m[K
+Output: 	      |                 [01;36m[K^~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:194:38:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[Kscene_t[m[K'
+Output: 	  194 |         scene_t *out = calloc(sizeof([01;36m[Kscene_t[m[K), 1);
+Output: 	      |                                      [01;36m[K^~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:[m[K In function '[01m[Kscene_inputh_regh[m[K':
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:114:28:[m[K [01;35m[Kwarning: [m[K'[01m[Krealloc[m[K' called on pointer '[01m[K*scene.input_handles[m[K' with nonzero offset 24 [[01;35m[K-Wfree-nonheap-object[m[K]
+Output: 	  114 |     scene->input_handles = [01;35m[Krealloc(scene->input_handles + 1, scene->num_inhandles * sizeof(INPUT_Handle))[m[K;
+Output: 	      |                            [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:[m[K In function '[01m[Kscene_kill[m[K':
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\scene.c:332:9:[m[K [01;35m[Kwarning: [m[K'[01m[Kmemcpy[m[K' forming offset [11, 16] is out of the bounds [0, 11] [[01;35m[K-Warray-bounds=[m[K]
+Output: 	  332 |         [01;35m[Kmemcpy(temp + ((strlen(cwd) + strlen(scene->header.name) + 28) * sizeof(cwd[0])), ".scenesave", 17)[m[K;
+Output: 	      |         [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-24_19-57-46\\\objects\window.o ...
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\Libraries\\include
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\graphics\\
-Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\ -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\ -O1 -Wextra -std=c99 -Wall -pedantic -g -fdiagnostics-color=always -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\objects\stb.o
-Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb.c
-Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb_vorbis.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-23_16-46-34\\\objects\stb_vorbis.o ...
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\ -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\ -O1 -Wextra -std=c99 -Wall -pedantic -g -fdiagnostics-color=always -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\window.o
+Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c:[m[K In function '[01m[Kwin_init[m[K':
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c:94:35:[m[K [01;35m[Kwarning: [m[Kexcess elements in array initializer
+Output: 	   94 |                 (size_t[2]){1, 0, [01;35m[K0[m[K}
+Output: 	      |                                   [01;35m[K^[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c:94:35:[m[K [01;36m[Knote: [m[K(near initialization for '[01m[K(anonymous)[m[K')
+Output: 	In file included from [01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c:1[m[K:
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c:[m[K In function '[01m[Kwin_poll[m[K':
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:107:27:[m[K [01;35m[Kwarning: [m[KISO C forbids casting nonscalar to the same type [[01;35m[K-Wpedantic[m[K]
+Output: 	  107 | #define wscene_curr(WIN) ([01;35m[K([m[Kscene_t)WIN->scenes[*WIN->loaded_scenes])
+Output: 	      |                           [01;35m[K^[m[K
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:31:42:[m[K [01;36m[Knote: [m[Kin definition of macro '[01m[KGLUseProgram[m[K'
+Output: 	   31 | #define GLUseProgram(prog) _GLUseprogram([01;36m[Kprog[m[K);
+Output: 	      |                                          [01;36m[K^~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c:165:30:[m[K [01;36m[Knote: [m[Kin expansion of macro '[01m[Kwscene_curr[m[K'
+Output: 	  165 |                 GLUseProgram([01;36m[Kwscene_curr[m[K(win).shaders->shaderProgram);
+Output: 	      |                              [01;36m[K^~~~~~~~~~~[m[K
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c:[m[K In function '[01m[Kwin_init[m[K':
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c:88:26:[m[K [01;35m[Kwarning: [m[K'[01m[Kscene_gen[m[K' accessing 24 bytes in a region of size 16 [[01;35m[K-Wstringop-overflow=[m[K]
+Output: 	   88 |         scene_t *temp3 = [01;35m[Kscene_gen([m[K
+Output: 	      |                          [01;35m[K^~~~~~~~~~[m[K
+Output: 	   89 | [01;35m[K                win->g_window,[m[K
+Output: 	      |                 [01;35m[K~~~~~~~~~~~~~~[m[K
+Output: 	   90 | [01;35m[K                "New scene",[m[K
+Output: 	      |                 [01;35m[K~~~~~~~~~~~~[m[K
+Output: 	   91 | [01;35m[K                temp2,[m[K
+Output: 	      |                 [01;35m[K~~~~~~[m[K    
+Output: 	   92 | [01;35m[K                temp0,[m[K
+Output: 	      |                 [01;35m[K~~~~~~[m[K    
+Output: 	   93 | [01;35m[K                NULL,[m[K
+Output: 	      |                 [01;35m[K~~~~~[m[K     
+Output: 	   94 | [01;35m[K                (size_t[2]){1, 0, 0}[m[K
+Output: 	      |                 [01;35m[K~~~~~~~~~~~~~~~~~~~~[m[K
+Output: 	   95 | [01;35m[K        )[m[K;
+Output: 	      |         [01;35m[K~[m[K                 
+Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\window.c:88:26:[m[K [01;36m[Knote: [m[Kreferencing argument 6 of type '[01m[Ksize_t[3][m[K' {aka [m[K'[01m[Klong long unsigned int[3][m[K'}
+Output: 	In file included from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/defaults/defaults.h:2[m[K,
+Output: 	                 from [01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/Public.h:108[m[K:
+Output: 	[01m[KC:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:205:10:[m[K [01;36m[Knote: [m[Kin a call to function '[01m[Kscene_gen[m[K'
+Output: 	  205 | scene_t *[01;36m[Kscene_gen[m[K(GLFWwindow *parent, char *name, mesh_t *meshes, shaderblock_t *shaders, cam_t *cameras, size_t len[3]);
+Output: 	      |          [01;36m[K^~~~~~~~~[m[K
+Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb_vorbis.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-24_19-57-46\\\objects\stb_vorbis.o ...
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\Libraries\\include
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\
 Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\graphics\\
-Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb_vorbis.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\ -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\ -O1 -Wextra -std=c99 -Wall -pedantic -g -fdiagnostics-color=always -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\objects\stb_vorbis.o
+Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb_vorbis.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\ -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\ -O1 -Wextra -std=c99 -Wall -pedantic -g -fdiagnostics-color=always -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\stb_vorbis.o
 Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include\stb\stb_vorbis.c
-Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\Custom\AI\Core.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-23_16-46-34\\\objects\Core.o ...
-Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\Libraries\\include
-Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\
-Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\graphics\\
-Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\Custom\AI\Core.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\ -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\ -O1 -Wextra -std=c99 -Wall -pedantic -g -fdiagnostics-color=always -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\objects\Core.o
-Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\Custom\AI\Core.c
-Output: 	[01m[KC:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\Custom\AI\Core.c:2:[m[K [01;35m[Kwarning: [m[KISO C forbids an empty translation unit [[01;35m[K-Wpedantic[m[K]
-Compiling C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\Custom\AI\Init.c to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-23_16-46-34\\\objects\Init.o ...
-Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\Libraries\\include
-Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\
-Include path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\graphics\\
-Command: gcc -c C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\Custom\AI\Init.c -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\include -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\ -I C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\graphics\ -O1 -Wextra -std=c99 -Wall -pedantic -g -fdiagnostics-color=always -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\objects\Init.o
-Successfully compiled C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib\Custom\AI\Init.c
 Starting linking phase...
 Path: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\Libraries\\lib
-Linking object files into C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-23_16-46-34\\engine...
-Command: gcc C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\objects\Core.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\objects\defaults.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\objects\drawingprotocol.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\objects\Functions.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\objects\glad.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\objects\Init.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\objects\main.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\objects\scene.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\objects\stb.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\objects\stb_vorbis.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\objects\window.o -L C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib -l glfw3 -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-23_16-46-34\engine
+Linking object files into C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-24_19-57-46\\engine...
+Command: gcc C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\defaults.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\drawingprotocol.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\Functions.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\glad.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\main.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\scene.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\stb.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\stb_vorbis.o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\window.o -L C:\Users\olusa\OneDrive\Documents\GitHub\Engine\engine\Libraries\lib -l glfw3 -o C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\engine
 FAILED: Failed to link object files. GCC Exit Code: 1
-ERROR: C:/msys64/ucrt64/bin/ld.exe: C:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/15.2.0/../../../../lib/libmingw32.a(lib64_libmingw32_a-crtexewin.o): in function `main':
-ERROR: D:/W/B/src/mingw-w64/mingw-w64-crt/crt/crtexewin.c:66:(.text.startup+0xb5): undefined reference to `WinMain'
+ERROR: C:/msys64/ucrt64/bin/ld.exe: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\drawingprotocol.o:C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:64: multiple definition of `MAX_SCENE_PROC'; C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\defaults.o:C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:64: first defined here
+ERROR: C:/msys64/ucrt64/bin/ld.exe: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\Functions.o:C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:64: multiple definition of `MAX_SCENE_PROC'; C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\defaults.o:C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:64: first defined here
+ERROR: C:/msys64/ucrt64/bin/ld.exe: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\main.o:C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:64: multiple definition of `MAX_SCENE_PROC'; C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\defaults.o:C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:64: first defined here
+ERROR: C:/msys64/ucrt64/bin/ld.exe: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\scene.o:C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:64: multiple definition of `MAX_SCENE_PROC'; C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\defaults.o:C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:64: first defined here
+ERROR: C:/msys64/ucrt64/bin/ld.exe: C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\window.o:C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:64: multiple definition of `MAX_SCENE_PROC'; C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\build-2025-11-24_19-57-46\objects\defaults.o:C:/Users/olusa/OneDrive/Documents/GitHub/Engine/engine/graphics/graphics.h:64: first defined here
 ERROR: collect2.exe: error: ld returned 1 exit status
 C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\Libraries\\lib\glfw3.dll
-Copying C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\Libraries\\lib\glfw3.dll to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-23_16-46-34\\\\glfw3.dll
+Copying C:\Users\olusa\OneDrive\Documents\GitHub\Engine\\engine\\Libraries\\lib\glfw3.dll to C:\Users\olusa\OneDrive\Documents\GitHub\Engine\build\\build-2025-11-24_19-57-46\\\\glfw3.dll
 
 Compilation and Linking process completed successfully!

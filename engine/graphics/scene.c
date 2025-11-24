@@ -9,8 +9,8 @@ const uint8_t MAX_SCENE_PROC = 1;
 /// @param len Array of lengths, [0]: Number of meshes, [1]: Number of shaders
 /// @return The generated scenes.
 scene_t *scene_gen(GLFWwindow *parent, char *name, mesh_t *meshes, shaderblock_t *shaders, cam_t *cameras, size_t len[3]){
-	scene_t *out_scene = calloc(1, sizeof(scene_t));
-	(*out_scene) = (scene_t){
+	scene_t *out = calloc(1, sizeof(scene_t));
+	*out = (scene_t){
 		.header.name = name,
 		.meshes = meshes,
 		.mesh_num = len[0],
@@ -30,12 +30,12 @@ scene_t *scene_gen(GLFWwindow *parent, char *name, mesh_t *meshes, shaderblock_t
         },
         .parent = parent
 	};
-	if(cameras == NULL){cam_gen(out_scene, (vec3[]){0, 0, 0, 0, 0, 0, 1, 0}, (GLint[]){90, 90, 1, 10}, (GLfloat[]){0.1, 10, 9}, true);
+	if(cameras == NULL){cam_gen(out, (vec3[]){0, 0, 0, 0, 0, 0, 1, 0}, (GLint[]){90, 90, 1, 10}, (GLfloat[]){0.1, 10, 9}, true);
 	}else{
-		out_scene->cameras = cameras;
-		outout_scene->cam_num = len[2];
+		out->cameras = cameras;
+		out->cam_num = len[2];
 	}
-	return out_scene;
+	return out;
 }
 
 /// @brief Toggle a cam from whether it should be processed or not.
@@ -88,7 +88,7 @@ uint8_t scene_inputh_unreg(scene_t *scene, GLenum key, GLenum target, INPUTH_han
 /// @return All the outputs for all elements.
 uint8_t *scene_inputh_regm(scene_t *scene, GLenum *keys, GLenum *targets, uint8_t len, INPUTH_handlef handle, bool append){
     uint8_t *out = calloc(len, sizeof(uint8_t));
-    for(uint8_t cc = 0; cc < len; ++cc){out[cc] = scene_inputh_regh(scene, keys[cc], targets[cc], &handle, 1, append);}
+    for(uint8_t cc = 0; cc < len; ++cc){out[cc] = scene_inputh_regh(scene, keys[cc], targets[cc], 1, &(handle), append);}
     return out;
 }
 
@@ -164,7 +164,8 @@ void scene_draw(scene_t *scene){
         }
 
         //! For now handle 1 Camera.
-        GLCall(glUniformMatrix4fv(glGetUniformLocation(scene->shaders[scene->shader_curr].shaderProgram, "matrix"), 1, true, *(cam_mat4(scene->cameras + *scene->loaded_cams))));
+        mat4 *out = cam_mat4(scene->cameras + *scene->loaded_cams);
+        GLCall(glUniformMatrix4fv(glGetUniformLocation(scene->shaders[scene->shader_curr].shaderProgram, "matrix"), 1, true, (GLfloat *)(*out)));
         GLCall(glUniform3f(glGetUniformLocation(scene->shaders[scene->shader_curr].shaderProgram, "offs"), (scene->cameras + *scene->loaded_cams)->pos[0], (scene->cameras + *scene->loaded_cams)->pos[1], (scene->cameras + *scene->loaded_cams)->pos[2]));
 
 #ifdef _DEBUG_ // Full debug
@@ -334,11 +335,11 @@ void scene_kill(scene_t *scene, bool save){
     }
     for(size_t cc = 0; cc < scene->shader_num; ++cc){
         free(scene->shaders[cc].vertex);
-        if(scene->shaders[cc].vertexshader == 0){glDeleteShader(scene->shaders[cc].vertexshader);}
+        if(scene->shaders[cc].vertexshader == 0){GLCall(glDeleteShader(scene->shaders[cc].vertexshader));}
         free(scene->shaders[cc].fragment);
-        if(scene->shaders[cc].fragmentshader == 0){glDeleteShader(scene->shaders[cc].fragmentshader);}
+        if(scene->shaders[cc].fragmentshader == 0){GLCall(glDeleteShader(scene->shaders[cc].fragmentshader));}
         free(scene->shaders[cc].geometry);
-        if(scene->shaders[cc].geometryshader == 0){glDeleteShader(scene->shaders[cc].geometryshader);}
+        if(scene->shaders[cc].geometryshader == 0){GLCall(glDeleteShader(scene->shaders[cc].geometryshader));}
         for(size_t cc_ = 0; cc_ < scene->shaders[cc].uniform_len; ++cc_){
             free(scene->shaders[cc].uniforms[cc_].name);
             free(scene->shaders[cc].uniforms[cc_].type);
@@ -351,9 +352,9 @@ void scene_kill(scene_t *scene, bool save){
 		free(scene->meshes[cc].texture->img);
 		free(scene->meshes[cc].texture->path);
 		free(scene->meshes[cc].texture);
-		glDeleteBuffer(scene->meshes[cc].buffer->VAO);
-		glDeleteBuffer(scene->meshes[cc].buffer->VBO);
-		glDeleteBuffer(scene->meshes[cc].buffer->EBO);
+		GLCall(glDeleteBuffer(scene->meshes[cc].buffer->VAO));
+		GLCall(glDeleteBuffer(scene->meshes[cc].buffer->VBO));
+		GLCall(glDeleteBuffer(scene->meshes[cc].buffer->EBO));
 	}
 }
 

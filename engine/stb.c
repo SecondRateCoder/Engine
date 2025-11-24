@@ -1,4 +1,4 @@
 //Need compilation.
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "../stb/stb_image.h"
+#include "../engine/Libraries/include/stb/stb_image.h"

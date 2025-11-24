@@ -1,4 +1,4 @@
-#include "../Public.h"
+#include "../engine/Public.h"
 
 /// @brief Convert a full string with the input flags.
 /// @param str The input string.
@@ -143,19 +143,19 @@ void mesh_attrlink(bufferobj_t *buffer, mesh_t *_mesh){
     GLint enabled = 0, size = 0, type = 0, normalized = 0, stride_ = 0;
     GLvoid* pointer = NULL;
     if(_mesh->pos_layoutindex != INT32_MIN){
-        GLCall(glVertexAttribPointer(_mesh.pos_layoutindex, (_mesh->vertex_stride - (_mesh->color_stride + _mesh->uv_stride)) * sizeof(GLfloat), GL_FLOAT, GL_FALSE, _mesh->color_stride + _mesh->uv_stride, (void *)(_mesh.pos_offset * sizeof(GLfloat)));
+        GLCall(glVertexAttribPointer(_mesh->pos_layoutindex, (_mesh->vertex_stride - (_mesh->color_stride + _mesh->uv_stride)) * sizeof(GLfloat), GL_FLOAT, GL_FALSE, _mesh->color_stride + _mesh->uv_stride, (void *)(_mesh->pos_offset * sizeof(GLfloat))));
         GLCall(glEnableVertexAttribArray(_mesh->pos_layoutindex));
         debug_vert_attr(_mesh->pos_layoutindex);
     }
 
     if(_mesh->color_layoutindex != INT32_MIN){
-        GLCall(glVertexAttribPointer(_mesh.color_layoutindex, _mesh->color_stride, GL_FLOAT, GL_FALSE, (_mesh->vertex_stride - (_mesh->color_stride + _mesh->uv_stride) + _mesh->uv_stride) * sizeof(GLfloat), (void *)(_mesh.color_offset * sizeof(GLfloat)));
+        GLCall(glVertexAttribPointer(_mesh->color_layoutindex, _mesh->color_stride, GL_FLOAT, GL_FALSE, (_mesh->vertex_stride - (_mesh->color_stride + _mesh->uv_stride) + _mesh->uv_stride) * sizeof(GLfloat), (void *)(_mesh->color_offset * sizeof(GLfloat))));
         GLCall(glEnableVertexAttribArray(_mesh->color_layoutindex));
         debug_vert_attr(_mesh->color_layoutindex);
     }
 
     if(_mesh->local_texcoordinates_layoutindex != INT32_MIN){
-        GLCall(glVertexAttribPointer(_mesh.local_texcoordinates_layoutindex, _mesh->uv_stride, GL_FLOAT, GL_FALSE, _mesh->vertex_stride - (_mesh->color_stride + _mesh->uv_stride) + _mesh->color_stride, (void *)(_mesh.uv_offset * sizeof(GLfloat)));
+        GLCall(glVertexAttribPointer(_mesh->local_texcoordinates_layoutindex, _mesh->uv_stride, GL_FLOAT, GL_FALSE, _mesh->vertex_stride - (_mesh->color_stride + _mesh->uv_stride) + _mesh->color_stride, (void *)(_mesh->uv_offset * sizeof(GLfloat))));
         GLCall(glEnableVertexAttribArray(_mesh->local_texcoordinates_layoutindex));
         debug_vert_attr(_mesh->local_texcoordinates_layoutindex);
     }
@@ -418,15 +418,16 @@ void cam_gen(scene_t *scene, vec3 args0[3], GLint args1[4], float args2[3], bool
 }
 
 mat4 *cam_mat4(cam_t *cam){
-    mat4 view, projection;
-    glm_mat4_identity(view);
+    mat4 *view = calloc(1, sizeof(mat4)), projection;
+    glm_mat4_identity(*view);
     glm_mat4_identity(projection);
     glm_lookat(
         cam->pos, 
         (vec3){cam->pos[0] + cam->rot[0], cam->pos[1] + cam->rot[1], cam->pos[2] + cam->rot[2]},
         cam->up,
-        view
+        *view
     );
+    return view;
 }
 
 //! Use later

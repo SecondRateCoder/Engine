@@ -42,7 +42,7 @@ bool shader_error(shaderblock_t* sb_t, const char* type) {
 	GLint success;
 	char infoLog[1024];
 
-	if (strcmp(type, "PROGRAM") == 0) {
+	if (strncmp(type, "PROGRAM", 7) == 0) {
 		shader = sb_t->shaderProgram;
 		GLCall(GLUseProgram(shader));
 		GLCall(glGetProgramiv(shader, GL_LINK_STATUS, &success));
@@ -52,7 +52,7 @@ bool shader_error(shaderblock_t* sb_t, const char* type) {
 			return false;
 		}
 	} else {
-		if(strcmp(type, "VERTEX") == 0){shader = sb_t->vertexshader;
+		if(strncmp(type, "VERTEX", 6) == 0){shader = sb_t->vertexshader;
 		}else if(strcmp(type, "FRAGMENT") == 0){shader = sb_t->fragmentshader;
 		}else if(strcmp(type, "GEOMETRY") == 0){shader = sb_t->geometryshader;
 		}else{

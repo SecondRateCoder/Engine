@@ -1,6 +1,7 @@
 #include "../engine/defaults/defaults.h"
 
-void INPUTH_CAMHandle_0(scene_t *scene, GLenum key, GLenum press){
+void INPUTH_CAMHandle_0(void *scene_, GLenum key, GLenum press){
+    scene_t *scene = scene_;
     volatile double mousePos[2] = {0}, last_mousePos[2] = {0};
     glfwGetCursorPos(scene->parent, &mousePos[0], &mousePos[1]);
     scene->cameras[*scene->loaded_cams].rot[0] += 360/(scene->cameras[*scene->loaded_cams].sensitivity * (mousePos[0] - last_mousePos[0]));
@@ -38,4 +39,5 @@ void INPUTH_CAMHandle_0(scene_t *scene, GLenum key, GLenum press){
             break;
     }
     last_mousePos[0] = mousePos[0]; last_mousePos[1] = mousePos[1];
+    return;
 }

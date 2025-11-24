@@ -50,15 +50,18 @@ typedef struct ComputeShaderBlock {
 }ComputeShaderBlock;
 #define shaderblock_t ComputeShaderBlock
 
-// // A Function Pointer for doing custom functions with the Polling of the Window.
-// // The `poll_do` function signature should be `void (*poll_do)(struct window *, size_t);`
-// // to ensure the `window` struct is a known type within the typedef.
-// // It's also better to use `const size_t` for the size parameter if it's not modified.
-// typedef void (*poll_do)(struct win_t*, size_t);
-
-// /// @brief A function called when the Window should be killed.
-// typedef void (*poll_kill)(struct win_t*);
-
+typedef void (*INPUTH_handlef)(void *scene_, GLenum key, GLenum press);
+typedef struct INPUT_Handle{
+	GLenum key, target;
+	uint8_t num_handles;
+	INPUTH_handlef *handles;
+}INPUT_Handle;
+#define inputh_t INPUT_Handle
+typedef struct INPUT_Buffer_entry{
+	GLenum key;
+	uint32_t poll;
+}INPUT_Buffer_entry;
+const uint8_t MAX_SCENE_PROC;
 typedef struct scene_header{
 	char *name;
 }scene_header;
@@ -72,13 +75,13 @@ typedef struct sceneproc_buffer{
 	/// @brief For state-checking.
 	size_t last_poll, last_pollcycle;
 	/// @brief Space-conservative storing of Buffer length.
-	const uint8_t buffer_size, buffer_type;
+	uint8_t buffer_size, buffer_type;
 	/// @brief Track the number of bytes being used.
 	uint8_t counter;
 	/// @brief Buffer.
 	void *buffer;
 	/// @brief The ID of the buffer, a scene should only have ONE for each possible process.
-	const SCENEPROC_t process;
+	SCENEPROC_t process;
 }sceneproc_buffer;
 #define sceneprocbf_t sceneproc_buffer
 typedef struct scene_type{
