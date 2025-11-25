@@ -82,6 +82,8 @@ typedef struct buffer_object{
 #define bufferobj_t buffer_object
 
 typedef struct _mesh{
+	vec3 pos, rot;
+	GLfloat largest_dot;
     /// @brief The float vertex_data that makes up a _mesh object.
     GLfloat *vertex_data;
     /// @brief The length of this _mesh's vertex_data.
