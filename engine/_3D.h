@@ -83,7 +83,7 @@ typedef struct buffer_object{
 
 typedef struct _mesh{
 	vec3 pos, rot;
-	GLfloat largest_dot;
+	GLfloat ldot;
     /// @brief The float vertex_data that makes up a _mesh object.
     GLfloat *vertex_data;
     /// @brief The length of this _mesh's vertex_data.
@@ -93,15 +93,16 @@ typedef struct _mesh{
     GLuint *index_data;
     /// @brief The length of @ref mesh_index_order.
     size_t index_len;
+    bufferobj_t *buffer;
     
     image_t *texture;
 
 	/// @brief The offset for the position elements in vertex_data.
-	uint8_t pos_offset,
+	uint8_t pos_offset;
 	/// @brief The offset for the color elements in vertex_data.
-			color_offset,
+	uint8_t color_offset;
 	/// @brief The offset for the UV elements in vertex_data.
-			uv_offset;
+	uint8_t uv_offset;
     
     /// @brief The number of @ref GLfloat values that make up a Vertex in a _mesh's vertex_data. Hence "stride"
     uint8_t vertex_stride;
@@ -110,13 +111,12 @@ typedef struct _mesh{
     /// @brief The number of @ref GLfloat values that make up a Vertex's Texture per-pixel stride in a _mesh's vertex_data.
     uint8_t uv_stride;
     /// @brief The Layout index in a shader corresponding to this _mesh's Position vertex data.
-    uint32_t pos_layoutindex, 
+    uint8_t pos_layoutindex, 
     /// @brief The Layout index in a shader corresponding to this _mesh's vertex Color data.
     color_layoutindex, 
     /// @brief The Layout index in a shader corresponding to this _mesh's vertex Texture data.
     ///! Texture co-ordinates are local to a texture (Image) as well as being normalised.
     local_texcoordinates_layoutindex;
-    bufferobj_t *buffer;
 }_mesh;
 #define mesh_t _mesh
 

@@ -2,17 +2,6 @@
 
 #define glGenFrameBuffer(BUFFER) glBGenFrameBuffers(1, &BUFFER)
 
-typedef struct physics_buffer{
-	SCENECOMP_t type;
-    GLuint FBO;
-    char *shader;
-	scene_t *parent;
-    GLuint shaderProgram;
-    mesh_t **meshes;
-	uint8_t num_meshes;
-}physics_buffer;
-#define physb_t physics_buffer
-
 // Framebuffer should be formatted such that it can be read directly into this struct.
 typedef struct collision_result{
 	size_t mesh_index;
@@ -21,4 +10,5 @@ typedef struct collision_result{
 	size_t collisions[];
 }collision_result;
 
-physb_t *physics_gen(scene_t *parent, char *phys_shader);
+sceneprocbf_t *physics_gen(scene_t *parent, char *phys_shader);
+collision_result *collision_broadproc(sceneprocbf_t *buffer, size_t *out_len, uint32_t *batch_num);

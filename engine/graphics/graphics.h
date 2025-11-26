@@ -69,7 +69,8 @@ typedef enum SCENEPROC_t{
 	/// @brief Buffer stores (GLenum, (size_t)polls)
 	SCENEPROC_ERRORDUPLICATE = 0x1,
 	SCENEPROC_ERRORNOREF = 0x2,
-	SCENEPROC_INPUTHANDLE = 0x10,
+	SCENEPROC_INPUTPOLL = 0x10,
+	SCENEPROC_PHYSPOLL = 0x11
 }SCENEPROC_t;
 typedef struct sceneproc_buffer{
 	/// @brief For state-checking.
@@ -93,6 +94,10 @@ typedef struct scene_type{
 	mesh_t *meshes;
 	size_t cam_num, num_loadedcams, *loaded_cams;
 	cam_t *cameras;
+	size_t compbuff_len;
+	uint8_t num_components;
+	void *components;
+	uint8_t batch_size;
 	size_t num_inhandles;
 	inputh_t *input_handles;
 	sceneprocbf_t proc_buffers[2];
@@ -104,7 +109,7 @@ typedef struct scene_type{
 typedef void (*poll_do)(void *self, size_t polls, uint32_t pollcycles);
 typedef void (*poll_kill)(void* self);
 
-#define wscene_curr(WIN) ((scene_t)WIN->scenes[*WIN->loaded_scenes])
+#define wscene_curr(WIN) ((scene_t)(WIN->scenes[*WIN->loaded_scenes]))
 typedef struct window{
 	GLFWwindow* g_window;
 	GLuint *FBO;
@@ -208,5 +213,7 @@ uint8_t scene_inputh_regh(scene_t *scene, GLenum key, GLenum target, size_t num_
 void cam_toggle(size_t index, scene_t *scene);
 void sceneproc_inputhandle(scene_t *scene, size_t polls);
 void scene_poll(scene_t *scene, size_t polls, size_t pollcycles);
+void *get_componenti(scene_t *scene, uint8_t index);
+void *get_componentt(scene_t *scene, SCENECOMP_t type);
 
 void debug_vert_attr(uint32_t index);

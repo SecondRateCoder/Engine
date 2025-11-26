@@ -25,7 +25,7 @@ scene_t *scene_gen(GLFWwindow *parent, char *name, mesh_t *meshes, shaderblock_t
 			.buffer = calloc(25, sizeof(GLenum) + sizeof(uint32_t)),
             .buffer_size = 25, .buffer_type = sizeof(GLenum) + sizeof(uint32_t), // {KEY, POLLS}
             .last_poll  =0, .last_pollcycle = 0,
-            .process = SCENEPROC_INPUTHANDLE,
+            .process = SCENEPROC_INPUTPOLL,
             .counter = 0
         },
         .parent = parent
@@ -127,7 +127,7 @@ uint8_t scene_inputh_regh(scene_t *scene, GLenum key, GLenum target, size_t num_
 /// @param poll_cycles Number of "polls" overflows.
 void scene_poll(scene_t *scene, size_t polls, size_t pollcycles){
 	scene_draw(scene);
-    if(polls%SCENEPROC_INPUTHANDLE == 0){sceneproc_inputhandle(scene, polls);}
+    if(polls%SCENEPROC_INPUTPOLL == 0){sceneproc_inputhandle(scene, polls);}
     return;
 }
 
@@ -381,4 +381,19 @@ void **scene_bufferdo(scene_t *scene, const BUFFER_OPTIONS option){
 		}
 	}
 	return out;
+}
+
+void *get_componenti(scene_t *scene, uint8_t index){
+    size_t counter = 0;
+    for(uint8_t cc =0; cc < scene->num_components && cc < index; ++cc){counter += *((uint8_t *)(scene->components + counter));}
+    return scene->components + counter;
+}
+
+void *get_componentt(scene_t *scene, SCENECOMP_t type){
+    size_t counter = 0;
+    for(uint8_t cc =0; cc <= scene->num_components && cc <= scene->num_components; ++cc){
+        counter += *((uint8_t *)(scene->components + counter));
+        if(*((SCENECOMP_t *)scene->components + counter + sizeof(uint16_t)) == type){break;}
+    }
+    return counter == scene->compbuff_len? NULL: (scene->components + counter);
 }
