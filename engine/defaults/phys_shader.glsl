@@ -3,16 +3,16 @@
 #define vs
 // Compare 2 gameobj's against each other as well as every other one.
 
-layout(location = 1) vec3 pos0;
-layout(location = 2) vec3 ldot0;
+layout(location = 0) vec3 pos0;
+layout(location = 1) vec3 ldot0;
 
-layout(location = 1) vec3 pos1;
-layout(location = 2) vec3 ldot1;
+layout(location = 2) vec3 pos1;
+layout(location = 3) vec3 ldot1;
 
-layout(location = 1) vec3 pos2;
-layout(location = 2) vec3 ldot2;
+layout(location = 4) vec3 pos2;
+layout(location = 5) vec3 ldot2;
 
-layout(location = 2) unsigned int counter;
+layout(location = 6) unsigned int counter;
 uniform unsigned int width;
 
 // a: pos0 and pos1 collide, r: pos0 and target collide, g: pos1 and target collide, b: IDK
