@@ -37,27 +37,32 @@ collision_result *collision_broadproc(physbuf_t *buffer, size_t *out_len, uint32
 	GLuint VAO = 0, VBO = 0;
 	collision_result **out = NULL;
 	out_len = 0;
+	// Organise to nearest 3.
+	uint8_t _3 = (buffer->parent->mesh_num + (buffer->parent->mesh_num % 3));
+	if(buffer->parent->mesh_num % 3 != 0){
+		buffer->parent->meshes = realloc(buffer->parent->meshes, sizeof(mesh_t) * (buffer->parent->mesh_num + (buffer->parent->mesh_num % 3)));
+	}
+	uint8_t max_ = (buffer->parent->batch_size > (buffer->parent->mesh_num - (buffer->parent->batch_size * *batch_num)? (buffer->parent->mesh_num - (buffer->parent->batch_size * *batch_num): buffer->parent->batch_size);
 	GLCall(glGenBuffer(VAO));
 	GLCall(glBindVertexArray(VAO));
 	GLCall(glGenBuffer(VBO));
 	GLCall(glBindBuffer(GL_VERTEX_BUFFER, VBO));
-	for(size_t cc =0; cc < buffer->parent->batch_size; ++cc){
-		// Enable attribute for position and largest dot.
-		size_t cc_ = cc + (buffer->parent->batch_size * batch_num); // Count num of batches in.
-		GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(mesh_t) * (cc_ > buffer->parent->mesh_num? buffer->parent->mesh_num - cc_: cc_ > buffer->parent->batch_size), buffer->parent->meshes + cc, GL_STATIC_READ));
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(mesh_t) - (sizeof(GLfloat) * 3), (void *)(sizeof(mesh_t) * cc));
-		glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(mesh_t) - sizeof(GLfloat), (void *)((sizeof(GLfloat) * 6) + (sizeof(mesh_t) * cc)));
-		GLUseProgram(buffer->shaderProgram);
-		glBindFrameBuffer(buffer->FBO);
-		glDrawArrays(GL_TRIANGLES, 0, buffer->parent->mesh_num);
-		/*
-			For each call, read off FrameBuffer pixels.
-			Read off enough to read off rest off data.
-		*/
-		out = realloc(out, sizeof(collision_result *) * out_len);
-		out[out_len] = calloc(sizeof(collision_result));
-		glReadPixels(cc_%buffer->parent->parent->w, cc_/buffer->parent->parent->w, sizeof(collision_result), (size_t)(sizeof(collision_result)/buffer->parent->parent->w), GL_RGBA, GL_UNSIGNED_BYTE, sizeof(collision_result), out[out_len]);
-		out[out_len] = realloc(out[out_len], sizeof(collision_result) + (sizeof(size_t) * out[out_len]->num_collisions));
-		out_len++;
-	}
+	glBufferData(GL_ARRAY_BUFFER, sizeof(mesh_t) * max_, buffer->parent->meshes + (buffer->parent->batch_size * *bacth_num), GL_STREAM_DRAW); 
+	GLUseProgram(buffer->shaderProgram);
+	glUniform1ui(glGetUniformLocation(buffer->shaderProgram, "width"), buffer->parent->parent->width);
+	// Bind attributes.
+	// Pos0
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(mesh_t) - (sizeof(GLfloat) * 3), (void *)0);
+	// ldot0
+	glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(mesh_t) - sizeof(GLfloat), (void *)(sizeof(GLfloat) * 6);
+	// Pos1
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(mesh_t) - (sizeof(GLfloat) * 3), (void *)(sizeof(mesh_t));
+	// ldot1
+	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(mesh_t) - sizeof(GLfloat), (void *)((sizeof(GLfloat) * 6) + sizeof(mesh_t));
+	// Pos2
+	glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(mesh_t) - (sizeof(GLfloat) * 3), (void *)(sizeof(mesh_t * 2)));
+	// ldot2
+	glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, sizeof(mesh_t) - sizeof(GLfloat), (void *)((sizeof(GLfloat) * 6) + (sizeof(mesh_t) * 2));
+	// counter
+	glVertexAttribPointer(5, 1, GL_FLOAT, GL_FALSE, sizeof(mesh_t) - sizeof(GLfloat), (void *)((sizeof(GLfloat) * 6) + (sizeof(mesh_t) * 2));
 }
