@@ -4,8 +4,8 @@ void physics_gen(scene_t *parent, char *phys_shader_path){
 	physb_t *out = calloc(1, sizeof(physb_t));
 	*out = (physics_buffer){
 		.shaderProgram = 0,
-		.type = SCENECOMP_PHYSBUFF,
-		.parent = parent
+		.FBO = 0,
+		.batch_size = parent->mesh_num / 32
 	};
 	FILE *f = fopen(phys_shader_path, "rb");
 	fseek(f, 0, SEEK_END);
