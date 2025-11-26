@@ -36,7 +36,7 @@ void physics_gen(scene_t *parent, char *phys_shader_path){
 /// @remarks This runs a shader for each mesh, it takes thier largest dot and thier position,
 ///	It passes the target mesh's position and largest dot as uniforms and the parent's array of meshes positions and largest dot's as attributes.
 /// @remarks This function runs in batches, this is handled internally.
-collision_result *collision_broadproc(physb_t *buffer, size_t *out_len, uint32_t *batch_num){
+collision_result *collision_broadproc(scene_t *scene, size_t *out_len, uint32_t *batch_num){
 	GLuint VAO = 0, VBO = 0;
 	collision_result **out = NULL;
 	out_len = 0;
