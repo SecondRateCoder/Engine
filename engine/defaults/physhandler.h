@@ -24,7 +24,7 @@ typedef enum PHYSBATCH_t{
 }PHYSBATCH_t
 
 typedef struct collision_query{
-	const size_t target;
+	const size_t target, start_index;
 	const uint16_t batch_size;
 	const uint8_t batching_type;
 }collision_query;
