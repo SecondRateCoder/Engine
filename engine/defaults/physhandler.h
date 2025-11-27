@@ -15,6 +15,20 @@ typedef struct collision_result{
 	uint8_t num_overflows;
 	size_t collisions[];
 }collision_result;
+#define collres_t collision_result
+
+typedef enum PHYSBATCH_t{
+	PHYSBATCH_LINEAR,
+	PHYSBATCH_CLOSEST,
+	PHYSBATCH_FURTHEST
+}PHYSBATCH_t
+
+typedef struct collision_query{
+	const size_t target;
+	const uint16_t batch_size;
+	const uint8_t batching_type;
+}collision_query;
+#define collquery_t collision_query
 
 void physics_gen(scene_t *parent, char *phys_shader);
 collision_result *collision_broadproc(scene_t *scene, size_t *out_len, uint32_t *batch_num);
