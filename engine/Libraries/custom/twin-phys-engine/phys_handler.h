@@ -21,10 +21,10 @@ typedef enum PHYSBATCH_t{
 	PHYSBATCH_LINEAR,
 	PHYSBATCH_CLOSEST,
 	PHYSBATCH_FURTHEST
-}PHYSBATCH_t
+}PHYSBATCH_t;
 
 typedef struct collision_query{
-	const size_t target, start_index;
+	const size_t target, start_pos;
 	const uint16_t batch_size;
 	const uint8_t batching_type;
 }collision_query;

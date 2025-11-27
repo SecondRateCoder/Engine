@@ -383,17 +383,9 @@ void **scene_bufferdo(scene_t *scene, const BUFFER_OPTIONS option){
 	return out;
 }
 
-void *get_componenti(scene_t *scene, uint8_t index){
-    size_t counter = 0;
-    for(uint8_t cc =0; cc < scene->num_components && cc < index; ++cc){counter += *((uint8_t *)(scene->components + counter));}
-    return scene->components + counter;
-}
-
-void *get_componentt(scene_t *scene, SCENECOMP_t type){
-    size_t counter = 0;
-    for(uint8_t cc =0; cc <= scene->num_components && cc <= scene->num_components; ++cc){
-        counter += *((uint8_t *)(scene->components + counter));
-        if(*((SCENECOMP_t *)scene->components + counter + sizeof(uint16_t)) == type){break;}
+sceneprocbf_t *get_procb(scene_t *scene, SCENEPROC_t process){
+    for(uint8_t cc =0; cc < MAX_SCENE_PROC; ++cc){
+        if(scene->proc_buffers[cc].process == process){return scene->proc_buffers + cc;}
     }
-    return counter == scene->compbuff_len? NULL: (scene->components + counter);
+    return NULL;
 }
