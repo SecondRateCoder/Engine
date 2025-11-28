@@ -108,7 +108,7 @@ uint8_t scene_inputh_regh(scene_t *scene, GLenum key, GLenum target, size_t num_
 				memcpy(scene->input_handles[cc].handles + scene->input_handles[cc].num_handles, handles, num_handles * sizeof(INPUTH_handlef));
 				scene->input_handles[cc].num_handles++;
 				return 0;
-			}else{return (uint8_t)SCENEPROC_ERRORDUPLICATE;}
+			}else{return (uint8_t)SCENEPROC_ERRORDUPE;}
 		}
     }
     scene->input_handles = realloc(scene->input_handles + 1, scene->num_inhandles * sizeof(INPUT_Handle));

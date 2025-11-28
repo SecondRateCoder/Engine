@@ -1,6 +1,8 @@
 #include "../engine/Public.h"
 
 #define glGenFrameBuffer(BUFFER) glBGenFrameBuffers(1, &BUFFER)
+#define COLL_QUERIES(BUFFER) ((sizeof(collquery_t) / (sizeof(physb_t)) - (BUFFER->buffer_type * BUFFER->buffer_size)))
+#define TOGGLE_MAX(N) (2 << N)
 
 typedef struct physics_buffer{
     GLuint FBO;
@@ -25,8 +27,10 @@ typedef enum PHYSBATCH_t{
 
 typedef struct collision_query{
 	const size_t target, start_pos;
+	// Check most-significant bit for whether the query has been processed.
 	const uint16_t batch_size;
 	const uint8_t batching_type;
+	const void *out_buffer;
 }collision_query;
 #define collquery_t collision_query
 

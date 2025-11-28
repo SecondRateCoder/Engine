@@ -1,7 +1,13 @@
 #include "../engine/Libraries/custom/twin-phys-engine/phys_handler.h"
 
-void physics_gen(scene_t *parent, char *phys_shader_path, size_t batch_size){
-	physb_t *out = (physb_t *)get_procb(parent, 0);
+uint8_t physics_gen(scene_t *parent, char *phys_shader_path, size_t batch_size){
+		sceneprocbf_t *out = get_procb(parent, SCENEPROC_PHYSPOLL);
+		if(out == NULL){
+			// Generate
+			out = get_procb(parent, 0); // Get unused buffer
+			if(out == NULL){return SCENEPROC_NOMEM;}
+		}
+		return SCENEPROC_DUPE;
 	// Initialise field.
 }
 
@@ -30,12 +36,12 @@ collision_result *collision_broadproc(scene_t *scene, size_t *out_len, uint32_t 
 	glUniform1ui(glGetUniformLocation((scene->shaders + scene->shader_curr)->shaderProgram, "width"), w);
 	sceneprocbf_t *phys_buffer = get_procb(scene, SCENEPROC_PHYSPOLL);
 	// Get number of queries.
-	size_t __length = (sizeof(collquery_t) / (sizeof(physb_t) - (phys_buffer->buffer_type * phys_buffer->buffer_size)));
+	size_t __length = COLL_QUERIES(phys_buffer);
 	for(size_t cc = 0; cc < __length; ++cc){
 		collquery_t *temp = (collquery_t *)(phys_buffer->buffer + sizeof(physb_t) + (sizeof(collquery_t) *  cc));
 		// The maximum data to be processed.
 		uint8_t max_ = (temp->batch_size > ((scene->mesh_num - temp->start_pos) - (temp->batch_size * temp->start_pos)? ((scene->mesh_num - temp->start_pos) - (temp->batch_size * temp->start_pos)): temp->batch_size));
-		GLfloat *data = calloc((max_ << 2), sizeof(GLfloat) + 1); // plus 1 so that foreach 4 GLfloats, space for one GLuit is created.
+		GLfloat *data = calloc((max_ << 2), sizeof(GLfloat) + 1); // plus 1 so that foreach 4 GLfloats, space for one GLuint is created.
 		size_t cc = 0;
 		bool selected_[max_] = {0};
 		switch(temp->batching_type){
@@ -109,16 +115,22 @@ collision_result *collision_broadproc(scene_t *scene, size_t *out_len, uint32_t 
 		// ldot0
 		glUniform1f(glGetUniformLocation((scene->shaders + scene->shader_curr)->shaderProgram, "ldot0"), (scene->meshes + temp->target)->ldot); // Write Largest dot.
 		// Pos1
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(size_t)) - (sizeof(GLfloat) * 3), (void *)0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(GLuint) << 1) - (sizeof(GLfloat) * 3), (void *)0);
 		// ldot1
-		glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(size_t)) - sizeof(GLfloat), (void *)(sizeof(GLfloat) * 3));
+		glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(GLuint) << 1) - sizeof(GLfloat), (void *)(sizeof(GLfloat) * 3));
 		// Pos2
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(size_t)) - (sizeof(GLfloat) * 3), (void *)(sizeof(GLfloat) << 2));
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(GLuint) << 1) - (sizeof(GLfloat) * 3), (void *)((sizeof(GLfloat) << 2) + sizeof(GLuint)));
 		// ldot2
-		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(size_t)) - sizeof(GLfloat), (void *)((sizeof(GLfloat) * 7) + (sizeof(mesh_t) * 2)));
+		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(GLuint) << 1) - sizeof(GLfloat), (void *)((sizeof(GLfloat) << 2) + sizeof(GLuint) + (sizeof(GLfloat) * 3)));
 		// counter
-		glVertexAttribPointer(4, 1, GL_UNSIGNED_INT_VEC2, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(size_t)) - (sizeof(GLfloat) * 3), (void *)((sizeof(GLfloat) * 6) + (sizeof(mesh_t) * 2)));
-		// Each 2 cells is 8 GLfloats overall and one size_t, stride should be ((sizeof(GLfloat) << 3) + sizeof(size_t))
+		glVertexAttribPointer(4, 1, GL_UNSIGNED_INT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(GLuint) << 1) - sizeof(GLuint), (void *)((sizeof(GLfloat) << 4) + sizeof(GLuint) << 1));
+		// Each cell is 8 GLfloats and 2 GLuint, stride should be ((sizeof(GLfloat) << 3) + sizeof(GLuint) << 1)
+		glDrawArrays(GL_POINTS, 0, max_);
+
+		// Retrieve Shader output.
+		temp->out_buffer = calloc(max_, (sizeof(uint8_t) * 2));
+		glReadPixels(0, 0, (max_ > w ? w: max_), max_ % w, GL_RGBA, GL_UNSIGNED_BYTE, max_ << 1, temp->out_buffer);
+		temp->batch_size |= TOGGLE_MASK(15); // Set top-most bit to 1, thus telling the caller that the thingy has be run.
 	}
 	glBindVertexArray(og_VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, og_VBO);
