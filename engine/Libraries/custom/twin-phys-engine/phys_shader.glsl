@@ -13,7 +13,7 @@ layout(location = 2) vec3 pos2;
 layout(location = 3) vec3 ldot2;
 
 layout(location = 4) unsigned int counter;
-uniform uint width;
+uniform uvec2 width; // Store size_t in encoded state.
 
 // a: pos0 and pos1 collide, r: pos0 and target collide, g: pos1 and target collide, b: IDK
 out bool success1, success2, success3;

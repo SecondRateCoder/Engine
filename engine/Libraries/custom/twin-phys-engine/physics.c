@@ -37,7 +37,7 @@ collision_result *collision_broadproc(scene_t *scene, size_t *out_len, uint32_t 
 		uint8_t max_ = (temp->batch_size > ((scene->mesh_num - temp->start_pos) - (temp->batch_size * temp->start_pos)? ((scene->mesh_num - temp->start_pos) - (temp->batch_size * temp->start_pos)): temp->batch_size));
 		GLfloat *data = calloc((max_ << 2), sizeof(GLfloat) + 1); // plus 1 so that foreach 4 GLfloats, space for one GLuit is created.
 		size_t cc = 0;
-		sizeof(GLfloat), sizeof(GLuint);
+		bool selected_[max_] = {0};
 		switch(temp->batching_type){
 			case PHYSBATCH_LINEAR:
 				// Compile flat GLfloat list of every gameObj's vec3 position and GLfloat ldot.
@@ -61,8 +61,11 @@ collision_result *collision_broadproc(scene_t *scene, size_t *out_len, uint32_t 
 					float shortest_dist, _temp;
 					for(; cc_ < max_; ++cc_){
 						if((_temp = glm_dot((scene->meshes + temp->start_pos + shortest_index)->pos, (scene->meshes + temp->start_pos + cc_)->pos)) < shortest_dist){
-							shortest_dist = _temp;
-							shortest_index = cc_;
+							if(selected_[cc_] != true){
+								selected_[cc_] = true;
+								shortest_dist = _temp;
+								shortest_index = cc_;
+							}
 						}
 					}
 					data[(cc << 2)] = scene->meshes[shortest_index + temp->start_pos].pos[0];
@@ -81,10 +84,14 @@ collision_result *collision_broadproc(scene_t *scene, size_t *out_len, uint32_t 
 					size_t cc_ = cc;
 					size_t longest_index = 0;
 					float longest_dist, _temp;
+					bool selected[max_] = {0};
 					for(; cc_ < max_; ++cc_){
 						if((_temp = glm_dot((scene->meshes + temp->start_pos + longest_index)->pos, (scene->meshes + temp->start_pos + cc_)->pos)) > longest_dist){
-							longest_dist = _temp;
-							longest_index = cc_;
+							if(selected_[cc_]!= true){
+								selected_[cc_] = true;
+								longest_dist = _temp;
+								longest_index = cc_;
+							}
 						}
 					}
 					data[(cc << 2)] = scene->meshes[longest_index + temp->start_pos].pos[0];
@@ -102,16 +109,16 @@ collision_result *collision_broadproc(scene_t *scene, size_t *out_len, uint32_t 
 		// ldot0
 		glUniform1f(glGetUniformLocation((scene->shaders + scene->shader_curr)->shaderProgram, "ldot0"), (scene->meshes + temp->target)->ldot); // Write Largest dot.
 		// Pos1
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 4) * 2) - (sizeof(GLfloat) * 3), (void *)0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(size_t)) - (sizeof(GLfloat) * 3), (void *)0);
 		// ldot1
-		glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 4) * 2) - sizeof(GLfloat), (void *)(sizeof(GLfloat) * 3));
+		glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(size_t)) - sizeof(GLfloat), (void *)(sizeof(GLfloat) * 3));
 		// Pos2
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 4) * 2) - (sizeof(GLfloat) * 3), (void *)(sizeof(GLfloat) << 2));
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(size_t)) - (sizeof(GLfloat) * 3), (void *)(sizeof(GLfloat) << 2));
 		// ldot2
-		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 4) * 2) - sizeof(GLfloat), (void *)((sizeof(GLfloat) * 7) + (sizeof(mesh_t) * 2)));
+		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(size_t)) - sizeof(GLfloat), (void *)((sizeof(GLfloat) * 7) + (sizeof(mesh_t) * 2)));
 		// counter
-		glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 4) * 2) - (sizeof(GLfloat) * 3), (void *)((sizeof(GLfloat) * 6) + (sizeof(mesh_t) * 2)));
-		// Each 2 cells is 8 GLfloats overall
+		glVertexAttribPointer(4, 1, GL_UNSIGNED_INT_VEC2, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(size_t)) - (sizeof(GLfloat) * 3), (void *)((sizeof(GLfloat) * 6) + (sizeof(mesh_t) * 2)));
+		// Each 2 cells is 8 GLfloats overall and one size_t, stride should be ((sizeof(GLfloat) << 3) + sizeof(size_t))
 	}
 	glBindVertexArray(og_VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, og_VBO);
