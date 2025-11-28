@@ -66,10 +66,13 @@ typedef struct scene_header{
 	char *name;
 }scene_header;
 typedef enum SCENEPROC_t{
-	/// @brief Buffer stores (GLenum, (size_t)polls)
+	SCENEPROC_ERRORNOERR = 0x0,
 	SCENEPROC_ERRORDUPE = 0x1,
 	SCENEPROC_ERRORNOREF = 0x2,
 	SCENEPROC_ERRORNOMEM = 0x3,
+	SCENEPROC_ERRORLOGIC = 0x4,
+	SCENEPROC_ERRORREJECTION = 0x5,
+	/// @brief Buffer stores (GLenum, (size_t)polls)
 	SCENEPROC_INPUTPOLL = 0x10,
 	SCENEPROC_PHYSPOLL = 0x11
 }SCENEPROC_t;

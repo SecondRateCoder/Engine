@@ -1,14 +1,63 @@
 #include "../engine/Libraries/custom/twin-phys-engine/phys_handler.h"
 
-uint8_t physics_gen(scene_t *parent, char *phys_shader_path, size_t batch_size){
-		sceneprocbf_t *out = get_procb(parent, SCENEPROC_PHYSPOLL);
-		if(out == NULL){
-			// Generate
-			out = get_procb(parent, 0); // Get unused buffer
-			if(out == NULL){return SCENEPROC_NOMEM;}
+uint8_t physics_gen(scene_t *parent, char *phys_shader_path, uint8_t max_queries){
+	sceneprocbf_t *out = get_procb(parent, SCENEPROC_PHYSPOLL);
+	if(out == NULL){
+		// Generate
+		out = get_procb(parent, 0); // Get unused buffer
+		if(out == NULL){return SCENEPROC_NOMEM;}else{
+			*out = (sceneprocbf_t){
+				.last_poll = 0,
+				.last_pollcycle = 0,
+				.buffer_size = max_queries,
+				.buffer_type = sizeof(collquery_t),
+				.counter = 0,
+				.buffer = malloc(sizeof(physb_t) + (sizeof(collquery_t) * max_queries)),
+				.process = SCENEPROC_PHYSPOLL
+			};
+			physb_t *temp = out->buffer;
+			temp->max_queries = max_queries;
+			glGenFrameBuffer(temp->FBO);
+			shaderblock_t *sb = shader_compile(true);
+			if(sb->compiled_[0]){return SCENEPROC_ERRORLOGIC;}
+			temp->shaderProgram = sb->shaderProgram;
+			for(size_t cc =0; cc < sb->uniform_len; ++cc){
+				free(sb->uniforms[cc].name);
+				free(sb->uniforms[cc].type);
+			}
+			free(sb->uniforms);		free(sb);
+			return 0;
 		}
-		return SCENEPROC_DUPE;
+	}
+	return SCENEPROC_DUPE;
 	// Initialise field.
+}
+
+collquery_t *query_collisioni(uint8_t *out_code, scene_t *scene, size_t target_mesh, size_t start_pos, uint8_t batching_size, uint8_t batching_type, bool watch_duplicate){
+	sceneprocbf_t *buffer = get_procb(scene, SCENEPROC_PHYSPOLL);
+	if(buffer == NULL){out_code = SCENEPROC_NOREF;	return NULL;}
+	if(((physb_t *)buffer->buffer)->max_queries == buffer->counter){*out_code = SCENEPROC_ERRORREJECTION;	return NULL;}
+	if(watch_duplicate){
+		collquery_t *queries = (collquery_t *)(buffer->buffer + sizeof(physb_t));
+		for(size_t cc =0; cc < buffer->counter; ++cc){
+			if(
+				queries[cc].target == target_mesh &&
+				queries[cc].start_pos == start_pos &&
+				queries[cc].batch_size == batch_size &&
+				queries[cc].batching_type == batching_type
+			){*out_code = SCENEPROC_DUPE;		return NULL;}
+		}
+	}
+	*(collquery_t *)(buffer->buffer + sizeof(physb_t) + (buffer->counter * buffer->buffer_type)) = (collquery_t){
+		.target = target_mesh,
+		.start_pos = start_pos,
+		.batch_size = batch_size,
+		.batching_type = batching_type,
+		.out_buffer = NULL
+	};
+	buffer->counter++;
+	if(buffer->counter == buffer->buffer_size){buffer->counter = 0;}
+	return (collquery_t *)(buffer->buffer + sizeof(physb_t) + (buffer->counter * buffer->buffer_type));
 }
 
 /// @brief Process the collisions of all meshes in a scene, broadly.
