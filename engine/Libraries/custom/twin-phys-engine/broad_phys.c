@@ -53,7 +53,7 @@ collquery_t *query_collisioni(uint8_t *out_code, scene_t *scene, size_t target_m
 		.start_pos = start_pos,
 		.batch_size = batch_size,
 		.batching_type = batching_type,
-		.out_buffer = NULL
+		.out = NULL
 	};
 	buffer->counter++;
 	if(buffer->counter == buffer->buffer_size){buffer->counter = 0;}
@@ -64,14 +64,13 @@ collquery_t *query_collisioni(uint8_t *out_code, scene_t *scene, size_t target_m
 /// @remarks This runs a shader for each mesh, it takes thier largest dot and thier position,
 ///	It passes the target mesh's position and largest dot as uniforms and the parent's array of meshes positions and largest dot's as attributes.
 /// @remarks This function runs in batches, this is handled internally.
-collision_result *collision_broadproc(scene_t *scene, size_t *out_len, uint32_t *batch_num){
+collision_result *collision_broadproc(scene_t *scene, uint32_t *batch_num){
 	GLuint og_VAO, og_VBO;
 	glGetIntegerv(GL_VERTEX_ARRAY_BINDING, og_VAO);
 	glGetIntegerv(GL_ARRAY_BUFFER_BINDING, og_VBO);
 	GLuint VAO = 0, VBO = 0;
 	collision_result **out = NULL;
 	out_len = 0;
-	sizeof(scene_t);
 	// Organise to nearest 3.
 	const uint8_t _3 = (scene->mesh_num + (scene->mesh_num % 3));
 	if(scene->mesh_num % 3 != 0){scene->meshes = realloc(scene->meshes, sizeof(mesh_t) * (scene->mesh_num + (scene->mesh_num % 3)));}
@@ -90,6 +89,7 @@ collision_result *collision_broadproc(scene_t *scene, size_t *out_len, uint32_t 
 		collquery_t *temp = (collquery_t *)(phys_buffer->buffer + sizeof(physb_t) + (sizeof(collquery_t) *  cc));
 		// The maximum data to be processed.
 		uint8_t max_ = (temp->batch_size > ((scene->mesh_num - temp->start_pos) - (temp->batch_size * temp->start_pos)? ((scene->mesh_num - temp->start_pos) - (temp->batch_size * temp->start_pos)): temp->batch_size));
+		temp->max_ = max_;
 		GLfloat *data = calloc((max_ << 2), sizeof(GLfloat) + 1); // plus 1 so that foreach 4 GLfloats, space for one GLuint is created.
 		size_t cc = 0;
 		bool selected_[max_] = {0};
@@ -103,7 +103,7 @@ collision_result *collision_broadproc(scene_t *scene, size_t *out_len, uint32_t 
 					data[(cc << 2) + 3] = scene->meshes[cc + temp->start_pos].ldot;
 					data[(cc << 2) + 4] = cc;
 				}
-				if(max_ % temp->batch_size != 0){data = realloc(data, sizeof(GLfloat) * temp->batch_size);}
+				// if(max_ % temp->batch_size != 0){data = realloc(data, sizeof(GLfloat) * temp->batch_size);}
 				break;
 			case PHYSBATCH_CLOSEST:
 				// Compare each gameobj and find the closest one.
@@ -156,6 +156,7 @@ collision_result *collision_broadproc(scene_t *scene, size_t *out_len, uint32_t 
 					data[(cc << 2) + 4] = cc;
 				}
 				break;
+            default:    return;
 		}
 		glBufferData(GL_ARRAY_BUFFER, (max_ << 3) * sizeof(GLfloat), data, GL_STREAM_READ);
 		// Bind attributes.
@@ -177,11 +178,11 @@ collision_result *collision_broadproc(scene_t *scene, size_t *out_len, uint32_t 
 		glDrawArrays(GL_POINTS, 0, max_);
 
 		// Retrieve Shader output.
-		temp->out_buffer = calloc(max_, (sizeof(uint8_t) * 2));
-		glReadPixels(0, 0, (max_ > w ? w: max_), max_ % w, GL_RGBA, GL_UNSIGNED_BYTE, max_ << 1, temp->out_buffer);
+		temp->out = calloc(max_, (sizeof(uint8_t) * 2));
+		glReadPixels(0, 0, (max_ > w ? w: max_), max_ % w, GL_RGBA, GL_UNSIGNED_BYTE, max_ << 1, temp->out);
 		temp->batch_size |= TOGGLE_MASK(15); // Set top-most bit to 1, thus telling the caller that the thingy has be run.
 	}
-	glBindVertexArray(og_VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, og_VBO);
+	glBindVertexArray(og_VAO);
 }
 

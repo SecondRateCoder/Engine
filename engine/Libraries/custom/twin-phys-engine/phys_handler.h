@@ -17,12 +17,20 @@ typedef enum PHYSBATCH_t{
 	PHYSBATCH_FURTHEST
 }PHYSBATCH_t;
 
+typedef union collision_result{
+	const uint32_t pixel;
+	struct{
+		const uint8_t b0_1, b1_2, b0_2, padding;
+	}
+}collision_result;
+#define collres_t collision_result
+
 typedef struct collision_query{
 	const size_t target, start_pos;
 	// Check most-significant bit for whether the query has been processed.
-	const uint16_t batch_size;
+	uint8_t batch_size, max_;
 	const uint8_t batching_type;
-	const void *out_buffer;
+	collres_t *out_buffer;
 }collision_query;
 #define collquery_t collision_query
 
