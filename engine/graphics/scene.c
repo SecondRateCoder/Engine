@@ -23,10 +23,9 @@ scene_t *scene_gen(GLFWwindow *parent, char *name, mesh_t *meshes, shaderblock_t
         .num_inhandles = 0,
         .proc_buffers[0] = (sceneproc_buffer){
 			.buffer = calloc(25, sizeof(GLenum) + sizeof(uint32_t)),
-            .buffer_size = 25, .buffer_type = sizeof(GLenum) + sizeof(uint32_t), // {KEY, POLLS}
+            .meta_data = 0 + (25 << 8) + ((sizeof(GLenum) + sizeof(uint32_t)) << 16),
             .last_poll  =0, .last_pollcycle = 0,
             .process = SCENEPROC_INPUTPOLL,
-            .counter = 0
         },
         .parent = parent
 	};
@@ -140,9 +139,12 @@ void sceneproc_inputhandle(scene_t *scene, size_t polls){
             for(uint8_t cc_ = 0; cc_ < scene->input_handles[cc].num_handles; ++cc_){scene->input_handles[cc].handles[cc_](scene, scene->input_handles[cc].key, scene->input_handles[cc].target);}
         }else{
             if(glfwGetKey(scene->parent, scene->input_handles[cc].key) == scene->input_handles[cc].target){
-                ((size_t */*Size of an input entry*/)scene->proc_buffers->buffer)[scene->proc_buffers[0].counter] = (/*Move to upper 16 bits*/scene->input_handles[cc].key << 32) + (uint32_t)polls;
-                scene->proc_buffers[0].counter += scene->proc_buffers[0].buffer_type;
-                if(scene->proc_buffers[0].counter >= scene->proc_buffers[0].buffer_size){scene->proc_buffers[0].counter = 0;}
+                ((size_t */*Size of an input entry*/)scene->proc_buffers->buffer)[counter(scene->proc_buffers)] = (/*Move to upper 16 bits*/scene->input_handles[cc].key << 32) + (uint32_t)polls;
+                scene->proc_buffers->meta_data++;
+                if(counter(scene->proc_buffers) >= buffer_size(scene->proc_buffers)){
+                    scene->proc_buffers->meta_data |= 0xFF;   // Set all of lowset 8 bits to 1
+                    scene->proc_buffers->meta_data != 0xFF;   // Force all of lowest 8 bits to 0
+                }
                 for(uint8_t cc_ = 0; cc_ < scene->input_handles[cc].num_handles; ++cc_){scene->input_handles[cc].handles[cc_](scene, scene->input_handles[cc].key, scene->input_handles[cc].target);}
             }
         }
@@ -173,9 +175,9 @@ void scene_draw(scene_t *scene){
         DEBUG_BUFFER_STATE(GL_ARRAY_BUFFER, "VBO");
         DEBUG_BUFFER_STATE(GL_ELEMENT_ARRAY_BUFFER, "EBO");
         draw_debug_trace(__FILE__, __LINE__);
-        debug_vert_attr(scene->meshes[cc].pos_layoutindex);
-        debug_vert_attr(scene->meshes[cc].color_layoutindex);
-        debug_vert_attr(scene->meshes[cc].local_texcoordinates_layoutindex);
+        debug_vert_attr(pos_layoutindex(scene->meshes + cc));
+        debug_vert_attr(color_layoutindex(scene->meshes + cc));
+        debug_vert_attr(local_texcoordinates_layoutindex(scene->meshes + cc));
 #endif
 
         // GLCall(glDrawElements(scene->meshes[cc].buffer->format, scene->meshes[cc].index_len, GL_UNSIGNED_INT, 0));
@@ -222,9 +224,8 @@ scene_t *scene_load(const char *path){
             out->meshes = calloc(counter, sizeof(mesh_t));
             for(size_t cc =0; cc < counter; ++cc){
                 // Strides
-                fread(&out->meshes[cc].vertex_stride, sizeof(uint8_t), 1, file);
-                fread(&out->meshes[cc].color_stride, sizeof(uint8_t), 1, file);
-                fread(&out->meshes[cc].uv_stride, sizeof(uint8_t), 1, file);
+                fread(&((out->meshes + cc)->strides), sizeof(uint32_t), 1, file);
+                fread(&((out->meshes + cc)->offsets), sizeof(uint32_t), 1, file);
     
                 // Mesh data length
                 fread(&counter, sizeof(size_t), 1, file);
@@ -291,15 +292,14 @@ bool scene_save(scene_t *scene, char *target_file){
         fwrite(&_null, sizeof(size_t), 1, file);
         fwrite(&scene->mesh_num, sizeof(size_t), 1, file);
         for(size_t cc = 0; cc < scene->mesh_num; ++cc){
-            fwrite(&scene->meshes[cc].vertex_stride, sizeof(uint8_t), 1, file);
-            fwrite(&scene->meshes[cc].color_stride, sizeof(uint8_t), 1, file);
-            fwrite(&scene->meshes[cc].uv_stride, sizeof(uint8_t), 1, file);
+            fwrite(&((scene->meshes + cc)->strides), sizeof(uint32_t), 1, file);
+            fwrite(&((scene->meshes + cc)->offsets), sizeof(uint32_t), 1, file);
 
             // fwrite(&scene->meshes[cc].mesh_num, sizeof(size_t), 1, file);
             // if(scene->meshes[cc].mesh_num != 0){fwrite(scene->meshes[cc].vertex_lens, sizeof(size_t), scene->meshes[cc].mesh_num, file);}
 
             fwrite(&scene->meshes[cc].data_len, sizeof(size_t), 1, file);
-            fwrite(scene->meshes[cc].vertex_data, scene->meshes[cc].vertex_stride* sizeof(GLfloat), scene->meshes[cc].data_len, file);
+            fwrite(scene->meshes[cc].vertex_data, vertex_stride(scene->meshes + cc)* sizeof(GLfloat), scene->meshes[cc].data_len, file);
 
             fwrite(&scene->meshes[cc].index_len, sizeof(size_t), 1, file);
             fwrite(&scene->meshes[cc].index_data, sizeof(GLuint), scene->meshes[cc].index_len, file);

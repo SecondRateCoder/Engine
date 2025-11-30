@@ -142,22 +142,22 @@ void mesh_attrlink(bufferobj_t *buffer, mesh_t *_mesh){
 
     GLint enabled = 0, size = 0, type = 0, normalized = 0, stride_ = 0;
     GLvoid* pointer = NULL;
-    if(_mesh->pos_layoutindex != INT32_MIN){
-        GLCall(glVertexAttribPointer(_mesh->pos_layoutindex, (_mesh->vertex_stride - (_mesh->color_stride + _mesh->uv_stride)) * sizeof(GLfloat), GL_FLOAT, GL_FALSE, _mesh->color_stride + _mesh->uv_stride, (void *)(_mesh->pos_offset * sizeof(GLfloat))));
-        GLCall(glEnableVertexAttribArray(_mesh->pos_layoutindex));
-        debug_vert_attr(_mesh->pos_layoutindex);
+    if(pos_layoutindex(_mesh) != INT32_MIN){
+        GLCall(glVertexAttribPointer(pos_layoutindex(_mesh), (vertex_stride(_mesh) - (color_stride(_mesh) + uv_stride(_mesh))) * sizeof(GLfloat), GL_FLOAT, GL_FALSE, color_stride(_mesh) + uv_stride(_mesh), (void *)(pos_offset(_mesh) * sizeof(GLfloat))));
+        GLCall(glEnableVertexAttribArray(pos_layoutindex(_mesh)));
+        debug_vert_attr(pos_layoutindex(_mesh));
     }
 
-    if(_mesh->color_layoutindex != INT32_MIN){
-        GLCall(glVertexAttribPointer(_mesh->color_layoutindex, _mesh->color_stride, GL_FLOAT, GL_FALSE, (_mesh->vertex_stride - (_mesh->color_stride + _mesh->uv_stride) + _mesh->uv_stride) * sizeof(GLfloat), (void *)(_mesh->color_offset * sizeof(GLfloat))));
-        GLCall(glEnableVertexAttribArray(_mesh->color_layoutindex));
-        debug_vert_attr(_mesh->color_layoutindex);
+    if(color_layoutindex(_mesh) != INT32_MIN){
+        GLCall(glVertexAttribPointer(color_layoutindex(_mesh), color_stride(_mesh), GL_FLOAT, GL_FALSE, (vertex_stride(_mesh) - (color_stride(_mesh) + uv_stride(_mesh)) + uv_stride(_mesh)) * sizeof(GLfloat), (void *)(color_offset(_mesh) * sizeof(GLfloat))));
+        GLCall(glEnableVertexAttribArray(color_layoutindex(_mesh)));
+        debug_vert_attr(color_layoutindex(_mesh));
     }
 
-    if(_mesh->local_texcoordinates_layoutindex != INT32_MIN){
-        GLCall(glVertexAttribPointer(_mesh->local_texcoordinates_layoutindex, _mesh->uv_stride, GL_FLOAT, GL_FALSE, _mesh->vertex_stride - (_mesh->color_stride + _mesh->uv_stride) + _mesh->color_stride, (void *)(_mesh->uv_offset * sizeof(GLfloat))));
-        GLCall(glEnableVertexAttribArray(_mesh->local_texcoordinates_layoutindex));
-        debug_vert_attr(_mesh->local_texcoordinates_layoutindex);
+    if(local_texcoordinates_layoutindex(_mesh) != INT32_MIN){
+        GLCall(glVertexAttribPointer(local_texcoordinates_layoutindex(_mesh), uv_stride(_mesh), GL_FLOAT, GL_FALSE, vertex_stride(_mesh) - (color_stride(_mesh) + uv_stride(_mesh)) + color_stride(_mesh), (void *)(uv_offset(_mesh) * sizeof(GLfloat))));
+        GLCall(glEnableVertexAttribArray(local_texcoordinates_layoutindex(_mesh)));
+        debug_vert_attr(local_texcoordinates_layoutindex(_mesh));
     }
 
     draw_debug_trace(__FILE__, __LINE__);
@@ -311,7 +311,7 @@ void draw_debug_trace(const char* file, int line) {
 /// @param format The format to use.
 /// @param texture The texture to be used.
 /// @return A generated mesh.
-mesh_t *mesh_gen(GLfloat *vertices, GLuint *indices, size_t len[2], uint8_t strides[3], uint32_t layout[3], uint8_t offsets[3], GLenum format, image_t *texture){
+mesh_t *mesh_gen(GLfloat *vertices, GLuint *indices, size_t len[2], uint8_t strides[3], uint8_t layouts[3], uint8_t offsets[3], GLenum format, image_t *texture){
     mesh_t *out = calloc(1, sizeof(mesh_t));
     *out = (mesh_t){
         .vertex_data = vertices,
@@ -319,15 +319,9 @@ mesh_t *mesh_gen(GLfloat *vertices, GLuint *indices, size_t len[2], uint8_t stri
         .index_data = indices,
         .index_len = len[1],
         .texture = texture,
-        .vertex_stride = strides[0],
-        .uv_stride = strides[1],
-        .color_stride = strides[2],
-        .pos_offset = offsets[0],
-        .color_offset = offsets[1],
-        .uv_offset = offsets[2],
-        .pos_layoutindex = layout[0],
-        .color_layoutindex = layout[1],
-        .local_texcoordinates_layoutindex = layout[2]
+        .strides = (strides[0] + ((uint8_t)(strides[1] << 8)) + ((uint8_t)(strides[2] << 16))),
+        .offsets = (offsets[0] + ((uint8_t)(offsets[1] << 8)) + ((uint8_t)(offsets[2] << 16))),
+        .layouts = (layouts[0] + ((uint8_t)(layouts[1] << 8)) + ((uint8_t)(layouts[2] << 16)))
     };
     out->buffer = bufferobj_gen(out, GL_STATIC_DRAW);
     // bufferobject_handle(buffer, vertices, len[0], indices, len[1], format, 10);

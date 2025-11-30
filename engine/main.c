@@ -100,12 +100,8 @@ void test_win_init(){
 
     mesh->data_len = 48;
     mesh->index_len = 18;
-    mesh->vertex_stride = 3;
-    mesh->color_stride = 3;
-    mesh->uv_stride = 2;
-    mesh->pos_layoutindex = 0;
-    mesh->color_layoutindex = 1;
-    mesh->local_texcoordinates_layoutindex = 2;
+    mesh->strides = 3 + (3 << 8) + (2 << 16);
+    mesh->layouts = 0 + (1 << 8) + (2 << 16);
     bufferobject_handle(buffer, mesh->vertex_data, mesh->data_len, mesh->index_data, mesh->index_len, GL_STATIC_DRAW, 3);
     mesh_attrlink(buffer, mesh);
     mesh->texture = calloc(1, sizeof(image_t));

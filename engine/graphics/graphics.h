@@ -80,28 +80,36 @@ typedef struct sceneproc_buffer{
 	/// @brief For state-checking.
 	size_t last_poll, last_pollcycle;
 	/// @brief Space-conservative storing of Buffer length.
-	uint8_t buffer_size, buffer_type;
-	/// @brief Track the number of bytes being used.
-	uint8_t counter;
+	// uint8_t buffer_size, buffer_type;
+	// /// @brief Track the number of types being used.
+	// uint8_t counter;
+	
+	/// @brief ((uint8_t)meta_data) == counter,		((uint8_t)meta_data >> 8) == buffer_size,		((uint8_t)meta_data >> 16) == buffer_type
+	uint32_t meta_data;
 	/// @brief Buffer.
 	void *buffer;
 	/// @brief The ID of the buffer, a scene should only have ONE for each possible process.
 	SCENEPROC_t process;
-}sceneproc_buffer;
+} __attribute__((packed))sceneproc_buffer;
 #define sceneprocbf_t sceneproc_buffer
+
+#define counter(SCENEPROC_BUFFER_) ((uint8_t)BIT_EXTRACT(SCENEPROC_BUFFER_->meta_data, 0, 8))
+#define buffer_size(SCENEPROC_BUFFER_) ((uint8_t)BIT_EXTRACT(SCENEPROC_BUFFER_->meta_data, 8, 8))
+#define buffer_type(SCENEPROC_BUFFER_) ((uint8_t)BIT_EXTRACT(SCENEPROC_BUFFER_->meta_data, 16, 8))
+
 typedef struct scene_type{
 	GLFWwindow *parent;
-	shaderblock_t* shaders;
-	size_t shader_num, mesh_num;
-	int32_t shader_curr;
 	scene_header header;
-	mesh_t *meshes;
-	size_t cam_num, num_loadedcams, *loaded_cams;
+	shaderblock_t* shaders;
+	uint32_t shader_curr, shader_num;
 	cam_t *cameras;
+	size_t cam_num, num_loadedcams, *loaded_cams;
+	mesh_t *meshes;
+	size_t mesh_num;
 	size_t num_inhandles;
 	inputh_t *input_handles;
 	sceneprocbf_t proc_buffers[2];
-}scene_type;
+}__attribute__((packed)) scene_type;
 #define scene_t scene_type
 
 

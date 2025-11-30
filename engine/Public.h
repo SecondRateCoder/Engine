@@ -78,7 +78,7 @@
 #define ANSI_MAGENTA(TEXT) "\n" ANSI_COLOR_MAGENTA TEXT ANSI_COLOR_RESET
 #define ANSI_CYAN(TEXT) "\n" ANSI_COLOR_CYAN  TEXT ANSI_COLOR_RESET
 #define BIT_MASK(len) ((1U << (len)) - 1U)
-#define BIT_RANGE(offset, len) (BIT_MASK(len) << (offset))
+#define BIT_EXTRACT(value, offset, len) (((value) >> (offset)) & BIT_MASK(len))
 #define BIT(x) (1U << (x))
 
 

@@ -94,32 +94,51 @@ typedef struct _mesh{
     GLuint *index_data;
     /// @brief The length of @ref mesh_index_order.
     size_t index_len;
+	
     bufferobj_t *buffer;
-    
     image_t *texture;
 
+	collider_shape_t *coll_shape;
+
 	/// @brief The offset for the position elements in vertex_data.
-	uint8_t pos_offset;
+	// uint8_t pos_offset;
 	/// @brief The offset for the color elements in vertex_data.
-	uint8_t color_offset;
+	// uint8_t color_offset;
 	/// @brief The offset for the UV elements in vertex_data.
-	uint8_t uv_offset;
+	// uint8_t uv_offset;
+	uint32_t offsets;
     
     /// @brief The number of @ref GLfloat values that make up a Vertex in a _mesh's vertex_data. Hence "stride"
-    uint8_t vertex_stride;
+    // uint8_t vertex_stride;
     /// @brief The number of @ref GLfloat values that make up a Vertex's Color vertex_data in a _mesh's vertex_data.
-    uint8_t color_stride;
+    // uint8_t color_stride;
     /// @brief The number of @ref GLfloat values that make up a Vertex's Texture per-pixel stride in a _mesh's vertex_data.
-    uint8_t uv_stride;
+    // uint8_t uv_stride;
+
+	/// @brief ((uint8_t)strides) == vertex_stride,		((uint8_t)strides >> 8) == color_stride,	((uint8_t)strides >> 16) == uv_stride.
+	uint32_t strides;
+
     /// @brief The Layout index in a shader corresponding to this _mesh's Position vertex data.
-    uint8_t pos_layoutindex, 
+	// uint8_t pos_layoutindex, 
     /// @brief The Layout index in a shader corresponding to this _mesh's vertex Color data.
-    color_layoutindex, 
+    // color_layoutindex, 
     /// @brief The Layout index in a shader corresponding to this _mesh's vertex Texture data.
     ///! Texture co-ordinates are local to a texture (Image) as well as being normalised.
-    local_texcoordinates_layoutindex;
-}_mesh;
+    // local_texcoordinates_layoutindex;
+
+	/// @brief ((uint8_t)layouts) == pos_layoutindex,		((uint8_t)layouts >> 8) == color_layoutindex,	((uint8_t)layouts >> 16) == local_texcoordinates_layoutindex.
+    uint32_t layouts;
+} __attribute__((packed)) _mesh;
 #define mesh_t _mesh
+
+#define vertex_stride(MESH) ((uint8_t)BIT_EXTRACT((MESH)->strides, 0, 8))
+#define color_stride(MESH)  ((uint8_t)BIT_EXTRACT((MESH)->strides, 8, 8))
+#define uv_stride(MESH)     ((uint8_t)BIT_EXTRACT((MESH)->strides, 16, 8))
+
+#define pos_layoutindex(MESH) ((uint8_t)BIT_EXTRACT((MESH)->layouts, 0, 8))
+#define color_layoutindex(MESH) ((uint8_t)BIT_EXTRACT((MESH)->layouts, 8, 8))
+#define local_texcoordinates_layoutindex(MESH) ((uint8_t)BIT_EXTRACT((MESH)->layouts, 16, 8))
+
 
 typedef struct Color4 {
 	// @brief a: 1.0f := Solid, 0.0f := Transparent.

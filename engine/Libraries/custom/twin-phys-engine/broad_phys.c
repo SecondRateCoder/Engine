@@ -5,13 +5,11 @@ uint8_t physics_gen(scene_t *parent, char *phys_shader_path, uint8_t max_queries
 	if(out == NULL){
 		// Generate
 		out = get_procb(parent, 0); // Get unused buffer
-		if(out == NULL){return SCENEPROC_NOMEM;}else{
+		if(out == NULL){return SCENEPROC_ERRORNOMEM;}else{
 			*out = (sceneprocbf_t){
 				.last_poll = 0,
 				.last_pollcycle = 0,
-				.buffer_size = max_queries,
-				.buffer_type = sizeof(collquery_t),
-				.counter = 0,
+				.meta_data = 0 + (max_queries << 8) + (sizeof(collquery_t) << 16),
 				.buffer = malloc(sizeof(physb_t) + (sizeof(collquery_t) * max_queries)),
 				.process = SCENEPROC_PHYSPOLL
 			};
@@ -29,48 +27,49 @@ uint8_t physics_gen(scene_t *parent, char *phys_shader_path, uint8_t max_queries
 			return 0;
 		}
 	}
-	return SCENEPROC_DUPE;
+	return SCENEPROC_ERRORDUPE;
 	// Initialise field.
 }
 
 collquery_t *query_collisioni(uint8_t *out_code, scene_t *scene, size_t target_mesh, size_t start_pos, uint8_t batching_size, uint8_t batching_type, bool watch_duplicate){
 	sceneprocbf_t *buffer = get_procb(scene, SCENEPROC_PHYSPOLL);
-	if(buffer == NULL){out_code = SCENEPROC_NOREF;	return NULL;}
-	if(((physb_t *)buffer->buffer)->max_queries == buffer->counter){*out_code = SCENEPROC_ERRORREJECTION;	return NULL;}
+	if(buffer == NULL){out_code = SCENEPROC_ERRORNOREF;	return NULL;}
+	if(((physb_t *)buffer->buffer)->max_queries == counter(buffer)){*out_code = SCENEPROC_ERRORREJECTION;	return NULL;}
 	if(watch_duplicate){
 		collquery_t *queries = (collquery_t *)(buffer->buffer + sizeof(physb_t));
-		for(size_t cc =0; cc < buffer->counter; ++cc){
+		for(size_t cc =0; cc < counter(buffer); ++cc){
 			if(
 				queries[cc].target == target_mesh &&
 				queries[cc].start_pos == start_pos &&
-				queries[cc].batch_size == batch_size &&
+				queries[cc].batch_size == batching_size &&
 				queries[cc].batching_type == batching_type
-			){*out_code = SCENEPROC_DUPE;		return NULL;}
+			){*out_code = SCENEPROC_ERRORDUPE;		return NULL;}
 		}
 	}
-	*(collquery_t *)(buffer->buffer + sizeof(physb_t) + (buffer->counter * buffer->buffer_type)) = (collquery_t){
+	*((collquery_t *)(buffer->buffer + sizeof(physb_t) + (counter(buffer) * buffer_type(buffer)))) = (collquery_t){
 		.target = target_mesh,
 		.start_pos = start_pos,
-		.batch_size = batch_size,
+		.batch_size = batching_size,
 		.batching_type = batching_type,
 		.out = NULL
 	};
-	buffer->counter++;
-	if(buffer->counter == buffer->buffer_size){buffer->counter = 0;}
-	return (collquery_t *)(buffer->buffer + sizeof(physb_t) + (buffer->counter * buffer->buffer_type));
+	buffer->meta_data++;
+	if(counter(buffer) == buffer_size(buffer)){
+		buffer->meta_data |= 0xFF;
+		buffer->meta_data != 0xFF;
+	}
+	return (collquery_t *)(buffer->buffer + sizeof(physb_t) + (counter(buffer) * buffer_type(buffer)));
 }
 
 /// @brief Process the collisions of all meshes in a scene, broadly.
 /// @remarks This runs a shader for each mesh, it takes thier largest dot and thier position,
 ///	It passes the target mesh's position and largest dot as uniforms and the parent's array of meshes positions and largest dot's as attributes.
 /// @remarks This function runs in batches, this is handled internally.
-collision_result *collision_broadproc(scene_t *scene, uint32_t *batch_num){
+void collision_broadproc(scene_t *scene, uint32_t *batch_num){
 	GLuint og_VAO, og_VBO;
 	glGetIntegerv(GL_VERTEX_ARRAY_BINDING, og_VAO);
 	glGetIntegerv(GL_ARRAY_BUFFER_BINDING, og_VBO);
 	GLuint VAO = 0, VBO = 0;
-	collision_result **out = NULL;
-	out_len = 0;
 	// Organise to nearest 3.
 	const uint8_t _3 = (scene->mesh_num + (scene->mesh_num % 3));
 	if(scene->mesh_num % 3 != 0){scene->meshes = realloc(scene->meshes, sizeof(mesh_t) * (scene->mesh_num + (scene->mesh_num % 3)));}
@@ -88,11 +87,11 @@ collision_result *collision_broadproc(scene_t *scene, uint32_t *batch_num){
 	for(size_t cc = 0; cc < __length; ++cc){
 		collquery_t *temp = (collquery_t *)(phys_buffer->buffer + sizeof(physb_t) + (sizeof(collquery_t) *  cc));
 		// The maximum data to be processed.
-		uint8_t max_ = (temp->batch_size > ((scene->mesh_num - temp->start_pos) - (temp->batch_size * temp->start_pos)? ((scene->mesh_num - temp->start_pos) - (temp->batch_size * temp->start_pos)): temp->batch_size));
+		const uint8_t max_ = (temp->batch_size > ((scene->mesh_num - temp->start_pos) - (temp->batch_size * temp->start_pos)? ((scene->mesh_num - temp->start_pos) - (temp->batch_size * temp->start_pos)): temp->batch_size));
 		temp->max_ = max_;
 		GLfloat *data = calloc((max_ << 2), sizeof(GLfloat) + 1); // plus 1 so that foreach 4 GLfloats, space for one GLuint is created.
 		size_t cc = 0;
-		bool selected_[max_] = {0};
+		bool *selected_ = calloc(max_, sizeof(bool));
 		switch(temp->batching_type){
 			case PHYSBATCH_LINEAR:
 				// Compile flat GLfloat list of every gameObj's vec3 position and GLfloat ldot.
@@ -139,7 +138,6 @@ collision_result *collision_broadproc(scene_t *scene, uint32_t *batch_num){
 					size_t cc_ = cc;
 					size_t longest_index = 0;
 					float longest_dist, _temp;
-					bool selected[max_] = {0};
 					for(; cc_ < max_; ++cc_){
 						if((_temp = glm_dot((scene->meshes + temp->start_pos + longest_index)->pos, (scene->meshes + temp->start_pos + cc_)->pos)) > longest_dist){
 							if(selected_[cc_]!= true){
@@ -179,7 +177,7 @@ collision_result *collision_broadproc(scene_t *scene, uint32_t *batch_num){
 
 		// Retrieve Shader output.
 		temp->out = calloc(max_, (sizeof(uint8_t) * 2));
-		glReadPixels(0, 0, (max_ > w ? w: max_), max_ % w, GL_RGBA, GL_UNSIGNED_BYTE, max_ << 1, temp->out);
+		glReadPixels(0, 0, (max_ > w ? w: max_), max_ % w, GL_RGBA, GL_UNSIGNED_BYTE, (void *)temp->out);
 		temp->batch_size |= TOGGLE_MASK(15); // Set top-most bit to 1, thus telling the caller that the thingy has be run.
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, og_VBO);
