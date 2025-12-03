@@ -33,7 +33,7 @@ uint8_t physics_gen(scene_t *parent, char *phys_shader_path, uint8_t max_queries
 
 collquery_t *query_collisioni(uint8_t *out_code, scene_t *scene, size_t target_mesh, size_t start_pos, uint8_t batching_size, uint8_t batching_type, bool watch_duplicate){
 	sceneprocbf_t *buffer = get_procb(scene, SCENEPROC_PHYSPOLL);
-	if(buffer == NULL){out_code = SCENEPROC_ERRORNOREF;	return NULL;}
+	if(buffer == NULL){*out_code = SCENEPROC_ERRORNOREF;	return NULL;}
 	if(((physb_t *)buffer->buffer)->max_queries == counter(buffer)){*out_code = SCENEPROC_ERRORREJECTION;	return NULL;}
 	if(watch_duplicate){
 		collquery_t *queries = (collquery_t *)(buffer->buffer + sizeof(physb_t));
@@ -67,8 +67,8 @@ collquery_t *query_collisioni(uint8_t *out_code, scene_t *scene, size_t target_m
 /// @remarks This function runs in batches, this is handled internally.
 void collision_broadproc(scene_t *scene, uint32_t *batch_num){
 	GLuint og_VAO, og_VBO;
-	glGetIntegerv(GL_VERTEX_ARRAY_BINDING, og_VAO);
-	glGetIntegerv(GL_ARRAY_BUFFER_BINDING, og_VBO);
+	glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &og_VAO);
+	glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &og_VBO);
 	GLuint VAO = 0, VBO = 0;
 	// Organise to nearest 3.
 	const uint8_t _3 = (scene->mesh_num + (scene->mesh_num % 3));
@@ -89,6 +89,7 @@ void collision_broadproc(scene_t *scene, uint32_t *batch_num){
 		// The maximum data to be processed.
 		const uint8_t max_ = (temp->batch_size > ((scene->mesh_num - temp->start_pos) - (temp->batch_size * temp->start_pos)? ((scene->mesh_num - temp->start_pos) - (temp->batch_size * temp->start_pos)): temp->batch_size));
 		temp->max_ = max_;
+		size_t counter = 0;
 		GLfloat *data = calloc((max_ << 2), sizeof(GLfloat) + 1); // plus 1 so that foreach 4 GLfloats, space for one GLuint is created.
 		size_t cc = 0;
 		bool *selected_ = calloc(max_, sizeof(bool));
@@ -106,7 +107,7 @@ void collision_broadproc(scene_t *scene, uint32_t *batch_num){
 				break;
 			case PHYSBATCH_CLOSEST:
 				// Compare each gameobj and find the closest one.
-				size_t counter = 0;
+				counter = 0;
 				// Count linearly through mesh list.
 				for(cc = 0; cc < max_; ++cc){
 					// Count till end, leaving _temp such that it's the index of the lowest length item.
@@ -131,7 +132,7 @@ void collision_broadproc(scene_t *scene, uint32_t *batch_num){
 				break;
 			case PHYSBATCH_FURTHEST:
 				// Compare each gameobj and find the furthest one.
-				size_t counter = 0;
+				counter = 0;
 				// Count linearly through mesh list.
 				for(cc = 0; cc < max_; ++cc){
 					// Count till end, leaving _temp such that it's the index of the lowest length item.
@@ -178,7 +179,7 @@ void collision_broadproc(scene_t *scene, uint32_t *batch_num){
 		// Retrieve Shader output.
 		temp->out = calloc(max_, (sizeof(uint8_t) * 2));
 		glReadPixels(0, 0, (max_ > w ? w: max_), max_ % w, GL_RGBA, GL_UNSIGNED_BYTE, (void *)temp->out);
-		temp->batch_size |= TOGGLE_MASK(15); // Set top-most bit to 1, thus telling the caller that the thingy has be run.
+		temp->batch_size |= 0x8000U; // Set top-most bit to 1, thus telling the caller that the thingy has be run.
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, og_VBO);
 	glBindVertexArray(og_VAO);

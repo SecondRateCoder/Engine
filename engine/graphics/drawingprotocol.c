@@ -601,7 +601,6 @@ bool uniform_write(shaderblock_t* shader, const char* type, const char* name, co
 // The original had a few logical errors, incorrect checks, and was missing error handling for `calloc`.
 shaderblock_t *shader_compile(bool delete_shaders_on_link){
 	shaderblock_t* shaderblock = calloc(1, sizeof(shaderblock_t));
-	size_t shader_len[3] = {0};
 	if (shaderblock == NULL) {
 		fprintf(stderr, ANSI_RED("Error: Failed to allocate memory for shaderblock.\n"));
 		return NULL;
@@ -611,7 +610,7 @@ shaderblock_t *shader_compile(bool delete_shaders_on_link){
 	// Compile Vertex Shader.
 	shaderblock->vertexshader = glCreateShader(GL_VERTEX_SHADER);
 	const char* vs_source = (vertexshader != NULL) ? vertexshader : vertexshader_default;
-	glShaderSource(shaderblock->vertexshader, 1, &vs_source, &shader_len[0]);
+	glShaderSource(shaderblock->vertexshader, 1, &vs_source, NULL);
 	glCompileShader(shaderblock->vertexshader);
 	shaderblock->compiled_[1] = shader_error(shaderblock, "VERTEX");
 	if(shaderblock->compiled_[1]){shaderblock->vertex = strdup(vs_source);}
@@ -619,7 +618,7 @@ shaderblock_t *shader_compile(bool delete_shaders_on_link){
 	// Compile Fragment Shader.
 	shaderblock->fragmentshader = glCreateShader(GL_FRAGMENT_SHADER);
 	const char* fs_source = (fragmentshader != NULL) ? fragmentshader : fragmentshader_default;
-	glShaderSource(shaderblock->fragmentshader, 1, &fs_source, &shader_len[1]);
+	glShaderSource(shaderblock->fragmentshader, 1, &fs_source, NULL);
 	glCompileShader(shaderblock->fragmentshader);
 	shaderblock->compiled_[2] = shader_error(shaderblock, "FRAGMENT");
 	if(shaderblock->compiled_[2]){shaderblock->fragment = strdup(fs_source);}
@@ -627,7 +626,8 @@ shaderblock_t *shader_compile(bool delete_shaders_on_link){
 	// Compile Geometry Shader (optional).
 	if(geometryshader != NULL){
 		shaderblock->geometryshader = glCreateShader(GL_GEOMETRY_SHADER);
-		glShaderSource(shaderblock->geometryshader, 1, &geometryshader, &shader_len[2]);
+		const char *gs_source = geometryshader;
+		glShaderSource(shaderblock->geometryshader, 1, &gs_source, NULL);
 		glCompileShader(shaderblock->geometryshader);
 		shaderblock->compiled_[3] = shader_error(shaderblock, "GEOMETRY");
 		if(shaderblock->compiled_[3]){shaderblock->geometry = strdup(geometryshader);}

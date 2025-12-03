@@ -311,9 +311,12 @@ void draw_debug_trace(const char* file, int line) {
 /// @param format The format to use.
 /// @param texture The texture to be used.
 /// @return A generated mesh.
-mesh_t *mesh_gen(GLfloat *vertices, GLuint *indices, size_t len[2], uint8_t strides[3], uint8_t layouts[3], uint8_t offsets[3], GLenum format, image_t *texture){
+mesh_t *mesh_gen(scene_t *scene, vec3 pos, vec3 rot, GLfloat *vertices, GLuint *indices, size_t len[2], uint8_t strides[3], uint8_t layouts[3], uint8_t offsets[3], GLenum format, image_t *texture, collider_shape_t collider_shape){
     mesh_t *out = calloc(1, sizeof(mesh_t));
     *out = (mesh_t){
+        .ID = scene == NULL? 0: scene->mesh_num++,
+        .pos[0] = pos[0], .pos[1] = pos[1], .pos[2] = pos[2],
+        .rot[0] = rot[0], .rot[1] = rot[1], .rot[2] = rot[2],
         .vertex_data = vertices,
         .data_len = len[0],
         .index_data = indices,
@@ -321,8 +324,11 @@ mesh_t *mesh_gen(GLfloat *vertices, GLuint *indices, size_t len[2], uint8_t stri
         .texture = texture,
         .strides = (strides[0] + ((uint8_t)(strides[1] << 8)) + ((uint8_t)(strides[2] << 16))),
         .offsets = (offsets[0] + ((uint8_t)(offsets[1] << 8)) + ((uint8_t)(offsets[2] << 16))),
-        .layouts = (layouts[0] + ((uint8_t)(layouts[1] << 8)) + ((uint8_t)(layouts[2] << 16)))
+        .layouts = (layouts[0] + ((uint8_t)(layouts[1] << 8)) + ((uint8_t)(layouts[2] << 16))),
+        .coll_shape = calloc(1, sizeof(collider_shape_t))
     };
+    memcpy(out->coll_shape, &collider_shape, sizeof(collider_shape_t));
+    out->coll_shape->parent = out;
     out->buffer = bufferobj_gen(out, GL_STATIC_DRAW);
     // bufferobject_handle(buffer, vertices, len[0], indices, len[1], format, 10);
     return out;

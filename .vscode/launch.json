@@ -1,7 +1,17 @@
 {
     "configurations": [
-        
-        
+        {
+            "name": "(gcc)Build engine",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${cwd}\\build\\temp\\engine.exe",
+            "args": [],
+            "preLaunchTask": "Build engine",
+            "stopAtEntry": true,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": true,
+        },
         {
             "name": "(gdb) Debug engine",
             "type": "cppdbg",

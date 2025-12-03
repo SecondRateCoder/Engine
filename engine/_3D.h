@@ -1,5 +1,5 @@
 #pragma once
-
+#include "../engine/Libraries/custom/twin-phys-engine/phys_handler.h"
 #include "../engine/Public.h"
 
 typedef struct tex_format{
@@ -106,6 +106,8 @@ typedef struct _mesh{
 	// uint8_t color_offset;
 	/// @brief The offset for the UV elements in vertex_data.
 	// uint8_t uv_offset;
+
+	/// @brief ((uint8_t)offsets) == pos_offset,		((uint8_t)offsets >> 8) == color_offset,	((uint8_t)offsets >> 16) == uv_offset.
 	uint32_t offsets;
     
     /// @brief The number of @ref GLfloat values that make up a Vertex in a _mesh's vertex_data. Hence "stride"
@@ -134,6 +136,10 @@ typedef struct _mesh{
 #define vertex_stride(MESH) ((uint8_t)BIT_EXTRACT((MESH)->strides, 0, 8))
 #define color_stride(MESH)  ((uint8_t)BIT_EXTRACT((MESH)->strides, 8, 8))
 #define uv_stride(MESH)     ((uint8_t)BIT_EXTRACT((MESH)->strides, 16, 8))
+
+#define pos_offset(MESH) ((uint8_t)BIT_EXTRACT((MESH)->strides, 0, 8))
+#define color_offset(MESH)  ((uint8_t)BIT_EXTRACT((MESH)->strides, 8, 8))
+#define uv_offset(MESH)     ((uint8_t)BIT_EXTRACT((MESH)->strides, 16, 8))
 
 #define pos_layoutindex(MESH) ((uint8_t)BIT_EXTRACT((MESH)->layouts, 0, 8))
 #define color_layoutindex(MESH) ((uint8_t)BIT_EXTRACT((MESH)->layouts, 8, 8))

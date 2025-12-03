@@ -202,7 +202,7 @@ bool uniform_write(shaderblock_t* shader, const char* type, const char* name, co
 void uniform_free(shaderblock_t * shader);
 void* buffer_bufferdo(bufferobj_t * buffer, const size_t len, const BUFFER_OPTIONS option);
 void handle_glfw_error_default(int error_code, const char *msg);
-mesh_t *mesh_gen(GLfloat *vertices, GLuint *indices, size_t len[2], uint8_t strides[3], uint32_t layout_indices[3], uint8_t offsets[3], GLenum format, image_t *texture);
+mesh_t *mesh_gen(scene_t *scene, vec3 pos, vec3 rot, GLfloat *vertices, GLuint *indices, size_t len[2], uint8_t strides[3], uint8_t layouts[3], uint8_t offsets[3], GLenum format, image_t *texture, collider_shape_t collider_shape);
 image_t *image_gen(uint8_t color_channels, char *image_path, float border[4], texformat_t format);
 
 shaderblock_t *shaderblock_gen(bool compile, bool clean, bool do_uniforms, char *path);

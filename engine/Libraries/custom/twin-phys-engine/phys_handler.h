@@ -1,7 +1,9 @@
+#pragma once
+#include "../engine/graphics/graphics.h"
 #include "../engine/Public.h"
 #include "../engine/graphics/graphics.h"
 
-#define glGenFrameBuffer(BUFFER) glBGenFrameBuffers(1, &BUFFER)
+#define glGenFrameBuffer(BUFFER) glGenFramebuffers(1, &BUFFER)
 #define COLL_QUERIES(BUFFER) ((sizeof(collquery_t) / (sizeof(physb_t)) - (buffer_type(BUFFER) * buffer_size(BUFFER))))
 #define TOGGLE_MAX(N) (2 << N)
 
@@ -46,6 +48,7 @@ typedef struct collider_shape_t{
 	COLLSHAPE_t shape;
 	vec3 offs, scale;
 }collider_shape_t;
+#define colls_t 
 typedef struct collision_query{
 	size_t target, start_pos;
 	// Check most-significant bit for whether the query has been processed.

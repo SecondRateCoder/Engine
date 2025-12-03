@@ -1,6 +1,6 @@
 #include "../engine/Libraries/custom/twin-phys-engine/phys_handler.h"
 
-GLfloat *gen_collidershape(collider_shape_t *shape, GLuint **index_data_, size_t *index_len){
+vec3 *gen_collidershape(collider_shape_t *shape, GLuint **index_data_, size_t *index_len){
 	vec3 *out = NULL;
 	GLuint *index_data = NULL;
 	switch(shape->shape){
@@ -82,9 +82,14 @@ GLfloat *gen_collidershape(collider_shape_t *shape, GLuint **index_data_, size_t
 			(*out)[0] = shape->offs[0] + shape->scale[0]; (*out)[1] = shape->offs[0] + shape->scale[0]; (*out)[2] = shape->offs[0] + shape->scale[0]; 
 			return out;
 		case COLLSHAPE_MESH:
+			out = calloc(shape->parent->data_len, sizeof(vec3));
+			const uint8_t pos_stride = vertex_stride(shape->parent) - (color_stride(shape->parent) + uv_stride(shape->parent));
+			for(size_t cc = pos_offset(shape->parent); cc < shape->parent->data_len; ++cc){
+				out[cc][0] = shape->parent->vertex_data[cc * pos_stride];
+			}
 			*index_data_ = shape->parent->index_data;
 			*index_len = shape->parent->index_len;
-			return shape->parent->vertex_data;
+			return out;
 	}
 }
 
@@ -92,7 +97,7 @@ void narrow_sort(scene_t *scene, collquery_t *query){
 	mesh_t *mesh = scene->meshes + query->target;
 	collresb_t output = *query->out;
 	size_t *data = calloc(query->max_, sizeof(size_t)); // plus 1 so that foreach 4 GLfloats, space for one GLuint is created.
-	size_t cc = 0;
+	size_t cc = 0, counter = 0;
 	bool *selected_ = calloc(query->max_, sizeof(bool));
 	// Sort mesh indexes into right format.
 	switch(query->batching_type){
@@ -103,7 +108,6 @@ void narrow_sort(scene_t *scene, collquery_t *query){
 			break;
 		case PHYSBATCH_CLOSEST:
 			// Compare each gameobj and find the closest one.
-			size_t counter = 0;
 			// Count linearly through mesh list.
 			for(cc = 0; cc < query->max_; ++cc){
 				// Count till end, leaving _temp such that it's the index of the lowest length item.
@@ -124,7 +128,7 @@ void narrow_sort(scene_t *scene, collquery_t *query){
 			break;
 		case PHYSBATCH_FURTHEST:
 			// Compare each gameobj and find the furthest one.
-			size_t counter = 0;
+			counter = 0;
 			// Count linearly through mesh list.
 			for(cc = 0; cc < query->max_; ++cc){
 				// Count till end, leaving _temp such that it's the index of the lowest length item.
@@ -226,7 +230,6 @@ collresn_t *collision_P2Pnearproc(scene_t *scene, collquery_t *query, size_t *in
 					}else if(m1->coll_shape == COLLSHAPE_SPHERE){
 						// Also an origin and a range
 						float circ_dot = glm_dot(m1_collshape[m1_index_data[cc_]], m1_collshape[m1_index_data[cc_ + 1]]);
-						float circ_dot = glm_dot(m0_collshape[0], m0_collshape[1]);
 						if(glm_vec3_dot(m1_collshape[m1_index_data[cc_]], m1_collshape[m1_index_data[cc_]]) < circ_dot ||
 						   glm_vec3_dot(m1_collshape[m1_index_data[cc_ + 1]], m0_collshape[0]) < circ_dot ||
 						   glm_vec3_dot(m1_collshape[m1_index_data[cc_ + 2]], m0_collshape[0]) < circ_dot){

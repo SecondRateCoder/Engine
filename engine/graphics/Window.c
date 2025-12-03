@@ -64,6 +64,7 @@ win_t* win_init(char* name, GLFWerrorfun error_handle, poll_do poll_do_, poll_ki
 		.depth = 0
 	});
 	mesh_t *temp2 = mesh_gen(
+		NULL, (vec3){0, 0, 0}, (vec3){0, 0, 0},
 		(GLfloat[]){
 			// Position coords                      // Color data           // Texture coords
 			-0.5f,   (-0.5f * sqrt3) / 3,    0,      8.0f, 0.3f, 0.2f,    0.0f, 5.0f,
@@ -81,9 +82,15 @@ win_t* win_init(char* name, GLFWerrorfun error_handle, poll_do poll_do_, poll_ki
 			2, 3, 4,
 			3, 0, 4
 		},
-		(size_t[2]){48, 18}, (uint8_t[4]){8, 3, 2}, (uint32_t[3]){0, 1, 2}, (uint8_t[3]){0, 3, 6},
+		(size_t[2]){48, 18}, (uint8_t[4]){8, 3, 2}, (uint8_t[3]){0, 1, 2}, (uint8_t[3]){0, 3, 6},
 		GL_TRIANGLES,
-		temp_image
+		temp_image,
+		(collider_shape_t){
+			.offs = {0},
+			.scale = {0},
+			.parent = NULL, 
+			.shape = COLLSHAPE_CUBOID
+		}
 	);
 	scene_t *temp3 = scene_gen(
 		win->g_window, 
