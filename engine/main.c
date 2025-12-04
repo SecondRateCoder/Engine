@@ -9,37 +9,23 @@ uint8_t unit =0;
 // Forward declaration for poll_draw to make it visible to main()
 void poll_draw(void *self, size_t polls, uint32_t pollcycles){
     win_t *win = (win_t *)self;
+
+	GLUseProgram(win->shaders[win->shaders_curr].shaderProgram);
+    glUniform1i(glGetUniformLocation(win->shaders->shaderProgram, "tex0"), 0);
     
-    // mat4 out, view, proj_screen;
-    // glm_mat4_identity(out);
-    // glm_mat4_identity(view);
-    // glm_mat4_identity(proj_screen);
-    
-    // // CORRECTED: The variable 'g' was undeclared.
-    // // Declaring as a static float makes it persist between calls, creating an animation.
-    // float g = (360* 1.05f)/(polls* 10);
-    // glm_translate(view, (vec3){0.0f, 0.0f, -5.0f}); // Adjusted translation for better view
-    // glm_perspective(glm_rad(45.0f), (float)win->w / (float)win->h, 0.1f, 100.0f, proj_screen);
-    // glm_mat4_mul(proj_screen, view, out);
-    // uint32_t cc_ =0, cc = 0;
-    // do{
-    //     do{
-    //         glm_rotate(out, g, (vec3){0.5f, .75f, 0.25f}); // Rotate on X and Y axis
-    //         ++cc_;
-    //     }while(cc_ < polls);
-    //     ++cc;
-    // }while(cc < pollcycles);
-    // printf(
-    //     ANSI_YELLOW("Offset: ")
-    //     ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", \n")
-    //     ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", \n")
-    //     ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", \n")
-    //     ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", ") ANSI_RED("%f") ANSI_YELLOW(", \n")
-    // , out);
-    // GLuint tex0_uni = glGetUniformLocation(win->shaders->shaderProgram, "tex0");
-    // GLUseProgram(win->shaders[win->shaders_curr].shaderProgram);
-    // glUniform1i(tex0_uni, 0);
-    
+    mat4 out, view, proj;
+    glm_mat4_identity(out);
+    glm_mat4_identity(view);
+    glm_mat4_identity(proj_screen);
+
+    float g = (360* 1.05f)/(polls* 10);
+    glm_translate(view, win->scenes[win->scene_curr].cameras[*win->scenes[win->scene_curr].loaded_cams].pos);
+    glm_perspective(glm_rad(45.0f + (45 * g)), (float)win->w / (float)win->h, 0.1f, 100.0f, proj_screen);
+    glm_mat4_mul(proj_screen, view, out);
+	glm_rotate(out, g, win->scenes[win->scene_curr].cameras[*win->scenes[win->scene_curr].loaded_cams].rot); // Rotate on X and Y axis
+	
+	GLUseProgram(win->shaders[win->shaders_curr].shaderProgram);
+    GLCall(glUniform1i(glGetUniformLocation(win->shaders[win->shaders_curr].shaderProgram, "view_m4"), 0));
     return;
 }
 
