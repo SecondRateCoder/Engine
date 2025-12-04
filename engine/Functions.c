@@ -377,12 +377,12 @@ image_t *image_gen(uint8_t color_channels, char *image_path, float border[4], te
             break;
         default:
             GLCall(glDeleteTextures(1, &out->ID));
-            stbi_image_free(out->img);
-            free(out);
             return NULL;
     }
-
-    GLCall(glGenerateMipmap(format.target));
+	GLCall(glGenerateMipmap(format.target));
+	GLCall(glBindTexture(format.target, 0));
+	stbi_image_free(out->img);
+	free(out);
 
     fprintf(stderr, ANSI_YELLOW("\nImage load output: %s\n"), stbi_failure_reason());
     printf(ANSI_YELLOW("\nImage params: \n\tUnit: %u \n\tPath: %s \n\tWidth: %u\n\tHeight: %u\n\tColor channels: %u, \n\tBorder: {%f, %f, %f, %F}"), out->unit, out->path, out->width, out->height, out->color_channels, out->border[0], out->border[1], out->border[2], out->border[3]);
