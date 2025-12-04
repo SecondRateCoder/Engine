@@ -417,17 +417,16 @@ void cam_gen(scene_t *scene, vec3 args0[3], GLint args1[4], float args2[3], bool
     if(activate){cam_toggle(scene->cam_num - 1, scene);}
 }
 
-mat4 *cam_mat4(cam_t *cam){
-    mat4 *view = calloc(1, sizeof(mat4)), projection;
-    glm_mat4_identity(*view);
-    glm_mat4_identity(projection);
-    glm_lookat(
-        cam->pos, 
-        (vec3){cam->pos[0] + cam->rot[0], cam->pos[1] + cam->rot[1], cam->pos[2] + cam->rot[2]},
-        cam->up,
-        *view
-    );
-    return view;
+mat4 *cam_mat4(scene_t *scene){
+	float w, h;
+	glfwGetDimensions(scene->parent, &w, &h);
+	cam_t *cam = scene->cameras[*scene->loaded_cams];
+    mat4 *out = calloc(1, sizeof(mat4)), projection, view;
+	glm_mat4_identity(*out);
+	glm_mat4_rotate(*out, glm_radians(cam->rotm), cam->rot);
+	glm_mat4_translate(*out, (vec3){-cam->pos[0], -cam->pos[1], -cam->pos[2]});
+	glm_mat4_perspective(*out, glm_radians(cam->rotm), (float)(w / h), cam->near, cam->far);
+    return out;
 }
 
 //! Use later
