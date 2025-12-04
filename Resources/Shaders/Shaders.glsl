@@ -34,7 +34,7 @@ uniform sampler2D tex0;
 
 void main(){
     // FragColor = mix(texture(tex0, tex_coord), vec4(color, 1.0f), 0.7f); // visualize UVs
-    FragColor = mix(vec4(0.0f, 0.0f, 0.0f, 1.0f), vec4(color, 1.0f), 0.5f);
+    FragColor = mix(color, texture(tex0, tex_coord), 0.5f);
 }
 
 #define shaderend
