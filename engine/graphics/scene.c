@@ -161,15 +161,14 @@ void scene_draw(scene_t *scene){
 
         if(scene->meshes[cc].texture){
             GLCall(glActiveTexture(GL_TEXTURE0 + scene->meshes[cc].texture->unit));
-            GLCall(glBindTexture(scene->meshes[cc].texture->format.target, GL_TEXTURE0 + scene->meshes[cc].texture->ID));
-            GLCall(glUniform1i(glGetUniformLocation(scene->shaders[scene->shader_curr].shaderProgram, "tex0"), scene->meshes[cc].texture->unit));
+            GLCall(glBindTexture(scene->meshes[cc].texture->format.target, scene->meshes[cc].texture->ID));
+            GLCall(glUniform1i(glGetUniformLocation(scene->shaders[scene->shader_curr].shaderProgram, "tex0"), GL_TEXTURE0 + scene->meshes[cc].texture->unit));
         }
 
         //! For now handle 1 Camera.
         mat4 *out = cam_mat4(scene->cameras + *scene->loaded_cams);
         GLCall(glUniformMatrix4fv(glGetUniformLocation(scene->shaders[scene->shader_curr].shaderProgram, "matrix"), 1, true, (GLfloat *)(*out)));
-        GLCall(glUniform3f(glGetUniformLocation(scene->shaders[scene->shader_curr].shaderProgram, "offs"), (scene->cameras + *scene->loaded_cams)->pos[0], (scene->cameras + *scene->loaded_cams)->pos[1], (scene->cameras + *scene->loaded_cams)->pos[2]));
-
+        // GLCall(glUniform3f(glGetUniformLocation(scene->shaders[scene->shader_curr].shaderProgram, "offs"), (scene->cameras + *scene->loaded_cams)->pos[0], (scene->cameras + *scene->loaded_cams)->pos[1], (scene->cameras + *scene->loaded_cams)->pos[2]));
 #ifdef _DEBUG_ // Full debug
         printf(ANSI_RED("FULL DEBUG:"));
         DEBUG_BUFFER_STATE(GL_ARRAY_BUFFER, "VBO");
