@@ -161,7 +161,7 @@ void scene_draw(scene_t *scene){
 
         if(scene->meshes[cc].texture){
             GLCall(glActiveTexture(GL_TEXTURE0 + scene->meshes[cc].texture->unit));
-            GLCall(glBindTexture(scene->meshes[cc].texture->format.target, scene->meshes[cc].texture->ID));
+            GLCall(glBindTexture(scene->meshes[cc].texture->format.target, GL_TEXTURE0 + scene->meshes[cc].texture->ID));
             GLCall(glUniform1i(glGetUniformLocation(scene->shaders[scene->shader_curr].shaderProgram, "tex0"), scene->meshes[cc].texture->unit));
         }
 
