@@ -7,16 +7,16 @@ uniform vec3 pos0;
 uniform vec3 ldot0;
 
 layout(location = 0) vec3 pos1;
-layout(location = 1) vec3 ldot1;
+layout(location = 1) unsigned float ldot1;
 
 layout(location = 2) vec3 pos2;
 layout(location = 3) vec3 ldot2;
 
 layout(location = 4) vec3 pos3;
-layout(location = 5) vec3 ldot3;
+layout(location = 5) unsigned float ldot3;
 
 layout(location = 6) vec3 pos4;
-layout(location = 7) vec3 ldot4;
+layout(location = 7) unsigned float ldot4;
 
 layout(location = 8) unsigned int counter;
 uniform unsigned int width; // Store size_t in encoded state.
