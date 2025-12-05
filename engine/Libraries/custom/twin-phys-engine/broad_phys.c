@@ -72,7 +72,7 @@ void collision_broadproc(scene_t *scene, uint32_t *batch_num){
 	GLuint VAO = 0, VBO = 0;
 	// Organise to nearest 3.
 	const uint8_t _3 = (scene->mesh_num + (scene->mesh_num % 3));
-	if(scene->mesh_num % 3 != 0){scene->meshes = realloc(scene->meshes, sizeof(mesh_t) * (scene->mesh_num + (scene->mesh_num % 3)));}
+	if(scene->mesh_num % 4 != 0){scene->meshes = realloc(scene->meshes, sizeof(mesh_t) * (scene->mesh_num + (scene->mesh_num % 4)));}
 	GLCall(glGenBuffer(VAO));
 	GLCall(glBindVertexArray(VAO));
 	GLCall(glGenBuffer(VBO));
@@ -158,27 +158,50 @@ void collision_broadproc(scene_t *scene, uint32_t *batch_num){
             default:    return;
 		}
 		glBufferData(GL_ARRAY_BUFFER, (max_ << 3) * sizeof(GLfloat), data, GL_STREAM_READ);
+		/// Cells:
+		///		GLuint counter,
+		///		vec3 pos,
+		///		GLfloat ldot.
+		/// Offset should go up in: sizeof(GLfloat << 2) + sizeof(GLuint)
+		
 		// Bind attributes.
-		// Pos0
+		// Pos0, uniform
 		glUniform3f(glGetUniformLocation((scene->shaders + scene->shader_curr)->shaderProgram, "pos0"), (scene->meshes + temp->target)->pos[0], (scene->meshes + temp->target)->pos[1], (scene->meshes + temp->target)->pos[2]); // Write Position
-		// ldot0
+		// ldot0, uniform
 		glUniform1f(glGetUniformLocation((scene->shaders + scene->shader_curr)->shaderProgram, "ldot0"), (scene->meshes + temp->target)->ldot); // Write Largest dot.
+		
 		// Pos1
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(GLuint) << 1) - (sizeof(GLfloat) * 3), (void *)0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(GLuint) << 1) - (sizeof(GLfloat) * 3), (void *)(sizeof(GLuint) ));
 		// ldot1
-		glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(GLuint) << 1) - sizeof(GLfloat), (void *)(sizeof(GLfloat) * 3));
+		glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(GLuint) << 1) - sizeof(GLfloat), (void *)((sizeof(GLfloat) * 3) + sizeof(GLuint) ));
+		
 		// Pos2
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(GLuint) << 1) - (sizeof(GLfloat) * 3), (void *)((sizeof(GLfloat) << 2) + sizeof(GLuint)));
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(GLuint) << 1) - (sizeof(GLfloat) * 3), (void *)(sizeof(GLfloat << 2) + (sizeof(GLuint) << 1) ));
 		// ldot2
-		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(GLuint) << 1) - sizeof(GLfloat), (void *)((sizeof(GLfloat) << 2) + sizeof(GLuint) + (sizeof(GLfloat) * 3)));
+		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(GLuint) << 1) - sizeof(GLfloat), (void *)(((sizeof(GLfloat) << 2) + (sizeof(GLfloat) * 3))) + (sizeof(GLuint) << 1) ));
+		
+		// Pos3
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(GLuint) << 1) - (sizeof(GLfloat) * 3), (void *)((sizeof(GLfloat) << 3) + (sizeof(GLuint) * 3) ));
+		// ldot3
+		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(GLuint) << 1) - sizeof(GLfloat), (void *)(((sizeof(GLfloat) << 3) + (sizeof(GLfloat * 3)) + (sizeof(GLuint) * 3) ));
+		
+		// Pos4
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(GLuint) << 1) - (sizeof(GLfloat) * 3), (void *)((sizeof(GLfloat) << 4) + (sizeof(GLuint) << 2) ));
+		// ldot4
+		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(GLuint) << 1) - sizeof(GLfloat), (void *)(((sizeof(GLfloat) << 4) + (sizeof(GLfloat) * 3)) + (sizeof(GLuint) << 2) ));
+		
+		// Pos5
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(GLuint) << 1) - (sizeof(GLfloat) * 3), (void *)((sizeof(GLfloat) << 5) + (sizeof(GLuint) * 5) ));
+		// ldot5
+		glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(GLuint) << 1) - sizeof(GLfloat), (void *)(((sizeof(GLfloat) << 5) + (sizeof(GLfloat) * 3)) + (sizeof(GLuint) * 5) ));
 		// counter
-		glVertexAttribPointer(4, 1, GL_UNSIGNED_INT, GL_FALSE, ((sizeof(GLfloat) << 3) + sizeof(GLuint) << 1) - sizeof(GLuint), (void *)((sizeof(GLfloat) << 4) + sizeof(GLuint) << 1));
+		glVertexAttribPointer(4, 1, GL_UNSIGNED_INT, GL_FALSE, (sizeof(GLfloat) << 2), (void *)0);
 		// Each cell is 8 GLfloats and 2 GLuint, stride should be ((sizeof(GLfloat) << 3) + sizeof(GLuint) << 1)
 		glDrawArrays(GL_POINTS, 0, max_);
 
 		// Retrieve Shader output.
-		temp->out = calloc(max_, (sizeof(uint8_t) * 2));
-		glReadPixels(0, 0, (max_ > w ? w: max_), max_ % w, GL_RGBA, GL_UNSIGNED_BYTE, (void *)temp->out);
+		temp->out = calloc(max_, sizeof(collresb_t));
+		glReadnPixels(0, 0, (max_ > w ? w: max_), max_ / w, GL_RGBA, GL_UNSIGNED_BYTE, max_, (void *)temp->out);
 		temp->batch_size |= 0x8000U; // Set top-most bit to 1, thus telling the caller that the thingy has be run.
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, og_VBO);
